@@ -43,6 +43,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ASPSnippets.FaceBookAPI">
+      <HintPath>..\ColecaoNumismatica\bin\ASPSnippets.FaceBookAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="ASPSnippets.GoogleAPI">
+      <HintPath>..\ColecaoNumismatica\bin\ASPSnippets.GoogleAPI.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -67,34 +73,73 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AppFrontEnd\LoginFE.aspx" />
-    <Content Include="AppFrontEnd\MainPageFE.aspx" />
-    <Content Include="AppFrontEnd\RegisterAccountFE.aspx" />
-    <Content Include="style.css" />
+    <Content Include="assets\css\nucleo-icons.css" />
+    <Content Include="assets\css\nucleo-svg.css" />
+    <Content Include="assets\css\soft-ui-dashboard.css" />
+    <Content Include="assets\css\soft-ui-dashboard.min.css" />
+    <Content Include="assets\fonts\nucleo-icons.svg" />
+    <Content Include="assets\img\apple-icon.png" />
+    <Content Include="assets\img\bruce-mars.jpg" />
+    <Content Include="assets\img\cinel.ico" />
+    <Content Include="assets\img\cinel.png" />
+    <Content Include="assets\img\curved-images\curved0.jpg" />
+    <Content Include="assets\img\curved-images\curved1.jpg" />
+    <Content Include="assets\img\curved-images\curved14.jpg" />
+    <Content Include="assets\img\curved-images\curved6.jpg" />
+    <Content Include="assets\img\curved-images\curved8.jpg" />
+    <Content Include="assets\img\curved-images\white-curved.jpeg" />
+    <Content Include="assets\img\down-arrow-dark.svg" />
+    <Content Include="assets\img\down-arrow.svg" />
+    <Content Include="assets\img\favicon.png" />
+    <Content Include="assets\img\home-decor-1.jpg" />
+    <Content Include="assets\img\home-decor-2.jpg" />
+    <Content Include="assets\img\home-decor-3.jpg" />
+    <Content Include="assets\img\illustrations\rocket-white.png" />
+    <Content Include="assets\img\ivana-square.jpg" />
+    <Content Include="assets\img\ivancik.jpg" />
+    <Content Include="assets\img\kal-visuals-square.jpg" />
+    <Content Include="assets\img\logo.png" />
+    <Content Include="assets\img\logos\mastercard.png" />
+    <Content Include="assets\img\logos\visa.png" />
+    <Content Include="assets\img\marie.jpg" />
+    <Content Include="assets\img\shapes\waves-white.svg" />
+    <Content Include="assets\img\small-logos\icon-sun-cloud.png" />
+    <Content Include="assets\img\small-logos\logo-atlassian.svg" />
+    <Content Include="assets\img\small-logos\logo-invision.svg" />
+    <Content Include="assets\img\small-logos\logo-jira.svg" />
+    <Content Include="assets\img\small-logos\logo-slack.svg" />
+    <Content Include="assets\img\small-logos\logo-spotify.svg" />
+    <Content Include="assets\img\small-logos\logo-webdev.svg" />
+    <Content Include="assets\img\small-logos\logo-xd.svg" />
+    <Content Include="assets\img\team-1.jpg" />
+    <Content Include="assets\img\team-2.jpg" />
+    <Content Include="assets\img\team-3.jpg" />
+    <Content Include="assets\img\team-4.jpg" />
+    <Content Include="assets\img\vr-bg.jpg" />
+    <Content Include="assets\js\core\bootstrap.min.js" />
+    <Content Include="assets\js\core\popper.min.js" />
+    <Content Include="assets\js\plugins\bootstrap-notify.js" />
+    <Content Include="assets\js\plugins\Chart.extension.js" />
+    <Content Include="assets\js\plugins\chartjs.min.js" />
+    <Content Include="assets\js\plugins\choices.min.js" />
+    <Content Include="assets\js\plugins\fullcalendar.min.js" />
+    <Content Include="assets\js\plugins\perfect-scrollbar.min.js" />
+    <Content Include="assets\js\plugins\smooth-scrollbar.min.js" />
+    <Content Include="assets\js\soft-ui-dashboard.js" />
+    <Content Include="assets\js\soft-ui-dashboard.min.js" />
+    <Content Include="UserCourses.aspx" />
+    <Content Include="ErrorPage404.aspx" />
+    <Content Include="ErrorPageGeneral.aspx" />
+    <Content Include="gulpfile.js" />
+    <Content Include="UserSignIn.aspx" />
+    <Content Include="MainPage.aspx" />
+    <Content Include="RegisterPage.aspx" />
+    <Content Include="UserCalendar.aspx" />
+    <Content Include="UserProfile.aspx" />
+    <Content Include="UserSignUp.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppFrontEnd\LoginFE.aspx.cs">
-      <DependentUpon>LoginFE.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AppFrontEnd\LoginFE.aspx.designer.cs">
-      <DependentUpon>LoginFE.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AppFrontEnd\MainPageFE.aspx.cs">
-      <DependentUpon>MainPageFE.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AppFrontEnd\MainPageFE.aspx.designer.cs">
-      <DependentUpon>MainPageFE.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="AppFrontEnd\RegisterAccountFE.aspx.cs">
-      <DependentUpon>RegisterAccountFE.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="AppFrontEnd\RegisterAccountFE.aspx.designer.cs">
-      <DependentUpon>RegisterAccountFE.aspx</DependentUpon>
-    </Compile>
     <Compile Include="CinelMP.Master.cs">
       <DependentUpon>CinelMP.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -102,12 +147,285 @@
     <Compile Include="CinelMP.Master.designer.cs">
       <DependentUpon>CinelMP.Master</DependentUpon>
     </Compile>
-    <Compile Include="Classes\Tokenclass.cs" />
-    <Compile Include="Classes\Userclass.cs" />
+    <Compile Include="Classes\EmailControl.cs" />
+    <Compile Include="Classes\FaceBookUser.cs" />
+    <Compile Include="Classes\GoogleProfile.cs" />
+    <Compile Include="Classes\Security.cs" />
+    <Compile Include="UserCourses.aspx.cs">
+      <DependentUpon>UserCourses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserCourses.aspx.designer.cs">
+      <DependentUpon>UserCourses.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorPage404.aspx.cs">
+      <DependentUpon>ErrorPage404.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ErrorPage404.aspx.designer.cs">
+      <DependentUpon>ErrorPage404.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorPageGeneral.aspx.cs">
+      <DependentUpon>ErrorPageGeneral.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ErrorPageGeneral.aspx.designer.cs">
+      <DependentUpon>ErrorPageGeneral.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSignIn.aspx.cs">
+      <DependentUpon>UserSignIn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserSignIn.aspx.designer.cs">
+      <DependentUpon>UserSignIn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.aspx.cs">
+      <DependentUpon>MainPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MainPage.aspx.designer.cs">
+      <DependentUpon>MainPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterPage.aspx.cs">
+      <DependentUpon>RegisterPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RegisterPage.aspx.designer.cs">
+      <DependentUpon>RegisterPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserCalendar.aspx.cs">
+      <DependentUpon>UserCalendar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserCalendar.aspx.designer.cs">
+      <DependentUpon>UserCalendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserProfile.aspx.cs">
+      <DependentUpon>UserProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserProfile.aspx.designer.cs">
+      <DependentUpon>UserProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserSignUp.aspx.cs">
+      <DependentUpon>UserSignUp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserSignUp.aspx.designer.cs">
+      <DependentUpon>UserSignUp.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="CinelMP.Master" />
+    <Content Include="assets\css\soft-ui-dashboard.css.map" />
+    <Content Include="assets\fonts\nucleo-icons.eot" />
+    <Content Include="assets\fonts\nucleo-icons.ttf" />
+    <Content Include="assets\fonts\nucleo-icons.woff" />
+    <Content Include="assets\fonts\nucleo-icons.woff2" />
+    <Content Include="assets\fonts\nucleo.eot" />
+    <Content Include="assets\fonts\nucleo.ttf" />
+    <Content Include="assets\fonts\nucleo.woff" />
+    <Content Include="assets\fonts\nucleo.woff2" />
+    <Content Include="assets\js\soft-ui-dashboard.js.map" />
+    <Content Include="assets\scss\soft-ui-dashboard.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\badges\_badge-circle.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\badges\_badge-dot.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\badges\_badge-floating.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\badges\_badge.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\bootstrap-grid.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\bootstrap-reboot.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\bootstrap-utilities.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\bootstrap.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\forms\_floating-labels.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\forms\_form-check.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\forms\_form-control.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\forms\_form-range.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\forms\_form-select.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\forms\_form-text.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\forms\_input-group.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\forms\_labels.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\forms\_validation.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\helpers\_clearfix.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\helpers\_colored-links.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\helpers\_position.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\helpers\_ratio.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\helpers\_stretched-link.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\helpers\_text-truncation.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\helpers\_visually-hidden.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_alert.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_border-radius.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_box-shadow.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_breakpoints.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_buttons.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_caret.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_clearfix.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_color-scheme.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_container.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_deprecate.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_forms.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_gradients.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_grid.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_image.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_list-group.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_lists.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_pagination.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_reset-text.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_resize.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_table-variants.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_text-truncate.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_transition.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_utilities.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\mixins\_visually-hidden.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\utilities\_api.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\vendor\_rfs.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_accordion.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_alert.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_badge.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_breadcrumb.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_button-group.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_buttons.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_card.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_carousel.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_close.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_containers.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_dropdown.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_forms.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_functions.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_grid.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_helpers.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_images.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_list-group.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_mixins.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_modal.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_nav.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_navbar.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_offcanvas.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_pagination.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_popover.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_progress.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_reboot.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_root.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_spinners.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_tables.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_toasts.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_tooltip.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_transitions.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_type.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_utilities.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\bootstrap\_variables.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\cards\card-background.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\cards\card-blog.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\cards\card-horizontal.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\cards\card-pricing.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\cards\card-profile.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\custom\_styles.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\custom\_variables.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\forms\_form-check.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\forms\_form-select.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\forms\_form-switch.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\forms\_forms.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\forms\_input-group.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\forms\_inputs.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\forms\_labels.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\mixins\mixins.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\mixins\_badge.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\mixins\_colored-shadows.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\mixins\_hover.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\mixins\_social-buttons.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\free\plugins.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\free\_flatpickr.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\free\_nouislider.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\free\_perfect-scrollbar.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\free\_prism.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\multi-step.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\plugins-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_carousel-slick.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_choices.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_datatable-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_datatable.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_dragula.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_dropzone.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_fullcalendar-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_fullcalendar.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_glidejs.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_highlight.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_kanban.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_leaflet.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_list-check.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_photoswipe.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_quill.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_rating-widget.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_sweetalert2-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\plugins\pro\_sweetalert2.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\theme-pro.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\theme.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_animations.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_avatars.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_badge.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_breadcrumb.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_cards-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_cards.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_choices.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_dropdowns.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_fixed-plugin.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_form-switch.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_full-calendar.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_header.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_info-areas.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_misc-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_misc.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_navbar-vertical.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_navbar.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_pagination.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_rtl.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_social-buttons.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_table.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_timeline.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_utilities-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_utilities.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\variables\_virtual-reality.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_accordion.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_alert.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_avatars.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_backgrounds.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_badge.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_breadcrumbs.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_buttons.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_cards-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_cards.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_components.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_dropdown-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_dropdown.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_dropup.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_fixed-plugin.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_floating-elements.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_footer.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_forms.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_gradients.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_header.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_info-areas.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_list-check.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_misc-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_misc.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_nav.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_navbar-vertical-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_navbar-vertical.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_navbar.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_pagination.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_popovers.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_progress.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_rtl-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_rtl.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_social-buttons.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_tables.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_tilt.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_timeline.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_tooltips.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_typography.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_utilities-extend.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_utilities.scss" />
+    <Content Include="assets\scss\soft-ui-dashboard\_variables.scss" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -116,10 +434,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="AppBackEnd\" />
-    <Folder Include="AppCalendar\" />
-    <Folder Include="Images\" />
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

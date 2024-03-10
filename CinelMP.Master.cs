@@ -14,9 +14,5 @@ namespace FinalProject
 
         }
 
-        protected void btn_logout_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("LoginFE.aspx");
-        }
     }
 }
