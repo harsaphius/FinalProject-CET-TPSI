@@ -1,9 +1,11 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="MainCourses.aspx.cs" Inherits="FinalProject.MainCourses" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+  
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="container-fluid py-3">
+
+    <div class="container-fluid">
         <div class="row">
             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                 <span>Designação:</span>
@@ -14,14 +16,16 @@
             </div>
             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                 <span>Área:</span>
-                <div class="dropdown mr-2">
-                    <asp:DropDownList ID="ddl_area" runat="server" class="btn bg-gradient-secundary dropdown-toggle"></asp:DropDownList>
+                <div class="dropdown">
+                    <asp:DropDownList ID="ddl_area" runat="server" class="btn bg-gradient-secundary dropdown-toggle" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea"></asp:DropDownList>
+                    <asp:SqlDataSource ID="SQLDSArea" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [area]"></asp:SqlDataSource>
                 </div>
             </div>
             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                 <span>Tipo:</span>
                 <div class="dropdown">
-                    <asp:DropDownList ID="ddl_tipo" class="btn bg-gradient-secundary dropdown-toggle" runat="server"></asp:DropDownList>
+                    <asp:DropDownList ID="ddl_tipo" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso"></asp:DropDownList>
+                    <asp:SqlDataSource ID="SQLDSTipo" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
                 </div>
             </div>
             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
@@ -40,7 +44,9 @@
                 </div>
             </div>
             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                <span><br /></span>
+                <span>
+                    <br />
+                </span>
                 <div class="input-group mb-4">
                     <asp:Button runat="server" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
                 </div>

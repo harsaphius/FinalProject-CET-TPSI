@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
+using System.Linq;
 using System.Web.UI.WebControls;
 
 namespace FinalProject.Classes
 {
-    public class PageControls
+    public class PageControls<T>
     {
         //public void BindData(List<User> List)
         //{
@@ -37,6 +35,24 @@ namespace FinalProject.Classes
         //    BindData();
         //}
 
+
+        private List<T> items;
+
+        public PageControls(List<T> items)
+        {
+            this.items = items;
+        }
+
+        public List<T> GetPage(int pageIndex, int pageSize)
+        {
+            int startIndex = (pageIndex - 1) * pageSize;
+            return items.Skip(startIndex).Take(pageSize).ToList();
+        }
+
+        public int GetTotalPages(int pageSize)
+        {
+            return (int)Math.Ceiling((double)items.Count / pageSize);
+        }
     }
 
 }

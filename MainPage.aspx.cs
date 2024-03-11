@@ -54,6 +54,22 @@ namespace FinalProject
 
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
+                if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
+                {
+                    script = @"                      
+                            document.getElementById('managecourses').classList.remove('hidden');
+                            document.getElementById('managecourses').classList.add('nav-item');
+                            document.getElementById('manageclasses').classList.remove('hidden');
+                            document.getElementById('manageclasses').classList.add('nav-item');
+                            document.getElementById('managemodules').classList.remove('hidden');
+                            document.getElementById('managemodules').classList.add('nav-item');
+                            document.getElementById('managestudents').classList.remove('hidden');
+                            document.getElementById('managestudents').classList.add('nav-item');
+                            ";
+
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
+                }
+
             }
         }
     }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -74,11 +71,82 @@ namespace FinalProject
                 }
             }
 
-            //foreach (DataRow row in dt.Rows)
-            //{
-            //    ListItem item = new ListItem(row["Label"].ToString(), row["Value"].ToString());
-            //    ckbModulos.Items.Add(item);
-            //}
+
+        }
+
+        protected void btn_course_insert_Click(object sender, EventArgs e)
+        {
+            // Access the list of selected items from ViewState
+            List<string> selectedItems = (List<string>)ViewState["SelectedItems"];
+            List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"];
+
+            if (selectedItems != null && selectedItems.Count > 0)
+            {
+    
+                // Perform the desired processing, such as inserting data into the database
+                foreach (string moduleId in selectedItems)
+                {
+
+                    // Insert data into the database for the selected module
+                    // Replace this with your actual database insertion logic
+                    // Example:
+                    // InsertModuleIntoDatabase(moduleId);
+                }
+
+                // Clear the ViewState after processing
+                ViewState["SelectedItems"] = null;
+
+                foreach (string l in itemsNames)
+                {
+                    lbl_selection.Text += l + " > ";
+                }
+                // Optionally, you can display a message indicating that the operation was successful
+                // Example:
+                // lblMessage.Text = "Modules inserted successfully!";
+            }
+            else
+            {
+                // Optionally, handle the case where no modules are selected
+                // Example:
+                // lblMessage.Text = "No modules selected!";
+            }
+        }
+
+
+        protected void chkBoxMod_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
+            HiddenField hdnModuleId = (HiddenField)item.FindControl("hdnModuleId");
+            HiddenField hdnModuleName = (HiddenField)item.FindControl("hdnModuleName");
+            Label lbl_order = (Label)item.FindControl("lbl_order");
+
+            // Add or remove the module ID based on the checkbox state
+            if (checkBox.Checked)
+            {
+                lbl_order.Text = "Seleccionado";
+                // Add the module ID to the list of selected items
+                List<string> selectedItems = (List<string>)ViewState["SelectedItems"] ?? new List<string>();
+                List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"] ?? new List<string>();
+                selectedItems.Add(hdnModuleId.Value);
+                itemsNames.Add(hdnModuleName.Value);
+                ViewState["SelectedItems"] = selectedItems;
+                ViewState["SelectedItemsNames"] = itemsNames;
+            }
+            else
+            {
+                lbl_order.Text = "Selecione este módulo";
+                // Remove the module ID from the list of selected items
+                List<string> selectedItems = (List<string>)ViewState["SelectedItems"];
+                List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"];
+                if (selectedItems != null)
+                {
+                    selectedItems.Remove(hdnModuleId.Value);
+                    itemsNames.Remove(hdnModuleName.Value);
+                    ViewState["SelectedItems"] = selectedItems;
+                    ViewState["SelectedItemsNames"] = itemsNames;
+                }
+            }
         }
     }
 }
