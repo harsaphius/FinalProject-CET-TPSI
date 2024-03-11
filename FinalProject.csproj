@@ -73,6 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ActivationPage.aspx" />
     <Content Include="assets\css\nucleo-icons.css" />
     <Content Include="assets\css\nucleo-svg.css" />
     <Content Include="assets\css\soft-ui-dashboard.css" />
@@ -127,10 +128,14 @@
     <Content Include="assets\js\plugins\smooth-scrollbar.min.js" />
     <Content Include="assets\js\soft-ui-dashboard.js" />
     <Content Include="assets\js\soft-ui-dashboard.min.js" />
+    <Content Include="ManageClasses.aspx" />
+    <Content Include="ManageCourses.aspx" />
+    <Content Include="MainCourses.aspx" />
+    <Content Include="ManageModules.aspx" />
+    <Content Include="ManageStudents.aspx" />
     <Content Include="UserCourses.aspx" />
     <Content Include="ErrorPage404.aspx" />
     <Content Include="ErrorPageGeneral.aspx" />
-    <Content Include="gulpfile.js" />
     <Content Include="UserSignIn.aspx" />
     <Content Include="MainPage.aspx" />
     <Content Include="RegisterPage.aspx" />
@@ -138,8 +143,16 @@
     <Content Include="UserProfile.aspx" />
     <Content Include="UserSignUp.aspx" />
     <Content Include="Web.config" />
+    <None Include="web.sitemap" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivationPage.aspx.cs">
+      <DependentUpon>ActivationPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ActivationPage.aspx.designer.cs">
+      <DependentUpon>ActivationPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CinelMP.Master.cs">
       <DependentUpon>CinelMP.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -150,7 +163,44 @@
     <Compile Include="Classes\EmailControl.cs" />
     <Compile Include="Classes\FaceBookUser.cs" />
     <Compile Include="Classes\GoogleProfile.cs" />
+    <Compile Include="Classes\PageControls.cs" />
     <Compile Include="Classes\Security.cs" />
+    <Compile Include="Classes\User.cs" />
+    <Compile Include="ManageClasses.aspx.cs">
+      <DependentUpon>ManageClasses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageClasses.aspx.designer.cs">
+      <DependentUpon>ManageClasses.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ManageCourses.aspx.cs">
+      <DependentUpon>ManageCourses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageCourses.aspx.designer.cs">
+      <DependentUpon>ManageCourses.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MainCourses.aspx.cs">
+      <DependentUpon>MainCourses.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MainCourses.aspx.designer.cs">
+      <DependentUpon>MainCourses.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ManageModules.aspx.cs">
+      <DependentUpon>ManageModules.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageModules.aspx.designer.cs">
+      <DependentUpon>ManageModules.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ManageStudents.aspx.cs">
+      <DependentUpon>ManageStudents.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageStudents.aspx.designer.cs">
+      <DependentUpon>ManageStudents.aspx</DependentUpon>
+    </Compile>
     <Compile Include="UserCourses.aspx.cs">
       <DependentUpon>UserCourses.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

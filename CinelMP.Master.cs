@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace FinalProject
@@ -11,8 +8,22 @@ namespace FinalProject
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                SiteMapNode currentNode = SiteMap.CurrentNode;
+                if (currentNode != null)
+                {
+                    string title = currentNode.Title;
+                    siteNode.InnerText = title;
+                }
+            }
         }
 
+        protected void lbtn_signout_Click(object sender, EventArgs e)
+        {
+            Session.Abandon();
+            Session.Clear();
+            Response.Redirect("MainPage.aspx");
+        }
     }
 }

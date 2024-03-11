@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -7,14 +8,17 @@ using System.Web.UI.WebControls;
 
 namespace FinalProject
 {
-    public partial class MainPage : System.Web.UI.Page
+    public partial class ManageCourses : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             string script;
 
-            if (Session["Logado"] == null) { }
-            else if(Session["Logado"] != null && !Page.IsPostBack)
+            if (Session["Logado"] == null)
+            {
+                Response.Redirect("MainPage.aspx");
+            }
+            else if (Session["Logado"].ToString() == "Yes")
             {
                 string user = Session["User"].ToString();
 
@@ -31,7 +35,6 @@ namespace FinalProject
                 }
 
                 script = @"
-                            document.getElementById('home').href = './MainPage.aspx';
                             document.getElementById('courses').href = './UserCourses.aspx'
                             document.getElementById('signout').classList.remove('hidden');
                             document.getElementById('signout').classList.add('nav-item');
@@ -54,7 +57,28 @@ namespace FinalProject
 
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
+                if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
+                {
+                    script = @"                      
+                            document.getElementById('managecourses').classList.remove('hidden');
+                            document.getElementById('managecourses').classList.add('nav-item');
+                            document.getElementById('manageclasses').classList.remove('hidden');
+                            document.getElementById('manageclasses').classList.add('nav-item');
+                            document.getElementById('managemodules').classList.remove('hidden');
+                            document.getElementById('managemodules').classList.add('nav-item');
+                            document.getElementById('managestudents').classList.remove('hidden');
+                            document.getElementById('managestudents').classList.add('nav-item');
+                            ";
+
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
+                }
             }
+
+            //foreach (DataRow row in dt.Rows)
+            //{
+            //    ListItem item = new ListItem(row["Label"].ToString(), row["Value"].ToString());
+            //    ckbModulos.Items.Add(item);
+            //}
         }
     }
 }

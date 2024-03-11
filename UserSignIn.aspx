@@ -1,11 +1,14 @@
-﻿<%@ Page Title="Login" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="UserSignIn.aspx.cs" Inherits="FinalProject.UserSignIn" %>
+﻿<%@ Page Title="User Sign In" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="UserSignIn.aspx.cs" Inherits="FinalProject.UserSignIn" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <main class="main-content  mt-0">
+    <main class="main-content mt-0">
         <section>
-            <div class="page-header min-vh-75">
+            <div style="padding: 5px;" id="alert" class="hidden" role="alert">
+                <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
+            </div>
+            <div class="page-header min-vh-50">
                 <div class="container">
                     <div class="row">
                         <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
@@ -14,27 +17,31 @@
                                     <h3 class="font-weight-bolder text-info text-gradient">Welcome back</h3>
                                     <p class="mb-0">Enter your email and password to sign in</p>
                                 </div>
-
                                 <div class="card-body">
                                     <div role="form">
                                         <label>Email</label>
+                                        <asp:RequiredFieldValidator ID="rfvusername" ErrorMessage="Required" runat="server" ControlToValidate="tb_username" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+
                                         <div class="mb-3">
-                                            <asp:TextBox ID="tb_email" CssClass="form-control" placeholder="Email" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="tb_username" oninput="validateUsername(this)" CssClass="form-control" placeholder="Username" runat="server"></asp:TextBox>
                                         </div>
                                         <label>Password</label>
+                                        <asp:RequiredFieldValidator ID="rfvpw" runat="server" ErrorMessage="Required" ControlToValidate="tb_pw" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+
                                         <div class="mb-3">
-                                            <asp:TextBox ID="tb_pw" CssClass="form-control" placeholder="Password" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="tb_pw" oninput="validatePassword(this)" CssClass="form-control" placeholder="Password" runat="server"></asp:TextBox>
                                         </div>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="rememberMe" checked="" runat="server">
                                             <label class="form-check-label" for="rememberMe">Remember me</label>
                                         </div>
                                         <div class="text-center">
-                                            <button type="button" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign in</button>
+                                            <asp:Button ID="btn_signin" runat="server" Text="Sign In" class="btn bg-gradient-info w-100 mt-4 mb-0" OnClick="btn_signin_Click" />
                                         </div>
                                     </div>
+
                                 </div>
-                                <div class="mt-2 position-relative text-center" style="padding:10px;">
+                                <div class="mt-2 position-relative text-center" style="padding: 10px;">
                                     <p class="text-sm font-weight-bold mb-2 text-secondary text-border d-inline z-index-2 px-3">
                                         OR
                                     </p>
@@ -71,10 +78,12 @@
                                         </div>
                                     </div>
                                 </div>
+
+
                                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-sm mx-auto">
                                         Don't have an account?
-                    <a href="javascript:;" class="text-info text-gradient font-weight-bold">Sign up</a>
+                        <asp:LinkButton runat="server" ID="lbtn_signup" href="./UserSignUp.aspx" class="text-info text-gradient font-weight-bold">Sign up</asp:LinkButton>
                                     </p>
                                 </div>
                             </div>
@@ -90,4 +99,29 @@
 
         </section>
     </main>
+    <script>
+        function validateUsername(element) {
+            // Check if username is empty
+            if (element.value.trim() === "") {
+                // Add is-invalid class if empty
+                element.classList.add("is-invalid");
+            } else {
+                // Remove is-invalid class if not empty
+                element.classList.remove("is-invalid");
+            }
+        }
+
+        function validatePassword(element) {
+            // Check if password is empty
+            if (element.value.trim() === "") {
+                // Add is-invalid class if empty
+                element.classList.add("is-invalid");
+            } else {
+                // Remove is-invalid class if not empty
+                element.classList.remove("is-invalid");
+            }
+        }
+
+    </script>
+
 </asp:Content>

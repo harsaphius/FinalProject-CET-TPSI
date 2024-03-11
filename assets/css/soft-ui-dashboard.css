@@ -24927,3 +24927,13 @@ pre[class*="language-"] {
 }
 
 /*# sourceMappingURL=dashboard-free.css.map */
+
+/* My CSS */
+/*Esconder Divs*/
+.hidden {
+    display: none;
+}
+
+.not_hidden {
+    display: block;
+}

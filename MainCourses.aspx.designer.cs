@@ -11,97 +11,70 @@ namespace FinalProject
 {
 
 
-    public partial class UserSignIn
+    public partial class MainCourses
     {
 
         /// <summary>
-        /// lbl_message control.
+        /// lbtn_search control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_message;
+        protected global::System.Web.UI.WebControls.LinkButton lbtn_search;
 
         /// <summary>
-        /// rfvusername control.
+        /// tb_search control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvusername;
+        protected global::System.Web.UI.WebControls.TextBox tb_search;
 
         /// <summary>
-        /// tb_username control.
+        /// ddl_area control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_username;
+        protected global::System.Web.UI.WebControls.DropDownList ddl_area;
 
         /// <summary>
-        /// rfvpw control.
+        /// ddl_tipo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvpw;
+        protected global::System.Web.UI.WebControls.DropDownList ddl_tipo;
 
         /// <summary>
-        /// tb_pw control.
+        /// tb_dataInicio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_pw;
+        protected global::System.Web.UI.WebControls.TextBox tb_dataInicio;
 
         /// <summary>
-        /// rememberMe control.
+        /// tb_dataFim control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox rememberMe;
+        protected global::System.Web.UI.WebControls.TextBox tb_dataFim;
 
         /// <summary>
-        /// btn_signin control.
+        /// Repeater1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_signin;
-
-        /// <summary>
-        /// btn_facebook control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_facebook;
-
-        /// <summary>
-        /// btn_google control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_google;
-
-        /// <summary>
-        /// lbtn_signup control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtn_signup;
+        protected global::System.Web.UI.WebControls.Repeater Repeater1;
     }
 }
