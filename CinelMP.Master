@@ -322,34 +322,36 @@
             </nav>
             <!-- End Navbar -->
             <!-- Content -->
-            <div class="container">
+            <!-- Secondary Menu -->
+            <div id="secondarymenu" class="container hidden">
                 <div class="row ">
                     <div class="nav-wrapper position-relative end-0">
                         <ul class="nav nav-pills nav-fill p-1 bg-secundary" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link mb-3 px-0 py-1 active" data-bs-toggle="tab" href="#profile-tabs-icons" role="tab" aria-controls="preview" aria-selected="true">
-                                    <i class="ni ni-badge text-sm me-2"></i>Insert Courses
-                                </a>
+                            <li class="nav-item" >
+                                <asp:LinkButton runat="server" class="nav-link mb-3 px-0 py-1 active" data-bs-toggle="tab" id="secondaryMenu1" role="tab" aria-controls="preview" aria-selected="true">
+                                    <i class="ni ni-badge text-sm me-2"></i>
+                                </asp:LinkButton>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link mb-3 px-0 py-1" data-bs-toggle="tab" href="#dashboard-tabs-icons" role="tab" aria-controls="code" aria-selected="false">
-                                    <i class="ni ni-laptop text-sm me-2"></i>Edit Courses
-                                </a>
+                            <li class="nav-item" >
+                                <asp:LinkButton runat="server" class="nav-link mb-3 px-0 py-1" data-bs-toggle="tab" id="secondaryMenu2" role="tab" aria-controls="code" aria-selected="false">
+                                    <i class="ni ni-laptop text-sm me-2"></i>
+                                </asp:LinkButton>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link mb-3 px-0 py-1" data-bs-toggle="tab" href="#dashboard-tabs-icons" role="tab" aria-controls="code" aria-selected="false">
-                                    <i class="ni ni-laptop text-sm me-2"></i>Delete Courses
-                                </a>
+                            <li class="nav-item" >
+                                <asp:LinkButton runat="server" class="nav-link mb-3 px-0 py-1" data-bs-toggle="tab" id="secondaryMenu3" role="tab" aria-controls="code" aria-selected="false">
+                                    <i class="ni ni-laptop text-sm me-2"></i>
+                                </asp:LinkButton>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link mb-3 px-0 py-1" data-bs-toggle="tab" href="#dashboard-tabs-icons" role="tab" aria-controls="code" aria-selected="false">
-                                    <i class="ni ni-laptop text-sm me-2"></i>List Courses
+                          <%--  <li class="nav-item" >
+                                <a class="nav-link mb-3 px-0 py-1" data-bs-toggle="tab" id="secondaryMenu4" role="tab" aria-controls="code" aria-selected="false">
+                                    <i class="ni ni-laptop text-sm me-2"></i>
                                 </a>
-                            </li>
+                            </li>--%>
                         </ul>
                     </div>
                 </div>
             </div>
+            <!-- End of Secondary Menu -->
             <div>
                 <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
                 </asp:ContentPlaceHolder>

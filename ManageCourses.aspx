@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="py-3 align-items-center row" style="padding-left: 28px;">
+        <div class="py-3 align-items-center row" style="padding-left:28px;">
             <div class="col-sm-3">
                 <small class="text-uppercase font-weight-bold">Módulos para o curso:</small>
             </div>
@@ -71,7 +71,7 @@
                 <asp:SqlDataSource ID="SQLDSModulos" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [modulo]"></asp:SqlDataSource>
             </ContentTemplate>
             <Triggers>
-                <asp:AsyncPostBackTrigger ControlID="btn_course_insert" EventName="Click" />
+                <asp:PostBackTrigger ControlID="btn_course_insert" />
             </Triggers>
         </asp:UpdatePanel>
         <div class="alert alert-primary text-white font-weight-bold" role="alert">
