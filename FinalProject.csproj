@@ -127,12 +127,15 @@
     <Content Include="assets\js\plugins\perfect-scrollbar.min.js" />
     <Content Include="assets\js\plugins\smooth-scrollbar.min.js" />
     <Content Include="assets\js\soft-ui-dashboard.js" />
+    <Content Include="assets\js\soft-ui-dashboard.min.js" />
     <Content Include="gulpfile.js" />
     <Content Include="ManageClasses.aspx" />
+    <Content Include="ManageClassrooms.aspx" />
     <Content Include="ManageCourses.aspx" />
     <Content Include="MainCourses.aspx" />
     <Content Include="ManageModules.aspx" />
     <Content Include="ManageStudents.aspx" />
+    <Content Include="ManageTeachers.aspx" />
     <Content Include="UserCourses.aspx" />
     <Content Include="ErrorPage404.aspx" />
     <Content Include="ErrorPageGeneral.aspx" />
@@ -174,6 +177,13 @@
     <Compile Include="ManageClasses.aspx.designer.cs">
       <DependentUpon>ManageClasses.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ManageClassrooms.aspx.cs">
+      <DependentUpon>ManageClassrooms.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageClassrooms.aspx.designer.cs">
+      <DependentUpon>ManageClassrooms.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ManageCourses.aspx.cs">
       <DependentUpon>ManageCourses.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -201,6 +211,13 @@
     </Compile>
     <Compile Include="ManageStudents.aspx.designer.cs">
       <DependentUpon>ManageStudents.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ManageTeachers.aspx.cs">
+      <DependentUpon>ManageTeachers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageTeachers.aspx.designer.cs">
+      <DependentUpon>ManageTeachers.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserCourses.aspx.cs">
       <DependentUpon>UserCourses.aspx</DependentUpon>

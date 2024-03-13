@@ -1,23 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace FinalProject
 {
-    public partial class MainPage : System.Web.UI.Page
+    public partial class ManageClassrooms : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string script;
 
-            if (Session["Logado"] == null) { }
-            else if(Session["Logado"] != null && !Page.IsPostBack)
+            if (Session["Logado"] == null)
+            {
+                Response.Redirect("MainPage.aspx");
+            }
+            else if (Session["Logado"].ToString() == "Yes")
             {
                 string user = Session["User"].ToString();
 
+                //Find lbl_user on MasterPage and 
                 Label lbluser = Master.FindControl("lbl_user") as Label;
                 if (lbluser != null)
                 {
@@ -30,9 +30,10 @@ namespace FinalProject
                     lbtncourses.PostBackUrl = "./UserCourses.aspx";
                 }
 
-                script = @"
-                            document.getElementById('home').href = './MainPage.aspx';
-                            document.getElementById('courses').href = './UserCourses.aspx'
+
+
+                string script = @"
+                            document.getElementById('courses').href = './UserCourses.aspx';
                             document.getElementById('signout').classList.remove('hidden');
                             document.getElementById('signout').classList.add('nav-item');
                             document.getElementById('signin').classList.add('hidden');
@@ -56,7 +57,8 @@ namespace FinalProject
 
                 if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
                 {
-                    script = @"                      
+                    script = @"
+                            document.getElementById('menuClassrooms').classList.remove('hidden');
                             document.getElementById('managecourses').classList.remove('hidden');
                             document.getElementById('managecourses').classList.add('nav-item');
                             document.getElementById('manageclasses').classList.remove('hidden');
@@ -73,6 +75,7 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
+
 
             }
         }
