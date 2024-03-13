@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinalProject.Classes;
+using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -10,6 +11,25 @@ namespace FinalProject
         protected void Page_Load(object sender, EventArgs e)
         {
             string script;
+            // Initialize your list of items
+            List<int> items = new List<int>(); // Replace int with the type of your items
+                                               // Add your items to the list...
+
+            // Define the desired page size
+            int pageSize = 2; // Change this to your desired page size
+
+            // Create an instance of PageControls with your items and page size
+            PageControls<int> pageControls = new PageControls<int>(items, pageSize);
+
+            // Get the current page number (for demonstration, assuming it's 1)
+            int currentPage = 1; // Change this to the actual current page number
+
+            // Generate pagination HTML
+           
+            string paginationHtml = pageControls.GeneratePagination(currentPage,pageControls.GetTotalPages());
+
+            // Render the pagination HTML to the page
+            paginationContainer.InnerHtml = paginationHtml; // Wrapping paginationHtml in <li> for direct replacement
 
             if (Session["Logado"] == null)
             {
@@ -19,6 +39,7 @@ namespace FinalProject
             {
                 string user = Session["User"].ToString();
 
+                //Find lbl_user on MasterPage and 
                 Label lbluser = Master.FindControl("lbl_user") as Label;
                 if (lbluser != null)
                 {
@@ -31,8 +52,10 @@ namespace FinalProject
                     lbtncourses.PostBackUrl = "./UserCourses.aspx";
                 }
 
+
+
                 script = @"
-                            document.getElementById('courses').href = './UserCourses.aspx'
+                            document.getElementById('courses').href = './UserCourses.aspx';
                             document.getElementById('signout').classList.remove('hidden');
                             document.getElementById('signout').classList.add('nav-item');
                             document.getElementById('signin').classList.add('hidden');
@@ -57,13 +80,7 @@ namespace FinalProject
                 if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
                 {
                     script = @"
-                            document.getElementById('secondarymenu').classList.remove('hidden');
-                            document.getElementById('secondaryMenu1').innerHTML = 'Insert Courses';
-                            document.getElementById('secondaryMenu1').href = './ManageCourses.aspx';
-                            document.getElementById('secondaryMenu2').innerHTML = 'Edit Courses';
-                            document.getElementById('secondaryMenu2').href = './EditCourses.aspx'
-                            document.getElementById('secondaryMenu2').innerHTML = 'List Courses';
-                            document.getElementById('secondaryMenu2').href = './ListCourses.aspx'
+                            document.getElementById('menuCourses').classList.remove('hidden');
                             document.getElementById('managecourses').classList.remove('hidden');
                             document.getElementById('managecourses').classList.add('nav-item');
                             document.getElementById('manageclasses').classList.remove('hidden');
@@ -76,11 +93,9 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
+
             }
-
-
         }
-
         protected void btn_course_insert_Click(object sender, EventArgs e)
         {
             // Access the list of selected items from ViewState
@@ -89,7 +104,7 @@ namespace FinalProject
 
             if (selectedItems != null && selectedItems.Count > 0)
             {
-    
+
                 // Perform the desired processing, such as inserting data into the database
                 foreach (string moduleId in selectedItems)
                 {
@@ -103,10 +118,7 @@ namespace FinalProject
                 // Clear the ViewState after processing
                 ViewState["SelectedItems"] = null;
 
-                foreach (string l in itemsNames)
-                {
-                    lbl_selection.Text += l + " > ";
-                }
+
                 // Optionally, you can display a message indicating that the operation was successful
                 // Example:
                 // lblMessage.Text = "Modules inserted successfully!";
@@ -118,7 +130,6 @@ namespace FinalProject
                 // lblMessage.Text = "No modules selected!";
             }
         }
-
 
         protected void chkBoxMod_CheckedChanged(object sender, EventArgs e)
         {
@@ -132,11 +143,13 @@ namespace FinalProject
             if (checkBox.Checked)
             {
                 lbl_order.Text = "Seleccionado";
+
                 // Add the module ID to the list of selected items
                 List<string> selectedItems = (List<string>)ViewState["SelectedItems"] ?? new List<string>();
                 List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"] ?? new List<string>();
                 selectedItems.Add(hdnModuleId.Value);
                 itemsNames.Add(hdnModuleName.Value);
+                lbl_selection.Text = string.Join(" | ", itemsNames); ;
                 ViewState["SelectedItems"] = selectedItems;
                 ViewState["SelectedItemsNames"] = itemsNames;
             }
@@ -150,6 +163,7 @@ namespace FinalProject
                 {
                     selectedItems.Remove(hdnModuleId.Value);
                     itemsNames.Remove(hdnModuleName.Value);
+                    lbl_selection.Text = string.Join(" | ", itemsNames); ;
                     ViewState["SelectedItems"] = selectedItems;
                     ViewState["SelectedItemsNames"] = itemsNames;
                 }

@@ -7,7 +7,11 @@
 	<siteMapNode url="~/UserSignIn.aspx" title="SignIn" description="User SignIn" />
 	<siteMapNode url="~/UserSignUp.aspx" title="SignUp" description="User SignUp" />
 	<siteMapNode url="~/UserCalendar.aspx" title="Calendar" description="User Calendar" />
-	<siteMapNode url="~/ManageCourses.aspx" title="Manage Courses" description="Manage Courses" />
+	<siteMapNode url="~/ManageCourses.aspx" title="Manage Courses" description="Manage Courses">
+		<siteMapNode url="~/ManageCourses.aspx?List" title="List Courses" description="List Courses" />
+		<siteMapNode url="~/ManageCourses.aspx?Insert" title="Insert Courses" description="Insert Courses" />
+		<siteMapNode url="~/ManageCourses.aspx?Edit" title="Edit Courses" description="Edit Courses" />
+	</siteMapNode>
 	<siteMapNode url="~/ManageClasses.aspx" title="Manage Classes" description="Manage Classes" />
 	<siteMapNode url="~/ManageModules.aspx" title="Manage Modules" description="Manage Modules" />
 	<siteMapNode url="~/ManageStudents.aspx" title="Manage Students" description="Manage Students" />

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace FinalProject
@@ -15,12 +16,18 @@ namespace FinalProject
         {
 			if (!IsPostBack)
 			{
-				for (int i = 0; i < ddl_area.Items.Count; i++)
-				{
-					ddl_area.Items[i].Attributes["class"] = "dropdown-item";
-				}
-			}
+                
+            }
 
 		}
+
+        protected void btn_clear_Click(object sender, EventArgs e)
+        {
+            tb_search.Text = "";
+            ddl_area.SelectedIndex = 0;
+            ddl_tipo.SelectedIndex = 0;
+            tb_dataInicio.Text = "";
+            tb_dataFim.Text = "";
+        }
     }
 }

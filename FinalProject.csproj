@@ -127,7 +127,6 @@
     <Content Include="assets\js\plugins\perfect-scrollbar.min.js" />
     <Content Include="assets\js\plugins\smooth-scrollbar.min.js" />
     <Content Include="assets\js\soft-ui-dashboard.js" />
-    <Content Include="assets\js\soft-ui-dashboard.min.js" />
     <Content Include="gulpfile.js" />
     <Content Include="ManageClasses.aspx" />
     <Content Include="ManageCourses.aspx" />

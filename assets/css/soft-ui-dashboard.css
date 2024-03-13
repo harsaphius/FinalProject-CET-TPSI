@@ -19604,7 +19604,7 @@ fieldset:disabled .btn {
 
   .dropdown.dropdown-hover:hover>.dropdown-menu,
   .dropdown .dropdown-menu.show {
-    opacity: 1;
+    opacity: 1 !important;
     pointer-events: auto;
     visibility: visible;
     transform: perspective(999px) rotateX(0deg) translateZ(0) translate3d(0, 37px, 5px) !important;

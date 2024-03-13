@@ -6,8 +6,14 @@ namespace FinalProject
 {
     public partial class CinelMP : System.Web.UI.MasterPage
     {
+        public event EventHandler SecondaryMenuInMasterPage;
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
+            Response.Cache.SetNoStore();
+
             if (!IsPostBack)
             {
                 SiteMapNode currentNode = SiteMap.CurrentNode;
@@ -24,6 +30,12 @@ namespace FinalProject
             Session.Abandon();
             Session.Clear();
             Response.Redirect("MainPage.aspx");
+        }
+
+        protected void secondaryMenu_Click(object sender, EventArgs e)
+        {
+            SecondaryMenuInMasterPage?.Invoke(this, EventArgs.Empty);
+
         }
     }
 }

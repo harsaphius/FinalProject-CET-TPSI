@@ -1,58 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web.UI.WebControls;
 
 namespace FinalProject.Classes
 {
     public class PageControls<T>
     {
-        //public void BindData(List<User> List)
-        //{
-        //    PagedDataSource pagedDataSource = new PagedDataSource();
-        //    pagedDataSource.DataSource = List;
-        //    pagedDataSource.AllowPaging = true;
-        //    pagedDataSource.PageSize = 8;
-        //    pagedDataSource.CurrentPageIndex = PageNumberCount;
-        //    int PageNumber = PageNumberCount + 1;
-        //    lbl_pageNumber.Text = (PageNumber).ToString();
-
-        //    rpt_mainpage.DataSource = pagedDataSource;
-        //    rpt_mainpage.DataBind();
-
-        //    lbtn_previous.Enabled = !pagedDataSource.IsFirstPage;
-        //    lbtn_next.Enabled = !pagedDataSource.IsLastPage;
-        //}
-
-        //protected void lbtn_previous_Click(object sender, EventArgs e)
-        //{
-        //    PageNumberCount -= 1;
-        //    BindData();
-        //}
-        //protected void lbtn_next_Click(object sender, EventArgs e)
-        //{
-        //    PageNumberCount += 1;
-        //    BindData();
-        //}
-
-
         private List<T> items;
+        private int pageSize;
 
-        public PageControls(List<T> items)
+        public PageControls(List<T> items, int pageSize)
         {
             this.items = items;
+            this.pageSize = pageSize;
         }
 
-        public List<T> GetPage(int pageIndex, int pageSize)
+        public List<T> GetPage(int pageIndex)
         {
             int startIndex = (pageIndex - 1) * pageSize;
             return items.Skip(startIndex).Take(pageSize).ToList();
         }
 
-        public int GetTotalPages(int pageSize)
+        public int GetTotalPages()
         {
             return (int)Math.Ceiling((double)items.Count / pageSize);
         }
-    }
 
+        public string GeneratePagination(int currentPage, int totalPages)
+        {
+            StringBuilder paginationHtml = new StringBuilder();
+
+            // Add the previous page button
+            paginationHtml.AppendLine("<li class=\"page-item " + (currentPage == 1 ? "disabled" : "") + "\">");
+            paginationHtml.AppendLine("<a class=\"page-link\" href=\"javascript:;\" onclick=\"changePage(" + (currentPage - 1) + ")\" aria-label=\"Previous\">");
+            paginationHtml.AppendLine("<i class=\"fa fa-angle-left\"></i>");
+            paginationHtml.AppendLine("<span class=\"sr-only\">Previous</span>");
+            paginationHtml.AppendLine("</a>");
+            paginationHtml.AppendLine("</li>");
+
+            // Add page numbers
+            for (int i = 1; i <= totalPages; i++)
+            {
+                paginationHtml.AppendLine("<li class=\"page-item " + (i == currentPage ? "active" : "") + "\">");
+                paginationHtml.AppendLine("<a class=\"page-link\" href=\"javascript:;\" onclick=\"changePage(" + i + ")\">" + i + "</a>");
+                paginationHtml.AppendLine("</li>");
+            }
+
+            // Add the next page button
+            paginationHtml.AppendLine("<li class=\"page-item " + (currentPage == totalPages ? "disabled" : "") + "\">");
+            paginationHtml.AppendLine("<a class=\"page-link\" href=\"javascript:;\" onclick=\"changePage(" + (currentPage + 1) + ")\" aria-label=\"Next\">");
+            paginationHtml.AppendLine("<i class=\"fa fa-angle-right\"></i>");
+            paginationHtml.AppendLine("<span class=\"sr-only\">Next</span>");
+            paginationHtml.AppendLine("</a>");
+            paginationHtml.AppendLine("</li>");
+
+            return paginationHtml.ToString();
+        }
+    }
 }
