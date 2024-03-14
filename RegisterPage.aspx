@@ -44,7 +44,7 @@
     <div class="container registration-form">
         <h2>Registration Form</h2>
 
-        <div class="row formR">
+        <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
                     <asp:Label ID="lblNome" runat="server" AssociatedControlID="txtNome">Nome</asp:Label>

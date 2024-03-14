@@ -16,7 +16,7 @@
         </div>
         <div class="container">
             <div class="row mt-lg-n10 mt-md-n11 mt-n10">
-                <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
+                <div class="col-xl-5 col-lg-6 col-md-8 mx-auto">
                     <div class="card z-index-0">
                         <div class="card-header text-center pt-4">
                             <h5>Register with</h5>
@@ -55,18 +55,39 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div role="form text-left">
+                            <div>
+                                <div class="mb-3">
+                                    <asp:TextBox ID="tb_name" runat="server" oninput="validateUsername(this)" class="form-control" placeholder="Nome Completo"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvname" runat="server" ControlToValidate="tb_name" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                </div>
                                 <div class="mb-3">
                                     <asp:TextBox ID="tb_username" runat="server" class="form-control" placeholder="Username"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvusername" runat="server" ControlToValidate="tb_username" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+
                                 </div>
                                 <div class="mb-3">
                                     <asp:TextBox ID="tb_email" runat="server" class="form-control" placeholder="Email"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvemail" runat="server" ControlToValidate="tb_email" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+
                                 </div>
                                 <div class="mb-3">
                                     <asp:TextBox ID="tb_pw" runat="server" class="form-control" placeholder="Password"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvpw" runat="server" ControlToValidate="tb_pw" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="mb-3">
                                     <asp:TextBox ID="tb_pwR" runat="server" class="form-control" placeholder="Repeat Password"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvpwr" runat="server" ControlToValidate="tb_pwr" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+
+                                </div>
+                                <div class="mb-3">
+                                    <asp:TextBox ID="tbCC" runat="server" class="form-control" placeholder="124567893-X-000"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvCC" runat="server" ControlToValidate="tbCC" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+
+                                </div>
+                                <div class="mb-3">
+                                    <asp:TextBox ID="tbTelemovel" runat="server" class="form-control" placeholder="Phone Number"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvTelemovel" runat="server" ControlToValidate="tbTelemovel" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+
                                 </div>
                                 <div class="form-check form-check-info text-left">
                                     <input runat="server" class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
@@ -86,4 +107,5 @@
             </div>
         </div>
     </section>
+
 </asp:Content>

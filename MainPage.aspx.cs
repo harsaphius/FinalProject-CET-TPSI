@@ -56,7 +56,7 @@ namespace FinalProject
 
                 if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
                 {
-                    script = @"                      
+                    script = @"
                             document.getElementById('managecourses').classList.remove('hidden');
                             document.getElementById('managecourses').classList.add('nav-item');
                             document.getElementById('manageclasses').classList.remove('hidden');

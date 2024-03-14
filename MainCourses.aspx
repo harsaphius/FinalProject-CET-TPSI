@@ -57,7 +57,7 @@
                 </div>
             </ContentTemplate>
             <Triggers>
-                <asp:PostBackTrigger ControlID="btn_clear" />
+                <asp:AsyncPostBackTrigger ControlID="btn_clear" />
             </Triggers>
         </asp:UpdatePanel>
 
