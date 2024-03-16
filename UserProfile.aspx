@@ -93,7 +93,7 @@
             </div>
         </div>
     </div>
-    <div ID="profileSinapse" class="container-fluid py-4">
+    <div id="profileSinapse" class="container-fluid py-4">
         <div class="row">
             <div class="col-12 col-xl-4">
                 <div class="card h-100">
@@ -668,7 +668,7 @@
 
             // Remove 'hide' class and add 'show' class to div2
             document.getElementById('registration').classList.remove('hidden');
-            
+
 
         }
     </script>

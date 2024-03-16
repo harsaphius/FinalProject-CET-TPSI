@@ -10,45 +10,49 @@
             </div>
             <div class="page-header min-vh-50">
                 <div class="container">
-                    <div class="row">
+                    <div class="row ">
                         <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
                             <div class="card card-plain">
                                 <div class="card-header pb-0 text-left bg-transparent">
-                                    <h3 class="font-weight-bolder text-info text-gradient">Welcome back</h3>
-                                    <p class="mb-0">Enter your email and password to sign in</p>
+                                    <h3 class="font-weight-bolder text-info text-gradient">Bem-vindo de volta!</h3>
+                                    <p class="mb-0">Introduza o seu e-mail/nome de utilizador e a palavra-passe </p>
                                 </div>
                                 <div class="card-body">
                                     <div role="form">
-                                        <label>Email</label>
-                                        <asp:RequiredFieldValidator ID="rfvusername" ErrorMessage="Required" runat="server" ControlToValidate="tb_username" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-
+                                        <label>Email/Utilizador</label>
+                                        <asp:RequiredFieldValidator ID="rfvusername" ErrorMessage="Nome de Utilizador Obrigatório" Text="*" runat="server" ControlToValidate="tb_username" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                         <div class="mb-3">
-                                            <asp:TextBox ID="tb_username" oninput="validateUsername(this)" CssClass="form-control" placeholder="Username" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="tb_username" ValidationGroup="MainForm" oninput="validateUsername(this)" CssClass="form-control" placeholder="Utilizador ou E-mail" runat="server"></asp:TextBox>
                                         </div>
                                         <label>Password</label>
-                                        <asp:RequiredFieldValidator ID="rfvpw" runat="server" ErrorMessage="Required" ControlToValidate="tb_pw" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-
+                                        <asp:RequiredFieldValidator ID="rfvpw" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tb_pw" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                         <div class="mb-3">
-                                            <asp:TextBox ID="tb_pw" oninput="validatePassword(this)" CssClass="form-control" placeholder="Password" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="tb_pw" ValidationGroup="MainForm" oninput="validatePassword(this)" CssClass="form-control" placeholder="Password" runat="server"></asp:TextBox>
                                         </div>
+
+                                        <p class="mb-4 text-sm mx-auto">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#pwdModal">Recuperar password</a>
+                                        </p>
+
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="rememberMe" checked="" runat="server">
-                                            <label class="form-check-label" for="rememberMe">Remember me</label>
+                                            <label class="form-check-label" for="rememberMe">Lembrar-me?</label>
                                         </div>
+
                                         <div class="text-center">
-                                            <asp:Button ID="btn_signin" runat="server" Text="Sign In" class="btn bg-gradient-info w-100 mt-4 mb-0" OnClick="btn_signin_Click" />
+                                            <asp:Button ID="btn_signin" ValidationGroup="MainForm" runat="server" Text="Login" class="btn bg-gradient-info w-100 mt-4 mb-0" OnClick="btn_signin_Click" />
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="mt-2 position-relative text-center" style="padding: 10px;">
                                     <p class="text-sm font-weight-bold mb-2 text-secondary text-border d-inline z-index-2 px-3">
-                                        OR
+                                        OU
                                     </p>
                                 </div>
                                 <div class="card z-index-0">
 
-                                    <p class="mb-0 text-center">Sign in with</p>
+                                    <p class="mb-0 text-center">Login com</p>
                                     <div class="row px-xl-5 px-sm-4 px-3" style="padding-bottom: 10px;">
                                         <div class="col-3 ms-auto px-1">
                                             <asp:LinkButton runat="server" class="btn btn-outline-light w-100" OnClick="btn_facebook_Click" CausesValidation="False" ID="btn_facebook">
@@ -82,8 +86,8 @@
 
                                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-sm mx-auto">
-                                        Don't have an account?
-                        <asp:LinkButton runat="server" ID="lbtn_signup" href="./UserSignUp.aspx" class="text-info text-gradient font-weight-bold">Sign up</asp:LinkButton>
+                                        Não tem acesso?
+                        <asp:LinkButton runat="server" ID="lbtn_signup" href="./UserSignUp.aspx" class="text-info text-gradient font-weight-bold">Registe-se aqui!</asp:LinkButton>
                                     </p>
                                 </div>
                             </div>
@@ -98,7 +102,38 @@
             </div>
 
         </section>
+
+        <!-- Modal -->
+        <div class="modal fade" id="pwdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalMessageTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Recuperação de palavra-passe</h5>
+                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Introduza o seu Email para recuperar a Password</label>
+                                <asp:TextBox ID="tb_email" runat="server" ValidationGroup="ModalForm" class="form-control" placehoder="Introduza o seu e-mail"></asp:TextBox>
+                            </div>
+                            <div style="padding: 5px;" id="modalAlert" class="hidden" role="alert">
+                                <asp:Label runat="server" ID="lbl_modalMessage" CssClass="text-white"></asp:Label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Voltar</button>
+                        <asp:Button runat="server" type="button" class="btn bg-gradient-primary" ValidationGroup="ModalForm" Text="Recuperar" OnClick="btn_recuperarPW_Click" />
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
+    <!-- -->
     <script>
         function validateUsername(element) {
             // Check if username is empty
@@ -121,7 +156,5 @@
                 element.classList.remove("is-invalid");
             }
         }
-
     </script>
-
 </asp:Content>

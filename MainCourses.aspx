@@ -60,10 +60,6 @@
                 <asp:AsyncPostBackTrigger ControlID="btn_clear" />
             </Triggers>
         </asp:UpdatePanel>
-
-
-
-
         <%--Example for consultaion  
                     <div class="dropdown">
                         <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -75,6 +71,7 @@
                             <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>
                         </ul>
                     </div>--%>
+
         <div class="row">
             <asp:Repeater ID="Repeater1" runat="server">
                 <HeaderTemplate>
@@ -86,35 +83,45 @@
                 <FooterTemplate>
                 </FooterTemplate>
             </asp:Repeater>
-            <div class="card-group">
-                <div class="card">
-                    <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
-                        <a href="javascript:;" class="d-block">
-                            <img src="./assets/img/kit/pro/anastasia.jpg" class="img-fluid border-radius-lg">
+            <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                <div class="card card-blog card-plain">
+                    <div class="position-relative">
+                        <a class="d-block shadow-xl border-radius-xl">
+                            <img src="../assets/img/home-decor-2.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
                         </a>
                     </div>
-
-                    <div class="card-body pt-2">
-                        <span class="text-gradient text-primary text-uppercase text-xs font-weight-bold my-2">House</span>
-                        <a href="javascript:;" class="card-title h5 d-block text-darker">Shared Coworking
+                    <div class="card-body px-1 pb-0">
+                        <p class="text-gradient text-dark mb-2 text-sm">Project #1</p>
+                        <a href="javascript:;">
+                            <h5>Scandinavian
+                            </h5>
                         </a>
-                        <p class="card-description mb-4">
-                            Use border utilities to quickly style the border and border-radius of an element. Great for images, buttons.
+                        <p class="mb-4 text-sm">
+                            Music is something that every person has his or her own specific opinion about.
                         </p>
-                        <div class="author align-items-center">
-                            <img src="./assets/img/kit/pro/team-2.jpg" alt="..." class="avatar shadow">
-                            <div class="name ps-3">
-                                <span>Mathew Glock</span>
-                                <div class="stats">
-                                    <small>Posted on 28 February</small>
-                                </div>
-                            </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
+                            <%--<div class="avatar-group mt-2">
+                                <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
+                                    <img alt="Image placeholder" src="../assets/img/team-3.jpg">
+                                </a>
+                                <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
+                                    <img alt="Image placeholder" src="../assets/img/team-4.jpg">
+                                </a>
+                                <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
+                                    <img alt="Image placeholder" src="../assets/img/team-1.jpg">
+                                </a>
+                                <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
+                                    <img alt="Image placeholder" src="../assets/img/team-2.jpg">
+                                </a>
+                            </div>--%>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script>
         flatpickr('#<%= tb_dataFim.ClientID %>', {
             // Options

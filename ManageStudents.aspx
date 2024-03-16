@@ -6,6 +6,7 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+  
     <div id="insertStudentsDiv">
         <!-- Registration Completion -->
         <div id="registration" class="container-fluid mt-4 py-4">

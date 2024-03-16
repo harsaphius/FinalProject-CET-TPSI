@@ -21,7 +21,7 @@
     --bs-primary: #cc3a60;
     --bs-secondary: #8392AB;
     --bs-success: #82d616;
-    --bs-info: #17c1e8;
+    --bs-info: #8392AB;
     --bs-warning: #fbcf33;
     --bs-danger: #ea0606;
     --bs-light: #e9ecef;
@@ -18738,8 +18738,8 @@ fieldset:disabled .btn {
 }
 
 .avatar-sm {
-  width: 36px !important;
-  height: 36px !important;
+  width: 32px !important;
+  height: 32px !important;
   font-size: 0.875rem;
 }
 

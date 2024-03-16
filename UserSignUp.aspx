@@ -1,6 +1,8 @@
 ﻿<%@ Page Title="User Sign Up" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="UserSignUp.aspx.cs" Inherits="FinalProject.UserSignUp" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <section class="min-vh-100 mb-8">
@@ -9,7 +11,7 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-5 text-center mx-auto">
-                        <h1 class="text-white mb-2 mt-5">Welcome!</h1>
+                        <h1 class="text-white mb-2 mt-5">Bem-vindo!</h1>
                     </div>
                 </div>
             </div>
@@ -19,7 +21,7 @@
                 <div class="col-xl-5 col-lg-6 col-md-8 mx-auto">
                     <div class="card z-index-0">
                         <div class="card-header text-center pt-4">
-                            <h5>Register with</h5>
+                            <h5>Registar com</h5>
                         </div>
                         <div class="row px-xl-5 px-sm-4 px-3">
                             <div class="col-3 ms-auto px-1">
@@ -50,56 +52,72 @@
                             </div>
                             <div class="mt-2 position-relative text-center">
                                 <p class="text-sm font-weight-bold mb-2 text-secondary text-border d-inline z-index-2 bg-white px-3">
-                                    OR
+                                    OU
                                 </p>
                             </div>
                         </div>
                         <div class="card-body">
                             <div>
                                 <div class="mb-3">
+                                    <asp:DropDownList class="dropdown-toggle btn bg-gradient-secundary" ID="ddlPerfil" runat="server" DataSourceID="SQLDSPerfil" DataTextField="perfil" DataValueField="codPerfil"></asp:DropDownList>
+                                    <asp:SqlDataSource ID="SQLDSPerfil" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [perfil] ORDER BY [codPerfil] OFFSET 1 ROWS"></asp:SqlDataSource>
+                                    <asp:RequiredFieldValidator ID="rfvPerfil" runat="server" Text="*" ErrorMessage="Perfil Necessário" ControlToValidate="ddlPerfil" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="mb-3">
                                     <asp:TextBox ID="tb_name" runat="server" oninput="validateUsername(this)" class="form-control" placeholder="Nome Completo"></asp:TextBox>
-                                    <asp:RequiredFieldValidator ID="rfvname" runat="server" ControlToValidate="tb_name" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                    <asp:RequiredFieldValidator ID="rfvname" Text="*" ErrorMessage="Nome Obrigatório" runat="server" ControlToValidate="tb_name" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="mb-3">
-                                    <asp:TextBox ID="tb_username" runat="server" class="form-control" placeholder="Username"></asp:TextBox>
-                                    <asp:RequiredFieldValidator ID="rfvusername" runat="server" ControlToValidate="tb_username" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                    <asp:TextBox ID="tb_username" runat="server" class="form-control" placeholder="Utilizador"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvusername" Text="*" ErrorMessage="Utilizador Obrigatório" runat="server" ControlToValidate="tb_username" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="mb-3">
+                                    <asp:TextBox ID="tb_email" runat="server" class="form-control" placeholder="E-mail"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvemail" Text="*" ErrorMessage="E-mail Obrigatório" runat="server" ControlToValidate="tb_email" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="mb-3">
+                                    <asp:TextBox ID="tb_pw" runat="server" class="form-control" placeholder="Palavra-passe"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvpw" Text="*" ErrorMessage="Palavra-passe obrigatória" runat="server" ControlToValidate="tb_pw" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="mb-3">
+                                    <asp:TextBox ID="tb_pwR" runat="server" class="form-control" placeholder="Repetir a Palavra-passe"></asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="rfvpwr" runat="server" Text="*" ErrorMessage="Palavra-passe obrigatória" ControlToValidate="tb_pwr" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
 
                                 </div>
                                 <div class="mb-3">
-                                    <asp:TextBox ID="tb_email" runat="server" class="form-control" placeholder="Email"></asp:TextBox>
-                                    <asp:RequiredFieldValidator ID="rfvemail" runat="server" ControlToValidate="tb_email" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-
+                                    <div class="form-group">
+                                        <div class="mb-0">
+                                            <asp:DropDownList ID="ddl_tipoDocIdent" CssClass="form-control" runat="server" DataSourceID="SQLDSDocIdent" DataTextField="tipoDocumentoIdent" DataValueField="codTipoDoc"></asp:DropDownList>
+                                            <asp:SqlDataSource ID="SQLDSDocIdent" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [tipoDocIdent]"></asp:SqlDataSource>
+                                        </div>
+                                        <asp:TextBox ID="tbCC" runat="server" CssClass="form-control" placeholder="Nr.º do Documento de Identificação"></asp:TextBox>
+                                        <asp:RequiredFieldValidator ID="rfvCC" Text="*" ErrorMessage="Nr.º de CC Obrigatório" runat="server" ControlToValidate="tbCC" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                        <asp:TextBox ID="tbdataValidade" runat="server" CssClass="form-control datepicker" placeholder="Data de Validade" TextMode="Date"></asp:TextBox>
+                                        <asp:RequiredFieldValidator ID="rfvdataValidade" Text="*" ErrorMessage="Data de Validade obrigatória" runat="server" ControlToValidate="tbdataValidade" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                    </div>
                                 </div>
                                 <div class="mb-3">
-                                    <asp:TextBox ID="tb_pw" runat="server" class="form-control" placeholder="Password"></asp:TextBox>
-                                    <asp:RequiredFieldValidator ID="rfvpw" runat="server" ControlToValidate="tb_pw" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-                                </div>
-                                <div class="mb-3">
-                                    <asp:TextBox ID="tb_pwR" runat="server" class="form-control" placeholder="Repeat Password"></asp:TextBox>
-                                    <asp:RequiredFieldValidator ID="rfvpwr" runat="server" ControlToValidate="tb_pwr" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-
-                                </div>
-                                <div class="mb-3">
-                                    <asp:TextBox ID="tbCC" runat="server" class="form-control" placeholder="124567893-X-000"></asp:TextBox>
-                                    <asp:RequiredFieldValidator ID="rfvCC" runat="server" ControlToValidate="tbCC" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-
-                                </div>
-                                <div class="mb-3">
+                                    <div class="mb-0">
+                                        <asp:DropDownList ID="ddlprefixo" CssClass="form-control" runat="server" DataSourceID="SQLDSPais" DataTextField="prefixo" DataValueField="codPais"></asp:DropDownList>
+                                        <asp:SqlDataSource ID="SQLDSPais" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [pais]"></asp:SqlDataSource>
+                                    </div>
                                     <asp:TextBox ID="tbTelemovel" runat="server" class="form-control" placeholder="Phone Number"></asp:TextBox>
-                                    <asp:RequiredFieldValidator ID="rfvTelemovel" runat="server" ControlToValidate="tbTelemovel" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-
+                                    <asp:RequiredFieldValidator ID="rfvTelemovel" Text="*" ErrorMessage="Telemóvel Obrigatório" runat="server" ControlToValidate="tbTelemovel" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="form-check form-check-info text-left">
                                     <input runat="server" class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
                                     <label class="form-check-label" for="flexCheckDefault">
-                                        I agree the <a href="javascript:;" class="text-dark font-weight-bolder">Terms and Conditions</a>
+                                        Concordo com <a href="javascript:;" class="text-dark font-weight-bolder">Termos e Condições</a>
                                     </label>
                                 </div>
                             </div>
                             <div class="text-center">
-
-                                <asp:Button ID="btn_signup" runat="server" CssClass="btn bg-gradient-dark w-100 my-4 mb-2" Text="Sign Up" />
-                                <p class="text-sm mt-3 mb-0">Already have an account? <a href="./UserSignIn.aspx" class="text-dark font-weight-bolder">Sign in</a></p>
+                                <div style="padding: 5px;" id="alert" class="hidden" role="alert">
+                                    <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
+                                    <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
+                                </div>
+                                <asp:Button ID="btn_signup" OnClick="btn_signup_Click" runat="server" CssClass="btn bg-gradient-dark w-100 my-4 mb-2" Text="Sign Up" />
+                                <p class="text-sm mt-3 mb-0">Já tem uma conta? <a href="./UserSignIn.aspx" class="text-dark font-weight-bolder">Login</a></p>
                             </div>
                         </div>
                     </div>
@@ -107,5 +125,12 @@
             </div>
         </div>
     </section>
-
+    <!--Função de Javascript para mostrar o calendário do flatpickr nas TextBoxes -->
+    <script>
+        flatpickr('#<%= tbdataValidade.ClientID %>', {
+            // Options
+            dateFormat: 'd-m-Y',
+            theme: 'light'
+        });
+    </script>
 </asp:Content>

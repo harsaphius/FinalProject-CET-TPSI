@@ -32,8 +32,6 @@ namespace FinalProject
                     lbtncourses.PostBackUrl = "./UserCourses.aspx";
                 }
 
-
-
                 string script = @"
                             document.getElementById('courses').href = './UserCourses.aspx';
                             document.getElementById('signout').classList.remove('hidden');

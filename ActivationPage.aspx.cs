@@ -19,7 +19,7 @@ namespace FinalProject
             {
                 string utilizador = Security.DecryptString(Request.QueryString["user"].ToString());
 
-                SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["NumiCoinConnectionString"].ConnectionString); //Definir a conexão à base de dados
+                SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
                 SqlCommand myCommand = new SqlCommand(); //Novo commando SQL 
                 myCommand.Parameters.AddWithValue("@User", utilizador); //Adicionar o valor da tb_user ao parâmetro @nome

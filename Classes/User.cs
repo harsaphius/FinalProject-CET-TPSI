@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Web;
 
 namespace FinalProject.Classes
 {
@@ -25,7 +24,14 @@ namespace FinalProject.Classes
 
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL 
             myCommand.Parameters.AddWithValue("@User", Username); //Adicionar o valor da tb_user ao parâmetro @nome
-            myCommand.Parameters.AddWithValue("@Pw", Password);
+            if (Username == "SuAdmin")
+            {
+                myCommand.Parameters.AddWithValue("@Pw", Password);
+            }
+            else
+            {
+                myCommand.Parameters.AddWithValue("@Pw", Security.EncryptString(Password));
+            }
 
             //Variável de Output para SP verificar se o utilizador e pw estão corretos
             SqlParameter UserExists = new SqlParameter();
@@ -46,7 +52,7 @@ namespace FinalProject.Classes
             //Variável de Output para SP verificar o perfil
             SqlParameter NumiAdmin = new SqlParameter();
             NumiAdmin.ParameterName = "@SuAdmin";
-            NumiAdmin.Direction = ParameterDirection.Output;            
+            NumiAdmin.Direction = ParameterDirection.Output;
             NumiAdmin.SqlDbType = SqlDbType.Int;
 
             myCommand.Parameters.Add(NumiAdmin);
@@ -76,6 +82,43 @@ namespace FinalProject.Classes
             myCon.Close(); //Fechar a conexão
 
             return Users;
+
+        }
+
+        public static int registerUser(List<string> values)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL 
+            myCommand.Parameters.AddWithValue("@CodePerfil", values[0]);
+            myCommand.Parameters.AddWithValue("@CompleteName", values[1]);
+            myCommand.Parameters.AddWithValue("@User", values[2]);
+            myCommand.Parameters.AddWithValue("@Email", values[3]);
+            myCommand.Parameters.AddWithValue("@Pw", Classes.Security.EncryptString(values[4]));
+            myCommand.Parameters.AddWithValue("@CodCardType", values[5]);
+            myCommand.Parameters.AddWithValue("@CardNumber", values[6]);
+            myCommand.Parameters.AddWithValue("@CardDate", values[7]);
+            myCommand.Parameters.AddWithValue("@Prefix", values[8]);
+            myCommand.Parameters.AddWithValue("@PhoneNumber", values[9]);
+
+            SqlParameter UserRegister = new SqlParameter();
+            UserRegister.ParameterName = "@UserRegister";
+            UserRegister.Direction = ParameterDirection.Output;
+            UserRegister.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(UserRegister);
+
+            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
+            myCommand.CommandText = "UserRegister"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+
+            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
+            myCon.Open(); //Abrir a conexão
+            myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+            int AnswUserRegister = Convert.ToInt32(myCommand.Parameters["@UserRegister"].Value);
+
+            myCon.Close(); //Fechar a conexão
+
+            return AnswUserRegister;
 
         }
 

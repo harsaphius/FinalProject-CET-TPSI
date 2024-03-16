@@ -6,7 +6,8 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div id="insertTeachersDiv">
+    <div id="listTeachersDiv" class="container-fluid mt-4 py-4">List</div>
+    <div id="insertTeachersDiv" class="hidden">
         <!-- Registration Completion -->
         <div id="registration" class="container-fluid mt-4 py-4">
             <div id="registerCompletionpage1" class="card">
@@ -266,61 +267,67 @@
             </div>
             <!-- End Registration Page 2-->
         </div>
-
+        
+        <!-- Div da mensagem de registo -->
         <div id="registrationMessage" class="hidden">
             <div class="alert alert-primary text-white font-weight-bold" role="alert">
                 <small class="text-uppercase font-weight-bold">Submetido com sucesso</small>
             </div>
         </div>
+
         <!-- End of Registration Completion -->
-        <script>
-            flatpickr('#<%= tbDataNascimento.ClientID %>', {
-                // Options
-                dateFormat: 'd-m-Y',
-                theme: 'light'
-            });
-
-            flatpickr('#<%= tbDataValidade.ClientID %>', {
-                // Options
-                dateFormat: 'd-m-Y',
-                theme: 'light'
-            });
-        </script>
-
-        <script>
-            function showNextDiv() {
-                // Check if all validators are valid
-                var isValid = Page_ClientValidate('Page1');
-
-                // If validators are valid, proceed to show next div
-                if (isValid) {
-                    // Remove 'show' class and add 'hide' class to div1
-                    document.getElementById('registerCompletionpage1').classList.remove('card');
-                    document.getElementById('registerCompletionpage1').classList.add('hidden');
-
-                    // Remove 'hide' class and add 'show' class to div2
-                    document.getElementById('registerCompletionpage2').classList.remove('hidden');
-                    document.getElementById('registerCompletionpage2').classList.add('card');
-                }
-            }
-        </script>
-
-        <script>
-            function submitInfo() {
-                // Check if all validators are valid
-                var isValid = Page_ClientValidate('Page2');
-
-                // If validators are valid, proceed to show next div
-                if (isValid) {
-                    //// Remove 'show' class and add 'hide' class to div1
-                    //document.getElementById('registerCompletionpage2').classList.remove('card');
-                    //document.getElementById('registerCompletionpage2').classList.add('hidden');
-
-                    // Remove 'hide' class and add 'show' class to div2
-                    document.getElementById('registrationMessage').classList.remove('hidden');
-                }
-            }
-        </script>
     </div>
+    <div id="editTeachersDiv" class="hidden">Edit</div>
 
+    <!--Função de Javascript para mostrar o calendário do flatpickr nas TextBoxes -->
+    <script>
+        flatpickr('#<%= tbDataNascimento.ClientID %>', {
+            // Options
+            dateFormat: 'd-m-Y',
+            theme: 'light'
+        });
+
+        flatpickr('#<%= tbDataValidade.ClientID %>', {
+            // Options
+            dateFormat: 'd-m-Y',
+            theme: 'light'
+        });
+    </script>
+
+    <!--Função de Javascript para esconder a primeira página do registo e mostrar a segunda -->
+    <script>
+        function showNextDiv() {
+            // Check if all validators are valid
+            var isValid = Page_ClientValidate('Page1');
+
+            // If validators are valid, proceed to show next div
+            if (isValid) {
+                // Remove 'show' class and add 'hide' class to div1
+                document.getElementById('registerCompletionpage1').classList.remove('card');
+                document.getElementById('registerCompletionpage1').classList.add('hidden');
+
+                // Remove 'hide' class and add 'show' class to div2
+                document.getElementById('registerCompletionpage2').classList.remove('hidden');
+                document.getElementById('registerCompletionpage2').classList.add('card');
+            }
+        }
+    </script>
+
+    <!--Função de Javascript para mostrar a mensagem do registo dos dados -->
+    <script>
+        function submitInfo() {
+            // Check if all validators are valid
+            var isValid = Page_ClientValidate('Page2');
+
+            // If validators are valid, proceed to show next div
+            if (isValid) {
+                //// Remove 'show' class and add 'hide' class to div1
+                //document.getElementById('registerCompletionpage2').classList.remove('card');
+                //document.getElementById('registerCompletionpage2').classList.add('hidden');
+
+                // Remove 'hide' class and add 'show' class to div2
+                document.getElementById('registrationMessage').classList.remove('hidden');
+            }
+        }
+    </script>
 </asp:Content>

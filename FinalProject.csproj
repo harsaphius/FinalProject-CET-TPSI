@@ -106,6 +106,7 @@
     <Content Include="assets\img\logos\visa.png" />
     <Content Include="assets\img\marie.jpg" />
     <Content Include="assets\img\shapes\waves-white.svg" />
+    <Content Include="assets\img\small-logos\default.svg" />
     <Content Include="assets\img\small-logos\icon-sun-cloud.png" />
     <Content Include="assets\img\small-logos\logo-atlassian.svg" />
     <Content Include="assets\img\small-logos\logo-invision.svg" />
@@ -114,6 +115,8 @@
     <Content Include="assets\img\small-logos\logo-spotify.svg" />
     <Content Include="assets\img\small-logos\logo-webdev.svg" />
     <Content Include="assets\img\small-logos\logo-xd.svg" />
+    <Content Include="assets\img\small-logos\no-image.svg" />
+    <Content Include="assets\img\small-logos\portugal.svg" />
     <Content Include="assets\img\team-1.jpg" />
     <Content Include="assets\img\team-2.jpg" />
     <Content Include="assets\img\team-3.jpg" />
@@ -248,9 +251,9 @@
     <Content Include="UserCourses.aspx" />
     <Content Include="ErrorPage404.aspx" />
     <Content Include="ErrorPageGeneral.aspx" />
+    <Content Include="UserChangePass.aspx" />
     <Content Include="UserSignIn.aspx" />
     <Content Include="MainPage.aspx" />
-    <Content Include="RegisterPage.aspx" />
     <Content Include="UserCalendar.aspx" />
     <Content Include="UserProfile.aspx" />
     <Content Include="UserSignUp.aspx" />
@@ -327,6 +330,7 @@
     <Compile Include="Classes\EmailControl.cs" />
     <Compile Include="Classes\FaceBookUser.cs" />
     <Compile Include="Classes\GoogleProfile.cs" />
+    <Compile Include="Classes\Module.cs" />
     <Compile Include="Classes\PageControls.cs" />
     <Compile Include="Classes\Security.cs" />
     <Compile Include="Classes\User.cs" />
@@ -401,6 +405,13 @@
     <Compile Include="ErrorPageGeneral.aspx.designer.cs">
       <DependentUpon>ErrorPageGeneral.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UserChangePass.aspx.cs">
+      <DependentUpon>UserChangePass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserChangePass.aspx.designer.cs">
+      <DependentUpon>UserChangePass.aspx</DependentUpon>
+    </Compile>
     <Compile Include="UserSignIn.aspx.cs">
       <DependentUpon>UserSignIn.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -416,13 +427,6 @@
       <DependentUpon>MainPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegisterPage.aspx.cs">
-      <DependentUpon>RegisterPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="RegisterPage.aspx.designer.cs">
-      <DependentUpon>RegisterPage.aspx</DependentUpon>
-    </Compile>
     <Compile Include="UserCalendar.aspx.cs">
       <DependentUpon>UserCalendar.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

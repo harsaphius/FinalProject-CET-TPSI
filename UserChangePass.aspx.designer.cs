@@ -11,7 +11,7 @@ namespace FinalProject
 {
 
 
-    public partial class UserSignIn
+    public partial class UserChangePass
     {
 
         /// <summary>
@@ -33,13 +33,31 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvusername;
 
         /// <summary>
-        /// tb_username control.
+        /// tbEmail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_username;
+        protected global::System.Web.UI.WebControls.TextBox tbEmail;
+
+        /// <summary>
+        /// rfvpwa control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvpwa;
+
+        /// <summary>
+        /// tb_pwa control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tb_pwa;
 
         /// <summary>
         /// rfvpw control.
@@ -60,66 +78,30 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tb_pw;
 
         /// <summary>
-        /// rememberMe control.
+        /// rfvpwr control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox rememberMe;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvpwr;
 
         /// <summary>
-        /// btn_signin control.
+        /// tb_pwr control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_signin;
+        protected global::System.Web.UI.WebControls.TextBox tb_pwr;
 
         /// <summary>
-        /// btn_facebook control.
+        /// btn_changepw control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_facebook;
-
-        /// <summary>
-        /// btn_google control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_google;
-
-        /// <summary>
-        /// lbtn_signup control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtn_signup;
-
-        /// <summary>
-        /// tb_email control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_email;
-
-        /// <summary>
-        /// lbl_modalMessage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_modalMessage;
+        protected global::System.Web.UI.WebControls.Button btn_changepw;
     }
 }

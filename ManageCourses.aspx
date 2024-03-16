@@ -12,7 +12,7 @@
             </div>
         </div>
         <div id="insertCoursesDiv" class="">
-            <div class="row px-4 justify-content-center">
+            <div class="row px-4">
                 <div class="col-lg-4 col-md-3 col-sm-6">
                     <span>Área:</span>
                     <div class="dropdown">
@@ -37,46 +37,126 @@
                 <ContentTemplate>
                     <asp:Repeater ID="rpt_insertCourses" runat="server" DataSourceID="SQLDSModulos">
                         <HeaderTemplate>
-                            <div class="container">
-                                <div class="row">
+                            <table class="table align-items-center justify-content-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Módulo</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">UFCD</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Descrição</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Seleccionado</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                         </HeaderTemplate>
                         <ItemTemplate>
-                            <div class="card-group col-lg-4 col-md-3 col-sm-6" style="padding-bottom: 20px; height: auto;">
-                                <div class="card">
-                                    <div class="card-header p-2 mx-3 mt-3 position-relative z-index-1">
+                            <tr class="draggable-item">
+                                <td>
+                                    <div class="d-flex px-2">
+                                        <div>
+                                            <img src="../assets/img/small-logos/portugal.svg" class="avatar avatar-sm rounded-circle me-2" alt="spotify">
+                                        </div>
+                                        <div class="my-auto">
+                                            <h6 class="mb-0 text-sm">Spotify</h6>
+                                        </div>
                                     </div>
-                                    <div class="card-body pt-2">
-                                        <span class="text-gradient text-primary text-uppercase text-xs font-weight-bold my-2">UFCD <%# Eval("codUFCD") %></span>
-                                        <a href="javascript:;" class="card-title h5 d-block text-darker"><%# Eval("nomeModulos") %>
+                                </td>
+                                <td>
+                                    <p class="text-sm font-weight-bold mb-0">$2,500</p>
+                                </td>
+                                <td>
+                                    <span class="text-xs font-weight-bold">working</span>
+                                </td>
+                                <td class="align-middle text-center">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <span class="me-2 text-xs font-weight-bold">60%</span>
+                                        <div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <button class="btn btn-link text-secondary mb-0">
+                                        <i class="fa fa-ellipsis-v text-xs"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <%-- <p class="text-gradient text-dark mb-2 text-sm">UFCD <%# Eval("codUFCD") %></p>
+                                        <a href="javascript:;">
+                                            <h5><%# Eval("nomeModulos") %>
+                                            </h5>
                                         </a>
-                                        <p class="card-description mb-4">
+                                        <p class="mb-4 text-sm">
                                             <%# Eval("descricao") %>
                                         </p>
-                                        <div class="author">
-                                            <div class="name">
-                                                <span>Duração: <%# Eval("duracao") %> h</span>
-                                                <div class="stats">
-                                                    <small><%# Eval("codModulos") %></small>
-                                                    <asp:HiddenField ID="hdnModuleID" runat="server" Value='<%# Eval("codModulos") %>' />
-                                                    <asp:HiddenField ID="hdnModuleName" runat="server" Value='<%# Eval("nomeModulos") %>' />
-                                                    <div class="form-check">
-                                                        <asp:CheckBox runat="server" class="form-check-input" ID="chkBoxMod" AutoPostBack="true" OnCheckedChanged="chkBoxMod_CheckedChanged"></asp:CheckBox>
-                                                        <asp:Label runat="server" ID="lbl_order">Selecione este módulo</asp:Label>
+                                        <div class="stats">
+                                            <small><%# Eval("codModulos") %></small>
+                                            <asp:HiddenField ID="hdnModuleID" runat="server" Value='<%# Eval("codModulos") %>' />
+                                            <asp:HiddenField ID="hdnModuleName" runat="server" Value='<%# Eval("nomeModulos") %>' />
+                                            <div class="form-check">
+                                                <asp:CheckBox runat="server" class="form-check-input" ID="chkBoxMod" AutoPostBack="true" OnCheckedChanged="chkBoxMod_CheckedChanged"></asp:CheckBox>
+                                                <asp:Label runat="server" ID="lbl_order">Selecione este módulo</asp:Label>
+                                            </div>
+                                        </div>--%>
+                                <%-- <div class="d-flex align-items-center justify-content-between">
+                                            <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
+                                            <div class="avatar-group mt-2">
+                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
+                                                    <img alt="Image placeholder" src="../assets/img/team-3.jpg">
+                                                </a>
+                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
+                                                    <img alt="Image placeholder" src="../assets/img/team-4.jpg">
+                                                </a>
+                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
+                                                    <img alt="Image placeholder" src="../assets/img/team-1.jpg">
+                                                </a>
+                                                <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
+                                                    <img alt="Image placeholder" src="../assets/img/team-2.jpg">
+                                                </a>
+                                            </div>
+                                        </div>--%>
+                                <%--  </div>
+                                </div>--%>
+                                <%--  <div class="card-group col-lg-4 col-md-3 col-sm-6" style="padding-bottom: 20px; height: auto;">
+                                    <div class="card">
+                                        <div class="card-header p-2 mx-3 mt-3 position-relative z-index-1">
+                                        </div>
+                                        <div class="card-body pt-2">
+                                            <span class="text-gradient text-primary text-uppercase text-xs font-weight-bold my-2">UFCD <%# Eval("codUFCD") %></span>
+                                            <a href="javascript:;" class="card-title h5 d-block text-darker"><%# Eval("nomeModulos") %>
+                                            </a>
+                                            <p class="card-description mb-4">
+                                                <%# Eval("descricao") %>
+                                            </p>
+                                            <div class="author">
+                                                <div class="name">
+                                                    <span>Duração: <%# Eval("duracao") %> h</span>
+                                                    <div class="stats">
+                                                        <small><%# Eval("codModulos") %></small>
+                                                        <asp:HiddenField ID="hdnModuleID" runat="server" Value='<%# Eval("codModulos") %>' />
+                                                        <asp:HiddenField ID="hdnModuleName" runat="server" Value='<%# Eval("nomeModulos") %>' />
+                                                        <div class="form-check">
+                                                            <asp:CheckBox runat="server" class="form-check-input" ID="chkBoxMod" AutoPostBack="true" OnCheckedChanged="chkBoxMod_CheckedChanged"></asp:CheckBox>
+                                                            <asp:Label runat="server" ID="lbl_order">Selecione este módulo</asp:Label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    </div>--%>
+                                <%--   </div>--%>
                         </ItemTemplate>
                         <FooterTemplate>
-                            </div>
-                    </div>
+                            </tbody>
+                            </table>
                         </FooterTemplate>
                     </asp:Repeater>
                     <asp:SqlDataSource ID="SQLDSModulos" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [modulo]"></asp:SqlDataSource>
-                    <div class="row px-4">
+                    <div class="row px-4" style="padding: 10px;">
                         <div class="alert alert-primary text-white font-weight-bold" role="alert">
                             <small class="text-uppercase font-weight-bold">Ordem dos Módulos:</small>
                             <asp:Label runat="server" ID="lbl_selection"></asp:Label>
@@ -132,7 +212,7 @@
                 </a>
             </li>
             <li id="paginationContainer" runat="server">
-            <!-- Pagination will be dynamically generated here -->
+                <!-- Pagination will be dynamically generated here -->
             </li>
             <!-- Pagination items will be dynamically generated here -->
             <li class="page-item" id="nextPage">
@@ -143,5 +223,61 @@
             </li>
         </ul>
     </nav>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            $(".draggable-item").draggable({
+                revert: "invalid",
+                cursor: "move",
+                helper: "clone",
+                zIndex: 100
+            });
+
+            $(".draggable-item").droppable({
+                tolerance: "pointer",
+                drop: function (event, ui) {
+                    var draggedItem = ui.draggable;
+                    var droppedOnItem = $(this);
+
+                    // If dragged onto itself, do nothing
+                    if (draggedItem.is(droppedOnItem)) {
+                        return;
+                    }
+
+                    // Get the index of dragged and dropped items
+                    var draggedIndex = draggedItem.index();
+                    var droppedIndex = droppedOnItem.index();
+
+                    // Calculate the direction of movement
+                    var moveUp = draggedIndex > droppedIndex;
+
+                    // Move the dragged item accordingly
+                    if (moveUp) {
+                        draggedItem.insertBefore(droppedOnItem);
+                    } else {
+                        draggedItem.insertAfter(droppedOnItem);
+                    }
+
+                    // Send AJAX request to update the order on the server
+                    $.ajax({
+                        type: "POST",
+                        url: "YourPage.aspx/UpdateOrder",
+                        data: JSON.stringify({ draggedItemId: draggedItem.attr("id"), droppedOnItemId: droppedOnItem.attr("id") }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            // Handle success
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            // Handle error
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+
 
 </asp:Content>
