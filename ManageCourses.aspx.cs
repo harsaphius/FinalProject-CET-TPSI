@@ -1,5 +1,4 @@
-﻿using FinalProject.Classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -11,25 +10,26 @@ namespace FinalProject
         protected void Page_Load(object sender, EventArgs e)
         {
             string script;
-            // Initialize your list of items
-            List<int> items = new List<int>(); // Replace int with the type of your items
-                                               // Add your items to the list...
+            //// Initialize your list of items
+            //List<Course> Courses = new List<Course>(); // Replace int with the type of your items
+            //                                   // Add your items to the list...
 
-            // Define the desired page size
-            int pageSize = 2; // Change this to your desired page size
+            //// Define the desired page size
+            //int pageSize = 2; // Change this to your desired page size
 
-            // Create an instance of PageControls with your items and page size
-            PageControls<int> pageControls = new PageControls<int>(items, pageSize);
+            //// Create an instance of PageControls with your items and page size
+            //PageControls<int> pageControls = new PageControls<int>(Courses, pageSize);
 
-            // Get the current page number (for demonstration, assuming it's 1)
-            int currentPage = 1; // Change this to the actual current page number
+            //// Get the current page number (for demonstration, assuming it's 1)
+            //int currentPage = 1; // Change this to the actual current page number
 
-            // Generate pagination HTML
-           
-            string paginationHtml = pageControls.GeneratePagination(currentPage,pageControls.GetTotalPages());
+            //// Generate pagination HTML
 
-            // Render the pagination HTML to the page
-            paginationContainer.InnerHtml = paginationHtml; // Wrapping paginationHtml in <li> for direct replacement
+            //string paginationHtml = pageControls.GeneratePagination(currentPage, pageControls.GetTotalPages());
+
+            //// Render the pagination HTML to the page
+            //paginationContainer.InnerHtml = paginationHtml; // Wrapping paginationHtml in <li> for direct replacement
+
 
             if (Session["Logado"] == null)
             {
@@ -51,9 +51,6 @@ namespace FinalProject
                 {
                     lbtncourses.PostBackUrl = "./UserCourses.aspx";
                 }
-
-
-
                 script = @"
                             document.getElementById('courses').href = './UserCourses.aspx';
                             document.getElementById('signout').classList.remove('hidden');
@@ -98,40 +95,11 @@ namespace FinalProject
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
 
-            }
-        }
-        protected void btn_course_insert_Click(object sender, EventArgs e)
-        {
-            // Access the list of selected items from ViewState
-            List<string> selectedItems = (List<string>)ViewState["SelectedItems"];
-            List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"];
-
-            if (selectedItems != null && selectedItems.Count > 0)
-            {
-
-                // Perform the desired processing, such as inserting data into the database
-                foreach (string moduleId in selectedItems)
+                if (!Page.IsPostBack)
                 {
-
-                    // Insert data into the database for the selected module
-                    // Replace this with your actual database insertion logic
-                    // Example:
-                    // InsertModuleIntoDatabase(moduleId);
+                    rpt_insertCourses.DataSource = Classes.Module.LoadModules();
+                    rpt_insertCourses.DataBind();
                 }
-
-                // Clear the ViewState after processing
-                ViewState["SelectedItems"] = null;
-
-
-                // Optionally, you can display a message indicating that the operation was successful
-                // Example:
-                // lblMessage.Text = "Modules inserted successfully!";
-            }
-            else
-            {
-                // Optionally, handle the case where no modules are selected
-                // Example:
-                // lblMessage.Text = "No modules selected!";
             }
         }
 
@@ -143,35 +111,99 @@ namespace FinalProject
             HiddenField hdnModuleName = (HiddenField)item.FindControl("hdnModuleName");
             Label lbl_order = (Label)item.FindControl("lbl_order");
 
-            // Add or remove the module ID based on the checkbox state
-            if (checkBox.Checked)
+            if (hdnModuleId != null && hdnModuleName != null && lbl_order != null)
             {
-                lbl_order.Text = "Seleccionado";
-
-                // Add the module ID to the list of selected items
-                List<string> selectedItems = (List<string>)ViewState["SelectedItems"] ?? new List<string>();
-                List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"] ?? new List<string>();
-                selectedItems.Add(hdnModuleId.Value);
-                itemsNames.Add(hdnModuleName.Value);
-                lbl_selection.Text = string.Join(" | ", itemsNames); ;
-                ViewState["SelectedItems"] = selectedItems;
-                ViewState["SelectedItemsNames"] = itemsNames;
-            }
-            else
-            {
-                lbl_order.Text = "Selecione este módulo";
-                // Remove the module ID from the list of selected items
-                List<string> selectedItems = (List<string>)ViewState["SelectedItems"];
-                List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"];
-                if (selectedItems != null)
+                if (checkBox.Checked)
                 {
-                    selectedItems.Remove(hdnModuleId.Value);
-                    itemsNames.Remove(hdnModuleName.Value);
-                    lbl_selection.Text = string.Join(" | ", itemsNames); ;
+                    lbl_order.Text = "Seleccionado";
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"] ?? new List<int>();
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"] ?? new List<string>();
+                    selectedItems.Add(Convert.ToInt32(hdnModuleId.Value));
+                    itemsNames.Add(hdnModuleName.Value);
+                    //lbl_selection.Text = string.Join(" | ", itemsNames);
                     ViewState["SelectedItems"] = selectedItems;
                     ViewState["SelectedItemsNames"] = itemsNames;
                 }
+                else
+                {
+                    lbl_order.Text = "Selecione este módulo";
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"];
+                    if (selectedItems != null)
+                    {
+                        selectedItems.Remove(Convert.ToInt32(hdnModuleId.Value));
+                        itemsNames.Remove(hdnModuleName.Value);
+                        //lbl_selection.Text = string.Join(" | ", itemsNames);
+                        ViewState["SelectedItems"] = selectedItems;
+                        ViewState["SelectedItemsNames"] = itemsNames;
+                    }
+                }
             }
         }
+
+        protected void btn_insert_Click(object sender, EventArgs e)
+        {
+            List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
+            List<string> courseData = new List<string>();
+
+            if (selectedItems != null && selectedItems.Count > 0)
+            {
+                courseData.Add(tbCourseName.Text);
+                courseData.Add(ddlTipoCurso.SelectedValue);
+                courseData.Add(ddlAreaCurso.SelectedValue);
+                courseData.Add(tbRef.Text);
+                string selectedValue = ddlQNQ.SelectedValue;
+                string[] parts = selectedValue.Split(' '); // Split the selected value by space
+                if (parts.Length == 2) // Ensure there are two parts
+                {
+                    string codQNQ = parts[1];
+                    courseData.Add(codQNQ);
+                }
+
+                int CourseRegisted = Classes.Course.InsertCourse(courseData, selectedItems);
+
+                if (CourseRegisted == 1)
+                {
+                    string script = @"                      
+                            document.getElementById('alert').classList.remove('hidden');
+                            document.getElementById('alert').classList.add('alert');
+                            document.getElementById('alert').classList.add('alert-primary');
+                            ";
+
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+
+                    lbl_message.Text = "Curso registado com sucesso!";
+
+                    // Clear the ViewState after processing
+                    ViewState["SelectedItems"] = null;
+
+                }
+                else
+                {
+                    string script = @"                      
+                            document.getElementById('alert').classList.remove('hidden');
+                            document.getElementById('alert').classList.add('alert');
+                            document.getElementById('alert').classList.add('alert-primary');
+                            ";
+
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+
+                    lbl_message.Text = "Curso já registado!";
+                }
+            }
+        }
+
+        protected void rpt_insertCourses_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                CheckBox chkBoxMod = (CheckBox)e.Item.FindControl("chckBox");
+
+                // Attach an event handler for the CheckedChanged event
+                chkBoxMod.CheckedChanged += chkBoxMod_CheckedChanged;
+            }
+        }
+
+
     }
 }

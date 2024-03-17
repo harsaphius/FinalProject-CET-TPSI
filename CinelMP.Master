@@ -17,6 +17,7 @@
     <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.3.0/font-awesome.min.css" />
     <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
@@ -35,7 +36,7 @@
 <body class="g-sidenav-show  bg-gray-100">
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-        <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
+        <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-0 " id="sidenav-main">
             <div class="sidenav-header">
                 <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
                 <a class="navbar-brand m-0" href="../MainPage.aspx" target="_self">
@@ -44,7 +45,7 @@
                 </a>
             </div>
             <hr class="horizontal dark mt-0">
-            <div class="collapse navbar-collapse w-auto  max-height-vh-100 h-100" id="sidenav-collapse-main">
+            <div class="collapse navbar-collapse w-auto max-height-vh-100 h-100" id="sidenav-collapse-main">
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" id="home" href="../MainPage.aspx">
@@ -174,8 +175,8 @@
                             <span class="nav-link-text ms-1">Calendário</span>
                         </a>
                     </li>
-                    <li id="managecourses" class="hidden">
-                        <asp:LinkButton runat="server" ID="lbtn_manageCourses" class="nav-link  " href="../ManageCourses.aspx">
+                    <li id="management">
+                        <asp:LinkButton runat="server" ID="LinkButton1" class="nav-link  " href="../ManageCourses.aspx?List">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <svg width="12px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z"/>                                    <title>document</title>
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -190,32 +191,51 @@
                                     </g>
                                 </svg>
                             </div>
-                            <span class="nav-link-text ms-1">Manutenção de Cursos </span>
+                            <span class="nav-link-text ms-1">Cursos </span>
                         </asp:LinkButton>
-                        <!-- Secondary Menu -->
-                        <div id="menuCourses" class="container hidden">
-                            <ul class="navbar-nav">
-                                <li class="nav-link">
-                                    <asp:LinkButton data-submenu-id="listCourses" OnClientClick="handleClick(this); return false;" href="../ManageCourses.aspx?List" runat="server" class="nav-link mb-0 px-0 py-1" ID="listCourses" role="tab">
+                        <ul class="navbar-nav">
+                            <li id="managecourses" class="hidden">
+                                <asp:LinkButton runat="server" ID="lbtn_manageCourses" class="nav-link  " href="../ManageCourses.aspx?List">
+                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <svg width="12px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z"/>                                    <title>document</title>
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g transform="translate(-1870.000000, -591.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                                            <g transform="translate(1716.000000, 291.000000)">
+                                                <g transform="translate(154.000000, 300.000000)">
+                                                    <path class="color-background opacity-6" d="M40,40 L36.3636364,40 L36.3636364,3.63636364 L5.45454545,3.63636364 L5.45454545,0 L38.1818182,0 C39.1854545,0 40,0.814545455 40,1.81818182 L40,40 Z"></path>
+                                                    <path class="color-background" d="M30.9090909,7.27272727 L1.81818182,7.27272727 C0.814545455,7.27272727 0,8.08727273 0,9.09090909 L0,41.8181818 C0,42.8218182 0.814545455,43.6363636 1.81818182,43.6363636 L30.9090909,43.6363636 C31.9127273,43.6363636 32.7272727,42.8218182 32.7272727,41.8181818 L32.7272727,9.09090909 C32.7272727,8.08727273 31.9127273,7.27272727 30.9090909,7.27272727 Z M18.1818182,34.5454545 L7.27272727,34.5454545 L7.27272727,30.9090909 L18.1818182,30.9090909 L18.1818182,34.5454545 Z M25.4545455,27.2727273 L7.27272727,27.2727273 L7.27272727,23.6363636 L25.4545455,23.6363636 L25.4545455,27.2727273 Z M25.4545455,20 L7.27272727,20 L7.27272727,16.3636364 L25.4545455,16.3636364 L25.4545455,20 Z"></path>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
+                            <span class="nav-link-text ms-1">Cursos </span>
+                                </asp:LinkButton>
+                                <!-- Secondary Menu -->
+                                <div id="menuCourses" class="container hidden">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-link">
+                                            <asp:LinkButton data-submenu-id="listCourses" OnClientClick="handleClick('list'); return false;" href="../ManageCourses.aspx?List" runat="server" class="nav-link mb-0 px-0 py-1" ID="listCourses" role="tab">
                                     <i class="ni ni-badge text-sm me-2"></i> Listar
-                                    </asp:LinkButton>
-                                </li>
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageCourses.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertCourses" role="tab">
+                                            </asp:LinkButton>
+                                        </li>
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageCourses.aspx?Insert" OnClientClick="handleClick('insert'); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertCourses" role="tab">
                                     <i class="ni ni-laptop text-sm me-2"></i> Inserir
-                                    </asp:LinkButton>
-                                </li>
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageCourses.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="manageCourses" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Apagar
-                                    </asp:LinkButton>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- End of Secondary Menu -->
-                    </li>
-                    <li id="manageclasses" class="hidden">
-                        <asp:LinkButton runat="server" ID="lbtn_manageClasses" class="nav-link  " href="./ManageClasses.aspx">
+                                            </asp:LinkButton>
+                                        </li>
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageCourses.aspx?Edit" OnClientClick="handleClick('edit'); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="manageCourses" role="tab">
+                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Eliminar
+                                            </asp:LinkButton>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- End of Secondary Menu -->
+                            </li>
+                            <li id="manageclasses" class="hidden">
+                                <asp:LinkButton runat="server" ID="lbtn_manageClasses" class="nav-link  " href="./ManageClasses.aspx">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <svg width="12px" height="12px" viewBox="0 0 40 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <title>document</title>
@@ -231,32 +251,32 @@
                                     </g>
                                 </svg>
                             </div>
-                            <span class="nav-link-text ms-1">Manutenção de Turmas</span>
-                        </asp:LinkButton>
-                        <!-- Secondary Menu -->
-                        <div id="menuClasses" class="container hidden">
-                            <ul class="navbar-nav">
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageClasses.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listClasses" role="tab">
-                                    <i class="ni ni-badge text-sm me-2"></i> List
-                                    </asp:LinkButton>
-                                </li>
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageClasses.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertClasses" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Insert
-                                    </asp:LinkButton>
-                                </li>
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageClasses.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editClasses" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Edit/Delete
-                                    </asp:LinkButton>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- End of Secondary Menu -->
-                    </li>
-                    <li id="managemodules" class="hidden">
-                        <asp:LinkButton runat="server" ID="lbtn_manageModules" class="nav-link  " href="./ManageModules.aspx">
+                            <span class="nav-link-text ms-1">Turmas</span>
+                                </asp:LinkButton>
+                                <!-- Secondary Menu -->
+                                <div id="menuClasses" class="container hidden">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageClasses.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listClasses" role="tab">
+                                    <i class="ni ni-badge text-sm me-2"></i> Listar
+                                            </asp:LinkButton>
+                                        </li>
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageClasses.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertClasses" role="tab">
+                                    <i class="ni ni-laptop text-sm me-2"></i> Inserir
+                                            </asp:LinkButton>
+                                        </li>
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageClasses.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editClasses" role="tab">
+                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Eliminar
+                                            </asp:LinkButton>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- End of Secondary Menu -->
+                            </li>
+                            <li id="managemodules" class="hidden">
+                                <asp:LinkButton runat="server" ID="lbtn_manageModules" class="nav-link  " href="./ManageModules.aspx">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <svg width="12px" height="12px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 96C0 43 43 0 96 0h96V190.7c0 13.4 15.5 20.9 26 12.5L272 160l54 43.2c10.5 8.4 26 .9 26-12.5V0h32 32c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32v64c17.7 0 32 14.3 32 32s-14.3 32-32 32H384 96c-53 0-96-43-96-96V96zM64 416c0 17.7 14.3 32 32 32H352V384H96c-17.7 0-32 14.3-32 32z"/>
                                     <title>document</title>
@@ -272,32 +292,32 @@
                                     </g>
                                 </svg>
                             </div>
-                            <span class="nav-link-text ms-1">Manage Modules</span>
-                        </asp:LinkButton>
-                        <!-- Secondary Menu -->
-                        <div id="menuModules" class="container hidden">
-                            <ul class="navbar-nav">
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageModules.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listModules" role="tab">
-                                    <i class="ni ni-badge text-sm me-2"></i> List
-                                    </asp:LinkButton>
-                                </li>
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageModules.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertModules" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Insert
-                                    </asp:LinkButton>
-                                </li>
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageModules.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editModules" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Edit/Delete
-                                    </asp:LinkButton>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- End of Secondary Menu -->
-                    </li>
-                    <li id="managestudents" class="hidden">
-                        <asp:LinkButton runat="server" ID="lbtn_manageStudents" class="nav-link  " href="./ManageStudents.aspx">
+                            <span class="nav-link-text ms-1">Módulos</span>
+                                </asp:LinkButton>
+                                <!-- Secondary Menu -->
+                                <div id="menuModules" class="container hidden">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageModules.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listModules" role="tab">
+                                    <i class="ni ni-badge text-sm me-2"></i> Listar
+                                            </asp:LinkButton>
+                                        </li>
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageModules.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertModules" role="tab">
+                                    <i class="ni ni-laptop text-sm me-2"></i> Inserir
+                                            </asp:LinkButton>
+                                        </li>
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageModules.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editModules" role="tab">
+                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Eliminar
+                                            </asp:LinkButton>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- End of Secondary Menu -->
+                            </li>
+                            <li id="managestudents" class="hidden">
+                                <asp:LinkButton runat="server" ID="lbtn_manageStudents" class="nav-link  " href="./ManageStudents.aspx">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <svg width="12px" height="12px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z"/>
                                     <title>document</title>
@@ -313,33 +333,33 @@
                                     </g>
                                 </svg>
                             </div>
-                            <span class="nav-link-text ms-1">Manage Students</span>
-                        </asp:LinkButton>
-                        <!-- Secondary Menu -->
-                        <div id="menuStudents" class="container hidden">
-                            <ul class="navbar-nav">
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageStudents.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listStudents" role="tab">
-                                    <i class="ni ni-badge text-sm me-2"></i> List
-                                    </asp:LinkButton>
-                                </li>
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageStudents.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertStudents" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Insert
-                                    </asp:LinkButton>
-                                </li>
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageStudents.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editStudents" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Edit/Delete
-                                    </asp:LinkButton>
-                                </li>
-                            </ul>
-                        </div>
+                            <span class="nav-link-text ms-1">Formandos</span>
+                                </asp:LinkButton>
+                                <!-- Secondary Menu -->
+                                <div id="menuStudents" class="container hidden">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageStudents.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listStudents" role="tab">
+                                    <i class="ni ni-badge text-sm me-2"></i> Listar
+                                            </asp:LinkButton>
+                                        </li>
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageStudents.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertStudents" role="tab">
+                                    <i class="ni ni-laptop text-sm me-2"></i> Inserir
+                                            </asp:LinkButton>
+                                        </li>
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageStudents.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editStudents" role="tab">
+                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Eliminar
+                                            </asp:LinkButton>
+                                        </li>
+                                    </ul>
+                                </div>
 
-                        <!-- End of Secondary Menu -->
-                    </li>
-                    <li id="manageteachers" class="hidden">
-                        <asp:LinkButton runat="server" ID="lbtn_manageTeachers" class="nav-link " href="./ManageTeachers.aspx">
+                                <!-- End of Secondary Menu -->
+                            </li>
+                            <li id="manageteachers" class="hidden">
+                                <asp:LinkButton runat="server" ID="lbtn_manageTeachers" class="nav-link " href="./ManageTeachers.aspx">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <svg width="12px" height="12px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M160 64c0-35.3 28.7-64 64-64H576c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H336.8c-11.8-25.5-29.9-47.5-52.4-64H384V320c0-17.7 14.3-32 32-32h64c17.7 0 32 14.3 32 32v32h64V64L224 64v49.1C205.2 102.2 183.3 96 160 96V64zm0 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zM133.3 352h53.3C260.3 352 320 411.7 320 485.3c0 14.7-11.9 26.7-26.7 26.7H26.7C11.9 512 0 500.1 0 485.3C0 411.7 59.7 352 133.3 352z"/>
                                     <title>document</title>
@@ -355,32 +375,32 @@
                                     </g>
                                 </svg>
                             </div>
-                            <span class="nav-link-text ms-1">Manage Teachers</span>
-                        </asp:LinkButton>
-                        <!-- Secondary Menu -->
-                        <div id="menuTeachers" class="container hidden">
-                            <ul class="navbar-nav">
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageTeachers.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listTeachers" role="tab">
-                                    <i class="ni ni-badge text-sm me-2"></i> List
-                                    </asp:LinkButton>
-                                </li>
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageTeachers.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertTeachers" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Insert
-                                    </asp:LinkButton>
-                                </li>
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageTeachers.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editTeachers" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Edit/Delete
-                                    </asp:LinkButton>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- End of Secondary Menu -->
-                    </li>
-                    <li id="manageclassrooms" class="hidden">
-                        <asp:LinkButton runat="server" ID="lbtn_manageClassrooms" class="nav-link  " href="./ManageClassrooms.aspx">
+                            <span class="nav-link-text ms-1">Formadores</span>
+                                </asp:LinkButton>
+                                <!-- Secondary Menu -->
+                                <div id="menuTeachers" class="container hidden">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageTeachers.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listTeachers" role="tab">
+                                    <i class="ni ni-badge text-sm me-2"></i> Listar
+                                            </asp:LinkButton>
+                                        </li>
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageTeachers.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertTeachers" role="tab">
+                                    <i class="ni ni-laptop text-sm me-2"></i> Inserir
+                                            </asp:LinkButton>
+                                        </li>
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageTeachers.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editTeachers" role="tab">
+                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Eliminar
+                                            </asp:LinkButton>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- End of Secondary Menu -->
+                            </li>
+                            <li id="manageclassrooms" class="hidden">
+                                <asp:LinkButton runat="server" ID="lbtn_manageClassrooms" class="nav-link  " href="./ManageClassrooms.aspx">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                <svg width="12px" height="12px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 0C21.5 0 0 21.5 0 48V464c0 26.5 21.5 48 48 48h96V432c0-26.5 21.5-48 48-48s48 21.5 48 48v80h96c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48H48zM64 240c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V240zm112-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H176c-8.8 0-16-7.2-16-16V240c0-8.8 7.2-16 16-16zm80 16c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H272c-8.8 0-16-7.2-16-16V240zM80 96h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16zm80 16c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H176c-8.8 0-16-7.2-16-16V112zM272 96h32c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H272c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16z"/>
                                     <title>document</title>
@@ -396,29 +416,31 @@
                                     </g>
                                 </svg>
                             </div>
-                            <span class="nav-link-text ms-1">Manage Classrooms</span>
-                        </asp:LinkButton>
-                        <!-- Secondary Menu -->
-                        <div id="menuClassrooms" class="container hidden">
-                            <ul class="navbar-nav">
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageClassrooms.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listClassrooms" role="tab">
-                                    <i class="ni ni-badge text-sm me-2"></i> List
-                                    </asp:LinkButton>
-                                </li>
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageClassrooms.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertClassrooms" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Insert
-                                    </asp:LinkButton>
-                                </li>
-                                <li class="nav-link">
-                                    <asp:LinkButton href="../ManageClassrooms.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editClassrooms" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Edit/Delete
-                                    </asp:LinkButton>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- End of Secondary Menu -->
+                            <span class="nav-link-text ms-1">Salas</span>
+                                </asp:LinkButton>
+                                <!-- Secondary Menu -->
+                                <div id="menuClassrooms" class="container hidden">
+                                    <ul class="navbar-nav">
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageClassrooms.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listClassrooms" role="tab">
+                                    <i class="ni ni-badge text-sm me-2"></i> Listar
+                                            </asp:LinkButton>
+                                        </li>
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageClassrooms.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertClassrooms" role="tab">
+                                    <i class="ni ni-laptop text-sm me-2"></i> Inserir
+                                            </asp:LinkButton>
+                                        </li>
+                                        <li class="nav-link">
+                                            <asp:LinkButton href="../ManageClassrooms.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editClassrooms" role="tab">
+                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Eliminar
+                                            </asp:LinkButton>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- End of Secondary Menu -->
+                            </li>
+                        </ul>
                     </li>
                     <li id="signout" class="hidden">
                         <asp:LinkButton runat="server" ID="lbtn_signout" class="nav-link  " AutoPostBack="True" OnClick="lbtn_signout_Click">
@@ -443,7 +465,7 @@
                 </ul>
             </div>
         </aside>
-   
+
         <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
             <!-- Navbar -->
             <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
@@ -506,6 +528,7 @@
             </div>
 
             <!-- End Content -->
+
             <!--Start of Tawk.to Script-->
             <script type="text/javascript">
                 var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
@@ -519,6 +542,7 @@
                 })();
             </script>
             <!--End of Tawk.to Script-->
+
             <footer class="footer pt-2">
                 <div class="container-fluid">
                     <div class="row align-items-center justify-content-lg-between">
@@ -869,6 +893,7 @@
                 Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
             }
         </script>
+
         <script type="text/javascript">
             $(document).ready(function () {
                 // On page load, check the current URL and show/hide divs accordingly
@@ -877,25 +902,23 @@
 
             function handlePageLoad() {
                 var url = window.location.href;
+                var keyword = "";
 
                 if (url.indexOf('?List') !== -1) {
-                    // Show listCourses div and hide others
-                    $('#listCoursesDiv').show();
-                    $('#insertCoursesDiv').hide();
-                    $('#editCoursesDiv').hide();
+                    keyword = "list";
                 } else if (url.indexOf('?Insert') !== -1) {
-                    // Show insertCourses div and hide others
-                    $('#listCoursesDiv').hide();
-                    $('#insertCoursesDiv').show();
-                    $('#editCoursesDiv').hide();
+                    keyword = "insert";
                 } else if (url.indexOf('?Edit') !== -1) {
-                    // Show editCourses div and hide others
-                    $('#listCoursesDiv').hide();
-                    $('#insertCoursesDiv').hide();
-                    $('#editCoursesDiv').show();
+                    keyword = "edit";
                 }
+
+                // Show/hide divs based on the extracted keyword
+                $('.pageDiv').hide(); // Hide all divs first
+                $('div[id*="' + keyword + '"]').show(); // Show divs containing the keyword
             }
         </script>
+
+
 
 
         <!-- Github buttons -->

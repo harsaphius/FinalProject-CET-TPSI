@@ -27,6 +27,7 @@ namespace FinalProject.Classes
             myCommand.Parameters.AddWithValue("@Description", values[3]);
             myCommand.Parameters.AddWithValue("@Credits", Convert.ToDecimal(values[4]));
             myCommand.Parameters.AddWithValue("@SVG", imageBytes);
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             SqlParameter ModuleRegister = new SqlParameter();
             ModuleRegister.ParameterName = "@ModuleRegisted";

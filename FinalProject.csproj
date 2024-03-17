@@ -327,8 +327,10 @@
     <Compile Include="CinelMP.Master.designer.cs">
       <DependentUpon>CinelMP.Master</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Course.cs" />
     <Compile Include="Classes\EmailControl.cs" />
     <Compile Include="Classes\FaceBookUser.cs" />
+    <Compile Include="Classes\FileControl.cs" />
     <Compile Include="Classes\GoogleProfile.cs" />
     <Compile Include="Classes\Module.cs" />
     <Compile Include="Classes\PageControls.cs" />

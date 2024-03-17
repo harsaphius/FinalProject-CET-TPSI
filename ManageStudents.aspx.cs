@@ -1,7 +1,8 @@
-﻿using System;
+﻿using FinalProject.Classes;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.IO;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -76,6 +77,112 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
+
+                //Reinicializar o FlatPickr
+                if (IsPostBack)
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "FlatpickrInit", @"
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                flatpickr('#<%= tbDataNascimento.ClientID %>', {
+                                    dateFormat: 'd-m-Y',
+                                    theme: 'light',
+                                    maxDate: new Date()
+                                });
+
+                                flatpickr('#<%= tbDataValidade.ClientID %>', {
+                                    dateFormat: 'd-m-Y',
+                                    theme: 'light',
+                                    minDate: new Date()
+                                });
+                            });
+                        </script>
+                    ", false);
+                }
+            }
+        }
+
+        protected void btn_submit_Click(object sender, EventArgs e)
+        {
+            List<string> userData = new List<string>();
+            userData.Add(Convert.ToString(2));
+            userData.Add(tbEmail.Text);
+            userData.Add(tbEmail.Text);
+            string NovaPasse = Membership.GeneratePassword(8, 2);
+            userData.Add(NovaPasse);
+            userData.Add(tbNome.Text);
+            userData.Add(ddlDocumentoIdent.SelectedValue);
+            userData.Add(tbCC.Text);
+            userData.Add(tbDataValidade.Text);
+            userData.Add(ddlprefixo.SelectedValue);
+            userData.Add(tbTelemovel.Text);
+            userData.Add(ddlSexo.SelectedValue);
+            userData.Add(tbDataNascimento.Text);
+            userData.Add(tbNIF.Text);
+            userData.Add(tbMorada.Text);
+            userData.Add(ddlCodPais.SelectedValue);
+            userData.Add(ddlCodCodPostal.SelectedValue);
+            userData.Add(ddlCodEstadoCivil.SelectedValue);
+            userData.Add(tbNrSegSocial.Text);
+            userData.Add(tbIBAN.Text);
+            userData.Add(ddlCodNaturalidade.SelectedValue);
+            userData.Add(ddlCodNacionalidade.SelectedValue);
+            byte[] fileBytes;
+
+            if (fuFoto.HasFile)
+            {
+                using (BinaryReader reader = new BinaryReader(fuFoto.PostedFile.InputStream))
+                {
+                    fileBytes = reader.ReadBytes(fuFoto.PostedFile.ContentLength);
+                }
+
+                string forFoto = Convert.ToBase64String(fileBytes);
+                userData.Add(forFoto);
+            }
+            else
+            {
+                string imagePath = "~/assets/img/small-logos/default.svg";
+                string physicalPath = Server.MapPath(imagePath);
+
+                using (FileStream fileStream = new FileStream(physicalPath, FileMode.Open, FileAccess.Read))
+                {
+                    fileBytes = new byte[fileStream.Length];
+                    fileStream.Read(fileBytes, 0, (int)fileStream.Length);
+                }
+
+                string forFoto = Convert.ToBase64String(fileBytes);
+                userData.Add(forFoto);
+            }
+            List<FileControl> uploadedFiles = FileControl.ProcessUploadedFiles(Request.Files);
+
+            int UserRegister = Classes.User.registerUser(userData);
+            Classes.User.completeRegisterUser(userData, uploadedFiles);
+
+            if (UserRegister == 1)
+            {
+                string script = @"                      
+                            document.getElementById('alert').classList.remove('hidden');
+                            document.getElementById('alert').classList.add('alert');
+                            document.getElementById('alert').classList.add('alert-primary');
+                            ";
+
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+
+                lbl_message.Text = "Utilizador registado com sucesso!";
+
+                Classes.EmailControl.SendEmail(tbEmail.Text, $"Nova Pass:{NovaPasse}", "PW");
+            }
+            else
+            {
+                string script = @"                      
+                            document.getElementById('alert').classList.remove('hidden');
+                            document.getElementById('alert').classList.add('alert');
+                            document.getElementById('alert').classList.add('alert-primary');
+                            ";
+
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+
+                lbl_message.Text = "Utilizador já registado!";
             }
         }
     }

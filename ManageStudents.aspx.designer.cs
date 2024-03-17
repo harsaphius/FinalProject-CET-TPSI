@@ -303,13 +303,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.DropDownList ddlCodCodPostal;
 
         /// <summary>
-        /// SQLDSCodCodPostal control.
+        /// SQLDSCodPostal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSCodCodPostal;
+        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSCodPostal;
 
         /// <summary>
         /// lblfreguesia control.
@@ -328,6 +328,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvfreguesia;
+
+        /// <summary>
+        /// lbtn_search control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtn_search;
 
         /// <summary>
         /// tbfreguesia control.
@@ -492,15 +501,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.DropDownList ddlCodNaturalidade;
 
         /// <summary>
-        /// SQLDSNaturalidade control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSNaturalidade;
-
-        /// <summary>
         /// lblCodNacionalidade control.
         /// </summary>
         /// <remarks>
@@ -573,22 +573,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label lblCodPrefixo;
 
         /// <summary>
-        /// rfvCodPrefixo control.
+        /// ddlprefixo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCodPrefixo;
+        protected global::System.Web.UI.WebControls.DropDownList ddlprefixo;
 
         /// <summary>
-        /// tbCodPrefixo control.
+        /// SQLDSPrefixo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbCodPrefixo;
+        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSPrefixo;
 
         /// <summary>
         /// lblTelemovel control.
@@ -690,15 +690,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label lblFoto;
 
         /// <summary>
-        /// rfvFoto control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvFoto;
-
-        /// <summary>
         /// fuFoto control.
         /// </summary>
         /// <remarks>
@@ -751,5 +742,14 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary2;
+
+        /// <summary>
+        /// lbl_message control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_message;
     }
 }

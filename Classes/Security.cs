@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Security;
 
 namespace FinalProject.Classes
 {
@@ -179,7 +176,7 @@ namespace FinalProject.Classes
                 strong = false;
             }
 
-            return (strong,failures);
+            return (strong, failures);
         }
         public static int ChangePassword(string User, string OldPass, string NewPass)
         {
@@ -187,7 +184,7 @@ namespace FinalProject.Classes
 
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL 
             myCommand.Parameters.AddWithValue("@Utilizador", User);
-            myCommand.Parameters.AddWithValue("@PWAtual",EncryptString(OldPass));
+            myCommand.Parameters.AddWithValue("@PWAtual", EncryptString(OldPass));
             myCommand.Parameters.AddWithValue("@PWNova", EncryptString(NewPass));
 
             //Variável de Output para SP verificar se o utilizador e pw estão corretos
@@ -210,7 +207,7 @@ namespace FinalProject.Classes
 
             return AnswUserExists;
         }
-        public static(int AnswUserExists, int AnswAccountActive) RecoverPassword(string Email, string NovaPasse)
+        public static (int AnswUserExists, int AnswAccountActive) RecoverPassword(string Email, string NovaPasse)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
@@ -244,6 +241,16 @@ namespace FinalProject.Classes
             myCon.Close(); //Fechar a conexão
 
             return (AnswUserExist, AnswAccountActive);
+
+        }
+
+        public static string DataComparison(DateTime date1, DateTime date2)
+        {
+            string message;
+
+            if (date2 > date1)
+                return message = "A data de nascimento não pode ser superior à data de validade";
+            else return message = "";
 
         }
 

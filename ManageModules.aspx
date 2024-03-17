@@ -4,7 +4,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <div id="listModulesDiv" class="container-fluid">
+    <div id="listModulesDiv" class="container-fluid pageDiv">
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
             <ContentTemplate>
                 <asp:Repeater ID="rpt_Modules" runat="server" OnItemDataBound="rpt_Modules_ItemDataBound" OnItemCommand="rpt_Modules_ItemCommand">
@@ -43,11 +43,7 @@
                                     CommandArgument='<%# Container.ItemIndex %>' Text="Edit" class="text-secondary font-weight-bold text-xs">
                                 </asp:LinkButton>
                             </td>
-                            <%--     <td class="align-middle">
-                                <button class="btn btn-link text-secondary mb-0">
-                                    <i class="fa fa-ellipsis-v text-xs"></i>
-                                </button>
-                            </td>--%>
+                           
                         </tr>
                         <tr>
                     </ItemTemplate>
@@ -59,7 +55,7 @@
             </ContentTemplate>
         </asp:UpdatePanel>
     </div>
-    <div id="insertModulesDiv" class="container-fluid hidden">
+    <div id="insertModulesDiv" class="container-fluid pageDiv">
         <div style="padding: 5px;" id="alert" class="hidden" role="alert">
             <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
         </div>
@@ -118,7 +114,7 @@
             </div>
         </div>
     </div>
-    <div id="editModulesDiv" class="container-fluid hidden">
+    <div id="editModulesDiv" class="container-fluid pageDiv">
         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
             <ContentTemplate>
                 <asp:Repeater ID="rpt_editModules" runat="server" OnItemCommand="rpt_editModules_ItemCommand">

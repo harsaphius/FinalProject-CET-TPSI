@@ -15,6 +15,15 @@ namespace FinalProject
     {
 
         /// <summary>
+        /// rfvPerfil control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPerfil;
+
+        /// <summary>
         /// ddlPerfil control.
         /// </summary>
         /// <remarks>
@@ -33,13 +42,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSPerfil;
 
         /// <summary>
-        /// rfvPerfil control.
+        /// rfvname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPerfil;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvname;
 
         /// <summary>
         /// tb_name control.
@@ -51,13 +60,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tb_name;
 
         /// <summary>
-        /// rfvname control.
+        /// rfvusername control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvname;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvusername;
 
         /// <summary>
         /// tb_username control.
@@ -69,13 +78,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tb_username;
 
         /// <summary>
-        /// rfvusername control.
+        /// rfvemail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvusername;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvemail;
 
         /// <summary>
         /// tb_email control.
@@ -87,13 +96,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tb_email;
 
         /// <summary>
-        /// rfvemail control.
+        /// rfvpw control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvemail;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvpw;
 
         /// <summary>
         /// tb_pw control.
@@ -105,13 +114,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tb_pw;
 
         /// <summary>
-        /// rfvpw control.
+        /// rfvpwr control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvpw;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvpwr;
 
         /// <summary>
         /// tb_pwR control.
@@ -121,15 +130,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tb_pwR;
-
-        /// <summary>
-        /// rfvpwr control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvpwr;
 
         /// <summary>
         /// ddl_tipoDocIdent control.
@@ -150,15 +150,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSDocIdent;
 
         /// <summary>
-        /// tbCC control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbCC;
-
-        /// <summary>
         /// rfvCC control.
         /// </summary>
         /// <remarks>
@@ -168,13 +159,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCC;
 
         /// <summary>
-        /// tbdataValidade control.
+        /// tbCC control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbdataValidade;
+        protected global::System.Web.UI.WebControls.TextBox tbCC;
 
         /// <summary>
         /// rfvdataValidade control.
@@ -184,6 +175,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvdataValidade;
+
+        /// <summary>
+        /// tbdataValidade control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbdataValidade;
 
         /// <summary>
         /// ddlprefixo control.
@@ -204,15 +204,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSPais;
 
         /// <summary>
-        /// tbTelemovel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbTelemovel;
-
-        /// <summary>
         /// rfvTelemovel control.
         /// </summary>
         /// <remarks>
@@ -220,6 +211,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTelemovel;
+
+        /// <summary>
+        /// tbTelemovel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbTelemovel;
 
         /// <summary>
         /// flexCheckDefault control.
