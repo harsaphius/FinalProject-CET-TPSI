@@ -122,17 +122,6 @@
     <Content Include="assets\img\team-3.jpg" />
     <Content Include="assets\img\team-4.jpg" />
     <Content Include="assets\img\vr-bg.jpg" />
-    <Content Include="assets\js\core\bootstrap.min.js" />
-    <Content Include="assets\js\core\popper.min.js" />
-    <Content Include="assets\js\plugins\bootstrap-notify.js" />
-    <Content Include="assets\js\plugins\Chart.extension.js" />
-    <Content Include="assets\js\plugins\chartjs.min.js" />
-    <Content Include="assets\js\plugins\choices.min.js" />
-    <Content Include="assets\js\plugins\fullcalendar.min.js" />
-    <Content Include="assets\js\plugins\perfect-scrollbar.min.js" />
-    <Content Include="assets\js\plugins\smooth-scrollbar.min.js" />
-    <Content Include="assets\js\soft-ui-dashboard.js" />
-    <Content Include="assets\js\soft-ui-dashboard.min.js" />
     <Content Include="bin\ASPSnippets.FaceBookAPI.dll" />
     <Content Include="bin\ASPSnippets.GoogleAPI.dll" />
     <Content Include="bin\FinalProject.dll" />
@@ -179,6 +168,7 @@
     <Content Include="bin\roslyn\vbc.exe" />
     <Content Include="bin\roslyn\VBCSCompiler.exe" />
     <Content Include="gulpfile.js" />
+    <Content Include="Manage.aspx" />
     <Content Include="ManageClasses.aspx" />
     <Content Include="ManageClassrooms.aspx" />
     <Content Include="ManageCourses.aspx" />
@@ -336,6 +326,13 @@
     <Compile Include="Classes\PageControls.cs" />
     <Compile Include="Classes\Security.cs" />
     <Compile Include="Classes\User.cs" />
+    <Compile Include="Manage.aspx.cs">
+      <DependentUpon>Manage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Manage.aspx.designer.cs">
+      <DependentUpon>Manage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ManageClasses.aspx.cs">
       <DependentUpon>ManageClasses.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -462,7 +459,6 @@
     <Content Include="assets\fonts\nucleo.ttf" />
     <Content Include="assets\fonts\nucleo.woff" />
     <Content Include="assets\fonts\nucleo.woff2" />
-    <Content Include="assets\js\soft-ui-dashboard.js.map" />
     <Content Include="assets\scss\soft-ui-dashboard.scss" />
     <Content Include="assets\scss\soft-ui-dashboard\badges\_badge-circle.scss" />
     <Content Include="assets\scss\soft-ui-dashboard\badges\_badge-dot.scss" />

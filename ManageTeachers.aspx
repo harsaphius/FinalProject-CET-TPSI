@@ -7,6 +7,32 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid mt-4 py-4">
+        <asp:UpdatePanel runat="server">
+            <ContentTemplate>
+                <div class="container-fluid">
+                    <div class="nav-wrapper position-relative end-0">
+                        <ul class="nav nav-pills nav-fill p-1">
+                            <li class="nav-item">
+                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="listTeachers" aria-selected="true" data-href="../ManageTeachers.aspx?List">Listar
+                                </asp:LinkButton>
+                            </li>
+                            <li class="nav-item">
+                                <asp:LinkButton class="nav-link mb-0 px-0 py-1" runat="server" ID="insertTeachers" aria-selected="false" data-href="../ManageTeachers.aspx?Insert">Inserir
+                                </asp:LinkButton>
+                            </li>
+                            <li class="nav-item">
+                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="editTeachers" aria-selected="false" data-href="../ManageTeachers.aspx?Edit"> Editar/Eliminar
+                                </asp:LinkButton>
+                            </li>
+                        </ul>
+                    </div>
+            </ContentTemplate>
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="listTeachers" />
+                <asp:AsyncPostBackTrigger ControlID="insertTeachers" />
+                <asp:AsyncPostBackTrigger ControlID="editTeachers" />
+            </Triggers>
+        </asp:UpdatePanel>
         <div id="listTeachersDiv" class="">
             List
 
@@ -38,8 +64,8 @@
                                                         <asp:Label ID="lblSexo" runat="server" AssociatedControlID="ddlSexo">Sexo</asp:Label>
                                                         <asp:RequiredFieldValidator ID="rfvSexo" runat="server" Text="*" ErrorMessage="Género Obrigatório" ValidationGroup="Page1" ControlToValidate="ddlSexo" InitialValue="" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                         <asp:DropDownList ID="ddlSexo" runat="server" ValidationGroup="Page1" CssClass="form-control">
-                                                            <asp:ListItem>Feminino</asp:ListItem>
-                                                            <asp:ListItem>Masculino</asp:ListItem>
+                                                            <asp:ListItem Value="0">Feminino</asp:ListItem>
+                                                            <asp:ListItem Value="1">Masculino</asp:ListItem>
                                                         </asp:DropDownList>
                                                     </div>
                                                 </div>
@@ -49,7 +75,8 @@
                                                         <asp:RequiredFieldValidator ID="rfvDataNascimento" Text="*" ValidationGroup="Page1" ErrorMessage="Data de Nascimento Obrigatória" runat="server" ControlToValidate="tbDataNascimento" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                         <div class="input-group">
                                                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                                            <asp:TextBox ID="tbDataNascimento" ValidationGroup="Page1" runat="server" CssClass="form-control datepicker" type="date"></asp:TextBox>
+
+                                                            <asp:TextBox ID="tbDataNascimento" ValidationGroup="Page1" runat="server" CssClass="form-control datepicker" TextMode="date"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -77,7 +104,7 @@
                                                         <asp:RequiredFieldValidator ID="rfvDataValidade" Text="*" ValidationGroup="Page1" ErrorMessage="Data de Validade Obrigatória" runat="server" ControlToValidate="tbDataValidade" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                         <div class="input-group">
                                                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                                            <asp:TextBox ID="tbDataValidade" ValidationGroup="Page1" runat="server" CssClass="form-control datepicker" type="date"></asp:TextBox>
+                                                            <asp:TextBox ID="tbDataValidade" ValidationGroup="Page1" runat="server" CssClass="form-control datepicker" TextMode="date"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -112,9 +139,9 @@
                                                     <div class="form-group">
                                                         <asp:Label ID="lblCodCodPostal" runat="server" AssociatedControlID="ddlCodCodPostal">Código-Postal</asp:Label>
                                                         <asp:RequiredFieldValidator ID="rfvcodCodPostal" Text="*" ErrorMessage="Código-Postal Obrigatório" ValidationGroup="Page1" runat="server" ControlToValidate="ddlCodCodPostal" InitialValue="" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-                                                        <asp:DropDownList ID="ddlCodCodPostal" ValidationGroup="Page1" runat="server" CssClass="form-control" DataSourceID="SQLDSCodCodPostal" DataTextField="nova_freguesia" DataValueField="id">
+                                                        <asp:DropDownList ID="ddlCodCodPostal" ValidationGroup="Page1" runat="server" CssClass="form-control" DataSourceID="SQLDSCodPostal" DataTextField="nova_freguesia" DataValueField="id">
                                                         </asp:DropDownList>
-                                                        <asp:SqlDataSource ID="SQLDSCodCodPostal" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [freguesias]"></asp:SqlDataSource>
+                                                        <asp:SqlDataSource ID="SQLDSCodPostal" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [freguesias]"></asp:SqlDataSource>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -123,7 +150,7 @@
                                                         <asp:RequiredFieldValidator ID="rfvfreguesia" Text="*" ErrorMessage="Freguesia Obrigatória" ValidationGroup="Page1" runat="server" ControlToValidate="tbfreguesia" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                         <div class="input-group mb-4">
                                                             <asp:LinkButton runat="server" ID="lbtn_search" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
-                                                            <asp:TextBox runat="server" ID="tbfreguesia" CssClass="form-control" ValidationGroup="Page1" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
+                                                            <asp:TextBox runat="server" ID="tbfreguesia" CssClass="form-control" ValidationGroup="Page1" placeholder="Type here..."></asp:TextBox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -198,9 +225,8 @@
                                                     <div class="form-group">
                                                         <asp:Label ID="lblCodNaturalidade" runat="server" AssociatedControlID="ddlCodNaturalidade">Código da Naturalidade</asp:Label>
                                                         <asp:RequiredFieldValidator ID="rfvCodNaturalidade" ValidationGroup="Page2" runat="server" ControlToValidate="ddlCodNaturalidade" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
-                                                        <asp:DropDownList ID="ddlCodNaturalidade" ValidationGroup="Page2" runat="server" CssClass="form-control" DataSourceID="SQLDSNaturalidade" DataTextField="titulo" DataValueField="id">
+                                                        <asp:DropDownList ID="ddlCodNaturalidade" ValidationGroup="Page1" runat="server" CssClass="form-control" DataSourceID="SQLDSCodPostal" DataTextField="nova_freguesia" DataValueField="id">
                                                         </asp:DropDownList>
-                                                        <asp:SqlDataSource ID="SQLDSNaturalidade" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [freguesias] ORDER BY titulo"></asp:SqlDataSource>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -271,7 +297,7 @@
                                             </div>
                                             <div class="card card-footer">
                                                 <div class="col-md-9 d-flex align-items-center justify-content-evenly">
-                                                    <asp:Button runat="server" ID="btn_submit" ValidationGroup="Page2" CausesValidation="True" OnClientClick="submitInfo(); return false;" class="btn btn-outline-primary btn-sm mb-0" Text="Submeter"></asp:Button>
+                                                    <asp:Button runat="server" ID="btn_submit" ValidationGroup="Page2" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Submeter"></asp:Button>
                                                 </div>
                                             </div>
                                         </ContentTemplate>
@@ -279,11 +305,16 @@
                                             <asp:AsyncPostBackTrigger ControlID="btn_submit" />
                                         </Triggers>
                                     </asp:UpdatePanel>
+
+
                                 </div>
                                 <div class="col-md-3">
                                     <asp:ValidationSummary ID="ValidationSummary2" runat="server" ValidationGroup="Page2" ForeColor="#cc3a60" DisplayMode="List" />
                                 </div>
                             </div>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -291,14 +322,15 @@
             </div>
             <div id="registrationMessage" class="hidden">
                 <div class="alert alert-primary text-white font-weight-bold" role="alert">
-                    <small class="text-uppercase font-weight-bold">Submetido com sucesso</small>
+                    <small class="text-uppercase font-weight-bold">
+                        <asp:Label runat="server" ID="lbl_message"></asp:Label></small>
                 </div>
             </div>
-
-            <!-- End of Registration Completion -->
         </div>
-        <div id="editTeachersDiv" class="hidden">Edit</div>
+        <!-- End of Registration Completion -->
     </div>
+    <div id="editTeachersDiv" class="hidden">Edit</div>
+
 
     <!--Função de Javascript para mostrar o calendário do flatpickr nas TextBoxes -->
     <script>
@@ -350,5 +382,31 @@
                 document.getElementById('registrationMessage').classList.remove('hidden');
             }
         }
+    </script>
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            var navLinks = document.querySelectorAll('.nav-link');
+
+            navLinks.forEach(function (link) {
+                link.addEventListener('click', function (event) {
+                    // Prevent postback
+                    //event.preventDefault();
+
+                    // Remove active class from all links
+                    navLinks.forEach(function (link) {
+                        link.classList.remove('active');
+                    });
+
+                    // Add active class to the clicked link
+                    this.classList.add('active');
+
+                    var href = this.getAttribute('data-href');
+                    if (href) {
+                        this.setAttribute('href', href);
+                    }
+                });
+            });
+        });
     </script>
 </asp:Content>

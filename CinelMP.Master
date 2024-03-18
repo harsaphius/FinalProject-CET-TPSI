@@ -29,6 +29,7 @@
             api_key: 'wg_1ae256b87448551b21819a5962a372278'
         });
     </script>
+
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -48,7 +49,7 @@
             <div class="collapse navbar-collapse w-auto max-height-vh-100 h-100" id="sidenav-collapse-main">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" id="home" href="../MainPage.aspx">
+                        <asp:LinkButton runat="server" class="nav-link" ID="home" href="../MainPage.aspx">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <title>shop </title>
@@ -65,7 +66,7 @@
                                 </svg>
                             </div>
                             <span class="nav-link-text ms-1">Home</span>
-                        </a>
+                        </asp:LinkButton>
                     </li>
                     <li class="nav-item">
                         <asp:LinkButton runat="server" ID="courses" class="nav-link " href="../MainCourses.aspx">
@@ -108,8 +109,8 @@
                         </asp:LinkButton>
                     </li>
 
-                    <li class="nav-item" id="signup">
-                        <a class="nav-link " href="../UserSignUp.aspx">
+                    <li id="signup" class="nav-item">
+                        <asp:LinkButton runat="server" class="nav-link " href="../UserSignUp.aspx">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <svg width="12px" height="20px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <title>spaceship</title>
@@ -128,10 +129,10 @@
                                 </svg>
                             </div>
                             <span class="nav-link-text ms-1">Registar</span>
-                        </a>
+                        </asp:LinkButton>
                     </li>
-                    <li class="nav-item hidden" id="profile">
-                        <a class="nav-link  " href="../UserProfile.aspx">
+                    <li class="hidden nav-item" id="profile">
+                        <asp:LinkButton runat="server" class="nav-link  " href="../UserProfile.aspx">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <svg width="12px" height="12px" viewBox="0 0 46 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <title>customer-support</title>
@@ -149,10 +150,10 @@
                                 </svg>
                             </div>
                             <span class="nav-link-text ms-1">Perfil</span>
-                        </a>
+                        </asp:LinkButton>
                     </li>
-                    <li class="nav-item hidden" id="usercalendar">
-                        <a class="nav-link  " href="../UserCalendar.aspx">
+                    <li class="hidden nav-item" id="usercalendar">
+                        <asp:LinkButton runat="server" class="nav-link  " href="../UserCalendar.aspx">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <svg width="12px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                     <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
@@ -173,29 +174,10 @@
                                 </svg>
                             </div>
                             <span class="nav-link-text ms-1">Calendário</span>
-                        </a>
-                    </li>
-                    <li id="management">
-                        <asp:LinkButton runat="server" ID="LinkButton1" class="nav-link  " href="../ManageCourses.aspx?List">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <svg width="12px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z"/>                                    <title>document</title>
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <g transform="translate(-1870.000000, -591.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                                            <g transform="translate(1716.000000, 291.000000)">
-                                                <g transform="translate(154.000000, 300.000000)">
-                                                    <path class="color-background opacity-6" d="M40,40 L36.3636364,40 L36.3636364,3.63636364 L5.45454545,3.63636364 L5.45454545,0 L38.1818182,0 C39.1854545,0 40,0.814545455 40,1.81818182 L40,40 Z"></path>
-                                                    <path class="color-background" d="M30.9090909,7.27272727 L1.81818182,7.27272727 C0.814545455,7.27272727 0,8.08727273 0,9.09090909 L0,41.8181818 C0,42.8218182 0.814545455,43.6363636 1.81818182,43.6363636 L30.9090909,43.6363636 C31.9127273,43.6363636 32.7272727,42.8218182 32.7272727,41.8181818 L32.7272727,9.09090909 C32.7272727,8.08727273 31.9127273,7.27272727 30.9090909,7.27272727 Z M18.1818182,34.5454545 L7.27272727,34.5454545 L7.27272727,30.9090909 L18.1818182,30.9090909 L18.1818182,34.5454545 Z M25.4545455,27.2727273 L7.27272727,27.2727273 L7.27272727,23.6363636 L25.4545455,23.6363636 L25.4545455,27.2727273 Z M25.4545455,20 L7.27272727,20 L7.27272727,16.3636364 L25.4545455,16.3636364 L25.4545455,20 Z"></path>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </g>
-                                </svg>
-                            </div>
-                            <span class="nav-link-text ms-1">Cursos </span>
                         </asp:LinkButton>
-                        <ul class="navbar-nav">
-                            <li id="managecourses" class="hidden">
-                                <asp:LinkButton runat="server" ID="lbtn_manageCourses" class="nav-link  " href="../ManageCourses.aspx?List">
+                    </li>
+                    <li id="management" class="hidden nav-item">
+                        <asp:LinkButton runat="server" ID="lbtn_management" class="nav-link " href="../Manage.aspx">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <svg width="12px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z"/>                                    <title>document</title>
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -210,34 +192,31 @@
                                     </g>
                                 </svg>
                             </div>
-                            <span class="nav-link-text ms-1">Cursos </span>
-                                </asp:LinkButton>
-                                <!-- Secondary Menu -->
-                                <div id="menuCourses" class="container hidden">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-link">
-                                            <asp:LinkButton data-submenu-id="listCourses" OnClientClick="handleClick('list'); return false;" href="../ManageCourses.aspx?List" runat="server" class="nav-link mb-0 px-0 py-1" ID="listCourses" role="tab">
-                                    <i class="ni ni-badge text-sm me-2"></i> Listar
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageCourses.aspx?Insert" OnClientClick="handleClick('insert'); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertCourses" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Inserir
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageCourses.aspx?Edit" OnClientClick="handleClick('edit'); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="manageCourses" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Eliminar
-                                            </asp:LinkButton>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- End of Secondary Menu -->
+                            <span class="nav-link-text ms-1">Gestão</span>
+                        </asp:LinkButton>
+                        <ul class="navbar-nav" style="padding-left: 20px !important;">
+                            <li id="managecourses" class="hidden">
+                                <asp:LinkButton runat="server" ID="lbtn_manageCourses" class="nav-link  " href="../ManageCourses.aspx">
+                            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <svg width="12px" height="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z"/>                                    <title>document</title>
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g transform="translate(-1870.000000, -591.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                                            <g transform="translate(1716.000000, 291.000000)">
+                                                <g transform="translate(154.000000, 300.000000)">
+                                                    <path class="color-background opacity-6" d="M40,40 L36.3636364,40 L36.3636364,3.63636364 L5.45454545,3.63636364 L5.45454545,0 L38.1818182,0 C39.1854545,0 40,0.814545455 40,1.81818182 L40,40 Z"></path>
+                                                    <path class="color-background" d="M30.9090909,7.27272727 L1.81818182,7.27272727 C0.814545455,7.27272727 0,8.08727273 0,9.09090909 L0,41.8181818 C0,42.8218182 0.814545455,43.6363636 1.81818182,43.6363636 L30.9090909,43.6363636 C31.9127273,43.6363636 32.7272727,42.8218182 32.7272727,41.8181818 L32.7272727,9.09090909 C32.7272727,8.08727273 31.9127273,7.27272727 30.9090909,7.27272727 Z M18.1818182,34.5454545 L7.27272727,34.5454545 L7.27272727,30.9090909 L18.1818182,30.9090909 L18.1818182,34.5454545 Z M25.4545455,27.2727273 L7.27272727,27.2727273 L7.27272727,23.6363636 L25.4545455,23.6363636 L25.4545455,27.2727273 Z M25.4545455,20 L7.27272727,20 L7.27272727,16.3636364 L25.4545455,16.3636364 L25.4545455,20 Z"></path>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
+                            <span class="nav-link-text ms-1">Cursos </span></asp:LinkButton>
                             </li>
                             <li id="manageclasses" class="hidden">
                                 <asp:LinkButton runat="server" ID="lbtn_manageClasses" class="nav-link  " href="./ManageClasses.aspx">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                                <svg width="12px" height="12px" viewBox="0 0 40 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <svg width="12px" height="12px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 96C0 43 43 0 96 0h96V190.7c0 13.4 15.5 20.9 26 12.5L272 160l54 43.2c10.5 8.4 26 .9 26-12.5V0h32 32c17.7 0 32 14.3 32 32V352c0 17.7-14.3 32-32 32v64c17.7 0 32 14.3 32 32s-14.3 32-32 32H384 96c-53 0-96-43-96-96V96zM64 416c0 17.7 14.3 32 32 32H352V384H96c-17.7 0-32 14.3-32 32z"/>
                                     <title>document</title>
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                         <g transform="translate(-1870.000000, -591.000000)" fill="#FFFFFF" fill-rule="nonzero">
@@ -253,27 +232,6 @@
                             </div>
                             <span class="nav-link-text ms-1">Turmas</span>
                                 </asp:LinkButton>
-                                <!-- Secondary Menu -->
-                                <div id="menuClasses" class="container hidden">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageClasses.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listClasses" role="tab">
-                                    <i class="ni ni-badge text-sm me-2"></i> Listar
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageClasses.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertClasses" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Inserir
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageClasses.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editClasses" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Eliminar
-                                            </asp:LinkButton>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- End of Secondary Menu -->
                             </li>
                             <li id="managemodules" class="hidden">
                                 <asp:LinkButton runat="server" ID="lbtn_manageModules" class="nav-link  " href="./ManageModules.aspx">
@@ -294,27 +252,6 @@
                             </div>
                             <span class="nav-link-text ms-1">Módulos</span>
                                 </asp:LinkButton>
-                                <!-- Secondary Menu -->
-                                <div id="menuModules" class="container hidden">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageModules.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listModules" role="tab">
-                                    <i class="ni ni-badge text-sm me-2"></i> Listar
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageModules.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertModules" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Inserir
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageModules.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editModules" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Eliminar
-                                            </asp:LinkButton>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- End of Secondary Menu -->
                             </li>
                             <li id="managestudents" class="hidden">
                                 <asp:LinkButton runat="server" ID="lbtn_manageStudents" class="nav-link  " href="./ManageStudents.aspx">
@@ -335,28 +272,6 @@
                             </div>
                             <span class="nav-link-text ms-1">Formandos</span>
                                 </asp:LinkButton>
-                                <!-- Secondary Menu -->
-                                <div id="menuStudents" class="container hidden">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageStudents.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listStudents" role="tab">
-                                    <i class="ni ni-badge text-sm me-2"></i> Listar
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageStudents.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertStudents" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Inserir
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageStudents.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editStudents" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Eliminar
-                                            </asp:LinkButton>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <!-- End of Secondary Menu -->
                             </li>
                             <li id="manageteachers" class="hidden">
                                 <asp:LinkButton runat="server" ID="lbtn_manageTeachers" class="nav-link " href="./ManageTeachers.aspx">
@@ -377,27 +292,6 @@
                             </div>
                             <span class="nav-link-text ms-1">Formadores</span>
                                 </asp:LinkButton>
-                                <!-- Secondary Menu -->
-                                <div id="menuTeachers" class="container hidden">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageTeachers.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listTeachers" role="tab">
-                                    <i class="ni ni-badge text-sm me-2"></i> Listar
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageTeachers.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertTeachers" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Inserir
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageTeachers.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editTeachers" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Eliminar
-                                            </asp:LinkButton>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- End of Secondary Menu -->
                             </li>
                             <li id="manageclassrooms" class="hidden">
                                 <asp:LinkButton runat="server" ID="lbtn_manageClassrooms" class="nav-link  " href="./ManageClassrooms.aspx">
@@ -418,27 +312,6 @@
                             </div>
                             <span class="nav-link-text ms-1">Salas</span>
                                 </asp:LinkButton>
-                                <!-- Secondary Menu -->
-                                <div id="menuClassrooms" class="container hidden">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageClassrooms.aspx?List" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="listClassrooms" role="tab">
-                                    <i class="ni ni-badge text-sm me-2"></i> Listar
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageClassrooms.aspx?Insert" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="insertClassrooms" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Inserir
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li class="nav-link">
-                                            <asp:LinkButton href="../ManageClassrooms.aspx?Edit" OnClientClick="handleClick(this); return false;" runat="server" class="nav-link mb-0 px-0 py-1" ID="editClassrooms" role="tab">
-                                    <i class="ni ni-laptop text-sm me-2"></i> Editar/Eliminar
-                                            </asp:LinkButton>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- End of Secondary Menu -->
                             </li>
                         </ul>
                     </li>
@@ -465,7 +338,6 @@
                 </ul>
             </div>
         </aside>
-
         <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
             <!-- Navbar -->
             <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
@@ -599,335 +471,357 @@
             </footer>
 
         </main>
-        <!--   Core JS Files   -->
-        <%--        <script src="../assets/js/core/popper.min.js"></script>--%>
+
+
+    </form>
+    <!--   Core JS Files   -->
+    <%--        <script src="../assets/js/core/popper.min.js"></script>
         <script src="../assets/js/core/bootstrap.min.js"></script>
         <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
         <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-        <script src="../assets/js/plugins/chartjs.min.js"></script>
-        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-        <script>
-            var calendar = new FullCalendar.Calendar(document.getElementById("calendar"), {
-                initialView: "dayGridMonth",
-                headerToolbar: {
-                    start: 'title', // will normally be on the left. if RTL, will be on the right
-                    center: '',
-                    end: 'today prev,next' // will normally be on the right. if RTL, will be on the left
-                },
-                selectable: true,
-                editable: true,
-                initialDate: '2020-12-01',
-                events: [{
-                    title: 'Call with Dave',
-                    start: '2020-11-18',
-                    end: '2020-11-18',
-                    className: 'bg-gradient-danger'
-                },
+        <script src="../assets/js/plugins/chartjs.min.js"></script>--%>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script>
+        var calendar = new FullCalendar.Calendar(document.getElementById("calendar"), {
+            initialView: "dayGridMonth",
+            headerToolbar: {
+                start: 'title', // will normally be on the left. if RTL, will be on the right
+                center: '',
+                end: 'today prev,next' // will normally be on the right. if RTL, will be on the left
+            },
+            selectable: true,
+            editable: true,
+            initialDate: '2020-12-01',
+            events: [{
+                title: 'Call with Dave',
+                start: '2020-11-18',
+                end: '2020-11-18',
+                className: 'bg-gradient-danger'
+            },
 
-                {
-                    title: 'Lunch meeting',
-                    start: '2020-11-21',
-                    end: '2020-11-22',
-                    className: 'bg-gradient-warning'
-                },
+            {
+                title: 'Lunch meeting',
+                start: '2020-11-21',
+                end: '2020-11-22',
+                className: 'bg-gradient-warning'
+            },
 
-                {
-                    title: 'All day conference',
-                    start: '2020-11-29',
-                    end: '2020-11-29',
-                    className: 'bg-gradient-success'
-                },
+            {
+                title: 'All day conference',
+                start: '2020-11-29',
+                end: '2020-11-29',
+                className: 'bg-gradient-success'
+            },
 
-                {
-                    title: 'Meeting with Mary',
-                    start: '2020-12-01',
-                    end: '2020-12-01',
-                    className: 'bg-gradient-info'
-                },
+            {
+                title: 'Meeting with Mary',
+                start: '2020-12-01',
+                end: '2020-12-01',
+                className: 'bg-gradient-info'
+            },
 
-                {
-                    title: 'Winter Hackaton',
-                    start: '2020-12-03',
-                    end: '2020-12-03',
-                    className: 'bg-gradient-danger'
-                },
+            {
+                title: 'Winter Hackaton',
+                start: '2020-12-03',
+                end: '2020-12-03',
+                className: 'bg-gradient-danger'
+            },
 
-                {
-                    title: 'Digital event',
-                    start: '2020-12-07',
-                    end: '2020-12-09',
-                    className: 'bg-gradient-warning'
-                },
+            {
+                title: 'Digital event',
+                start: '2020-12-07',
+                end: '2020-12-09',
+                className: 'bg-gradient-warning'
+            },
 
-                {
-                    title: 'Marketing event',
-                    start: '2020-12-10',
-                    end: '2020-12-10',
-                    className: 'bg-gradient-primary'
-                },
+            {
+                title: 'Marketing event',
+                start: '2020-12-10',
+                end: '2020-12-10',
+                className: 'bg-gradient-primary'
+            },
 
-                {
-                    title: 'Dinner with Family',
-                    start: '2020-12-19',
-                    end: '2020-12-19',
-                    className: 'bg-gradient-danger'
-                },
+            {
+                title: 'Dinner with Family',
+                start: '2020-12-19',
+                end: '2020-12-19',
+                className: 'bg-gradient-danger'
+            },
 
-                {
-                    title: 'Black Friday',
-                    start: '2020-12-23',
-                    end: '2020-12-23',
-                    className: 'bg-gradient-info'
-                },
+            {
+                title: 'Black Friday',
+                start: '2020-12-23',
+                end: '2020-12-23',
+                className: 'bg-gradient-info'
+            },
 
-                {
-                    title: 'Cyber Week',
-                    start: '2020-12-02',
-                    end: '2020-12-02',
-                    className: 'bg-gradient-warning'
-                },
+            {
+                title: 'Cyber Week',
+                start: '2020-12-02',
+                end: '2020-12-02',
+                className: 'bg-gradient-warning'
+            },
 
-                ],
-                views: {
-                    month: {
-                        titleFormat: {
-                            month: "long",
-                            year: "numeric"
-                        }
-                    },
-                    agendaWeek: {
-                        titleFormat: {
-                            month: "long",
-                            year: "numeric",
-                            day: "numeric"
-                        }
-                    },
-                    agendaDay: {
-                        titleFormat: {
-                            month: "short",
-                            year: "numeric",
-                            day: "numeric"
-                        }
+            ],
+            views: {
+                month: {
+                    titleFormat: {
+                        month: "long",
+                        year: "numeric"
                     }
                 },
-            });
-
-            calendar.render();
-
-        </script>
-        <script>
-            var ctx = document.getElementById("chart-bars").getContext("2d");
-
-            new Chart(ctx, {
-                type: "bar",
-                data: {
-                    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                    datasets: [{
-                        label: "Sales",
-                        tension: 0.4,
-                        borderWidth: 0,
-                        borderRadius: 4,
-                        borderSkipped: false,
-                        backgroundColor: "#fff",
-                        data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
-                        maxBarThickness: 6
-                    },],
+                agendaWeek: {
+                    titleFormat: {
+                        month: "long",
+                        year: "numeric",
+                        day: "numeric"
+                    }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false,
-                        }
-                    },
-                    interaction: {
-                        intersect: false,
-                        mode: 'index',
-                    },
-                    scales: {
-                        y: {
-                            grid: {
-                                drawBorder: false,
-                                display: false,
-                                drawOnChartArea: false,
-                                drawTicks: false,
-                            },
-                            ticks: {
-                                suggestedMin: 0,
-                                suggestedMax: 500,
-                                beginAtZero: true,
-                                padding: 15,
-                                font: {
-                                    size: 14,
-                                    family: "Open Sans",
-                                    style: 'normal',
-                                    lineHeight: 2
-                                },
-                                color: "#fff"
-                            },
-                        },
-                        x: {
-                            grid: {
-                                drawBorder: false,
-                                display: false,
-                                drawOnChartArea: false,
-                                drawTicks: false
-                            },
-                            ticks: {
-                                display: false
-                            },
-                        },
-                    },
-                },
-            });
-
-            var ctx2 = document.getElementById("chart-line").getContext("2d");
-
-            var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
-
-            gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
-            gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-            gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
-
-            var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
-
-            gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
-            gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
-            gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
-
-            new Chart(ctx2, {
-                type: "line",
-                data: {
-                    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                    datasets: [{
-                        label: "Mobile apps",
-                        tension: 0.4,
-                        borderWidth: 0,
-                        pointRadius: 0,
-                        borderColor: "#cb0c9f",
-                        borderWidth: 3,
-                        backgroundColor: gradientStroke1,
-                        fill: true,
-                        data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-                        maxBarThickness: 6
-
-                    },
-                    {
-                        label: "Websites",
-                        tension: 0.4,
-                        borderWidth: 0,
-                        pointRadius: 0,
-                        borderColor: "#3A416F",
-                        borderWidth: 3,
-                        backgroundColor: gradientStroke2,
-                        fill: true,
-                        data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
-                        maxBarThickness: 6
-                    },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false,
-                        }
-                    },
-                    interaction: {
-                        intersect: false,
-                        mode: 'index',
-                    },
-                    scales: {
-                        y: {
-                            grid: {
-                                drawBorder: false,
-                                display: true,
-                                drawOnChartArea: true,
-                                drawTicks: false,
-                                borderDash: [5, 5]
-                            },
-                            ticks: {
-                                display: true,
-                                padding: 10,
-                                color: '#b2b9bf',
-                                font: {
-                                    size: 11,
-                                    family: "Open Sans",
-                                    style: 'normal',
-                                    lineHeight: 2
-                                },
-                            }
-                        },
-                        x: {
-                            grid: {
-                                drawBorder: false,
-                                display: false,
-                                drawOnChartArea: false,
-                                drawTicks: false,
-                                borderDash: [5, 5]
-                            },
-                            ticks: {
-                                display: true,
-                                color: '#b2b9bf',
-                                padding: 20,
-                                font: {
-                                    size: 11,
-                                    family: "Open Sans",
-                                    style: 'normal',
-                                    lineHeight: 2
-                                },
-                            }
-                        },
-                    },
-                },
-            });
-        </script>
-        <script>
-            var win = navigator.platform.indexOf('Win') > -1;
-            if (win && document.querySelector('#sidenav-scrollbar')) {
-                var options = {
-                    damping: '0.5'
+                agendaDay: {
+                    titleFormat: {
+                        month: "short",
+                        year: "numeric",
+                        day: "numeric"
+                    }
                 }
-                Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+            },
+        });
+
+        calendar.render();
+
+    </script>
+    <script>
+        var ctx = document.getElementById("chart-bars").getContext("2d");
+
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: "Sales",
+                    tension: 0.4,
+                    borderWidth: 0,
+                    borderRadius: 4,
+                    borderSkipped: false,
+                    backgroundColor: "#fff",
+                    data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
+                    maxBarThickness: 6
+                },],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                scales: {
+                    y: {
+                        grid: {
+                            drawBorder: false,
+                            display: false,
+                            drawOnChartArea: false,
+                            drawTicks: false,
+                        },
+                        ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: 500,
+                            beginAtZero: true,
+                            padding: 15,
+                            font: {
+                                size: 14,
+                                family: "Open Sans",
+                                style: 'normal',
+                                lineHeight: 2
+                            },
+                            color: "#fff"
+                        },
+                    },
+                    x: {
+                        grid: {
+                            drawBorder: false,
+                            display: false,
+                            drawOnChartArea: false,
+                            drawTicks: false
+                        },
+                        ticks: {
+                            display: false
+                        },
+                    },
+                },
+            },
+        });
+
+        var ctx2 = document.getElementById("chart-line").getContext("2d");
+
+        var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+        gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
+        gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+        gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
+
+        var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+        gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
+        gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+        gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+
+        new Chart(ctx2, {
+            type: "line",
+            data: {
+                labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [{
+                    label: "Mobile apps",
+                    tension: 0.4,
+                    borderWidth: 0,
+                    pointRadius: 0,
+                    borderColor: "#cb0c9f",
+                    borderWidth: 3,
+                    backgroundColor: gradientStroke1,
+                    fill: true,
+                    data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+                    maxBarThickness: 6
+
+                },
+                {
+                    label: "Websites",
+                    tension: 0.4,
+                    borderWidth: 0,
+                    pointRadius: 0,
+                    borderColor: "#3A416F",
+                    borderWidth: 3,
+                    backgroundColor: gradientStroke2,
+                    fill: true,
+                    data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
+                    maxBarThickness: 6
+                },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index',
+                },
+                scales: {
+                    y: {
+                        grid: {
+                            drawBorder: false,
+                            display: true,
+                            drawOnChartArea: true,
+                            drawTicks: false,
+                            borderDash: [5, 5]
+                        },
+                        ticks: {
+                            display: true,
+                            padding: 10,
+                            color: '#b2b9bf',
+                            font: {
+                                size: 11,
+                                family: "Open Sans",
+                                style: 'normal',
+                                lineHeight: 2
+                            },
+                        }
+                    },
+                    x: {
+                        grid: {
+                            drawBorder: false,
+                            display: false,
+                            drawOnChartArea: false,
+                            drawTicks: false,
+                            borderDash: [5, 5]
+                        },
+                        ticks: {
+                            display: true,
+                            color: '#b2b9bf',
+                            padding: 20,
+                            font: {
+                                size: 11,
+                                family: "Open Sans",
+                                style: 'normal',
+                                lineHeight: 2
+                            },
+                        }
+                    },
+                },
+            },
+        });
+    </script>
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+            var options = {
+                damping: '0.5'
             }
-        </script>
+            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+    </script>
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                // On page load, check the current URL and show/hide divs accordingly
-                handlePageLoad();
-            });
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // On page load, check the current URL and show/hide divs accordingly
+            handlePageLoad();
 
-            function handlePageLoad() {
-                var url = window.location.href;
-                var keyword = "";
+            // Handle tab click event
+            $('.nav-link', '.nav-item').on('click', function (event) {
+                // Remove active class from all links
+                $('.nav-link', '.nav-item').removeClass('active');
 
-                if (url.indexOf('?List') !== -1) {
-                    keyword = "list";
-                } else if (url.indexOf('?Insert') !== -1) {
-                    keyword = "insert";
-                } else if (url.indexOf('?Edit') !== -1) {
-                    keyword = "edit";
-                }
+                // Add active class to the clicked link
+                $(this).addClass('active');
+
+                // Get the keyword from the link button's text
+                var keyword = $(this).text().trim().toLowerCase();
 
                 // Show/hide divs based on the extracted keyword
                 $('.pageDiv').hide(); // Hide all divs first
                 $('div[id*="' + keyword + '"]').show(); // Show divs containing the keyword
+
+                // Update browser's URL without reloading the page
+                history.pushState({}, '', $(this).attr('href'));
+
+                //// Prevent the default behavior of the link
+                //event.preventDefault();
+            });
+        });
+
+        function handlePageLoad() {
+            var url = window.location.href;
+            var keyword = "";
+
+            if (url.indexOf('?List') !== -1) {
+                keyword = "list";
+            } else if (url.indexOf('?Insert') !== -1) {
+                keyword = "insert";
+            } else if (url.indexOf('?Edit') !== -1) {
+                keyword = "edit";
             }
-        </script>
+
+            // Show/hide divs based on the extracted keyword
+            $('.pageDiv').hide(); // Hide all divs first
+            $('div[id*="' + keyword + '"]').show(); // Show divs containing the keyword
+        }
+    </script>
 
 
 
 
-        <!-- Github buttons -->
-        <script async defer src="https://buttons.github.io/buttons.js"></script>
-        <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-        <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
-
-    </form>
-
+    <!-- Github buttons -->
+    <%--        <script async defer src="https://buttons.github.io/buttons.js"></script>--%>
+    <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+    <%--        <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>--%>
 </body>
 
 </html>

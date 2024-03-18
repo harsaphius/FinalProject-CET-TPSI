@@ -51,6 +51,15 @@ namespace FinalProject
         protected global::System.Web.UI.ScriptManager ScriptManager1;
 
         /// <summary>
+        /// home control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton home;
+
+        /// <summary>
         /// courses control.
         /// </summary>
         /// <remarks>
@@ -60,13 +69,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.LinkButton courses;
 
         /// <summary>
-        /// LinkButton1 control.
+        /// lbtn_management control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
+        protected global::System.Web.UI.WebControls.LinkButton lbtn_management;
 
         /// <summary>
         /// lbtn_manageCourses control.
@@ -78,33 +87,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.LinkButton lbtn_manageCourses;
 
         /// <summary>
-        /// listCourses control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton listCourses;
-
-        /// <summary>
-        /// insertCourses control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton insertCourses;
-
-        /// <summary>
-        /// manageCourses control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton manageCourses;
-
-        /// <summary>
         /// lbtn_manageClasses control.
         /// </summary>
         /// <remarks>
@@ -112,33 +94,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lbtn_manageClasses;
-
-        /// <summary>
-        /// listClasses control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton listClasses;
-
-        /// <summary>
-        /// insertClasses control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton insertClasses;
-
-        /// <summary>
-        /// editClasses control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton editClasses;
 
         /// <summary>
         /// lbtn_manageModules control.
@@ -150,33 +105,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.LinkButton lbtn_manageModules;
 
         /// <summary>
-        /// listModules control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton listModules;
-
-        /// <summary>
-        /// insertModules control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton insertModules;
-
-        /// <summary>
-        /// editModules control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton editModules;
-
-        /// <summary>
         /// lbtn_manageStudents control.
         /// </summary>
         /// <remarks>
@@ -184,33 +112,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lbtn_manageStudents;
-
-        /// <summary>
-        /// listStudents control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton listStudents;
-
-        /// <summary>
-        /// insertStudents control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton insertStudents;
-
-        /// <summary>
-        /// editStudents control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton editStudents;
 
         /// <summary>
         /// lbtn_manageTeachers control.
@@ -222,33 +123,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.LinkButton lbtn_manageTeachers;
 
         /// <summary>
-        /// listTeachers control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton listTeachers;
-
-        /// <summary>
-        /// insertTeachers control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton insertTeachers;
-
-        /// <summary>
-        /// editTeachers control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton editTeachers;
-
-        /// <summary>
         /// lbtn_manageClassrooms control.
         /// </summary>
         /// <remarks>
@@ -256,33 +130,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lbtn_manageClassrooms;
-
-        /// <summary>
-        /// listClassrooms control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton listClassrooms;
-
-        /// <summary>
-        /// insertClassrooms control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton insertClassrooms;
-
-        /// <summary>
-        /// editClassrooms control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton editClassrooms;
 
         /// <summary>
         /// lbtn_signout control.

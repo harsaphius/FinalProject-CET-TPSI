@@ -76,8 +76,8 @@ namespace FinalProject
 
                 if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
                 {
-                    script = @"                      
-                            document.getElementById('menuCourses').classList.remove('hidden');
+                    script = @"
+                            document.getElementById('management').classList.remove('hidden');
                             document.getElementById('managecourses').classList.remove('hidden');
                             document.getElementById('managecourses').classList.add('nav-item');
                             document.getElementById('manageclasses').classList.remove('hidden');
@@ -204,6 +204,38 @@ namespace FinalProject
             }
         }
 
+        protected void listCourses_Click(object sender, EventArgs e)
+        {
+            string script = @"                      
+                            document.getElementById('listCoursesDiv').classList.remove('hidden');
+                            document.getElementById('insertCoursesDiv').classList.add('hidden');
+                            document.getElementById('editCoursesDiv').classList.add('hidden');
+                            ";
 
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowDivElements", script, true);
+        }
+
+        protected void insertCourses_Click(object sender, EventArgs e)
+        {
+            string script = @"                      
+                            document.getElementById('listCoursesDiv').classList.add('hidden');
+                            document.getElementById('insertCoursesDiv').classList.remove('hidden');
+                            document.getElementById('editCoursesDiv').classList.add('hidden');
+                            ";
+
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowDivElements", script, true);
+
+        }
+
+        protected void editCourses_Click(object sender, EventArgs e)
+        {
+            string script = @"                      
+                            document.getElementById('listCoursesDiv').classList.add('hidden');
+                            document.getElementById('insertCoursesDiv').classList.add('hidden');
+                            document.getElementById('editCoursesDiv').classList.remove('hidden');
+                            ";
+
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowDivElements", script, true);
+        }
     }
 }

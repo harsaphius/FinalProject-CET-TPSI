@@ -4,6 +4,32 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
+        <asp:UpdatePanel runat="server">
+            <ContentTemplate>
+                <div class="container-fluid">
+                    <div class="nav-wrapper position-relative end-0">
+                        <ul class="nav nav-pills nav-fill p-1">
+                            <li class="nav-item">
+                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="listClassrooms" aria-selected="true" data-href="../ManageClassrooms.aspx?List">Listar
+                                </asp:LinkButton>
+                            </li>
+                            <li class="nav-item">
+                                <asp:LinkButton class="nav-link mb-0 px-0 py-1" runat="server" ID="insertClassrooms" aria-selected="false" data-href="../ManageClassrooms.aspx?Insert">Inserir
+                                </asp:LinkButton>
+                            </li>
+                            <li class="nav-item">
+                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="editClassrooms" aria-selected="false" data-href="../ManageClassrooms.aspx?Edit"> Editar/Eliminar
+                                </asp:LinkButton>
+                            </li>
+                        </ul>
+                    </div>
+            </ContentTemplate>
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="listClassrooms" />
+                <asp:AsyncPostBackTrigger ControlID="insertClassrooms" />
+                <asp:AsyncPostBackTrigger ControlID="editClassrooms" />
+            </Triggers>
+        </asp:UpdatePanel>
         <asp:UpdatePanel ID="updatePanel" runat="server">
             <ContentTemplate>
                 <div class="container bg-secundary py-2">
@@ -170,4 +196,30 @@
             </ContentTemplate>
         </asp:UpdatePanel>
     </div>
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            var navLinks = document.querySelectorAll('.nav-link');
+
+            navLinks.forEach(function (link) {
+                link.addEventListener('click', function (event) {
+                    // Prevent postback
+                    //event.preventDefault();
+
+                    // Remove active class from all links
+                    //navLinks.forEach(function (link) {
+                    //    link.classList.remove('active');
+                    //});
+
+                    //// Add active class to the clicked link
+                    //this.classList.add('active');
+
+                    var href = this.getAttribute('data-href');
+                    if (href) {
+                        this.setAttribute('href', href);
+                    }
+                });
+            });
+        });
+    </script>
 </asp:Content>

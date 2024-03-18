@@ -15,6 +15,33 @@ namespace FinalProject
     {
 
         /// <summary>
+        /// listStudents control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton listStudents;
+
+        /// <summary>
+        /// insertStudents control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton insertStudents;
+
+        /// <summary>
+        /// editStudents control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton editStudents;
+
+        /// <summary>
         /// UpdatePanel1 control.
         /// </summary>
         /// <remarks>

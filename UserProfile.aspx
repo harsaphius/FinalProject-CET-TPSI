@@ -155,7 +155,7 @@
                             </div>
                             <div class="col-md-4 text-end">
                                 <a href="javascript:;">
-                                    <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile" onclick="showEdit(); return false;"></i>
+                                    <i class="fas fa-user-edit text-secondary text-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Profile" onclick="showEdit(event); return false;"></i>
                                 </a>
                             </div>
                         </div>
@@ -661,8 +661,8 @@
     </script>
 
     <script>
-        function showEdit() {
-
+        function showEdit(event) {
+            event.preventDefault();
             // Remove 'show' class and add 'hide' class to div1
             document.getElementById('profileSinapse').classList.add('hidden');
 

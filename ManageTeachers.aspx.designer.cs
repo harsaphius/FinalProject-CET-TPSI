@@ -15,6 +15,33 @@ namespace FinalProject
     {
 
         /// <summary>
+        /// listTeachers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton listTeachers;
+
+        /// <summary>
+        /// insertTeachers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton insertTeachers;
+
+        /// <summary>
+        /// editTeachers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton editTeachers;
+
+        /// <summary>
         /// UpdatePanel1 control.
         /// </summary>
         /// <remarks>
@@ -303,13 +330,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.DropDownList ddlCodCodPostal;
 
         /// <summary>
-        /// SQLDSCodCodPostal control.
+        /// SQLDSCodPostal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSCodCodPostal;
+        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSCodPostal;
 
         /// <summary>
         /// lblfreguesia control.
@@ -499,15 +526,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlCodNaturalidade;
-
-        /// <summary>
-        /// SQLDSNaturalidade control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSNaturalidade;
 
         /// <summary>
         /// lblCodNacionalidade control.
@@ -751,5 +769,14 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary2;
+
+        /// <summary>
+        /// lbl_message control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_message;
     }
 }

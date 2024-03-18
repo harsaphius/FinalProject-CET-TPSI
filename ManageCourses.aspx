@@ -4,6 +4,33 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
+        <asp:UpdatePanel runat="server">
+            <ContentTemplate>
+                <div class="container-fluid">
+                    <div class="nav-wrapper position-relative end-0">
+                        <ul class="nav nav-pills nav-fill p-1">
+                            <li class="nav-item">
+                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" OnClientClick="showDiv('listCoursesDiv'); return false;" ID="listCourses" href="./ManageCourses.aspx?List">Listar
+                                </asp:LinkButton>
+                            </li>
+                            <li class="nav-item">
+                                <asp:LinkButton class="nav-link mb-0 px-0 py-1" runat="server" OnClientClick="showDiv('insertCoursesDiv'); return false;" ID="insertCourses" href="./ManageCourses.aspx?Insert">Inserir
+                                </asp:LinkButton>
+                            </li>
+                            <li class="nav-item">
+                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" OnClientClick="showDiv('editCoursesDiv'); return false;" ID="editCourses" href="./ManageCourses.aspx?Edit"> Editar/Eliminar
+                                </asp:LinkButton>
+                            </li>
+                        </ul>
+                    </div>
+            </ContentTemplate>
+            <Triggers>
+                <asp:AsyncPostBackTrigger ControlID="listCourses" />
+                <asp:AsyncPostBackTrigger ControlID="insertCourses" />
+                <asp:AsyncPostBackTrigger ControlID="editCourses" />
+            </Triggers>
+        </asp:UpdatePanel>
+
         <asp:UpdatePanel ID="updatePanel" runat="server">
             <ContentTemplate>
                 <div class="container bg-secundary py-2">
@@ -167,7 +194,7 @@
                         </div>
                     </div>
                 </div>
-            </ContentTemplate>           
+            </ContentTemplate>
         </asp:UpdatePanel>
     </div>
 
@@ -225,7 +252,5 @@
             });
         });
     </script>
-
-
 
 </asp:Content>
