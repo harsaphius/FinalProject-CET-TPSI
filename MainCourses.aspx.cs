@@ -14,7 +14,10 @@ namespace FinalProject
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-			if (!IsPostBack)
+            rpt_maincourses.DataSource = Classes.Course.LoadCourses();
+            rpt_maincourses.DataBind();
+
+            if (!IsPostBack)
 			{
                 
             }

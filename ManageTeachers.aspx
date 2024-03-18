@@ -6,42 +6,44 @@
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+
+    <asp:UpdatePanel runat="server">
+        <ContentTemplate>
+            <div class="container-fluid">
+                <div class="nav-wrapper position-relative end-0">
+                    <ul class="nav nav-pills nav-fill p-1">
+                        <li class="nav-item">
+                            <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="listTeachers" href="../ManageTeachers.aspx?List">Listar
+                            </asp:LinkButton>
+                        </li>
+                        <li class="nav-item">
+                            <asp:LinkButton class="nav-link mb-0 px-0 py-1" runat="server" ID="insertTeachers" href="../ManageTeachers.aspx?Insert">Inserir
+                            </asp:LinkButton>
+                        </li>
+                        <li class="nav-item">
+                            <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="editTeachers" href="../ManageTeachers.aspx?Edit"> Editar/Eliminar
+                            </asp:LinkButton>
+                        </li>
+                    </ul>
+                </div>
+        </ContentTemplate>
+        <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="listTeachers" />
+            <asp:AsyncPostBackTrigger ControlID="insertTeachers" />
+            <asp:AsyncPostBackTrigger ControlID="editTeachers" />
+        </Triggers>
+    </asp:UpdatePanel>
     <div class="container-fluid mt-4 py-4">
-        <asp:UpdatePanel runat="server">
-            <ContentTemplate>
-                <div class="container-fluid">
-                    <div class="nav-wrapper position-relative end-0">
-                        <ul class="nav nav-pills nav-fill p-1">
-                            <li class="nav-item">
-                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="listTeachers" aria-selected="true" data-href="../ManageTeachers.aspx?List">Listar
-                                </asp:LinkButton>
-                            </li>
-                            <li class="nav-item">
-                                <asp:LinkButton class="nav-link mb-0 px-0 py-1" runat="server" ID="insertTeachers" aria-selected="false" data-href="../ManageTeachers.aspx?Insert">Inserir
-                                </asp:LinkButton>
-                            </li>
-                            <li class="nav-item">
-                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="editTeachers" aria-selected="false" data-href="../ManageTeachers.aspx?Edit"> Editar/Eliminar
-                                </asp:LinkButton>
-                            </li>
-                        </ul>
-                    </div>
-            </ContentTemplate>
-            <Triggers>
-                <asp:AsyncPostBackTrigger ControlID="listTeachers" />
-                <asp:AsyncPostBackTrigger ControlID="insertTeachers" />
-                <asp:AsyncPostBackTrigger ControlID="editTeachers" />
-            </Triggers>
-        </asp:UpdatePanel>
-        <div id="listTeachersDiv" class="">
+        <div id="listTeachersDiv" class="pageDiv">
             List
 
         </div>
-        <div id="insertTeachersDiv" class="hidden">
+        <div id="insertTeachersDiv" class="pageDiv">
             <!-- Registration Completion -->
             <div id="registration" class="container-fluid mt-4 py-4">
-                <div class="card">
-                    <div id="registerCompletionpage1">
+                <!-- Begin Registration Page 1-->
+                <div id="registerCompletionpage1">
+                    <div class="card">
                         <div class="card-header pb-0 p-3">
                             <h6 class="mb-1">Completa o teu registo</h6>
                             <p class="text-sm">Preenche todos os campos da tabela abaixo</p>
@@ -137,21 +139,16 @@
                                             <div class="row px-xl-5 px-sm-4 px-3">
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <asp:Label ID="lblCodCodPostal" runat="server" AssociatedControlID="ddlCodCodPostal">Código-Postal</asp:Label>
-                                                        <asp:RequiredFieldValidator ID="rfvcodCodPostal" Text="*" ErrorMessage="Código-Postal Obrigatório" ValidationGroup="Page1" runat="server" ControlToValidate="ddlCodCodPostal" InitialValue="" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-                                                        <asp:DropDownList ID="ddlCodCodPostal" ValidationGroup="Page1" runat="server" CssClass="form-control" DataSourceID="SQLDSCodPostal" DataTextField="nova_freguesia" DataValueField="id">
-                                                        </asp:DropDownList>
-                                                        <asp:SqlDataSource ID="SQLDSCodPostal" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [freguesias]"></asp:SqlDataSource>
+                                                        <asp:Label ID="lblCodPostal" runat="server" AssociatedControlID="tbCodPostal">Código-Postal</asp:Label>
+                                                        <asp:RequiredFieldValidator ID="rfvcodCodPostal" Text="*" ErrorMessage="Código-Postal Obrigatório" ValidationGroup="Page1" runat="server" ControlToValidate="tbCodPostal" InitialValue="" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                                        <asp:TextBox runat="server" ID="tbCodPostal" CssClass="form-control" placeholder="0000-000"></asp:TextBox>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <asp:Label ID="lblfreguesia" runat="server" AssociatedControlID="tbfreguesia">Localidade</asp:Label>
                                                         <asp:RequiredFieldValidator ID="rfvfreguesia" Text="*" ErrorMessage="Freguesia Obrigatória" ValidationGroup="Page1" runat="server" ControlToValidate="tbfreguesia" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-                                                        <div class="input-group mb-4">
-                                                            <asp:LinkButton runat="server" ID="lbtn_search" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
-                                                            <asp:TextBox runat="server" ID="tbfreguesia" CssClass="form-control" ValidationGroup="Page1" placeholder="Type here..."></asp:TextBox>
-                                                        </div>
+                                                        <asp:TextBox runat="server" ID="tbfreguesia" CssClass="form-control" ValidationGroup="Page1"></asp:TextBox>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -160,14 +157,17 @@
                                                         <asp:RequiredFieldValidator ID="rfvCodPais" Text="*" ErrorMessage="País Obrigatório" ValidationGroup="Page1" runat="server" ControlToValidate="ddlCodPais" InitialValue="" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                         <asp:DropDownList ID="ddlCodPais" ValidationGroup="Page1" runat="server" CssClass="form-control" DataSourceID="SQLDSPais" DataTextField="nomePT" DataValueField="codPais">
                                                         </asp:DropDownList>
-                                                        <asp:SqlDataSource ID="SQLDSPais" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [pais]"></asp:SqlDataSource>
+                                                        <asp:SqlDataSource ID="SQLDSPais" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [pais] ORDER BY nomePT"></asp:SqlDataSource>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="card card-footer">
-                                                <div class="col-md-9 d-flex align-items-center justify-content-evenly">
-                                                    <asp:Button runat="server" ID="btn_next" ValidationGroup="Page1" OnClientClick="showNextDiv(); return false;" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Seguinte" />
+                                                <div class="col-md-12 align-items-start">
+                                                    <asp:Button runat="server" ID="btn_back" ValidationGroup="Page1" OnClick="btn_back_Click" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
+                                                    &nbsp;
+                                            <asp:Button runat="server" ID="btn_next" ValidationGroup="Page1" OnClientClick="showNextDiv(); return false;" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Seguinte" />
                                                 </div>
+
                                             </div>
                                         </ContentTemplate>
                                         <Triggers>
@@ -187,6 +187,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- End Registration Page 1-->
+
                 <!-- Begin Registration Page 2-->
                 <div id="registerCompletionpage2" class="hidden">
                     <div class="card">
@@ -194,7 +196,6 @@
                             <h6 class="mb-1">Completa o teu registo</h6>
                             <p class="text-sm">Preenche todos os campos da tabela abaixo</p>
                         </div>
-
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-9">
@@ -204,7 +205,7 @@
                                             <div class="row px-xl-5 px-sm-4 px-3">
                                                 <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <asp:Label ID="lblCodEstadoCivil" runat="server" AssociatedControlID="ddlCodEstadoCivil">Código do Estado Civil</asp:Label>
+                                                        <asp:Label ID="lblCodEstadoCivil" runat="server" AssociatedControlID="ddlCodEstadoCivil">Estado Civil</asp:Label>
                                                         <asp:RequiredFieldValidator ID="rfvCodEstadoCivil" runat="server" ValidationGroup="Page2" ControlToValidate="ddlCodEstadoCivil" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
                                                         <asp:DropDownList ID="ddlCodEstadoCivil" ValidationGroup="Page2" runat="server" CssClass="form-control" DataSourceID="SQLDSEstadoCivil" DataTextField="estadoCivil" DataValueField="codEstadoCivil">
                                                         </asp:DropDownList>
@@ -223,15 +224,14 @@
                                             <div class="row px-xl-5 px-sm-4 px-3">
                                                 <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <asp:Label ID="lblCodNaturalidade" runat="server" AssociatedControlID="ddlCodNaturalidade">Código da Naturalidade</asp:Label>
-                                                        <asp:RequiredFieldValidator ID="rfvCodNaturalidade" ValidationGroup="Page2" runat="server" ControlToValidate="ddlCodNaturalidade" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
-                                                        <asp:DropDownList ID="ddlCodNaturalidade" ValidationGroup="Page1" runat="server" CssClass="form-control" DataSourceID="SQLDSCodPostal" DataTextField="nova_freguesia" DataValueField="id">
-                                                        </asp:DropDownList>
+                                                        <asp:Label ID="lblCodNaturalidade" runat="server" AssociatedControlID="tbNaturalidade">Naturalidade</asp:Label>
+                                                        <asp:RequiredFieldValidator ID="rfvCodNaturalidade" ValidationGroup="Page2" runat="server" ControlToValidate="tbNaturalidade" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
+                                                        <asp:TextBox runat="server" ID="tbNaturalidade"></asp:TextBox>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <asp:Label ID="lblCodNacionalidade" runat="server" AssociatedControlID="ddlCodNacionalidade">Código da Nacionalidade</asp:Label>
+                                                        <asp:Label ID="lblCodNacionalidade" runat="server" AssociatedControlID="ddlCodNacionalidade">Nacionalidade</asp:Label>
                                                         <asp:RequiredFieldValidator ID="rfvCodNacionalidade" ValidationGroup="Page2" runat="server" ControlToValidate="ddlCodNacionalidade" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
                                                         <asp:DropDownList ID="ddlCodNacionalidade" ValidationGroup="Page2" runat="server" CssClass="form-control" DataSourceID="SQLDSPais" DataTextField="nacionalidade" DataValueField="codPais">
                                                         </asp:DropDownList>
@@ -239,7 +239,7 @@
                                                 </div>
                                                 <div class="col-md-5">
                                                     <div class="form-group">
-                                                        <asp:Label ID="lblCodSituacaoProfissional" runat="server" AssociatedControlID="ddlCodSituacaoProfissional">Código da Situação Profissional</asp:Label>
+                                                        <asp:Label ID="lblCodSituacaoProfissional" runat="server" AssociatedControlID="ddlCodSituacaoProfissional">Situação Profissional</asp:Label>
                                                         <asp:RequiredFieldValidator ID="rfvCodSituacaoProfissional" ValidationGroup="Page2" runat="server" ControlToValidate="ddlCodSituacaoProfissional" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
                                                         <asp:DropDownList ID="ddlCodSituacaoProfissional" ValidationGroup="Page2" runat="server" CssClass="form-control" DataSourceID="SQLDSsituacaoProfissional" DataTextField="situacaoProfissional" DataValueField="codSituacaoProfissional">
                                                         </asp:DropDownList>
@@ -273,7 +273,7 @@
                                             <div class="row px-xl-5 px-sm-4 px-3">
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <asp:Label ID="lblCodGrauAcademico" runat="server" AssociatedControlID="ddlCodGrauAcademico">Código do Grau Académico</asp:Label>
+                                                        <asp:Label ID="lblCodGrauAcademico" runat="server" AssociatedControlID="ddlCodGrauAcademico">Grau Académico</asp:Label>
                                                         <asp:RequiredFieldValidator ID="rfvCodGrauAcademico" ValidationGroup="Page2" runat="server" ControlToValidate="ddlCodGrauAcademico" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
                                                         <asp:DropDownList ID="ddlCodGrauAcademico" ValidationGroup="Page2" runat="server" CssClass="form-control" DataSourceID="SQLDSGrauAcademico" DataTextField="grauAcademico" DataValueField="codGrauAcademico">
                                                         </asp:DropDownList>
@@ -296,13 +296,16 @@
                                                 </div>
                                             </div>
                                             <div class="card card-footer">
-                                                <div class="col-md-9 d-flex align-items-center justify-content-evenly">
-                                                    <asp:Button runat="server" ID="btn_submit" ValidationGroup="Page2" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Submeter"></asp:Button>
+                                                <div class="col-md-12 align-items-center">
+                                                    <asp:Button runat="server" ID="Button1" ValidationGroup="Page2" OnClientClick="showPrevDiv(); return false;" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
+                                                    &nbsp;
+
+                                            <asp:Button runat="server" ID="btn_submit" OnClick="btn_submit_Click" ValidationGroup="Page2" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Submeter"></asp:Button>
                                                 </div>
                                             </div>
                                         </ContentTemplate>
                                         <Triggers>
-                                            <asp:AsyncPostBackTrigger ControlID="btn_submit" />
+                                            <asp:PostBackTrigger ControlID="btn_submit" />
                                         </Triggers>
                                     </asp:UpdatePanel>
 
@@ -312,8 +315,6 @@
                                     <asp:ValidationSummary ID="ValidationSummary2" runat="server" ValidationGroup="Page2" ForeColor="#cc3a60" DisplayMode="List" />
                                 </div>
                             </div>
-
-
 
                         </div>
                     </div>
@@ -326,11 +327,11 @@
                         <asp:Label runat="server" ID="lbl_message"></asp:Label></small>
                 </div>
             </div>
+            <!-- End of Registration Completion -->
         </div>
-        <!-- End of Registration Completion -->
-    </div>
-    <div id="editTeachersDiv" class="hidden">Edit</div>
 
+    </div>
+    <div id="editTeachersDiv" class="pageDiv">Edit</div>
 
     <!--Função de Javascript para mostrar o calendário do flatpickr nas TextBoxes -->
     <script>
@@ -374,39 +375,10 @@
 
             // If validators are valid, proceed to show next div
             if (isValid) {
-                //// Remove 'show' class and add 'hide' class to div1
-                //document.getElementById('registerCompletionpage2').classList.remove('card');
-                //document.getElementById('registerCompletionpage2').classList.add('hidden');
-
                 // Remove 'hide' class and add 'show' class to div2
                 document.getElementById('registrationMessage').classList.remove('hidden');
             }
         }
     </script>
 
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () {
-            var navLinks = document.querySelectorAll('.nav-link');
-
-            navLinks.forEach(function (link) {
-                link.addEventListener('click', function (event) {
-                    // Prevent postback
-                    //event.preventDefault();
-
-                    // Remove active class from all links
-                    navLinks.forEach(function (link) {
-                        link.classList.remove('active');
-                    });
-
-                    // Add active class to the clicked link
-                    this.classList.add('active');
-
-                    var href = this.getAttribute('data-href');
-                    if (href) {
-                        this.setAttribute('href', href);
-                    }
-                });
-            });
-        });
-    </script>
 </asp:Content>

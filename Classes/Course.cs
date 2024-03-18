@@ -121,14 +121,15 @@ namespace FinalProject.Classes
             while (dr.Read())
             {
                 Course informacao = new Course();
-                informacao.CodCurso = dr.GetInt32(0);
-                informacao.Nome = dr.GetString(1);
-                informacao.CodTipoCurso = dr.GetInt32(2);
-                informacao.CodRef = dr.GetString(3);
-                informacao.CodQNQ = dr.GetInt32(4);
+                informacao.CodCurso = Convert.ToInt32(dr["codCurso"]);
+                informacao.Nome = dr["nomeCurso"].ToString();
+                informacao.CodTipoCurso = Convert.ToInt32(dr["codArea"]);
+                informacao.CodRef = dr["codRef"].ToString();
+                informacao.CodQNQ = Convert.ToInt32(dr["codQNQ"]);
 
                 Courses.Add(informacao);
             }
+
             myConn.Close();
 
             return Courses;

@@ -115,11 +115,11 @@ namespace FinalProject
             userData.Add(tbNIF.Text);
             userData.Add(tbMorada.Text);
             userData.Add(ddlCodPais.SelectedValue);
-            userData.Add(ddlCodCodPostal.SelectedValue);
+            userData.Add(tbCodPostal.Text);
             userData.Add(ddlCodEstadoCivil.SelectedValue);
             userData.Add(tbNrSegSocial.Text);
             userData.Add(tbIBAN.Text);
-            userData.Add(ddlCodNaturalidade.SelectedValue);
+            userData.Add(tbNaturalidade.Text);
             userData.Add(ddlCodNacionalidade.SelectedValue);
             byte[] fileBytes;
 

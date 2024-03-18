@@ -186,13 +186,13 @@ namespace FinalProject
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
         /// <summary>
-        /// rpt_insertCourses control.
+        /// rpt_insertClassrooms control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpt_insertCourses;
+        protected global::System.Web.UI.WebControls.Repeater rpt_insertClassrooms;
 
         /// <summary>
         /// lbl_selection control.

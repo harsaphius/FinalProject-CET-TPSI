@@ -10,15 +10,15 @@
                     <div class="nav-wrapper position-relative end-0">
                         <ul class="nav nav-pills nav-fill p-1">
                             <li class="nav-item">
-                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="listModules" aria-selected="true" data-href="../ManageModules.aspx?List">Listar
+                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="listModules" href="../ManageModules.aspx?List">Listar
                                 </asp:LinkButton>
                             </li>
                             <li class="nav-item">
-                                <asp:LinkButton class="nav-link mb-0 px-0 py-1" runat="server" ID="insertModules" aria-selected="false" data-href="../ManageModules.aspx?Insert">Inserir
+                                <asp:LinkButton class="nav-link mb-0 px-0 py-1" runat="server" ID="insertModules" href="../ManageModules.aspx?Insert">Inserir
                                 </asp:LinkButton>
                             </li>
                             <li class="nav-item">
-                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="editModules" aria-selected="false" data-href="../ManageModules.aspx?Edit"> Editar/Eliminar
+                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="editModules" href="../ManageModules.aspx?Edit"> Editar/Eliminar
                                 </asp:LinkButton>
                             </li>
                         </ul>
@@ -30,8 +30,8 @@
                 <asp:AsyncPostBackTrigger ControlID="editModules" />
             </Triggers>
         </asp:UpdatePanel>
-
-        <div id="listModulesDiv" class="container-fluid pageDiv">
+       
+        <div id="listModulesDiv" class="pageDiv">
             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                 <ContentTemplate>
                     <asp:Repeater ID="rpt_Modules" runat="server" OnItemDataBound="rpt_Modules_ItemDataBound" OnItemCommand="rpt_Modules_ItemCommand">
@@ -198,29 +198,5 @@
             </asp:UpdatePanel>
         </div>
     </div>
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () {
-            var navLinks = document.querySelectorAll('.nav-link');
-
-            navLinks.forEach(function (link) {
-                link.addEventListener('click', function (event) {
-                    // Prevent postback
-                 /*   event.preventDefault();*/
-
-                    // Remove active class from all links
-                    navLinks.forEach(function (link) {
-                        link.classList.remove('active');
-                    });
-
-                    //// Add active class to the clicked link
-                    this.classList.add('active');
-
-                    var href = this.getAttribute('data-href');
-                    if (href) {
-                        this.setAttribute('href', href);
-                    }
-                });
-            });
-        });
-    </script>
+ 
 </asp:Content>

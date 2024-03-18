@@ -70,6 +70,9 @@ namespace FinalProject
                 }
 
             }
+
+            rpt_maincourses.DataSource = Classes.Course.LoadCourses();
+            rpt_maincourses.DataBind();
         }
     }
 }

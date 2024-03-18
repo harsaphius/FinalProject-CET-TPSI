@@ -133,7 +133,7 @@ namespace FinalProject
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
                         lbl_message.Text = "Utilizador já registado!";
-                    }
+                    } 
                 }
             }
         }

@@ -10,15 +10,15 @@
                     <div class="nav-wrapper position-relative end-0">
                         <ul class="nav nav-pills nav-fill p-1">
                             <li class="nav-item">
-                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" OnClientClick="showDiv('listCoursesDiv'); return false;" ID="listCourses" href="./ManageCourses.aspx?List">Listar
+                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="listCourses" href="./ManageCourses.aspx?List">Listar
                                 </asp:LinkButton>
                             </li>
                             <li class="nav-item">
-                                <asp:LinkButton class="nav-link mb-0 px-0 py-1" runat="server" OnClientClick="showDiv('insertCoursesDiv'); return false;" ID="insertCourses" href="./ManageCourses.aspx?Insert">Inserir
+                                <asp:LinkButton class="nav-link mb-0 px-0 py-1" runat="server" ID="insertCourses" href="./ManageCourses.aspx?Insert">Inserir
                                 </asp:LinkButton>
                             </li>
                             <li class="nav-item">
-                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" OnClientClick="showDiv('editCoursesDiv'); return false;" ID="editCourses" href="./ManageCourses.aspx?Edit"> Editar/Eliminar
+                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="editCourses" href="./ManageCourses.aspx?Edit"> Editar/Eliminar
                                 </asp:LinkButton>
                             </li>
                         </ul>
@@ -30,16 +30,59 @@
                 <asp:AsyncPostBackTrigger ControlID="editCourses" />
             </Triggers>
         </asp:UpdatePanel>
-
+        <div id="manageCoursesDiv" class="pageDiv">Gestão de Cursos </div>
         <asp:UpdatePanel ID="updatePanel" runat="server">
             <ContentTemplate>
                 <div class="container bg-secundary py-2">
                     <div id="listCoursesDiv" class="pageDiv">
-                        <div class="py-3 align-items-center row" style="padding-left: 28px;">
-                            <div class="col-sm-3">
-                                <small class="text-uppercase font-weight-bold">Cursos:</small>
-                            </div>
-                        </div>
+                        <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                            <ContentTemplate>
+                                <asp:Repeater ID="rpt_Courses" runat="server">
+                                    <HeaderTemplate>
+                                        <table class="table align-items-center justify-content-center mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Curso</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Referencial</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Código QNQ</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2">
+                                                    <div class="my-auto">
+                                                        <h6 class="mb-0 text-sm"><%# Eval("CodCurso") %></h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p class="text-sm font-weight-bold mb-0"><%# Eval("Nome") %></p>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <%# Eval("CodRef") %>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">Nível <%# Eval("CodQNQ") %>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <asp:LinkButton runat="server" ID="lbt_edit" Text="Edit" class="text-secondary font-weight-bold text-xs">
+                                                </asp:LinkButton>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                    </ItemTemplate>
+                                    <FooterTemplate>
+                                        </tbody>
+                    </table>
+                                    </FooterTemplate>
+                                </asp:Repeater>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
                     </div>
                     <div id="insertCoursesDiv" class="pageDiv">
 
@@ -138,7 +181,7 @@
                                                                     <asp:HiddenField ID="hdnModuleID" runat="server" Value='<%# Eval("CodModulo") %>' />
                                                                     <asp:HiddenField ID="hdnModuleName" runat="server" Value='<%# Eval("Nome") %>' />
                                                                     <div class="form-check">
-                                                                        <asp:CheckBox runat="server" ID="chckBox" AutoPostBack="true" OnCheckedChanged="chkBoxMod_CheckedChanged" />
+                                                                        <asp:CheckBox runat="server" ID="chckBox" OnCheckedChanged="chkBoxMod_CheckedChanged" />
                                                                         <asp:Label runat="server" ID="lbl_order">Selecione este módulo</asp:Label>
                                                                     </div>
                                                                 </div>
@@ -252,5 +295,6 @@
             });
         });
     </script>
+
 
 </asp:Content>

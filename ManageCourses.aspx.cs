@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -29,8 +30,7 @@ namespace FinalProject
 
             //// Render the pagination HTML to the page
             //paginationContainer.InnerHtml = paginationHtml; // Wrapping paginationHtml in <li> for direct replacement
-
-
+          
             if (Session["Logado"] == null)
             {
                 Response.Redirect("MainPage.aspx");
@@ -94,6 +94,9 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
+
+                rpt_Courses.DataSource = Classes.Course.LoadCourses();
+                rpt_Courses.DataBind();
 
                 if (!Page.IsPostBack)
                 {

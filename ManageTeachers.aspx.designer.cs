@@ -303,13 +303,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tbMorada;
 
         /// <summary>
-        /// lblCodCodPostal control.
+        /// lblCodPostal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCodCodPostal;
+        protected global::System.Web.UI.WebControls.Label lblCodPostal;
 
         /// <summary>
         /// rfvcodCodPostal control.
@@ -321,22 +321,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvcodCodPostal;
 
         /// <summary>
-        /// ddlCodCodPostal control.
+        /// tbCodPostal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCodCodPostal;
-
-        /// <summary>
-        /// SQLDSCodPostal control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSCodPostal;
+        protected global::System.Web.UI.WebControls.TextBox tbCodPostal;
 
         /// <summary>
         /// lblfreguesia control.
@@ -355,15 +346,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvfreguesia;
-
-        /// <summary>
-        /// lbtn_search control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtn_search;
 
         /// <summary>
         /// tbfreguesia control.
@@ -409,6 +391,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSPais;
+
+        /// <summary>
+        /// btn_back control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_back;
 
         /// <summary>
         /// btn_next control.
@@ -519,13 +510,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCodNaturalidade;
 
         /// <summary>
-        /// ddlCodNaturalidade control.
+        /// tbNaturalidade control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCodNaturalidade;
+        protected global::System.Web.UI.WebControls.TextBox tbNaturalidade;
 
         /// <summary>
         /// lblCodNacionalidade control.
@@ -751,6 +742,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload fuAnexo;
+
+        /// <summary>
+        /// Button1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button1;
 
         /// <summary>
         /// btn_submit control.
