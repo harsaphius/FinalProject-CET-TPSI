@@ -207,38 +207,38 @@ namespace FinalProject
             }
         }
 
-        protected void listCourses_Click(object sender, EventArgs e)
-        {
-            string script = @"                      
-                            document.getElementById('listCoursesDiv').classList.remove('hidden');
-                            document.getElementById('insertCoursesDiv').classList.add('hidden');
-                            document.getElementById('editCoursesDiv').classList.add('hidden');
-                            ";
+        //protected void listCourses_Click(object sender, EventArgs e)
+        //{
+        //    string script = @"                      
+        //                    document.getElementById('listCoursesDiv').classList.remove('hidden');
+        //                    document.getElementById('insertCoursesDiv').classList.add('hidden');
+        //                    document.getElementById('editCoursesDiv').classList.add('hidden');
+        //                    ";
 
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowDivElements", script, true);
-        }
+        //    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowDivElements", script, true);
+        //}
 
-        protected void insertCourses_Click(object sender, EventArgs e)
-        {
-            string script = @"                      
-                            document.getElementById('listCoursesDiv').classList.add('hidden');
-                            document.getElementById('insertCoursesDiv').classList.remove('hidden');
-                            document.getElementById('editCoursesDiv').classList.add('hidden');
-                            ";
+        //protected void insertCourses_Click(object sender, EventArgs e)
+        //{
+        //    string script = @"                      
+        //                    document.getElementById('listCoursesDiv').classList.add('hidden');
+        //                    document.getElementById('insertCoursesDiv').classList.remove('hidden');
+        //                    document.getElementById('editCoursesDiv').classList.add('hidden');
+        //                    ";
 
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowDivElements", script, true);
+        //    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowDivElements", script, true);
 
-        }
+        //}
 
-        protected void editCourses_Click(object sender, EventArgs e)
-        {
-            string script = @"                      
-                            document.getElementById('listCoursesDiv').classList.add('hidden');
-                            document.getElementById('insertCoursesDiv').classList.add('hidden');
-                            document.getElementById('editCoursesDiv').classList.remove('hidden');
-                            ";
+        //protected void editCourses_Click(object sender, EventArgs e)
+        //{
+        //    string script = @"                      
+        //                    document.getElementById('listCoursesDiv').classList.add('hidden');
+        //                    document.getElementById('insertCoursesDiv').classList.add('hidden');
+        //                    document.getElementById('editCoursesDiv').classList.remove('hidden');
+        //                    ";
 
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowDivElements", script, true);
-        }
+        //    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowDivElements", script, true);
+        //}
     }
 }

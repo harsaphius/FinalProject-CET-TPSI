@@ -3,6 +3,7 @@ using ASPSnippets.GoogleAPI;
 using FinalProject.Classes;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -121,6 +122,8 @@ namespace FinalProject
 
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
+                        Classes.EmailControl.SendEmailActivation(tb_email.Text);
+
                         lbl_message.Text = "Utilizador registado com sucesso!";
                     }
                     else {
@@ -132,7 +135,7 @@ namespace FinalProject
 
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                        lbl_message.Text = "Utilizador já registado!";
+                        lbl_message.Text = $"Utilizador já registado! Se não se lembra da sua password recupere a sua conta <a href='{ConfigurationManager.AppSettings["SiteURL"]}/UserLogin.aspx?user={Classes.Security.EncryptString(HttpContext.Current.Session["User"].ToString())}&redirected=true'> link </a>!";
                     } 
                 }
             }

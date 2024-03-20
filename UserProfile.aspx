@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="UserProfile.aspx.cs" Inherits="FinalProject.UserProfile" %>
+﻿<%@ Page Title="Perfil" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="UserProfile.aspx.cs" Inherits="FinalProject.UserProfile" EnableEventValidation="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -13,7 +13,8 @@
             <div class="row gx-4">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        <asp:Image ID="foto" runat="server" alt="profile_image" class="w-100 border-radius-lg shadow-sm"></asp:Image>
+                        <a href="/UserProfile.aspx">
+                            <asp:Image ID="foto" runat="server" alt="profile_image" class="w-100 border-radius-lg shadow-sm"></asp:Image></a>
                     </div>
                 </div>
                 <div class="col-auto my-auto">
@@ -26,12 +27,14 @@
                         </p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                <div class="col-lg-5 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
                     <div class="nav-wrapper position-relative end-0">
                         <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="true">
-                                    <svg class="text-dark" width="16px" height="16px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="#" role="tab" aria-selected="true" onclick="showChangeCursos(event); return false;">
+                                    <svg width="16px" class="text-dark" height="16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                        <path d="M160 96a96 96 0 1 1 192 0A96 96 0 1 1 160 96zm80 152V512l-48.4-24.2c-20.9-10.4-43.5-17-66.8-19.3l-96-9.6C12.5 457.2 0 443.5 0 427V224c0-17.7 14.3-32 32-32H62.3c63.6 0 125.6 19.6 177.7 56zm32 264V248c52.1-36.4 114.1-56 177.7-56H480c17.7 0 32 14.3 32 32V427c0 16.4-12.5 30.2-28.8 31.8l-96 9.6c-23.2 2.3-45.9 8.9-66.8 19.3L272 512z" />
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <g transform="translate(-2319.000000, -291.000000)" fill="#FFFFFF" fill-rule="nonzero">
                                                 <g transform="translate(1716.000000, 291.000000)">
@@ -45,12 +48,14 @@
                                             </g>
                                         </g>
                                     </svg>
-                                    <span class="ms-1">App</span>
+                                    <span class="ms-1">Cursos</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="false">
-                                    <svg class="text-dark" width="16px" height="16px" viewBox="0 0 40 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#" role="tab" aria-selected="false" onclick="showChangeAvaliacao(event); return false;">
+                                    <svg width="16px" class="text-dark" height="16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                        <path d="M219.3 .5c3.1-.6 6.3-.6 9.4 0l200 40C439.9 42.7 448 52.6 448 64s-8.1 21.3-19.3 23.5L352 102.9V160c0 70.7-57.3 128-128 128s-128-57.3-128-128V102.9L48 93.3v65.1l15.7 78.4c.9 4.7-.3 9.6-3.3 13.3s-7.6 5.9-12.4 5.9H16c-4.8 0-9.3-2.1-12.4-5.9s-4.3-8.6-3.3-13.3L16 158.4V86.6C6.5 83.3 0 74.3 0 64C0 52.6 8.1 42.7 19.3 40.5l200-40zM111.9 327.7c10.5-3.4 21.8 .4 29.4 8.5l71 75.5c6.3 6.7 17 6.7 23.3 0l71-75.5c7.6-8.1 18.9-11.9 29.4-8.5C401 348.6 448 409.4 448 481.3c0 17-13.8 30.7-30.7 30.7H30.7C13.8 512 0 498.2 0 481.3c0-71.9 47-132.7 111.9-153.6z" />
                                         <title>document</title>
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <g transform="translate(-1870.000000, -591.000000)" fill="#FFFFFF" fill-rule="nonzero">
@@ -64,13 +69,15 @@
                                             </g>
                                         </g>
                                     </svg>
-                                    <span class="ms-1">Messages</span>
+                                    <span class="ms-1">Avaliações</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="false">
-                                    <svg class="text-dark" width="16px" height="16px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                        <title>settings</title>
+                                <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#" role="tab" aria-selected="false" onclick="showChangePw(event); return false;">
+                                    <svg width="16px" class="text-dark" height="16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                        <path d="M336 352c97.2 0 176-78.8 176-176S433.2 0 336 0S160 78.8 160 176c0 18.7 2.9 36.8 8.3 53.7L7 391c-4.5 4.5-7 10.6-7 17v80c0 13.3 10.7 24 24 24h80c13.3 0 24-10.7 24-24V448h40c13.3 0 24-10.7 24-24V384h40c6.4 0 12.5-2.5 17-7l33.3-33.3c16.9 5.4 35 8.3 53.7 8.3zM376 96a40 40 0 1 1 0 80 40 40 0 1 1 0-80z" />
+                                        <title>password</title>
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <g transform="translate(-2020.000000, -442.000000)" fill="#FFFFFF" fill-rule="nonzero">
                                                 <g transform="translate(1716.000000, 291.000000)">
@@ -85,7 +92,7 @@
                                             </g>
                                         </g>
                                     </svg>
-                                    <span class="ms-1">Settings</span>
+                                    <span class="ms-1">Alterar PW</span>
                                 </a>
                             </li>
                         </ul>
@@ -94,6 +101,7 @@
             </div>
         </div>
     </div>
+    <!-- Profile Div -->
     <div id="profileSinapse" class="container-fluid py-4">
         <div class="row">
             <div class="col-12 col-xl-4">
@@ -112,7 +120,7 @@
                     </div>
                     <div class="card-body p-3">
                         <p class="text-sm">
-                            Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality).
+                            <asp:Label runat="server" ID="lbLifeMotto"></asp:Label>
                         </p>
                         <hr class="horizontal gray-light my-4">
                         <ul class="list-group">
@@ -142,55 +150,23 @@
             <div class="col-12 col-xl-4">
                 <div class="card h-100">
                     <div class="card-header pb-0 p-3">
-                        <h6 class="mb-0">Platform Settings</h6>
+                        <h6 class="mb-0">Documentos Submetidos</h6>
                     </div>
                     <div class="card-body p-3">
-                        <h6 class="text-uppercase text-body text-xs font-weight-bolder">Account</h6>
-                        <ul class="list-group">
-                            <li class="list-group-item border-0 px-0">
-                                <div class="form-check form-switch ps-0">
-                                    <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault" checked>
-                                    <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault">Email me when someone follows me</label>
-                                </div>
-                            </li>
-                            <li class="list-group-item border-0 px-0">
-                                <div class="form-check form-switch ps-0">
-                                    <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault1">
-                                    <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault1">Email me when someone answers on my post</label>
-                                </div>
-                            </li>
-                            <li class="list-group-item border-0 px-0">
-                                <div class="form-check form-switch ps-0">
-                                    <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault2" checked>
-                                    <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault2">Email me when someone mentions me</label>
-                                </div>
-                            </li>
-                        </ul>
-                        <h6 class="text-uppercase text-body text-xs font-weight-bolder mt-4">Application</h6>
-                        <ul class="list-group">
-                            <li class="list-group-item border-0 px-0">
-                                <div class="form-check form-switch ps-0">
-                                    <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault3">
-                                    <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault3">New launches and projects</label>
-                                </div>
-                            </li>
-                            <li class="list-group-item border-0 px-0">
-                                <div class="form-check form-switch ps-0">
-                                    <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault4" checked>
-                                    <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault4">Monthly product updates</label>
-                                </div>
-                            </li>
-                            <li class="list-group-item border-0 px-0 pb-0">
-                                <div class="form-check form-switch ps-0">
-                                    <input class="form-check-input ms-auto" type="checkbox" id="flexSwitchCheckDefault5">
-                                    <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="flexSwitchCheckDefault5">Subscribe to newsletter</label>
-                                </div>
-                            </li>
-                        </ul>
+                        <asp:Repeater ID="fileRepeater" runat="server">
+                            <HeaderTemplate></HeaderTemplate>
+                            <ItemTemplate>
+                                <asp:HyperLink ID="downloadLink" runat="server" Target="_blank"
+                                    NavigateUrl='<%# FileControlInstance.GenerateFileUrl() %>'
+                                    Text='<%# Eval("FileName") %>' />
+                                <br />
+                            </ItemTemplate>
+                            <FooterTemplate></FooterTemplate>
+                        </asp:Repeater>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-xl-4">
+            <%--            <div class="col-12 col-xl-4">
                 <div class="card h-100">
                     <div class="card-header pb-0 p-3">
                         <h6 class="mb-0">Conversations</h6>
@@ -250,7 +226,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>--%>
             <div class="col-12 mt-4">
                 <div class="card mb-4">
                     <div class="card-header pb-0 p-3">
@@ -383,9 +359,9 @@
             </div>
         </div>
     </div>
-
+    <!-- Fim de Profile Div -->
     <!-- Registration Completion -->
-    <div id="registration" class="container-fluid mt-4 py-4">
+    <div id="registration" class="container-fluid mt-4 py-4 hidden">
         <!-- Begin Registration Page 1-->
         <div id="registerCompletionpage1">
             <div class="card">
@@ -491,9 +467,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <asp:Label ID="lblfreguesia" runat="server" AssociatedControlID="tbfreguesia">Localidade</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvfreguesia" Text="*" ErrorMessage="Freguesia Obrigatória" ValidationGroup="Page1" runat="server" ControlToValidate="tbfreguesia" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-                                                <asp:TextBox runat="server" ID="tbfreguesia" CssClass="form-control" ValidationGroup="Page1"></asp:TextBox>
+                                                <asp:Label ID="lblfreguesia" runat="server" AssociatedControlID="tbLocalidade">Localidade</asp:Label>
+                                                <asp:RequiredFieldValidator ID="rfvLocalidade" Text="*" ErrorMessage="Localidade Obrigatória" ValidationGroup="Page1" runat="server" ControlToValidate="tbLocalidade" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                                <asp:TextBox runat="server" ID="tbLocalidade" CssClass="form-control" ValidationGroup="Page1"></asp:TextBox>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -571,7 +547,7 @@
                                             <div class="form-group">
                                                 <asp:Label ID="lblCodNaturalidade" runat="server" AssociatedControlID="tbNaturalidade">Naturalidade</asp:Label>
                                                 <asp:RequiredFieldValidator ID="rfvCodNaturalidade" ValidationGroup="Page2" runat="server" ControlToValidate="tbNaturalidade" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
-                                                <asp:TextBox runat="server" ID="tbNaturalidade"></asp:TextBox>
+                                                <asp:TextBox runat="server" ID="tbNaturalidade" CssClass="form-control"></asp:TextBox>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -640,6 +616,14 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row px-xl-5 px-sm-4 px-3">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <asp:Label ID="lblLifeMotto" runat="server" AssociatedControlID="tbCodPostal">Life Motto</asp:Label>
+                                                <asp:TextBox runat="server" ID="tbLifeMotto" CssClass="form-control" placeholder="Vini, Vidi, Vici"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="card card-footer">
                                         <div class="col-md-12 align-items-center">
                                             <asp:Button runat="server" ID="Button1" ValidationGroup="Page2" OnClientClick="showPrevDiv(); return false;" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
@@ -675,6 +659,46 @@
         </div>
     </div>
     <!-- End of Registration Completion -->
+
+    <div id="ChangePw" class="hidden">
+        <div class="row ">
+            <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+                <div class="card card-plain">
+                    <div class="card-header pb-0 text-left bg-transparent">
+                        <h3 class="font-weight-bolder text-primary text-gradient">Alterar a password</h3>
+                        <p class="mb-0">Introduza a sua palavra-passe atual e a sua nova palavra-passe para alterar</p>
+                    </div>
+                    <div class="card-body">
+                        <div role="form">
+                            <label>Password Atual</label>
+                            <asp:RequiredFieldValidator ID="rfvpwa" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tb_pwa" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                            <div class="mb-3">
+                                <asp:TextBox ID="tb_pwa" oninput="validatePassword(this)" CssClass="form-control" placeholder="Password Atual" runat="server"></asp:TextBox>
+                            </div>
+                            <label>Nova Password</label>
+                            <asp:RequiredFieldValidator ID="rfvpw" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tb_pw" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                            <div class="mb-3">
+                                <asp:TextBox ID="tb_pw" oninput="validatePassword(this)" CssClass="form-control" placeholder="Nova Password" runat="server"></asp:TextBox>
+                            </div>
+                            <label>Repetir a Nova Password</label>
+                            <asp:RequiredFieldValidator ID="rfvpwr" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tb_pwr" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                            <div class="mb-3">
+                                <asp:TextBox ID="tb_pwr" oninput="validatePassword(this)" CssClass="form-control" placeholder="Repita a Password" runat="server"></asp:TextBox>
+                            </div>
+                            <div class="text-center col-md-6">
+                                <asp:Button ID="btn_changepw" runat="server" Text="Alterar Password" class="btn bg-gradient-primary w-100 mt-4 mb-0" OnClick="btn_changepw_Click" />
+                            </div>
+                            <div style="padding: 5px;" id="alert" class="hidden" role="alert">
+                                <asp:Label runat="server" ID="Label1" CssClass="text-white"></asp:Label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Javascript do Datepickr -->
     <script>
         flatpickr('#<%= tbDataNascimento.ClientID %>', {
             // Options
@@ -691,6 +715,7 @@
         });
     </script>
 
+    <!--Javascript para aceder aos detalhes do perfil-->
     <script>
         function showEdit(event) {
             event.preventDefault();
@@ -699,11 +724,22 @@
 
             // Remove 'hide' class and add 'show' class to div2
             document.getElementById('registration').classList.remove('hidden');
-
-
         }
     </script>
 
+    <!--Javascript para mostrar a div de mudar a pw-->
+    <script>
+        function showChangePw(event) {
+            event.preventDefault();
+            // Remove 'show' class and add 'hide' class to div1
+            document.getElementById('profileSinapse').classList.add('hidden');
+
+            // Remove 'hide' class and add 'show' class to div2
+            document.getElementById('ChangePw').classList.remove('hidden');
+        }
+    </script>
+
+    <!-- Javascript para mostrar a página dois do form -->
     <script>
         function showNextDiv() {
             // Check if all validators are valid
@@ -722,6 +758,7 @@
         }
     </script>
 
+    <!-- Javascript para mostrar a página um do form se carregado o botão voltar-->
     <script>
         function showPrevDiv() {
             // Remove 'show' class and add 'hide' class to div2
@@ -734,6 +771,7 @@
         }
     </script>
 
+    <!-- Javascript para mostrar a página anterior -->
     <script>
         function submitInfo() {
             // Check if all validators are valid
@@ -741,10 +779,6 @@
 
             // If validators are valid, proceed to show next div
             if (isValid) {
-                //// Remove 'show' class and add 'hide' class to div1
-                //document.getElementById('registerCompletionpage2').classList.remove('card');
-                //document.getElementById('registerCompletionpage2').classList.add('hidden');
-
                 // Remove 'hide' class and add 'show' class to div2
                 document.getElementById('registrationMessage').classList.remove('hidden');
             }

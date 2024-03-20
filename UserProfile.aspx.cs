@@ -1,7 +1,7 @@
 ﻿using FinalProject.Classes;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -9,9 +9,11 @@ namespace FinalProject
 {
     public partial class UserProfile : System.Web.UI.Page
     {
+        protected FileControl FileControlInstance;
         protected void Page_Load(object sender, EventArgs e)
         {
             string script;
+            FileControlInstance = new FileControl();
 
             if (Session["Logado"] == null)
             {
@@ -70,8 +72,8 @@ namespace FinalProject
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
 
-                if (!IsPostBack)
-                {
+                //if (!IsPostBack)
+                //{
                     User profileuser = Classes.User.LoadUser(user);
                     if (profileuser != null)
                     {
@@ -80,8 +82,9 @@ namespace FinalProject
                         infoname.Text = profileuser.Name;
                         infocell.Text = profileuser.Phone;
                         infoemail.Text = profileuser.Email;
+                        lbLifeMotto.Text = profileuser.LifeMotto;
+
                         tbNome.Text = profileuser.Name;
-                        
                         ddlSexo.SelectedValue = profileuser.Sexo.ToString();
                         tbDataNascimento.Text = profileuser.DataNascimento.ToString();
                         ddlDocumentoIdent.SelectedValue = profileuser.CodTipoDoc.ToString();
@@ -90,10 +93,10 @@ namespace FinalProject
                         tbNrSegSocial.Text = profileuser.NrSegSocial;
                         tbNIF.Text = profileuser.NIF;
                         tbMorada.Text = profileuser.Morada;
+                        tbLocalidade.Text = profileuser.Localidade;
                         tbCodPostal.Text = profileuser.CodPostal;
-                        foto.ImageUrl = "data:image/jpeg;base64," + profileuser.Foto;
-
-                        ddlCodPais.SelectedValue= profileuser.CodPais.ToString();
+                        foto.ImageUrl = profileuser.Foto;
+                        ddlCodPais.SelectedValue = profileuser.CodPais.ToString();
                         ddlCodEstadoCivil.SelectedValue = profileuser.CodEstadoCivil.ToString();
                         tbIBAN.Text = profileuser.IBAN;
                         tbNaturalidade.Text = profileuser.Naturalidade;
@@ -103,10 +106,12 @@ namespace FinalProject
                         tbTelemovel.Text = profileuser.Phone;
                         tbEmail.Text = profileuser.Email;
                         ddlCodGrauAcademico.SelectedValue = profileuser.CodGrauAcademico.ToString();
+                        lbLifeMotto.Text = profileuser.LifeMotto;
 
                         //Falta processar anexos
+                        LoadSubmittedFiles();
 
-                    }
+                    //}
                 }
             }
         }
@@ -118,8 +123,9 @@ namespace FinalProject
 
         protected void btn_submit_Click(object sender, EventArgs e)
         {
-            List<FileControl> uploadedFiles = FileControl.ProcessUploadedFiles(Request.Files);
             List<string> userData = new List<string>();
+            List<FileControl> uploadedFiles = FileControl.ProcessUploadedFiles(fuAnexo);
+
             userData.Add(Convert.ToString(Session["CodUtilizador"]));
             userData.Add(tbNome.Text);
             userData.Add(tbEmail.Text);
@@ -134,46 +140,102 @@ namespace FinalProject
             userData.Add(tbMorada.Text);
             userData.Add(ddlCodPais.SelectedValue);
             userData.Add(tbCodPostal.Text);
-            userData.Add(tbfreguesia.Text);
+            userData.Add(tbLocalidade.Text);
             userData.Add(ddlCodEstadoCivil.SelectedValue);
             userData.Add(tbNrSegSocial.Text);
             userData.Add(tbIBAN.Text);
             userData.Add(tbNaturalidade.Text);
             userData.Add(ddlCodNacionalidade.SelectedValue);
-            byte[] fileBytes;
+            HttpPostedFile photoFile = fuFoto.PostedFile;
 
-            if (fuFoto.HasFile)
-            {
-                using (BinaryReader reader = new BinaryReader(fuFoto.PostedFile.InputStream))
-                {
-                    fileBytes = reader.ReadBytes(fuFoto.PostedFile.ContentLength);
-                }
-
-                string forFoto = Convert.ToBase64String(fileBytes);
-                userData.Add(forFoto);
-            }
-            else
-            {
-                string imagePath = "~/assets/img/small-logos/default.svg";
-                string physicalPath = Server.MapPath(imagePath);
-
-                using (FileStream fileStream = new FileStream(physicalPath, FileMode.Open, FileAccess.Read))
-                {
-                    fileBytes = new byte[fileStream.Length];
-                    fileStream.Read(fileBytes, 0, (int)fileStream.Length);
-                }
-
-                string forFoto = Convert.ToBase64String(fileBytes);
-                userData.Add(forFoto);
-            }
-
+            byte[] photoBytes = FileControl.ProcessPhotoFile(photoFile);
+            userData.Add(Convert.ToBase64String(photoBytes));
 
             userData.Add(ddlCodGrauAcademico.SelectedValue);
             userData.Add(ddlCodSituacaoProfissional.SelectedValue);
+            userData.Add(tbLifeMotto.Text);
+            
 
             Classes.User.completeRegisterUser(userData, uploadedFiles);
-            //Classes.User.updateRegisterUser(userData, uploadedFiles);
+        }
 
+        protected void btn_changepw_Click(object sender, EventArgs e)
+        {
+            (bool password, List<string> failures) = Security.IsPasswordStrong(tbEmail.Text);
+
+            if (!password)
+            {
+                foreach (var failure in failures)
+                {
+                    string script = @"                      
+                            document.getElementById('alert').classList.remove('hidden');
+                            document.getElementById('alert').classList.add('alert');
+                            document.getElementById('alert').classList.add('alert-primary');
+                            ";
+
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+
+                    lbl_message.Text += failure + "\n";
+                }
+            }
+            else if (tb_pw.Text != tb_pwr.Text)
+            {
+                string script = @"                      
+                            document.getElementById('alert').classList.remove('hidden');
+                            document.getElementById('alert').classList.add('alert');
+                            document.getElementById('alert').classList.add('alert-primary');
+                            ";
+
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+
+                lbl_message.Text = "A palavra-passe e a sua repetição não correspondem.";
+            }
+            else
+            {
+                int ChangePass = Classes.Security.ChangePassword(tbEmail.Text, tb_pw.Text, tb_pwr.Text);
+                if (ChangePass == 1)
+                {
+                    string script = @"                      
+                            document.getElementById('alert').classList.remove('hidden');
+                            document.getElementById('alert').classList.add('alert');
+                            document.getElementById('alert').classList.add('alert-primary');
+                            ";
+
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+
+                    lbl_message.Text = "Palavra-passe alterada com sucesso!";
+
+                    Session.Clear();
+                    Session.Abandon();
+                    Response.AddHeader("REFRESH", "3; URL=MainPage.aspx");
+
+                }
+                else
+                {
+                    string script = @"                      
+                            document.getElementById('alert').classList.remove('hidden');
+                            document.getElementById('alert').classList.add('alert');
+                            document.getElementById('alert').classList.add('alert-primary');
+                            ";
+
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+
+                    lbl_message.Text = "Palavra-passe atual incorreta!";
+
+                }
+            }
+        }
+
+        public void LoadSubmittedFiles()
+        {
+            if ((Session["CodUtilizador"].ToString() != null))
+            {
+                int CodUtilizador = Convert.ToInt32(Session["CodUtilizador"].ToString());
+                List<FileControl> files = FileControl.GetFilesForUser(CodUtilizador);
+
+                fileRepeater.DataSource = files;
+                fileRepeater.DataBind();
+            }
         }
     }
 }

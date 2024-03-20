@@ -22,7 +22,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="jumbotron jumbotron-fluid flex" style="text-align: center;">
         <div class="container">
-            <iframe src="https://youtube.com/embed/2uyOp--G7dQ?controls=1&mute=1&showinfo=0&rel=0&autoplay=1" style="width: 1200px; height: 580px" allowfullscreen="yes" frameborder="0"></iframe>
+            <iframe src="https://youtube.com/embed/2uyOp--G7dQ?controls=1&mute=1&showinfo=0&rel=0&autoplay=1" style="width: 860px; height: 450px" allowfullscreen="yes" frameborder="0"></iframe>
         </div>
     </div>
     <div class="col-12 mt-4">
@@ -56,20 +56,6 @@
                                 </p>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <button type="button" class="btn btn-outline-primary btn-sm mb-0">Detalhes</button>
-                                    <div class="avatar-group mt-2">
-                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
-                                            <img alt="Image placeholder" src="../assets/img/team-1.jpg">
-                                        </a>
-                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
-                                            <img alt="Image placeholder" src="../assets/img/team-2.jpg">
-                                        </a>
-                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
-                                            <img alt="Image placeholder" src="../assets/img/team-3.jpg">
-                                        </a>
-                                        <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
-                                            <img alt="Image placeholder" src="../assets/img/team-4.jpg">
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                         </div>

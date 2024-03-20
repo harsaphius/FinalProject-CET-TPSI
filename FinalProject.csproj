@@ -122,8 +122,6 @@
     <Content Include="assets\img\team-3.jpg" />
     <Content Include="assets\img\team-4.jpg" />
     <Content Include="assets\img\vr-bg.jpg" />
-    <Content Include="assets\js\core\bootstrap.min.js" />
-    <Content Include="assets\js\core\popper.min.js" />
     <Content Include="assets\js\plugins\bootstrap-notify.js" />
     <Content Include="assets\js\plugins\Chart.extension.js" />
     <Content Include="assets\js\plugins\chartjs.min.js" />
@@ -131,8 +129,6 @@
     <Content Include="assets\js\plugins\fullcalendar.min.js" />
     <Content Include="assets\js\plugins\perfect-scrollbar.min.js" />
     <Content Include="assets\js\plugins\smooth-scrollbar.min.js" />
-    <Content Include="assets\js\soft-ui-dashboard.js" />
-    <Content Include="assets\js\soft-ui-dashboard.min.js" />
     <Content Include="bin\ASPSnippets.FaceBookAPI.dll" />
     <Content Include="bin\ASPSnippets.GoogleAPI.dll" />
     <Content Include="bin\FinalProject.dll" />
@@ -178,6 +174,7 @@
     <Content Include="bin\roslyn\System.Xml.XPath.XDocument.dll" />
     <Content Include="bin\roslyn\vbc.exe" />
     <Content Include="bin\roslyn\VBCSCompiler.exe" />
+    <Content Include="CourseDetails.aspx" />
     <Content Include="gulpfile.js" />
     <Content Include="Manage.aspx" />
     <Content Include="ManageClasses.aspx" />
@@ -187,6 +184,7 @@
     <Content Include="ManageModules.aspx" />
     <Content Include="ManageStudents.aspx" />
     <Content Include="ManageTeachers.aspx" />
+    <Content Include="ModuleDetails.aspx" />
     <Content Include="obj\Debug\FinalProject.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\FinalProject.dll" />
     <Content Include="obj\Debug\FinalProject.pdb" />
@@ -311,7 +309,6 @@
     <Content Include="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\vbc.exe.config" />
     <Content Include="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\vbc.rsp" />
     <Content Include="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\VBCSCompiler.exe.config" />
-    <Content Include="assets\js\soft-ui-dashboard.js.map" />
     <None Include="web.sitemap" />
   </ItemGroup>
   <ItemGroup>
@@ -329,7 +326,7 @@
     <Compile Include="CinelMP.Master.designer.cs">
       <DependentUpon>CinelMP.Master</DependentUpon>
     </Compile>
-    <Compile Include="Classes\Classes.cs" />
+    <Compile Include="Classes\ClassesS.cs" />
     <Compile Include="Classes\Classrooms.cs" />
     <Compile Include="Classes\Course.cs" />
     <Compile Include="Classes\EmailControl.cs" />
@@ -342,6 +339,13 @@
     <Compile Include="Classes\Students.cs" />
     <Compile Include="Classes\Teachers.cs" />
     <Compile Include="Classes\User.cs" />
+    <Compile Include="CourseDetails.aspx.cs">
+      <DependentUpon>CourseDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CourseDetails.aspx.designer.cs">
+      <DependentUpon>CourseDetails.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Manage.aspx.cs">
       <DependentUpon>Manage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -397,6 +401,13 @@
     </Compile>
     <Compile Include="ManageTeachers.aspx.designer.cs">
       <DependentUpon>ManageTeachers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ModuleDetails.aspx.cs">
+      <DependentUpon>ModuleDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ModuleDetails.aspx.designer.cs">
+      <DependentUpon>ModuleDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="UserCourses.aspx.cs">

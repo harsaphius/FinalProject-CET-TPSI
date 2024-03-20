@@ -23,18 +23,25 @@
     <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
     <!-- Include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/cinel.js"></script>
     <script type="text/javascript" src="https://cdn.weglot.com/weglot.min.js"></script>
     <script>
         Weglot.initialize({
             api_key: 'wg_1ae256b87448551b21819a5962a372278'
         });
     </script>
+    <script>
+        function WebForm_PostBackOptions(eventTarget, eventArgument, validation, validationGroup, actionUrl, trackFocus, clientSubmit) {
+
+        }
+
+    </script>
 
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 
-<body class="g-sidenav-show  bg-gray-100">
+<body class="g-sidenav-show bg-gray-100">
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-0 " id="sidenav-main">
@@ -316,7 +323,7 @@
                         </ul>
                     </li>
                     <li id="signout" class="hidden">
-                        <asp:LinkButton runat="server" ID="lbtn_signout" class="nav-link  " AutoPostBack="True" OnClick="lbtn_signout_Click">
+                        <asp:LinkButton runat="server" ID="lbtn_signout" class="nav-link " AutoPostBack="True" OnClick="lbtn_signout_Click">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <svg width="12px" height="12px" viewBox="0 0 40 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <title>document</title>
@@ -351,7 +358,7 @@
                     <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                         <div class="ms-md-auto pe-md-3 d-flex align-items-center">
                             <div class="input-group mb-3">
-                                <asp:LinkButton runat="server" ID="lbtn_search" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
+                                <asp:LinkButton AutoPostBack="true" runat="server" ID="lbtn_search" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
                                 <asp:TextBox runat="server" ID="tb_search" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
                             </div>
                         </div>
@@ -475,12 +482,13 @@
 
     </form>
     <!--   Core JS Files   -->
-        <script src="../assets/js/core/popper.min.js"></script>
-        <script src="../assets/js/core/bootstrap.min.js"></script>
-        <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-        <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-        <script src="../assets/js/plugins/chartjs.min.js"></script>
+    <%--    <script src="../assets/js/core/popper.min.js"></script>
+    --%><%--        <script src="../assets/js/core/bootstrap.min.js"></script>--%>
+    <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+    <script src="../assets/js/plugins/chartjs.min.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <!--Javascript do FullCalendar -->
     <script>
         var calendar = new FullCalendar.Calendar(document.getElementById("calendar"), {
             initialView: "dayGridMonth",
@@ -590,6 +598,7 @@
         calendar.render();
 
     </script>
+    <!-- Javascript do Chartbar -->
     <script>
         var ctx = document.getElementById("chart-bars").getContext("2d");
 
@@ -759,6 +768,7 @@
             },
         });
     </script>
+    <!--Javascript do Sidenav -->
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -769,6 +779,7 @@
         }
     </script>
 
+    <!-- Javascript das Divs -->
     <script type="text/javascript">
         $(document).ready(function () {
             // On page load, check the current URL and show/hide divs accordingly
@@ -791,9 +802,6 @@
 
                 // Update browser's URL without reloading the page
                 history.pushState({}, '', $(this).attr('href'));
-
-                //// Prevent the default behavior of the link
-                //event.preventDefault();
             });
         });
 
@@ -814,11 +822,11 @@
             $('div[id*="' + keyword + '"]').show(); // Show divs containing the keyword
         }
     </script>
-
+    
     <!-- Github buttons -->
-            <script async defer src="https://buttons.github.io/buttons.js"></script>
+<%--    <script async defer src="https://buttons.github.io/buttons.js"></script>--%>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-            <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
+    <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
 </body>
 
 </html>

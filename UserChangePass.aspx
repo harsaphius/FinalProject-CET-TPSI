@@ -39,7 +39,6 @@
                                         <div class="mb-3">
                                             <asp:TextBox ID="tb_pwr" oninput="validatePassword(this)" CssClass="form-control" placeholder="Repita a Password" runat="server"></asp:TextBox>
                                         </div>
-
                                         <div class="text-center">
                                             <asp:Button ID="btn_changepw" runat="server" Text="Alterar Password" class="btn bg-gradient-info w-100 mt-4 mb-0" OnClick="btn_changepw_Click" />
                                         </div>

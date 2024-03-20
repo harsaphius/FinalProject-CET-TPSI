@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -121,33 +122,12 @@ namespace FinalProject
             userData.Add(tbIBAN.Text);
             userData.Add(tbNaturalidade.Text);
             userData.Add(ddlCodNacionalidade.SelectedValue);
-            byte[] fileBytes;
+            HttpPostedFile photoFile = fuFoto.PostedFile;
 
-            if (fuFoto.HasFile)
-            {
-                using (BinaryReader reader = new BinaryReader(fuFoto.PostedFile.InputStream))
-                {
-                    fileBytes = reader.ReadBytes(fuFoto.PostedFile.ContentLength);
-                }
+            byte[] photoBytes = FileControl.ProcessPhotoFile(photoFile);
+            userData.Add(Convert.ToBase64String(photoBytes));
 
-                string forFoto = Convert.ToBase64String(fileBytes);
-                userData.Add(forFoto);
-            }
-            else
-            {
-                string imagePath = "~/assets/img/small-logos/default.svg";
-                string physicalPath = Server.MapPath(imagePath);
-
-                using (FileStream fileStream = new FileStream(physicalPath, FileMode.Open, FileAccess.Read))
-                {
-                    fileBytes = new byte[fileStream.Length];
-                    fileStream.Read(fileBytes, 0, (int)fileStream.Length);
-                }
-
-                string forFoto = Convert.ToBase64String(fileBytes);
-                userData.Add(forFoto);
-            }
-            List<FileControl> uploadedFiles = FileControl.ProcessUploadedFiles(Request.Files);
+            List<FileControl> uploadedFiles = FileControl.ProcessUploadedFiles(fuAnexo);
 
             int UserRegister = Classes.User.registerUser(userData);
             Classes.User.completeRegisterUser(userData, uploadedFiles);
@@ -164,7 +144,7 @@ namespace FinalProject
 
                 lbl_message.Text = "Utilizador registado com sucesso!";
 
-                Classes.EmailControl.SendEmail(tbEmail.Text, $"Nova Pass:{NovaPasse}", "PW");
+                Classes.EmailControl.SendEmailActivation(tbEmail.Text);
             }
             else
             {
@@ -178,6 +158,11 @@ namespace FinalProject
 
                 lbl_message.Text = "Utilizador já registado!";
             }
+        }
+
+        protected void btn_back_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/ManageSudents.aspx?Insert");
         }
     }
 }

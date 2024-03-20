@@ -6,9 +6,11 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
-        <button class="btn btn-icon btn-2 btn-primary" type="button" onclick="toggleFilters()">
-            <span class="btn-inner--icon"><i class="fa-solid fa-filter" aria-hidden="true"></i></span>
-        </button>
+        <div class="col-md-12 col-sm-6 text-end" style="padding-right:50px; font-family:var(--bs-font-sans-serif)">
+            <a href="javascript:;" onclick="toggleFilters()">
+                <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true"> Filtros</i>
+            </a>
+        </div>
         <div id="filters" class="hidden">
             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                 <ContentTemplate>
@@ -65,17 +67,6 @@
                 </Triggers>
             </asp:UpdatePanel>
         </div>
-        <%--Example for consultaion  
-                    <div class="dropdown">
-                        <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            Primary
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="javascript:;">Action</a></li>
-                            <li><a class="dropdown-item" href="javascript:;">Another action</a></li>
-                            <li><a class="dropdown-item" href="javascript:;">Something else here</a></li>
-                        </ul>
-                    </div>--%>
 
         <div class="row">
             <asp:Repeater ID="rpt_maincourses" runat="server">
@@ -131,6 +122,7 @@
         </div>
     </div>
 
+    <!--Javascript do Flatpickr -->
     <script>
         flatpickr('#<%= tb_dataFim.ClientID %>', {
             // Options
@@ -141,9 +133,12 @@
         flatpickr('#<%= tb_dataInicio.ClientID %>', {
             // Options
             dateFormat: 'Y-m-d',
-            theme: 'light'
+            theme: 'light',
+            minDate: new Date()
         });
     </script>
+
+    <!-- Javascript para ativar/desativar a div dos filtros -->
     <script>
         function toggleFilters() {
             var filtersDiv = document.getElementById('filters');

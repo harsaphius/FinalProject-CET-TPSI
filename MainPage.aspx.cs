@@ -68,7 +68,6 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
-
             }
 
             rpt_maincourses.DataSource = Classes.Course.LoadCourses();

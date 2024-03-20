@@ -150,7 +150,6 @@ namespace FinalProject
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 LinkButton Lbtn_edit = (LinkButton)e.Item.FindControl("lbt_edit");
-
             }
         }
 
@@ -179,7 +178,6 @@ namespace FinalProject
                 tbDescricao.Text = ((Label)item.FindControl("lblDescricao")).Text;
                 editPanel.Controls.Add(tbDescricao);
             }
-
         }
     }
 }

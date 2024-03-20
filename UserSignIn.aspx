@@ -8,7 +8,7 @@
             <div style="padding: 5px;" id="alert" class="hidden" role="alert">
                 <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
             </div>
-            <div class="page-header min-vh-50">
+            <div class="page-header min-vh-50" id="section">
                 <div class="container">
                     <div class="row ">
                         <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
@@ -31,9 +31,8 @@
                                         </div>
 
                                         <p class="mb-4 text-sm mx-auto">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#pwdModal">Recuperar password</a>
+                                            <a class="nav-link" href="javascript:;" id="openModalLink" data-bs-toggle="tab" role="tab" aria-selected="true" onclick="showModal(event); return false">Recuperar password</a>
                                         </p>
-
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="rememberMe" checked="" runat="server">
                                             <label class="form-check-label" for="rememberMe">Lembrar-me?</label>
@@ -51,7 +50,6 @@
                                     </p>
                                 </div>
                                 <div class="card z-index-0">
-
                                     <p class="mb-0 text-center">Login com</p>
                                     <div class="row px-xl-5 px-sm-4 px-3" style="padding-bottom: 10px;">
                                         <div class="col-3 ms-auto px-1">
@@ -82,8 +80,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-sm mx-auto">
                                         Não tem acesso?
@@ -103,37 +99,48 @@
 
         </section>
 
-        <!-- Modal -->
-        <div class="modal fade" id="pwdModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalMessageTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Recuperação de palavra-passe</h5>
-                        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div>
-                            <div class="form-group">
-                                <label for="recipient-name" class="col-form-label">Introduza o seu Email para recuperar a Password</label>
-                                <asp:TextBox ID="tb_email" runat="server" ValidationGroup="ModalForm" class="form-control" placehoder="Introduza o seu e-mail"></asp:TextBox>
+        <!-- Div para recuperar Password -->
+        <div id="pwdModal" class="page-header hidden">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+                        <div class="card card-plain">
+                            <div class="card-header pb-0 text-left bg-transparent">
+                                <h3 class="font-weight-bolder text-info text-gradient">Recuperação de Palavra-passe</h3>
+                                <p class="mb-0">Introduza o seu e-mail para recuperar a sua palavra-passe </p>
                             </div>
-                            <div style="padding: 5px;" id="modalAlert" class="hidden" role="alert">
-                                <asp:Label runat="server" ID="lbl_modalMessage" CssClass="text-white"></asp:Label>
+                            <div class="card-body">
+                                <div role="form">
+                                    <label>Email</label>
+                                    <asp:RequiredFieldValidator ID="rfvEmailRecover" ErrorMessage="E-mail Obrigatório" Text="*" runat="server" ControlToValidate="tbEmailRecover" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                    <div class="mb-3">
+                                        <asp:TextBox ID="tbEmailRecover" ValidationGroup="ModalForm" CssClass="form-control" placeholder="E-mail" runat="server"></asp:TextBox>
+                                    </div>
+                                    <div>
+                                        <div class="text-center">
+                                            <asp:Button ID="btn_back" ValidationGroup="ModalForm" runat="server" Text="Voltar" class="btn bg-gradient-info w-100 mt-4 mb-0" />
+
+                                            <asp:Button ID="btn_recover" ValidationGroup="ModalForm" runat="server" Text="Recuperar" class="btn bg-gradient-info w-100 mt-4 mb-0" OnClick="btn_recuperarPW_Click" />
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Voltar</button>
-                        <asp:Button runat="server" type="button" class="btn bg-gradient-primary" ValidationGroup="ModalForm" Text="Recuperar" OnClick="btn_recuperarPW_Click" />
+                    <div class="col-md-6">
+                        <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
+                            <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </main>
-    <!-- -->
+
+    <!--Javascript para validar Username e Password e mostrar cores -->
     <script>
         function validateUsername(element) {
             // Check if username is empty
@@ -145,7 +152,6 @@
                 element.classList.remove("is-invalid");
             }
         }
-
         function validatePassword(element) {
             // Check if password is empty
             if (element.value.trim() === "") {
@@ -157,4 +163,17 @@
             }
         }
     </script>
+
+    <script>
+        function showModal(event) {
+            event.preventDefault();
+            // Remove 'show' class and add 'hide' class to div1
+            document.getElementById('section').classList.add('hidden');
+
+            // Remove 'hide' class and add 'show' class to div2
+            document.getElementById('pwdModal').classList.remove('hidden');
+        }
+    </script>
+
+
 </asp:Content>

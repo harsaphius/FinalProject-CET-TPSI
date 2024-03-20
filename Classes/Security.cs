@@ -5,11 +5,13 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Web.UI.WebControls;
 
 namespace FinalProject.Classes
 {
     public class Security
     {
+
         /// <summary>
         /// Função de Encriptação de Dados MD5
         /// </summary>
@@ -134,6 +136,12 @@ namespace FinalProject.Classes
             string usernamePattern = @"^[a-zA-Z0-9_-]{3,16}$";
             return Regex.IsMatch(username, usernamePattern);
         }
+
+        /// <summary>
+        /// Função para avaliação da força da password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public static (bool IsStrong, List<string> Failures) IsPasswordStrong(string password)
         {
             Regex maiusculas = new Regex("[A-Z]");
@@ -178,6 +186,14 @@ namespace FinalProject.Classes
 
             return (strong, failures);
         }
+
+        /// <summary>
+        /// Função para alterar a password
+        /// </summary>
+        /// <param name="User"></param>
+        /// <param name="OldPass"></param>
+        /// <param name="NewPass"></param>
+        /// <returns></returns>
         public static int ChangePassword(string User, string OldPass, string NewPass)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["NumiCoinConnectionString"].ConnectionString); //Definir a conexão à base de dados
@@ -207,6 +223,13 @@ namespace FinalProject.Classes
 
             return AnswUserExists;
         }
+
+        /// <summary>
+        /// Função de recuperação da password
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <param name="NovaPasse"></param>
+        /// <returns></returns>
         public static (int AnswUserExists, int AnswAccountActive) RecoverPassword(string Email, string NovaPasse)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
@@ -244,6 +267,12 @@ namespace FinalProject.Classes
 
         }
 
+        /// <summary>
+        /// Função para comparação de datas
+        /// </summary>
+        /// <param name="date1"></param>
+        /// <param name="date2"></param>
+        /// <returns></returns>
         public static string DataComparison(DateTime date1, DateTime date2)
         {
             string message;
@@ -252,6 +281,16 @@ namespace FinalProject.Classes
                 return message = "A data de nascimento não pode ser superior à data de validade";
             else return message = "";
 
+        }
+
+        /// <summary>
+        /// Função para avaliar se a TextBox está vazia
+        /// </summary>
+        /// <param name="textBox"></param>
+        /// <returns></returns>
+        public bool IsTextBoxEmpty(TextBox textBox)
+        {
+            return string.IsNullOrWhiteSpace(textBox.Text);
         }
 
     }

@@ -68,7 +68,9 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                    lbl_message.Text = $"A sua conta ainda não se encontra ativa! <a href='https://localhost:44352/ActivationPage.aspx?user={Security.EncryptString(tb_username.Text)}&redirected=true'> Clique aqui para a ativar </a>!";
+                    Classes.EmailControl.SendEmailActivation(tbEmailRecover.Text);
+
+                    lbl_message.Text = $"A sua conta ainda não se encontra ativa! Procedemos ao reenvio do e-mail de ativação!!";
 
                 }
                 else if (isLoginAllowed[0] == -1 && isLoginAllowed[1] == -1)
@@ -111,7 +113,8 @@ namespace FinalProject
 
         protected void btn_recuperarPW_Click(object sender, EventArgs e)
         {
-            if (Security.IsValidEmail(tb_email.Text) == false)
+
+            if (Security.IsValidEmail(tbEmailRecover.Text) == false)
             {
                 string script = @"                      
                             document.getElementById('modalAlert').classList.remove('hidden');
@@ -123,36 +126,21 @@ namespace FinalProject
 
                 lbl_message.Text = "Introduza um e-mail válido!";
             }
-
             else
             {
                 //Recuperação de password com envio de email
                 string NovaPasse = Membership.GeneratePassword(8, 2);
-                string email, body, subject;
-
-                (int AnswUserExist, int AnswAccountActive) = Security.RecoverPassword(tb_email.Text, NovaPasse);
-                if (AnswUserExist == 1 && AnswAccountActive == 1)
+ 
+                (int AnswUserExist, int AnswAccountActive) = Security.RecoverPassword(tbEmailRecover.Text, NovaPasse);
+                if (AnswUserExist == 1 && AnswAccountActive == 1) //Caso a conta esteja ativa, envia NovaPasse
                 {
-                    email = tb_email.Text;
-                    subject = "E-mail de recuperação";
-                    body = $"Ex.mo(s) Sr.(s), <br /> A sua nova palavra-passe para o e-mail {tb_email.Text} é a seguinte: {NovaPasse} <br /> Proceda à sua alteração através do seguinte <a href='{ConfigurationManager.AppSettings["SiteURL"]}/UserChangePass.aspx?user={Security.EncryptString(tb_email.Text)}&redirected=true'> link </a>!<br />";
-
-                    lbl_message.Text = $"E-mail enviado para a recuperação da sua conta!";
-
-                    EmailControl.SendEmail(email, body, subject);
-
+                    Classes.EmailControl.SendEmailRecover(tbEmailRecover.Text, NovaPasse);
                 }
                 else if (AnswUserExist == 1 && AnswAccountActive == 0) //Caso a conta não esteja ativa
                 {
                     Session["ActivatedUser"] = "OK";
 
-                    email = tb_email.Text;
-                    subject = "E-mail de ativação";
-                    body = $"Ex.mo(s) Sr(s), <br /><b>Obrigado pela sua inscrição.</b><br />Para ativar a sua conta clique <a href='{ConfigurationManager.AppSettings["SiteURL"]}/AtivationPage.aspx?user={Security.EncryptString(tb_email.Text)}&redirected=true'>aqui</a>!";
-
-                    lbl_message.Text = $"Este e-mail está registado, mas a conta não se encontra ativa! Foi enviado um e-mail para que proceda à ativação da sua conta!";
-
-                    EmailControl.SendEmail(email, body, subject);
+                    Classes.EmailControl.SendEmailActivation(tbEmailRecover.Text);
                 }
                 else //Caso o e-mail não esteja associado a nenhuma conta
                 {

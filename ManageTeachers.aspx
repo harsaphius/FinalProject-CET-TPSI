@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="ManageTeachers.aspx.cs" Inherits="FinalProject.ManageTeachers" %>
+﻿<%@ Page Title="Formadores" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="ManageTeachers.aspx.cs" Inherits="FinalProject.ManageTeachers" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -300,7 +300,7 @@
                                                     <asp:Button runat="server" ID="Button1" ValidationGroup="Page2" OnClientClick="showPrevDiv(); return false;" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
                                                     &nbsp;
 
-                                            <asp:Button runat="server" ID="btn_submit" OnClick="btn_submit_Click" ValidationGroup="Page2" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Submeter"></asp:Button>
+                                            <asp:Button runat="server" ID="btn_submit" ValidationGroup="Page2" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Submeter"></asp:Button>
                                                 </div>
                                             </div>
                                         </ContentTemplate>
@@ -320,14 +320,15 @@
                     </div>
                 </div>
                 <!-- End Registration Page 2-->
-            </div>
-            <div id="registrationMessage" class="hidden">
-                <div class="alert alert-primary text-white font-weight-bold" role="alert">
-                    <small class="text-uppercase font-weight-bold">
-                        <asp:Label runat="server" ID="lbl_message"></asp:Label></small>
+                <div id="registrationMessage" class="hidden">
+                    <div class="alert alert-primary text-white font-weight-bold" role="alert">
+                        <small class="text-uppercase font-weight-bold">
+                            <asp:Label runat="server" ID="lbl_message"></asp:Label></small>
+                    </div>
                 </div>
+                <!-- End of Registration Completion -->
             </div>
-            <!-- End of Registration Completion -->
+
         </div>
 
     </div>

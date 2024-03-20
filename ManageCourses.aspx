@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="ManageCourses.aspx.cs" EnableViewState="true" Inherits="FinalProject.ManageCourses" %>
+﻿<%@ Page Title="" EnableEventValidation="false" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="ManageCourses.aspx.cs" EnableViewState="true" Inherits="FinalProject.ManageCourses" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -34,7 +34,69 @@
         <asp:UpdatePanel ID="updatePanel" runat="server">
             <ContentTemplate>
                 <div class="container bg-secundary py-2">
+                    <!-- Listagem de Cursos -->
                     <div id="listCoursesDiv" class="pageDiv">
+                        <div class="col-md-12 col-sm-6 text-end" style="padding-right: 20px; font-family: var(--bs-font-sans-serif)">
+                            <a href="javascript:;" onclick="toggleFilters()">
+                                <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
+                            </a>
+                        </div>
+                        <div id="filters" class="hidden">
+                            <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                                <ContentTemplate>
+                                    <div class="row">
+                                        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                            <span>Designação:</span>
+                                            <div class="input-group mb-4">
+                                                <asp:LinkButton runat="server" ID="lbtn_search" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
+                                                <asp:TextBox runat="server" ID="tb_search" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                            <span>Área:</span>
+                                            <div class="dropdown">
+                                                <asp:DropDownList ID="ddl_area" runat="server" class="btn bg-gradient-secundary dropdown-toggle" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea"></asp:DropDownList>
+                                                <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [area]"></asp:SqlDataSource>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                            <span>Tipo:</span>
+                                            <div class="dropdown">
+                                                <asp:DropDownList ID="ddl_tipo" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso">
+                                                </asp:DropDownList>
+                                                <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                            <span>Data de Início: </span>
+                                            <div class="input-group mb-4">
+                                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                                <asp:TextBox runat="server" ID="tb_dataInicio" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                            <span>Data de Fim: </span>
+                                            <div class="input-group mb-4">
+                                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                                <asp:TextBox runat="server" ID="tb_dataFim" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                            <span>
+                                                <br />
+                                            </span>
+                                            <div class="input-group mb-4">
+                                                <asp:Button runat="server" ID="btn_clear" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ContentTemplate>
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="btn_clear" />
+                                </Triggers>
+                            </asp:UpdatePanel>
+                        </div>
                         <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                             <ContentTemplate>
                                 <asp:Repeater ID="rpt_Courses" runat="server">
@@ -69,7 +131,7 @@
                                             <td class="text-xs font-weight-bold">Nível <%# Eval("CodQNQ") %>
                                             </td>
                                             <td class="align-middle text-center">
-                                                <asp:LinkButton runat="server" ID="lbt_edit" Text="Edit" class="text-secondary font-weight-bold text-xs">
+                                                <asp:LinkButton runat="server" ID="lbt_edit" Text="Edit" class="text-secondary font-weight-bold text-xs" OnClientClick="showEdit(); return true;">
                                                 </asp:LinkButton>
                                             </td>
 
@@ -84,6 +146,8 @@
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </div>
+                    <!-- Fim da Listagem de Cursos -->
+                    <!-- Inserção de Cursos -->
                     <div id="insertCoursesDiv" class="pageDiv">
 
                         <div style="padding: 5px;" id="alert" class="hidden" role="alert">
@@ -214,6 +278,8 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Fim de Inserção de Cursos -->
+                    <!-- Edição de Cursos -->
                     <div id="editCoursesDiv" class="pageDiv">
                         <div class="py-3 align-items-center row" style="padding-left: 28px;">
                             <button class="btn btn-icon btn-2 btn-primary" type="button">
@@ -236,6 +302,7 @@
                             </asp:UpdatePanel>
                         </div>
                     </div>
+                    <!-- Fim de Edição de Cursos -->
                 </div>
             </ContentTemplate>
         </asp:UpdatePanel>
@@ -296,5 +363,28 @@
         });
     </script>
 
+    <!-- Javascript para ativar/desativar a div dos filtros -->
+    <script>
+        function toggleFilters() {
+            var filtersDiv = document.getElementById('filters');
+            if (filtersDiv.classList.contains('hidden')) {
+                filtersDiv.classList.remove('hidden');
+            } else {
+                filtersDiv.classList.add('hidden');
+            }
+        }
+    </script>
+
+    <!-- -->
+    <script>
+        function showEdit(event) {
+            event.preventDefault();
+            // Remove 'show' class and add 'hide' class to div1
+            document.getElementById('listCoursesDiv').classList.add('hidden');
+
+            // Remove 'hide' class and add 'show' class to div2
+            document.getElementById('editCoursesDiv').classList.remove('hidden');
+        }
+    </script>
 
 </asp:Content>

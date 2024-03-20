@@ -16,6 +16,12 @@ namespace FinalProject.Classes
         public decimal Creditos { get; set; }
         public string SVG { get; set; }
 
+        /// <summary>
+        /// Função para inserir um módulo novo
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="imageBytes"></param>
+        /// <returns></returns>
         public static int InsertModule(List<string> values, byte[] imageBytes)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
@@ -49,6 +55,10 @@ namespace FinalProject.Classes
             return AnswModuleRegister;
         }
 
+        /// <summary>
+        /// Função para carregar os módulos 
+        /// </summary>
+        /// <returns></returns>
         public static List<Module> LoadModules()
         {
             List<Module> Modules = new List<Module>();

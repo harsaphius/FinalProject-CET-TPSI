@@ -105,21 +105,39 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.LinkButton lbtn_signup;
 
         /// <summary>
-        /// tb_email control.
+        /// rfvEmailRecover control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_email;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmailRecover;
 
         /// <summary>
-        /// lbl_modalMessage control.
+        /// tbEmailRecover control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_modalMessage;
+        protected global::System.Web.UI.WebControls.TextBox tbEmailRecover;
+
+        /// <summary>
+        /// btn_back control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_back;
+
+        /// <summary>
+        /// btn_recover control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_recover;
     }
 }
