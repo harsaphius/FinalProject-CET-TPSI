@@ -2,10 +2,20 @@
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+
 namespace FinalProject
 {
     public partial class ManageClassrooms : System.Web.UI.Page
     {
+        [System.Web.Services.WebMethod]
+        public static void SetPageTitleAndSiteMapNode(string action, string title)
+        {
+            if (action == "List" || action =="Edit" || action == "Insert")
+            {
+                Classes.SiteMapManagement.SetCurrentNodeTitle(title);
+            }
+                      
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -29,8 +39,6 @@ namespace FinalProject
                 {
                     lbtncourses.PostBackUrl = "./UserCourses.aspx";
                 }
-
-
 
                 string script = @"
                             document.getElementById('courses').href = './UserCourses.aspx';
@@ -69,7 +77,9 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
+
             }
         }
+
     }
 }

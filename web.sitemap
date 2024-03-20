@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0">
-	<siteMapNode url="~/MainPage.aspx" title="Home" description="Home Page">	
+	<siteMapNode url="~/MainPage.aspx" title="Home" description="Home Page">
 		<siteMapNode url="~/MainCourses.aspx" title="Cursos" description="Courses" />
 		<siteMapNode url="~/UserCourses.aspx" title="Meus Cursos" description="Courses" />
 		<siteMapNode url="~/UserProfile.aspx" title="Perfil" description="User Profile" />
@@ -30,9 +30,9 @@
 				<siteMapNode url="~/ManageStudents.aspx?Edit" title="Editar Formandos" description="Edit Students" />
 			</siteMapNode>
 			<siteMapNode url="~/ManageTeachers.aspx" title="Manutenção de Formadores" description="Manage Teachers">
-					<siteMapNode url="~/ManageTeachers.aspx?List" title="Listar Formadores" description="List Students" />
-					<siteMapNode url="~/ManageTeachers.aspx?Insert" title="Inserir Formadores" description="Insert Teachers" />
-					<siteMapNode url="~/ManageTeachers.aspx?Edit" title="Editar Formadores" description="Edit Teachers" />
+				<siteMapNode url="~/ManageTeachers.aspx?List" title="Listar Formadores" description="List Students" />
+				<siteMapNode url="~/ManageTeachers.aspx?Insert" title="Inserir Formadores" description="Insert Teachers" />
+				<siteMapNode url="~/ManageTeachers.aspx?Edit" title="Editar Formadores" description="Edit Teachers" />
 			</siteMapNode>
 			<siteMapNode url="~/ManageClassrooms.aspx" title="Manutenção de Salas" description="Manage Classrooms">
 				<siteMapNode url="~/ManageClassrooms.aspx?List" title="Listar Salas" description="List Classrooms" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.UI.WebControls;
 
 namespace FinalProject.Classes
@@ -57,6 +58,12 @@ namespace FinalProject.Classes
             paginationHtml.AppendLine("</li>");
 
             return paginationHtml.ToString();
+        }
+
+        public static string GetCurrentNodeTitle()
+        {
+            SiteMapNode currentNode = SiteMap.CurrentNode;
+            return currentNode?.Title;
         }
     }
 }

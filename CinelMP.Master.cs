@@ -29,5 +29,14 @@ namespace FinalProject
             Session.Clear();
             Response.Redirect("MainPage.aspx");
         }
+        public SiteMapNode GetCurrentSiteMapNode()
+        {
+            // Access the SiteMap for the current request
+            SiteMapNode currentNode = SiteMap.CurrentNode;
+
+            // Return the current SiteMapNode
+            return currentNode;
+        }
+
     }
 }

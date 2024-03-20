@@ -51,76 +51,40 @@ namespace FinalProject
         protected global::System.Web.UI.UpdatePanel updatePanel;
 
         /// <summary>
-        /// lbl_message control.
+        /// UpdatePanel4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_message;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel4;
 
         /// <summary>
-        /// rfvCourseName control.
+        /// lbtn_search control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCourseName;
+        protected global::System.Web.UI.WebControls.LinkButton lbtn_search;
 
         /// <summary>
-        /// tbCourseName control.
+        /// tb_search control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbCourseName;
+        protected global::System.Web.UI.WebControls.TextBox tb_search;
 
         /// <summary>
-        /// rfvTipoCurso control.
+        /// ddl_area control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTipoCurso;
-
-        /// <summary>
-        /// ddlTipoCurso control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTipoCurso;
-
-        /// <summary>
-        /// SQLDSTipo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSTipo;
-
-        /// <summary>
-        /// rvfarea control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rvfarea;
-
-        /// <summary>
-        /// ddlAreaCurso control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAreaCurso;
+        protected global::System.Web.UI.WebControls.DropDownList ddl_area;
 
         /// <summary>
         /// SQLDSArea control.
@@ -132,49 +96,139 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSArea;
 
         /// <summary>
-        /// rfvRef control.
+        /// ddl_tipo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvRef;
+        protected global::System.Web.UI.WebControls.DropDownList ddl_tipo;
 
         /// <summary>
-        /// tbRef control.
+        /// SQLDSTipo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbRef;
+        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSTipo;
 
         /// <summary>
-        /// rfvQNQ control.
+        /// tb_dataInicio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvQNQ;
+        protected global::System.Web.UI.WebControls.TextBox tb_dataInicio;
 
         /// <summary>
-        /// ddlQNQ control.
+        /// tb_dataFim control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlQNQ;
+        protected global::System.Web.UI.WebControls.TextBox tb_dataFim;
 
         /// <summary>
-        /// SQLDSQNQ control.
+        /// btn_clear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSQNQ;
+        protected global::System.Web.UI.WebControls.Button btn_clear;
+
+        /// <summary>
+        /// lbl_message control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbl_message;
+
+        /// <summary>
+        /// rfvClassroomNr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvClassroomNr;
+
+        /// <summary>
+        /// tbClassroomNr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbClassroomNr;
+
+        /// <summary>
+        /// rfvTipoSala control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTipoSala;
+
+        /// <summary>
+        /// ddlTipoSala control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTipoSala;
+
+        /// <summary>
+        /// SQLDSTipoSala control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSTipoSala;
+
+        /// <summary>
+        /// rvfLocalSala control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rvfLocalSala;
+
+        /// <summary>
+        /// ddlLocalSala control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlLocalSala;
+
+        /// <summary>
+        /// SQLDSLocalSala control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSLocalSala;
+
+        /// <summary>
+        /// btn_insert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_insert;
 
         /// <summary>
         /// UpdatePanel1 control.
@@ -193,24 +247,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpt_insertClassrooms;
-
-        /// <summary>
-        /// lbl_selection control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_selection;
-
-        /// <summary>
-        /// btn_insert control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_insert;
 
         /// <summary>
         /// UpdatePanel2 control.

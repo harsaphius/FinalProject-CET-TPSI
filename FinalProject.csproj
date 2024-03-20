@@ -336,6 +336,7 @@
     <Compile Include="Classes\Module.cs" />
     <Compile Include="Classes\PageControls.cs" />
     <Compile Include="Classes\Security.cs" />
+    <Compile Include="Classes\SiteMapManagement.cs" />
     <Compile Include="Classes\Students.cs" />
     <Compile Include="Classes\Teachers.cs" />
     <Compile Include="Classes\User.cs" />

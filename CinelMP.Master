@@ -43,7 +43,7 @@
 
 <body class="g-sidenav-show bg-gray-100">
     <form id="form1" runat="server">
-        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+        <asp:ScriptManager ID="ScriptManager1" EnablePageMethods="true" runat="server"></asp:ScriptManager>
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-0 " id="sidenav-main">
             <div class="sidenav-header">
                 <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
@@ -323,7 +323,7 @@
                         </ul>
                     </li>
                     <li id="signout" class="hidden">
-                        <asp:LinkButton runat="server" ID="lbtn_signout" class="nav-link " AutoPostBack="True" OnClick="lbtn_signout_Click">
+                        <asp:LinkButton runat="server" ID="lbtn_signout" class="nav-link " AutoPostBack="True" CausesValidation="false" OnClick="lbtn_signout_Click">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                 <svg width="12px" height="12px" viewBox="0 0 40 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                     <title>document</title>
@@ -373,7 +373,7 @@
                                 </a>
                             </li>
                             <li id="navButtonSignOut" class="hidden">
-                                <asp:LinkButton runat="server" ID="lbtn_signout_navbar" class="nav-link text-body font-weight-bold px-0" OnClick="lbtn_signout_Click">
+                                <asp:LinkButton runat="server" ID="lbtn_signout_navbar" class="nav-link text-body font-weight-bold px-0" CausesValidation="false" OnClick="lbtn_signout_Click">
                                     <i class="fa fa-user me-sm-1"></i>
                                     <span class="d-sm-inline d-none">Logout</span>
                                 </asp:LinkButton>
@@ -792,16 +792,6 @@
 
                 // Add active class to the clicked link
                 $(this).addClass('active');
-
-                // Get the keyword from the link button's text
-                var keyword = $(this).text().trim().toLowerCase();
-
-                // Show/hide divs based on the extracted keyword
-                $('.pageDiv').hide(); // Hide all divs first
-                $('div[id*="' + keyword + '"]').show(); // Show divs containing the keyword
-
-                // Update browser's URL without reloading the page
-                history.pushState({}, '', $(this).attr('href'));
             });
         });
 
@@ -822,9 +812,9 @@
             $('div[id*="' + keyword + '"]').show(); // Show divs containing the keyword
         }
     </script>
-    
+
     <!-- Github buttons -->
-<%--    <script async defer src="https://buttons.github.io/buttons.js"></script>--%>
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
 </body>
