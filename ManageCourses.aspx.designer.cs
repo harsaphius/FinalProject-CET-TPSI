@@ -159,6 +159,33 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Repeater rpt_Courses;
 
         /// <summary>
+        /// btn_previousC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btn_previousC;
+
+        /// <summary>
+        /// btn_nextC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btn_nextC;
+
+        /// <summary>
+        /// hfInsertCoursesVisible control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfInsertCoursesVisible;
+
+        /// <summary>
         /// lbl_message control.
         /// </summary>
         /// <remarks>
@@ -301,6 +328,24 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpt_insertCourses;
+
+        /// <summary>
+        /// btn_previousM control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btn_previousM;
+
+        /// <summary>
+        /// btn_nextM control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btn_nextM;
 
         /// <summary>
         /// lbl_selection control.

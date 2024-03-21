@@ -21,22 +21,14 @@
     <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
-    <!-- Include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="assets/js/cinel.js"></script>
     <script type="text/javascript" src="https://cdn.weglot.com/weglot.min.js"></script>
     <script>
         Weglot.initialize({
             api_key: 'wg_1ae256b87448551b21819a5962a372278'
         });
     </script>
-    <script>
-        function WebForm_PostBackOptions(eventTarget, eventArgument, validation, validationGroup, actionUrl, trackFocus, clientSubmit) {
-
-        }
-
-    </script>
-
+    
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -381,7 +373,7 @@
 
 
                             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-                                <a href="javascript:void(0);" class="nav-link text-body p-0" id="iconNavbarSidenav" onclick="myFunction()">
+                                <a href="javascript:void(0);" class="nav-link text-body p-0" id="iconNavbarSidenav">
                                     <div class="sidenav-toggler-inner">
                                         <i class="sidenav-toggler-line"></i>
                                         <i class="sidenav-toggler-line"></i>
@@ -470,20 +462,15 @@
                                     </a>
                                 </li>
                             </ul>
-
                         </div>
                     </div>
                 </div>
-
             </footer>
-
         </main>
-
-
     </form>
     <!--   Core JS Files   -->
-    <%--    <script src="../assets/js/core/popper.min.js"></script>
-    --%><%--        <script src="../assets/js/core/bootstrap.min.js"></script>--%>
+<%--    <script src="../assets/js/core/popperjs"></script>--%>
+<%--    <script src="../assets/js/core/bootstrap.js"></script>--%>
     <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="../assets/js/plugins/chartjs.min.js"></script>
@@ -768,6 +755,7 @@
             },
         });
     </script>
+
     <!--Javascript do Sidenav -->
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
@@ -779,11 +767,11 @@
         }
     </script>
 
-    <!-- Javascript das Divs -->
+    <!-- Javascript Para mostrar as divs e colocar os items ativos -->
     <script type="text/javascript">
         $(document).ready(function () {
             // On page load, check the current URL and show/hide divs accordingly
-            handlePageLoad();
+            //handlePageLoad();
 
             // Handle tab click event
             $('.nav-link', '.nav-item').on('click', function (event) {
@@ -795,28 +783,28 @@
             });
         });
 
-        function handlePageLoad() {
-            var url = window.location.href;
-            var keyword = "";
+        //function handlePageLoad() {
+        //    var url = window.location.href;
+        //    var keyword = "";
 
-            if (url.indexOf('?List') !== -1) {
-                keyword = "list";
-            } else if (url.indexOf('?Insert') !== -1) {
-                keyword = "insert";
-            } else if (url.indexOf('?Edit') !== -1) {
-                keyword = "edit";
-            }
+        //    if (url.indexOf('?List') !== -1) {
+        //        keyword = "list";
+        //    } else if (url.indexOf('?Insert') !== -1) {
+        //        keyword = "insert";
+        //    } else if (url.indexOf('?Edit') !== -1) {
+        //        keyword = "edit";
+        //    }
 
-            // Show/hide divs based on the extracted keyword
-            $('.pageDiv').hide(); // Hide all divs first
-            $('div[id*="' + keyword + '"]').show(); // Show divs containing the keyword
-        }
+        //    // Show/hide divs based on the extracted keyword
+        //    $('.pageDiv').hide(); // Hide all divs first
+        //    $('div[id*="' + keyword + '"]').show(); // Show divs containing the keyword
+        //}
     </script>
 
     <!-- Github buttons -->
-        <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
+    <script src="../assets/js/soft-ui-dashboard.js"></script>
 </body>
 
 </html>

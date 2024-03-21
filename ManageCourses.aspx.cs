@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -11,26 +10,7 @@ namespace FinalProject
         protected void Page_Load(object sender, EventArgs e)
         {
             string script;
-            //// Initialize your list of items
-            //List<Course> Courses = new List<Course>(); // Replace int with the type of your items
-            //                                   // Add your items to the list...
 
-            //// Define the desired page size
-            //int pageSize = 2; // Change this to your desired page size
-
-            //// Create an instance of PageControls with your items and page size
-            //PageControls<int> pageControls = new PageControls<int>(Courses, pageSize);
-
-            //// Get the current page number (for demonstration, assuming it's 1)
-            //int currentPage = 1; // Change this to the actual current page number
-
-            //// Generate pagination HTML
-
-            //string paginationHtml = pageControls.GeneratePagination(currentPage, pageControls.GetTotalPages());
-
-            //// Render the pagination HTML to the page
-            //paginationContainer.InnerHtml = paginationHtml; // Wrapping paginationHtml in <li> for direct replacement
-          
             if (Session["Logado"] == null)
             {
                 Response.Redirect("MainPage.aspx");
@@ -94,15 +74,8 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
-
-                rpt_Courses.DataSource = Classes.Course.LoadCourses();
-                rpt_Courses.DataBind();
-
-                if (!Page.IsPostBack)
-                {
-                    rpt_insertCourses.DataSource = Classes.Module.LoadModules();
-                    rpt_insertCourses.DataBind();
-                }
+                BindDataCourses();
+                BindDataModules();
             }
         }
 
@@ -205,40 +178,98 @@ namespace FinalProject
                 // Attach an event handler for the CheckedChanged event
                 chkBoxMod.CheckedChanged += chkBoxMod_CheckedChanged;
             }
+
         }
 
-        //protected void listCourses_Click(object sender, EventArgs e)
-        //{
-        //    string script = @"                      
-        //                    document.getElementById('listCoursesDiv').classList.remove('hidden');
-        //                    document.getElementById('insertCoursesDiv').classList.add('hidden');
-        //                    document.getElementById('editCoursesDiv').classList.add('hidden');
-        //                    ";
+        protected void btn_previousC_Click(object sender, EventArgs e)
+        {
+            PageNumberCourses -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataCourses();
+        }
 
-        //    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowDivElements", script, true);
-        //}
+        protected void btn_nextC_Click(object sender, EventArgs e)
+        {
+            PageNumberCourses += 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataCourses();
+        }
 
-        //protected void insertCourses_Click(object sender, EventArgs e)
-        //{
-        //    string script = @"                      
-        //                    document.getElementById('listCoursesDiv').classList.add('hidden');
-        //                    document.getElementById('insertCoursesDiv').classList.remove('hidden');
-        //                    document.getElementById('editCoursesDiv').classList.add('hidden');
-        //                    ";
+        protected void btn_previousM_Click(object sender, EventArgs e)
+        {
+            PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataModules();
+        }
 
-        //    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowDivElements", script, true);
+        protected void btn_nextM_Click(object sender, EventArgs e)
+        {
+            PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataModules();
+        }
+        protected void UpdatePanel_Load(object sender, EventArgs e)
+        {
+            hfInsertCoursesVisible.Value = "true"; // or "false" based on your condition
+        }
+        private void BindDataCourses()
+        {
 
-        //}
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.Course.LoadCourses();
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 2;
+            pagedData.CurrentPageIndex = PageNumberCourses;
 
-        //protected void editCourses_Click(object sender, EventArgs e)
-        //{
-        //    string script = @"                      
-        //                    document.getElementById('listCoursesDiv').classList.add('hidden');
-        //                    document.getElementById('insertCoursesDiv').classList.add('hidden');
-        //                    document.getElementById('editCoursesDiv').classList.remove('hidden');
-        //                    ";
+            rpt_Courses.DataSource = pagedData;
+            rpt_Courses.DataBind();
 
-        //    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowDivElements", script, true);
-        //}
+            btn_previousC.Enabled = !pagedData.IsFirstPage;
+            btn_nextC.Enabled = !pagedData.IsLastPage;
+
+        }
+
+        private void BindDataModules()
+        {
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.Module.LoadModules();
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 5;
+            pagedData.CurrentPageIndex = PageNumberModules;
+            ; // Adjust with the respective pagination helper instance
+
+            rpt_insertCourses.DataSource = pagedData;
+            rpt_insertCourses.DataBind();
+
+            btn_previousM.Enabled = !pagedData.IsFirstPage; // Adjust with the respective btn_previous control for Users Repeater
+            btn_nextM.Enabled = !pagedData.IsLastPage; // Adjust with the respective btn_next control for Users Repeater
+        
     }
+
+    public int PageNumberCourses
+    {
+        get
+        {
+            if (ViewState["PageNumberCourses"] != null)
+                return Convert.ToInt32(ViewState["PageNumberCourses"]);
+            else
+                return 0;
+        }
+        set
+        {
+            ViewState["PageNumberCourses"] = value;
+        }
+    }
+
+    public int PageNumberModules
+    {
+        get
+        {
+            if (ViewState["PageNumberModules"] != null)
+                return Convert.ToInt32(ViewState["PageNumberModules"]);
+            else
+                return 0;
+        }
+        set
+        {
+            ViewState["PageNumberModules"] = value;
+        }
+    }
+}
 }

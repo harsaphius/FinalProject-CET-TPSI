@@ -5,7 +5,7 @@ using System.Web;
 
 namespace FinalProject.Classes
 {
-    public class ClassesS
+    public class ClassesUsers
     {
     }
 }

@@ -4,32 +4,22 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
-        <asp:UpdatePanel runat="server">
-            <ContentTemplate>
-                <div class="container-fluid">
-                    <div class="nav-wrapper position-relative end-0">
-                        <ul class="nav nav-pills nav-fill p-1">
-                            <li class="nav-item">
-                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="listClasses" href="../ManageClasses.aspx?List">Listar
-                                </asp:LinkButton>
-                            </li>
-                            <li class="nav-item">
-                                <asp:LinkButton class="nav-link mb-0 px-0 py-1" runat="server" ID="insertClasses" href="../ManageClasses.aspx?Insert">Inserir
-                                </asp:LinkButton>
-                            </li>
-                            <li class="nav-item">
-                                <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="editClasses" href="../ManageClasses.aspx?Edit"> Editar/Eliminar
-                                </asp:LinkButton>
-                            </li>
-                        </ul>
-                    </div>
-            </ContentTemplate>
-            <Triggers>
-                <asp:AsyncPostBackTrigger ControlID="listClasses" />
-                <asp:AsyncPostBackTrigger ControlID="insertClasses" />
-                <asp:AsyncPostBackTrigger ControlID="editClasses" />
-            </Triggers>
-        </asp:UpdatePanel>
+        <div class="nav-wrapper position-relative end-0">
+            <ul class="nav nav-pills nav-fill p-1">
+                <li class="nav-item">
+                    <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="listClasses" OnClientClick="return handleLinkButtonClick('List');" href="javascript:void(0);">Listar
+                    </asp:LinkButton>
+                </li>
+                <li class="nav-item">
+                    <asp:LinkButton class="nav-link mb-0 px-0 py-1" runat="server" ID="insertClasses" OnClientClick="return handleLinkButtonClick('Insert');" href="javascript:void(0);">Inserir
+                    </asp:LinkButton>
+                </li>
+                <li class="nav-item">
+                    <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="editClasses" OnClientClick="return handleLinkButtonClick('Edit');" href="javascript:void(0);"> Editar/Eliminar
+                    </asp:LinkButton>
+                </li>
+            </ul>
+        </div>
         <asp:UpdatePanel ID="updatePanel" runat="server">
             <ContentTemplate>
                 <div class="col-md-12 col-sm-6 text-end" style="padding-right: 20px; font-family: var(--bs-font-sans-serif)">
@@ -310,4 +300,76 @@
             }
         }
     </script>
+    <script>
+        function handleLinkButtonClick(action) {
+            var url, title;
+            switch (action) {
+                case 'List':
+                    url = '../ManageClasses.aspx?List';
+                    document.getElementById('listClassesDiv').classList.remove('hidden');
+                    document.getElementById('editClassesDiv').classList.add('hidden');
+                    document.getElementById('insertClassesDiv').classList.add('hidden');
+                    title = "Listar Turmas";
+                    break;
+                case 'Edit':
+                    url = '../ManageClasses.aspx?Edit';
+                    document.getElementById('editClassesDiv').classList.remove('hidden');
+                    document.getElementById('listClassesDiv').classList.add('hidden');
+                    document.getElementById('insertClassesDiv').classList.add('hidden');
+                    title = "Editar Turmas";
+                    break;
+                case 'Insert':
+                    url = '../ManageClasses.aspx?Insert';
+                    document.getElementById('insertClassesDiv').classList.remove('hidden');
+                    document.getElementById('listClassesDiv').classList.add('hidden');
+                    document.getElementById('editClassesDiv').classList.add('hidden');
+                    title = "Inserir Turmas";
+                    break;
+                default:
+                    // Default URL or action if not recognized
+                    url = '../ManageClasses.aspx';
+                    title = "Gestão de Turmas";
+                    break;
+            }
+
+            //// Update URL
+            window.history.replaceState(null, null, url);
+
+            updateBreadcrumb(title, action);
+
+            // Return false to prevent default postback behavior
+            return false;
+        }
+
+        function updateBreadcrumb(title, action) {
+            var breadcrumbContainer = document.getElementById('<%= Master.FindControl("SiteMapPath1").ClientID %>');
+            var siteNode = document.getElementById('<%= Master.FindControl("siteNode").ClientID %>')
+            if (breadcrumbContainer) {
+                breadcrumbContainer.innerHTML = '';
+                siteNode.innerHTML = '';
+
+                var breadcrumbItems = [];
+                breadcrumbItems.push('<a href="/">Home</a>');
+                breadcrumbItems.push('<a href="../Manage.aspx">Gestão</a>');
+                breadcrumbItems.push('<a href="../ManageClasses.aspx">Gestão de Turmas</a>');
+
+                if (action === 'List') {
+                    breadcrumbContainer.innerHTML = breadcrumbItems.join('>');
+                    breadcrumbContainer.innerHTML += '>' + title;
+                    siteNode.innerHTML = title;
+                }
+                if (action === 'Edit') {
+                    breadcrumbContainer.innerHTML = breadcrumbItems.join(' > ');
+                    breadcrumbContainer.innerHTML += '>' + title;
+                    siteNode.innerHTML = title;
+                }
+                if (action === 'Insert') {
+                    breadcrumbContainer.innerHTML = breadcrumbItems.join(' > ');
+                    breadcrumbContainer.innerHTML += '>' + title;
+                    siteNode.innerHTML = title;
+                }
+            }
+        }
+    </script>
+
 </asp:Content>

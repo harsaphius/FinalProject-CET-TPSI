@@ -122,6 +122,10 @@
     <Content Include="assets\img\team-3.jpg" />
     <Content Include="assets\img\team-4.jpg" />
     <Content Include="assets\img\vr-bg.jpg" />
+    <Content Include="assets\js\core\bootstrap.js" />
+    <Content Include="assets\js\core\bootstrap.min.js" />
+    <Content Include="assets\js\core\popper.js" />
+    <Content Include="assets\js\core\popper.min.js" />
     <Content Include="assets\js\plugins\bootstrap-notify.js" />
     <Content Include="assets\js\plugins\Chart.extension.js" />
     <Content Include="assets\js\plugins\chartjs.min.js" />
@@ -129,6 +133,8 @@
     <Content Include="assets\js\plugins\fullcalendar.min.js" />
     <Content Include="assets\js\plugins\perfect-scrollbar.min.js" />
     <Content Include="assets\js\plugins\smooth-scrollbar.min.js" />
+    <Content Include="assets\js\soft-ui-dashboard.js" />
+    <Content Include="assets\js\soft-ui-dashboard.min.js" />
     <Content Include="bin\ASPSnippets.FaceBookAPI.dll" />
     <Content Include="bin\ASPSnippets.GoogleAPI.dll" />
     <Content Include="bin\FinalProject.dll" />
@@ -309,6 +315,7 @@
     <Content Include="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\vbc.exe.config" />
     <Content Include="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\vbc.rsp" />
     <Content Include="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\VBCSCompiler.exe.config" />
+    <Content Include="assets\js\soft-ui-dashboard.js.map" />
     <None Include="web.sitemap" />
   </ItemGroup>
   <ItemGroup>
@@ -326,7 +333,7 @@
     <Compile Include="CinelMP.Master.designer.cs">
       <DependentUpon>CinelMP.Master</DependentUpon>
     </Compile>
-    <Compile Include="Classes\ClassesS.cs" />
+    <Compile Include="Classes\ClassesUsers.cs" />
     <Compile Include="Classes\Classrooms.cs" />
     <Compile Include="Classes\Course.cs" />
     <Compile Include="Classes\EmailControl.cs" />
@@ -336,7 +343,6 @@
     <Compile Include="Classes\Module.cs" />
     <Compile Include="Classes\PageControls.cs" />
     <Compile Include="Classes\Security.cs" />
-    <Compile Include="Classes\SiteMapManagement.cs" />
     <Compile Include="Classes\Students.cs" />
     <Compile Include="Classes\Teachers.cs" />
     <Compile Include="Classes\User.cs" />

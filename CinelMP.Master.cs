@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Web;
-using System.Web.UI.WebControls;
 
 namespace FinalProject
 {
@@ -12,15 +11,13 @@ namespace FinalProject
             Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
             Response.Cache.SetNoStore();
 
-            if (!IsPostBack)
+            SiteMapNode currentNode = SiteMap.CurrentNode;
+            if (currentNode != null)
             {
-                SiteMapNode currentNode = SiteMap.CurrentNode;
-                if (currentNode != null)
-                {
-                    string title = currentNode.Title;
-                    siteNode.InnerText = title;
-                }
+                string title = currentNode.Title;
+                siteNode.InnerText = title;
             }
+
         }
 
         protected void lbtn_signout_Click(object sender, EventArgs e)
@@ -28,14 +25,6 @@ namespace FinalProject
             Session.Abandon();
             Session.Clear();
             Response.Redirect("MainPage.aspx");
-        }
-        public SiteMapNode GetCurrentSiteMapNode()
-        {
-            // Access the SiteMap for the current request
-            SiteMapNode currentNode = SiteMap.CurrentNode;
-
-            // Return the current SiteMapNode
-            return currentNode;
         }
 
     }

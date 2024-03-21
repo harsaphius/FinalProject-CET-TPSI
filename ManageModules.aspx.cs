@@ -70,8 +70,7 @@ namespace FinalProject
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
 
-                rpt_Modules.DataSource = Classes.Module.LoadModules();
-                rpt_Modules.DataBind();
+                BindDataModules();
 
             }
         }
@@ -139,44 +138,128 @@ namespace FinalProject
 
         }
 
-        protected void rpt_editModules_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-
-        }
-
-
-        protected void rpt_Modules_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                LinkButton Lbtn_edit = (LinkButton)e.Item.FindControl("lbt_edit");
-            }
-        }
-
         protected void rpt_Modules_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "Edit")
             {
-                // Find the RepeaterItem corresponding to the clicked LinkButton
-                RepeaterItem item = (RepeaterItem)((LinkButton)e.CommandSource).NamingContainer;
+                RepeaterItem item = rpt_Modules.Items[e.Item.ItemIndex];
 
-                // Create TextBox controls dynamically and add them to the container control (e.g., Panel)
-                Panel editPanel = (Panel)item.FindControl("editPanel");
+                // Find TextBox and Label controls
+                TextBox tbNome = (TextBox)item.FindControl("tbNome");
+                Label lblNome = (Label)item.FindControl("lblNome");
 
-                TextBox tbNome = new TextBox();
-                tbNome.ID = "tbNome_" + e.Item.ItemIndex;
-                tbNome.Text = ((Label)item.FindControl("lblNome")).Text;
-                editPanel.Controls.Add(tbNome);
+                TextBox tbUFCD = (TextBox)item.FindControl("tbUFCD");
+                Label lblUFCD = (Label)item.FindControl("lblUFCD");
 
-                TextBox tbUFCD = new TextBox();
-                tbUFCD.ID = "tbUFCD_" + e.Item.ItemIndex;
-                tbUFCD.Text = ((Label)item.FindControl("lblUFCD")).Text;
-                editPanel.Controls.Add(tbUFCD);
+                TextBox tbDescricao = (TextBox)item.FindControl("tbDescricao");
+                Label lblDescricao = (Label)item.FindControl("lblDescricao");
 
-                TextBox tbDescricao = new TextBox();
-                tbDescricao.ID = "tbDescricao_" + e.Item.ItemIndex;
-                tbDescricao.Text = ((Label)item.FindControl("lblDescricao")).Text;
-                editPanel.Controls.Add(tbDescricao);
+                // Toggle visibility
+                tbNome.Visible = !tbNome.Visible;
+                lblNome.Visible = !lblNome.Visible;
+
+                tbUFCD.Visible = !tbUFCD.Visible;
+                lblUFCD.Visible = !lblUFCD.Visible;
+
+                tbDescricao.Visible = !tbDescricao.Visible;
+                lblDescricao.Visible = !lblDescricao.Visible;
+
+                // Find the buttons
+                LinkButton lbt_edit = (LinkButton)item.FindControl("lbt_edit");
+                LinkButton lbt_cancel = (LinkButton)item.FindControl("lbt_cancel");
+                LinkButton lbt_delete = (LinkButton)item.FindControl("lbt_delete");
+                LinkButton lbt_confirm = (LinkButton)item.FindControl("lbt_confirm");
+
+                // Show "Cancel" and "Confirm" buttons
+                lbt_cancel.Visible = true;
+                lbt_confirm.Visible = true;
+
+                // Hide "Edit" and "Delete" buttons
+                lbt_edit.Visible = false;
+                lbt_delete.Visible = false;
+
+
+            }
+
+        }
+
+        protected void lnkUpload_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btn_previousM_Click(object sender, EventArgs e)
+        {
+            PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataModules();
+        }
+
+        protected void btn_nextM_Click(object sender, EventArgs e)
+        {
+            PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataModules();
+        }
+
+        private void BindDataModules()
+        {
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.Module.LoadModules();
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 8;
+            pagedData.CurrentPageIndex = PageNumberModules;
+            ; // Adjust with the respective pagination helper instance
+
+            rpt_Modules.DataSource = pagedData;
+            rpt_Modules.DataBind();
+
+            btn_previousM.Enabled = !pagedData.IsFirstPage; // Adjust with the respective btn_previous control for Users Repeater
+            btn_nextM.Enabled = !pagedData.IsLastPage; // Adjust with the respective btn_next control for Users Repeater
+
+        }
+
+        public int PageNumberModules
+        {
+            get
+            {
+                if (ViewState["PageNumberModules"] != null)
+                    return Convert.ToInt32(ViewState["PageNumberModules"]);
+                else
+                    return 0;
+            }
+            set
+            {
+                ViewState["PageNumberModules"] = value;
+            }
+        }
+
+        protected void rpt_Modules_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            FileUpload fileUpload = e.Item.FindControl("fileUpload") as FileUpload;
+            if (fileUpload != null)
+            {
+                // Set an ID for the file upload control to identify it uniquely
+                fileUpload.ID = "fileUpload_" + e.Item.ItemIndex.ToString();
+                // You can set other properties as needed
+
+                if (fileUpload.HasFile)
+                {
+                    // Get the uploaded file's name
+                    string fileName = Path.GetFileName(fileUpload.FileName);
+
+                    // Save the file to a specific location on the server
+                    string filePath = Server.MapPath("~/Uploads/" + fileName);
+                    fileUpload.SaveAs(filePath);
+
+                    // You can also process the file contents here if needed
+
+                    // Display a success message
+                    Response.Write("File uploaded successfully!");
+                }
+                else
+                {
+                    // Display an error message if no file is selected
+                    Response.Write("Please select a file to upload.");
+                }
             }
         }
     }

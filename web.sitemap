@@ -9,32 +9,32 @@
 		<siteMapNode url="~/UserChangePass.aspx" title="Recuperar Password" description="User SignUp" />
 		<siteMapNode url="~/UserCalendar.aspx" title="Calendário" description="User Calendar" />
 		<siteMapNode url="~/Manage.aspx" title="Gestão" description="Management">
-			<siteMapNode url="~/ManageCourses.aspx" title="Manutenção de Cursos" description="Manage Courses">
+			<siteMapNode url="~/ManageCourses.aspx" title="Gestão de Cursos" description="Manage Courses">
 				<siteMapNode url="~/ManageCourses.aspx?List" title="Listar Cursos" description="List Courses" />
 				<siteMapNode url="~/ManageCourses.aspx?Insert" title="Inserir Cursos" description="Insert Courses" />
 				<siteMapNode url="~/ManageCourses.aspx?Edit" title="Editar Cursos" description="Edit Courses" />
 			</siteMapNode>
-			<siteMapNode url="~/ManageClasses.aspx" title="Manutenção de Turmas" description="Manage Classes" >
+			<siteMapNode url="~/ManageClasses.aspx" title="Gestão de Turmas" description="Manage Classes" >
 				<siteMapNode url="~/ManageClasses.aspx?List" title="Listar Turmas" description="List Classes" />
 				<siteMapNode url="~/ManageClasses.aspx?Insert" title="Inserir Turmas" description="Insert Classes" />
 				<siteMapNode url="~/ManageClasses.aspx?Edit" title="Editar Turmas" description="Edit Classes" />
 			</siteMapNode>
-			<siteMapNode url="~/ManageModules.aspx" title="Manutenção de Módulos" description="Manage Modules">
+			<siteMapNode url="~/ManageModules.aspx" title="Gestão de Módulos" description="Manage Modules">
 				<siteMapNode url="~/ManageModules.aspx?List" title="Listar Módulos" description="List Modules" />
 				<siteMapNode url="~/ManageModules.aspx?Insert" title="Inserir Módulos" description="Insert Modules" />
 				<siteMapNode url="~/ManageModules.aspx?Edit" title="Editar Módulos" description="Edit Modules" />
 			</siteMapNode>
-			<siteMapNode url="~/ManageStudents.aspx" title="Manutenção de Formandos" description="Manage Students">
+			<siteMapNode url="~/ManageStudents.aspx" title="Gestão de Formandos" description="Manage Students">
 				<siteMapNode url="~/ManageStudents.aspx?List" title="Listar Formandos" description="List Students" />
 				<siteMapNode url="~/ManageStudents.aspx?Insert" title="Inserir Formandos" description="Insert Students" />
 				<siteMapNode url="~/ManageStudents.aspx?Edit" title="Editar Formandos" description="Edit Students" />
 			</siteMapNode>
-			<siteMapNode url="~/ManageTeachers.aspx" title="Manutenção de Formadores" description="Manage Teachers">
+			<siteMapNode url="~/ManageTeachers.aspx" title="Gestão de Formadores" description="Manage Teachers">
 				<siteMapNode url="~/ManageTeachers.aspx?List" title="Listar Formadores" description="List Students" />
 				<siteMapNode url="~/ManageTeachers.aspx?Insert" title="Inserir Formadores" description="Insert Teachers" />
 				<siteMapNode url="~/ManageTeachers.aspx?Edit" title="Editar Formadores" description="Edit Teachers" />
 			</siteMapNode>
-			<siteMapNode url="~/ManageClassrooms.aspx" title="Manutenção de Salas" description="Manage Classrooms">
+			<siteMapNode url="~/ManageClassrooms.aspx" title="Gestão de Salas" description="Manage Classrooms">
 				<siteMapNode url="~/ManageClassrooms.aspx?List" title="Listar Salas" description="List Classrooms" />
 				<siteMapNode url="~/ManageClassrooms.aspx?Insert" title="Inserir Salas" description="Insert Classrooms" />
 				<siteMapNode url="~/ManageClassrooms.aspx?Edit" title="Editar Salas" description="Edit Classrooms" />
