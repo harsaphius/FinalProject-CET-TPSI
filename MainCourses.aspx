@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="MainCourses.aspx.cs" Inherits="FinalProject.MainCourses" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="MainCourses.aspx.cs" Inherits="FinalProject.MainCourses" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -6,9 +6,9 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
-        <div class="col-md-12 col-sm-6 text-end" style="padding-right:50px; font-family:var(--bs-font-sans-serif)">
+        <div class="col-md-12 col-sm-6 text-end" style="padding-right: 50px; font-family: var(--bs-font-sans-serif)">
             <a href="javascript:;" onclick="toggleFilters()">
-                <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true"> Filtros</i>
+                <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
             </a>
         </div>
         <div id="filters" class="hidden">
@@ -75,7 +75,7 @@
                         <div class="row">
                 </HeaderTemplate>
                 <ItemTemplate>
-                    <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+                    <div class="col-xl-4 col-lg-4 col-md-5 mb-xl-0 mb-4">
 
                         <div class="card card-blog card-plain">
                             <div class="position-relative">
@@ -84,6 +84,7 @@
                                 </a>
                             </div>
                             <div class="card-body px-1 pb-0">
+                                <asp:HiddenField ID="hdnCourseID" runat="server" Value='<%# Eval("CodCurso") %>' />
                                 <p class="text-gradient text-dark mb-2 text-sm"><%# Eval("Nome") %></p>
                                 <a href="javascript:;">
                                     <h5>Referencial n.º <%# Eval("CodRef") %>
@@ -93,8 +94,10 @@
                                     Nível <%# Eval("CodQNQ") %>
                                 </p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <button type="button" class="btn btn-outline-primary btn-sm mb-0">Detalhes</button>
-                                    <div class="avatar-group mt-2">
+                                    <asp:Button runat="server" ID="btn_details" class="btn btn-outline-primary btn-sm mb-0" CausesValidation="false" OnClick="btn_details_Click" Text="Detalhes" />
+                                    <asp:Button runat="server" ID="btn_enroll" class="btn btn-outline-primary btn-sm mb-0" CausesValidation="false" OnClick="btn_enroll_Click" Text="Inscrever-me" />
+
+                                    <%--  <div class="avatar-group mt-2">
                                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
                                             <img alt="Image placeholder" src="../assets/img/team-1.jpg">
                                         </a>
@@ -107,7 +110,7 @@
                                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
                                             <img alt="Image placeholder" src="../assets/img/team-4.jpg">
                                         </a>
-                                    </div>
+                                    </div>--%>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +121,20 @@
                     </div>
                 </FooterTemplate>
             </asp:Repeater>
-
+            <ul class="pagination">
+                <li class="page-item">
+                    <asp:LinkButton ID="btn_previousEM" CssClass="page-link" CausesValidation="false" runat="server">
+                                                    <i class="fa fa-angle-left"></i>
+                                                    <span class="sr-only">Previous</span>
+                    </asp:LinkButton>
+                </li>
+                <li class="page-item">
+                    <asp:LinkButton ID="btn_nextEM" CssClass="page-link" CausesValidation="false" runat="server">
+                                                    <i class="fa fa-angle-right"></i>
+                                                    <span class="sr-only">Next</span>
+                    </asp:LinkButton>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -149,7 +165,4 @@
             }
         }
     </script>
-
-
-
 </asp:Content>

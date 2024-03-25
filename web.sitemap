@@ -14,7 +14,7 @@
 				<siteMapNode url="~/ManageCourses.aspx?Insert" title="Inserir Cursos" description="Insert Courses" />
 				<siteMapNode url="~/ManageCourses.aspx?Edit" title="Editar Cursos" description="Edit Courses" />
 			</siteMapNode>
-			<siteMapNode url="~/ManageClasses.aspx" title="Gestão de Turmas" description="Manage Classes" >
+			<siteMapNode url="~/ManageClasses.aspx" title="Gestão de Turmas" description="Manage Classes">
 				<siteMapNode url="~/ManageClasses.aspx?List" title="Listar Turmas" description="List Classes" />
 				<siteMapNode url="~/ManageClasses.aspx?Insert" title="Inserir Turmas" description="Insert Classes" />
 				<siteMapNode url="~/ManageClasses.aspx?Edit" title="Editar Turmas" description="Edit Classes" />

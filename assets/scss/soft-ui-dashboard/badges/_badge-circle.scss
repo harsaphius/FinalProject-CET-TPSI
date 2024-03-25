@@ -2,7 +2,6 @@
 // Circle badge
 //
 
-
 // General styles
 
 .badge-circle {
@@ -23,7 +22,7 @@
     }
 
     &.badge-lg {
-      width: $badge-circle-lg-width;
-      height: $badge-circle-lg-height;
+        width: $badge-circle-lg-width;
+        height: $badge-circle-lg-height;
     }
 }

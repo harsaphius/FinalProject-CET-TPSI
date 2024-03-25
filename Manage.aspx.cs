@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -45,7 +42,7 @@ namespace FinalProject
                             document.getElementById('navButtonSignOut').classList.add('nav-item');
                             document.getElementById('navButtonSignOut').classList.add('d-flex');
                             document.getElementById('navButtonSignOut').classList.add('align-items-center');
-                            document.getElementById('navButtonSignIn').classList.remove('nav-item'); 
+                            document.getElementById('navButtonSignIn').classList.remove('nav-item');
                             document.getElementById('navButtonSignIn').classList.remove('d-flex');
                             document.getElementById('navButtonSignIn').classList.remove('align-items-center');
                             document.getElementById('navButtonSignIn').classList.add('hidden');

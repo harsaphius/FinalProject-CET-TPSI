@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Web.UI.WebControls;
 
 namespace FinalProject.Classes
 {
@@ -33,6 +29,7 @@ namespace FinalProject.Classes
             else
                 return new List<T>();
         }
+
         //public string GeneratePagination(int currentPage, int totalPages)
         //{
         //    StringBuilder paginationHtml = new StringBuilder();
@@ -63,6 +60,5 @@ namespace FinalProject.Classes
 
         //    return paginationHtml.ToString();
         //}
-
     }
 }

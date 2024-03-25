@@ -15,6 +15,7 @@ namespace FinalProject.Classes
         public string FileName { get; set; }
         public string ContentType { get; set; }
         public byte[] FileBytes { get; set; }
+
         public string FileUrl
         {
             get
@@ -22,6 +23,7 @@ namespace FinalProject.Classes
                 return GenerateFileUrl(HttpContext.Current);
             }
         }
+
         public string GenerateFileUrl(HttpContext context)
         {
             ProcessRequest(context, FileID);
@@ -35,7 +37,6 @@ namespace FinalProject.Classes
             // Check if files were uploaded
             if (fileUpload.HasFile)
             {
-
                 foreach (HttpPostedFile uploadedFile in fileUpload.PostedFiles)
                 {
                     FileControl fileData = new FileControl
@@ -52,7 +53,6 @@ namespace FinalProject.Classes
 
                     // Add the file data object to the list
                     uploadedFiles.Add(fileData);
-
                 }
             }
 
@@ -78,7 +78,6 @@ namespace FinalProject.Classes
         {
             if (photoFile != null && IsImageFile(photoFile))
             {
-
                 byte[] fileBytes;
                 using (BinaryReader reader = new BinaryReader(photoFile.InputStream))
                 {
@@ -86,7 +85,6 @@ namespace FinalProject.Classes
                 }
 
                 return fileBytes;
-
             }
             else
             {
@@ -139,6 +137,7 @@ namespace FinalProject.Classes
 
             return files;
         }
+
         public static void ProcessRequest(HttpContext context, int fileId)
         {
             if (!string.IsNullOrEmpty(context.Session["CodUtilizador"]?.ToString()))
@@ -187,5 +186,4 @@ namespace FinalProject.Classes
             return $"{downloadPageUrl}?fileId={FileID}";
         }
     }
-
 }

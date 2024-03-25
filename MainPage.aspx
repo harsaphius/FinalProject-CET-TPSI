@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Home" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="MainPage.aspx.cs" Inherits="FinalProject.MainPage" %>
+﻿<%@ Page Title="Home" Language="C#" EnableEventValidation="false" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="MainPage.aspx.cs" Inherits="FinalProject.MainPage" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script async src="https://www.youtube.com/iframe_api"></script>
@@ -37,8 +37,7 @@
                         <div class="row">
                 </HeaderTemplate>
                 <ItemTemplate>
-                    <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-
+                    <div class="col-xl-4 col-lg-5 col-md-6 mb-xl-0 mb-4">
                         <div class="card card-blog card-plain">
                             <div class="position-relative">
                                 <a class="d-block shadow-xl border-radius-xl">
@@ -46,16 +45,19 @@
                                 </a>
                             </div>
                             <div class="card-body px-1 pb-0">
+                                <asp:HiddenField ID="hdnCourseID" runat="server" Value='<%# Eval("CodCurso") %>' />
                                 <p class="text-gradient text-dark mb-2 text-sm"><%# Eval("Nome") %></p>
                                 <a href="javascript:;">
-                                   <h5> Referencial n.º <%# Eval("CodRef") %>
+                                    <h5>Referencial n.º <%# Eval("CodRef") %>
                                     </h5>
                                 </a>
                                 <p class="mb-4 text-sm">
-                                   Nível <%# Eval("CodQNQ") %>
+                                    Nível <%# Eval("CodQNQ") %>
                                 </p>
                                 <div class="d-flex align-items-center justify-content-between">
-                                    <button type="button" class="btn btn-outline-primary btn-sm mb-0">Detalhes</button>
+                                    <asp:Button runat="server" ID="btn_details" class="btn btn-outline-primary btn-sm mb-0" CausesValidation="false" OnClick="btn_details_Click" Text="Detalhes" />
+                                    <asp:Button runat="server" ID="btn_enroll" class="btn btn-outline-primary btn-sm mb-0" CausesValidation="false" OnClick="btn_enroll_Click" Text="Inscrever-me" />
+
                                 </div>
                             </div>
                         </div>

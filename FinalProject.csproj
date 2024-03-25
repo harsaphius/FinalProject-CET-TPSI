@@ -333,18 +333,19 @@
     <Compile Include="CinelMP.Master.designer.cs">
       <DependentUpon>CinelMP.Master</DependentUpon>
     </Compile>
-    <Compile Include="Classes\ClassesUsers.cs" />
-    <Compile Include="Classes\Classrooms.cs" />
+    <Compile Include="Classes\ClassGroup.cs" />
+    <Compile Include="Classes\Classroom.cs" />
     <Compile Include="Classes\Course.cs" />
     <Compile Include="Classes\EmailControl.cs" />
+    <Compile Include="Classes\Enrollment.cs" />
     <Compile Include="Classes\FaceBookUser.cs" />
     <Compile Include="Classes\FileControl.cs" />
     <Compile Include="Classes\GoogleProfile.cs" />
     <Compile Include="Classes\Module.cs" />
     <Compile Include="Classes\PageControls.cs" />
     <Compile Include="Classes\Security.cs" />
-    <Compile Include="Classes\Students.cs" />
-    <Compile Include="Classes\Teachers.cs" />
+    <Compile Include="Classes\Student.cs" />
+    <Compile Include="Classes\Teacher.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="CourseDetails.aspx.cs">
       <DependentUpon>CourseDetails.aspx</DependentUpon>

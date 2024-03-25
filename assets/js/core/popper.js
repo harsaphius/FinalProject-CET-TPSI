@@ -3,10 +3,10 @@
 @popperjs / core v2 .9 .2 - MIT License *
     /
 
-"use strict";
-! function(e, t) {
+    "use strict";
+! function (e, t) {
     "object" == typeof exports && "undefined" != typeof module ? t(exports) : "function" == typeof define && define.amd ? define(["exports"], t) : t((e = "undefined" != typeof globalThis ? globalThis : e || self).Popper = {})
-}(this, (function(e) {
+}(this, (function (e) {
     function t(e) {
         return {
             width: (e = e.getBoundingClientRect()).width,
@@ -138,25 +138,25 @@
 
     function b(e) {
         function t(e) {
-            o.add(e.name), [].concat(e.requires || [], e.requiresIfExists || []).forEach((function(e) {
+            o.add(e.name), [].concat(e.requires || [], e.requiresIfExists || []).forEach((function (e) {
                 o.has(e) || (e = n.get(e)) && t(e)
             })), r.push(e)
         }
         var n = new Map,
             o = new Set,
             r = [];
-        return e.forEach((function(e) {
+        return e.forEach((function (e) {
             n.set(e.name, e)
-        })), e.forEach((function(e) {
+        })), e.forEach((function (e) {
             o.has(e.name) || t(e)
         })), r
     }
 
     function w(e) {
         var t;
-        return function() {
-            return t || (t = new Promise((function(n) {
-                Promise.resolve().then((function() {
+        return function () {
+            return t || (t = new Promise((function (n) {
+                Promise.resolve().then((function () {
                     t = void 0, n(e())
                 }))
             }))), t
@@ -212,13 +212,13 @@
     }
 
     function D(e, t, n) {
-        return t = "clippingParents" === t ? function(e) {
+        return t = "clippingParents" === t ? function (e) {
             var t = v(m(e)),
                 n = 0 <= ["absolute", "fixed"].indexOf(c(e).position) && i(e) ? y(e) : e;
-            return r(n) ? t.filter((function(e) {
+            return r(n) ? t.filter((function (e) {
                 return r(e) && O(e, n) && "body" !== s(e)
             })) : []
-        }(e) : [].concat(t), (n = (n = [].concat(t, [n])).reduce((function(t, n) {
+        }(e) : [].concat(t), (n = (n = [].concat(t, [n])).reduce((function (t, n) {
             return n = E(e, n), t.top = _(n.top, t.top), t.right = U(n.right, t.right), t.bottom = U(n.bottom, t.bottom), t.left = _(n.left, t.left), t
         }), E(e, n[0]))).width = n.right - n.left, n.height = n.bottom - n.top, n.x = n.left, n.y = n.top, n
     }
@@ -285,7 +285,7 @@
     }
 
     function k(e, t) {
-        return t.reduce((function(t, n) {
+        return t.reduce((function (t, n) {
             return t[n] = e, t
         }), {})
     }
@@ -300,7 +300,7 @@
         i = void 0 === (i = o.elementContext) ? "popper" : i;
         var p = o.altBoundary,
             c = void 0 !== p && p;
-        o = M("number" != typeof(o = void 0 === (o = o.padding) ? 0 : o) ? o : k(o, C));
+        o = M("number" != typeof (o = void 0 === (o = o.padding) ? 0 : o) ? o : k(o, C));
         var l = e.elements.reference;
         p = e.rects.popper, a = D(r(c = e.elements[c ? "popper" === i ? "reference" : "popper" : i]) ? c : c.contextElement || f(e.elements.popper), a, s), c = P({
             reference: s = t(l),
@@ -316,7 +316,7 @@
         };
         if (e = e.modifiersData.offset, "popper" === i && e) {
             var d = e[n];
-            Object.keys(u).forEach((function(e) {
+            Object.keys(u).forEach((function (e) {
                 var t = 0 <= ["right", "bottom"].indexOf(e) ? 1 : -1,
                     n = 0 <= ["top", "bottom"].indexOf(e) ? "y" : "x";
                 u[e] += d[n] * t
@@ -327,7 +327,7 @@
 
     function W() {
         for (var e = arguments.length, t = Array(e), n = 0; n < e; n++) t[n] = arguments[n];
-        return !t.some((function(e) {
+        return !t.some((function (e) {
             return !(e && "function" == typeof e.getBoundingClientRect)
         }))
     }
@@ -337,75 +337,75 @@
         var t = e.defaultModifiers,
             n = void 0 === t ? [] : t,
             o = void 0 === (e = e.defaultOptions) ? F : e;
-        return function(e, t, i) {
+        return function (e, t, i) {
             function a() {
-                f.forEach((function(e) {
+                f.forEach((function (e) {
                     return e()
                 })), f = []
             }
             void 0 === i && (i = o);
             var s = {
-                    placement: "bottom",
-                    orderedModifiers: [],
-                    options: Object.assign({}, F, o),
-                    modifiersData: {},
-                    elements: {
-                        reference: e,
-                        popper: t
-                    },
-                    attributes: {},
-                    styles: {}
+                placement: "bottom",
+                orderedModifiers: [],
+                options: Object.assign({}, F, o),
+                modifiersData: {},
+                elements: {
+                    reference: e,
+                    popper: t
                 },
+                attributes: {},
+                styles: {}
+            },
                 f = [],
                 p = !1,
                 c = {
                     state: s,
-                    setOptions: function(i) {
+                    setOptions: function (i) {
                         return a(), s.options = Object.assign({}, o, s.options, i), s.scrollParents = {
                             reference: r(e) ? v(e) : e.contextElement ? v(e.contextElement) : [],
                             popper: v(t)
-                        }, i = function(e) {
+                        }, i = function (e) {
                             var t = b(e);
-                            return I.reduce((function(e, n) {
-                                return e.concat(t.filter((function(e) {
+                            return I.reduce((function (e, n) {
+                                return e.concat(t.filter((function (e) {
                                     return e.phase === n
                                 })))
                             }), [])
-                        }(function(e) {
-                            var t = e.reduce((function(e, t) {
+                        }(function (e) {
+                            var t = e.reduce((function (e, t) {
                                 var n = e[t.name];
                                 return e[t.name] = n ? Object.assign({}, n, t, {
                                     options: Object.assign({}, n.options, t.options),
                                     data: Object.assign({}, n.data, t.data)
                                 }) : t, e
                             }), {});
-                            return Object.keys(t).map((function(e) {
+                            return Object.keys(t).map((function (e) {
                                 return t[e]
                             }))
-                        }([].concat(n, s.options.modifiers))), s.orderedModifiers = i.filter((function(e) {
+                        }([].concat(n, s.options.modifiers))), s.orderedModifiers = i.filter((function (e) {
                             return e.enabled
-                        })), s.orderedModifiers.forEach((function(e) {
+                        })), s.orderedModifiers.forEach((function (e) {
                             var t = e.name,
                                 n = e.options;
-                            n = void 0 === n ? {} : n, "function" == typeof(e = e.effect) && (t = e({
+                            n = void 0 === n ? {} : n, "function" == typeof (e = e.effect) && (t = e({
                                 state: s,
                                 name: t,
                                 instance: c,
                                 options: n
-                            }), f.push(t || function() {}))
+                            }), f.push(t || function () { }))
                         })), c.update()
                     },
-                    forceUpdate: function() {
+                    forceUpdate: function () {
                         if (!p) {
                             var e = s.elements,
                                 t = e.reference;
                             if (W(t, e = e.popper))
                                 for (s.rects = {
-                                        reference: u(t, y(e), "fixed" === s.options.strategy),
-                                        popper: d(e)
-                                    }, s.reset = !1, s.placement = s.options.placement, s.orderedModifiers.forEach((function(e) {
-                                        return s.modifiersData[e.name] = Object.assign({}, e.data)
-                                    })), t = 0; t < s.orderedModifiers.length; t++)
+                                    reference: u(t, y(e), "fixed" === s.options.strategy),
+                                    popper: d(e)
+                                }, s.reset = !1, s.placement = s.options.placement, s.orderedModifiers.forEach((function (e) {
+                                    return s.modifiersData[e.name] = Object.assign({}, e.data)
+                                })), t = 0; t < s.orderedModifiers.length; t++)
                                     if (!0 === s.reset) s.reset = !1, t = -1;
                                     else {
                                         var n = s.orderedModifiers[t];
@@ -420,16 +420,16 @@
                                     }
                         }
                     },
-                    update: w((function() {
-                        return new Promise((function(e) {
+                    update: w((function () {
+                        return new Promise((function (e) {
                             c.forceUpdate(), e(s)
                         }))
                     })),
-                    destroy: function() {
+                    destroy: function () {
                         a(), p = !0
                     }
                 };
-            return W(e, t) ? (c.setOptions(i).then((function(e) {
+            return W(e, t) ? (c.setOptions(i).then((function (e) {
                 !p && i.onFirstUpdate && i.onFirstUpdate(e)
             })), c) : c
         }
@@ -469,13 +469,13 @@
     }
 
     function H(e) {
-        return e.replace(/left|right|bottom|top/g, (function(e) {
+        return e.replace(/left|right|bottom|top/g, (function (e) {
             return $[e]
         }))
     }
 
     function R(e) {
-        return e.replace(/start|end/g, (function(e) {
+        return e.replace(/start|end/g, (function (e) {
             return ee[e]
         }))
     }
@@ -493,15 +493,15 @@
     }
 
     function q(e) {
-        return ["top", "right", "bottom", "left"].some((function(t) {
+        return ["top", "right", "bottom", "left"].some((function (t) {
             return 0 <= e[t]
         }))
     }
     var C = ["top", "bottom", "right", "left"],
-        N = C.reduce((function(e, t) {
+        N = C.reduce((function (e, t) {
             return e.concat([t + "-start", t + "-end"])
         }), []),
-        V = [].concat(C, ["auto"]).reduce((function(e, t) {
+        V = [].concat(C, ["auto"]).reduce((function (e, t) {
             return e.concat([t, t + "-start", t + "-end"])
         }), []),
         I = "beforeRead read afterRead beforeMain main afterMain beforeWrite write afterWrite".split(" "),
@@ -520,8 +520,8 @@
             name: "eventListeners",
             enabled: !0,
             phase: "write",
-            fn: function() {},
-            effect: function(e) {
+            fn: function () { },
+            effect: function (e) {
                 var t = e.state,
                     o = e.instance,
                     r = (e = e.options).scroll,
@@ -529,11 +529,11 @@
                     a = void 0 === (e = e.resize) || e,
                     s = n(t.elements.popper),
                     f = [].concat(t.scrollParents.reference, t.scrollParents.popper);
-                return i && f.forEach((function(e) {
-                        e.addEventListener("scroll", o.update, X)
-                    })), a && s.addEventListener("resize", o.update, X),
-                    function() {
-                        i && f.forEach((function(e) {
+                return i && f.forEach((function (e) {
+                    e.addEventListener("scroll", o.update, X)
+                })), a && s.addEventListener("resize", o.update, X),
+                    function () {
+                        i && f.forEach((function (e) {
                             e.removeEventListener("scroll", o.update, X)
                         })), a && s.removeEventListener("resize", o.update, X)
                     }
@@ -544,7 +544,7 @@
             name: "popperOffsets",
             enabled: !0,
             phase: "read",
-            fn: function(e) {
+            fn: function (e) {
                 var t = e.state;
                 t.modifiersData[e.name] = P({
                     reference: t.rects.reference,
@@ -565,7 +565,7 @@
             name: "computeStyles",
             enabled: !0,
             phase: "beforeWrite",
-            fn: function(e) {
+            fn: function (e) {
                 var t = e.state,
                     n = e.options;
                 e = void 0 === (e = n.gpuAcceleration) || e;
@@ -595,19 +595,19 @@
             name: "applyStyles",
             enabled: !0,
             phase: "write",
-            fn: function(e) {
+            fn: function (e) {
                 var t = e.state;
-                Object.keys(t.elements).forEach((function(e) {
+                Object.keys(t.elements).forEach((function (e) {
                     var n = t.styles[e] || {},
                         o = t.attributes[e] || {},
                         r = t.elements[e];
-                    i(r) && s(r) && (Object.assign(r.style, n), Object.keys(o).forEach((function(e) {
+                    i(r) && s(r) && (Object.assign(r.style, n), Object.keys(o).forEach((function (e) {
                         var t = o[e];
                         !1 === t ? r.removeAttribute(e) : r.setAttribute(e, !0 === t ? "" : t)
                     })))
                 }))
             },
-            effect: function(e) {
+            effect: function (e) {
                 var t = e.state,
                     n = {
                         popper: {
@@ -622,13 +622,13 @@
                         reference: {}
                     };
                 return Object.assign(t.elements.popper.style, n.popper), t.styles = n, t.elements.arrow && Object.assign(t.elements.arrow.style, n.arrow),
-                    function() {
-                        Object.keys(t.elements).forEach((function(e) {
+                    function () {
+                        Object.keys(t.elements).forEach((function (e) {
                             var o = t.elements[e],
                                 r = t.attributes[e] || {};
-                            e = Object.keys(t.styles.hasOwnProperty(e) ? t.styles[e] : n[e]).reduce((function(e, t) {
+                            e = Object.keys(t.styles.hasOwnProperty(e) ? t.styles[e] : n[e]).reduce((function (e, t) {
                                 return e[t] = "", e
-                            }), {}), i(o) && s(o) && (Object.assign(o.style, e), Object.keys(r).forEach((function(e) {
+                            }), {}), i(o) && s(o) && (Object.assign(o.style, e), Object.keys(r).forEach((function (e) {
                                 o.removeAttribute(e)
                             })))
                         }))
@@ -641,11 +641,11 @@
             enabled: !0,
             phase: "main",
             requires: ["popperOffsets"],
-            fn: function(e) {
+            fn: function (e) {
                 var t = e.state,
                     n = e.name,
                     o = void 0 === (e = e.options.offset) ? [0, 0] : e,
-                    r = (e = V.reduce((function(e, n) {
+                    r = (e = V.reduce((function (e, n) {
                         var r = t.rects,
                             i = x(n),
                             a = 0 <= ["left", "top"].indexOf(i) ? -1 : 1,
@@ -678,7 +678,7 @@
             name: "flip",
             enabled: !0,
             phase: "main",
-            fn: function(e) {
+            fn: function (e) {
                 var t = e.state,
                     n = e.options;
                 if (e = e.name, !t.modifiersData[e]._skip) {
@@ -694,13 +694,13 @@
                         c = n.flipVariations,
                         l = void 0 === c || c,
                         u = n.allowedAutoPlacements;
-                    c = x(n = t.options.placement), i = i || (c !== n && l ? function(e) {
+                    c = x(n = t.options.placement), i = i || (c !== n && l ? function (e) {
                         if ("auto" === x(e)) return [];
                         var t = H(e);
                         return [R(e), t, R(t)]
                     }(n) : [H(n)]);
-                    var d = [n].concat(i).reduce((function(e, n) {
-                        return e.concat("auto" === x(n) ? function(e, t) {
+                    var d = [n].concat(i).reduce((function (e, n) {
+                        return e.concat("auto" === x(n) ? function (e, t) {
                             void 0 === t && (t = {});
                             var n = t.boundary,
                                 o = t.rootBoundary,
@@ -709,12 +709,12 @@
                                 a = t.allowedAutoPlacements,
                                 s = void 0 === a ? V : a,
                                 f = t.placement.split("-")[1];
-                            0 === (i = (t = f ? i ? N : N.filter((function(e) {
+                            0 === (i = (t = f ? i ? N : N.filter((function (e) {
                                 return e.split("-")[1] === f
-                            })) : C).filter((function(e) {
+                            })) : C).filter((function (e) {
                                 return 0 <= s.indexOf(e)
                             }))).length && (i = t);
-                            var p = i.reduce((function(t, i) {
+                            var p = i.reduce((function (t, i) {
                                 return t[i] = A(e, {
                                     placement: i,
                                     boundary: n,
@@ -722,7 +722,7 @@
                                     padding: r
                                 })[x(i)], t
                             }), {});
-                            return Object.keys(p).sort((function(e, t) {
+                            return Object.keys(p).sort((function (e, t) {
                                 return p[e] - p[t]
                             }))
                         }(t, {
@@ -750,23 +750,23 @@
                                 altBoundary: p,
                                 padding: a
                             });
-                        if (b = w ? b ? "right" : "left" : b ? "bottom" : "top", n[O] > i[O] && (b = H(b)), O = H(b), w = [], o && w.push(0 >= j[y]), r && w.push(0 >= j[b], 0 >= j[O]), w.every((function(e) {
-                                return e
-                            }))) {
+                        if (b = w ? b ? "right" : "left" : b ? "bottom" : "top", n[O] > i[O] && (b = H(b)), O = H(b), w = [], o && w.push(0 >= j[y]), r && w.push(0 >= j[b], 0 >= j[O]), w.every((function (e) {
+                            return e
+                        }))) {
                             h = g, c = !1;
                             break
                         }
                         m.set(g, w)
                     }
                     if (c)
-                        for (o = function(e) {
-                                var t = d.find((function(t) {
-                                    if (t = m.get(t)) return t.slice(0, e).every((function(e) {
-                                        return e
-                                    }))
-                                }));
-                                if (t) return h = t, "break"
-                            }, r = l ? 3 : 1; 0 < r && "break" !== o(r); r--);
+                        for (o = function (e) {
+                            var t = d.find((function (t) {
+                                if (t = m.get(t)) return t.slice(0, e).every((function (e) {
+                                    return e
+                                }))
+                            }));
+                            if (t) return h = t, "break"
+                        }, r = l ? 3 : 1; 0 < r && "break" !== o(r); r--);
                     t.placement !== h && (t.modifiersData[e]._skip = !0, t.placement = h, t.reset = !0)
                 }
             },
@@ -779,7 +779,7 @@
             name: "preventOverflow",
             enabled: !0,
             phase: "main",
-            fn: function(e) {
+            fn: function (e) {
                 var t = e.state,
                     n = e.options;
                 e = e.name;
@@ -806,9 +806,9 @@
                         placement: t.placement
                     })) : s;
                 if (s = {
-                        x: 0,
-                        y: 0
-                    }, a) {
+                    x: 0,
+                    y: 0
+                }, a) {
                     if (r || i) {
                         var v = "y" === l ? "top" : "left",
                             g = "y" === l ? "bottom" : "right",
@@ -839,7 +839,7 @@
             name: "arrow",
             enabled: !0,
             phase: "main",
-            fn: function(e) {
+            fn: function (e) {
                 var t, n = e.state,
                     o = e.name,
                     r = e.options,
@@ -847,7 +847,7 @@
                     a = n.modifiersData.popperOffsets,
                     s = x(n.placement);
                 if (e = L(s), s = 0 <= ["left", "right"].indexOf(s) ? "height" : "width", i && a) {
-                    r = M("number" != typeof(r = "function" == typeof(r = r.padding) ? r(Object.assign({}, n.rects, {
+                    r = M("number" != typeof (r = "function" == typeof (r = r.padding) ? r(Object.assign({}, n.rects, {
                         placement: n.placement
                     })) : r) ? r : k(r, C));
                     var f = d(i),
@@ -857,7 +857,7 @@
                     a = a[e] - n.rects.reference[e], a = (i = (i = y(i)) ? "y" === e ? i.clientHeight || 0 : i.clientWidth || 0 : 0) / 2 - f[s] / 2 + (l / 2 - a / 2), s = _(r[p], U(a, i - f[s] - r[c])), n.modifiersData[o] = ((t = {})[e] = s, t.centerOffset = s - a, t)
                 }
             },
-            effect: function(e) {
+            effect: function (e) {
                 var t = e.state;
                 if (null != (e = void 0 === (e = e.options.element) ? "[data-popper-arrow]" : e)) {
                     if ("string" == typeof e && !(e = t.elements.popper.querySelector(e))) return;
@@ -872,7 +872,7 @@
             enabled: !0,
             phase: "main",
             requiresIfExists: ["preventOverflow"],
-            fn: function(e) {
+            fn: function (e) {
                 var t = e.state;
                 e = e.name;
                 var n = t.rects.reference,

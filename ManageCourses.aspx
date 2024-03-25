@@ -4,380 +4,441 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
-        <div class="nav-wrapper position-relative end-0">
-            <ul class="nav nav-pills nav-fill p-1">
-                <li class="nav-item">
-                    <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="listCourses" OnClientClick="return handleLinkButtonClick('List');" href="javascript:void(0);">Listar
-                    </asp:LinkButton>
-                </li>
-                <li class="nav-item">
-                    <asp:LinkButton class="nav-link mb-0 px-0 py-1" runat="server" ID="insertCourses" OnClientClick="return handleLinkButtonClick('Insert');" href="javascript:void(0);">Inserir
-                    </asp:LinkButton>
-                </li>
-                <li class="nav-item">
-                    <asp:LinkButton runat="server" class="nav-link mb-0 px-0 py-1" ID="editCourses" OnClientClick="return handleLinkButtonClick('Edit');" href="javascript:void(0);"> Editar/Eliminar
-                    </asp:LinkButton>
-                </li>
-            </ul>
-        </div>
-
-        <div id="manageCoursesDiv" class="hidden">Gestão de Cursos </div>
-        <asp:UpdatePanel ID="updatePanel" runat="server">
-            <ContentTemplate>
-                <div class="col-md-12 col-sm-6 text-end" style="padding-right: 30px; font-family: var(--bs-font-sans-serif)">
-                    <a href="javascript:;" onclick="toggleFilters()">
-                        <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
-                    </a>
-                </div>
-                <div id="filters" class="col-md-12 col-md-6 hidden" style="padding-left: 30px;">
-                    <asp:UpdatePanel ID="UpdatePanel4" runat="server">
-                        <ContentTemplate>
-                            <div class="row">
-                                <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                    <span>Designação:</span>
-                                    <div class="input-group mb-4">
-                                        <asp:LinkButton runat="server" ID="lbtn_search" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
-                                        <asp:TextBox runat="server" ID="tb_search" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                    <span>Área:</span>
-                                    <div class="dropdown">
-                                        <asp:DropDownList ID="ddl_area" runat="server" class="btn bg-gradient-secundary dropdown-toggle" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea"></asp:DropDownList>
-                                        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [area]"></asp:SqlDataSource>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                    <span>Tipo:</span>
-                                    <div class="dropdown">
-                                        <asp:DropDownList ID="ddl_tipo" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso">
-                                        </asp:DropDownList>
-                                        <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                    <span>Data de Início: </span>
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                        <asp:TextBox runat="server" ID="tb_dataInicio" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                    <span>Data de Fim: </span>
-                                    <div class="input-group mb-4">
-                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                        <asp:TextBox runat="server" ID="tb_dataFim" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                    <span>
-                                        <br />
-                                    </span>
-                                    <div class="input-group mb-4">
-                                        <asp:Button runat="server" ID="btn_clear" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
-                                    </div>
+        <div class="row" style="margin-top: 15px">
+            <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
+                <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Novo Curso" ID="btn_insertCourse" OnClientClick="showInsert()" />
+                <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_back" OnClientClick="showInsert()" />
+                <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_backEditModules" OnClientClick="showEditModules()" />
+            </div>
+            <div id="filtermenu" class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
+                <a href="javascript:;" onclick="toggleFilters()">
+                    <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
+                </a>
+            </div>
+            <div id="filters" class="col-md-12 col-md-6 hidden" style="padding-left: 30px;">
+                <asp:UpdatePanel ID="UpdatePanel6" runat="server">
+                    <ContentTemplate>
+                        <div class="row">
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>Designação:</span>
+                                <div class="input-group mb-4">
+                                    <asp:LinkButton runat="server" ID="LinkButton1" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
+                                    <asp:TextBox runat="server" ID="TextBox1" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
                                 </div>
                             </div>
-                        </ContentTemplate>
-                        <Triggers>
-                            <asp:AsyncPostBackTrigger ControlID="btn_clear" />
-                        </Triggers>
-                    </asp:UpdatePanel>
-                </div>
-                <div class="container-fluid py-4">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card mb-4">
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>Área:</span>
+                                <div class="dropdown">
+                                    <asp:DropDownList ID="DropDownList1" runat="server" class="btn bg-gradient-secundary dropdown-toggle" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea"></asp:DropDownList>
+                                    <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [area]"></asp:SqlDataSource>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>Tipo:</span>
+                                <div class="dropdown">
+                                    <asp:DropDownList ID="DropDownList2" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso">
+                                    </asp:DropDownList>
+                                    <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>Data de Início: </span>
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    <asp:TextBox runat="server" ID="TextBox2" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>Data de Fim: </span>
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    <asp:TextBox runat="server" ID="TextBox3" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>
+                                    <br />
+                                </span>
+                                <div class="input-group mb-4">
+                                    <asp:Button runat="server" ID="btn_clear" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
+                                </div>
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="btn_clear" />
+                    </Triggers>
+                </asp:UpdatePanel>
+            </div>
+        </div>
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <asp:UpdatePanel ID="updatePanelListCourses" runat="server">
+                            <ContentTemplate>
                                 <!-- Listagem de Cursos -->
-                                <div id="listCoursesDiv" class="hidden">
+                                <div id="listCoursesDiv">
                                     <div class="card-header pb-0">
-                                        <h6>>Cursos</h6>
+                                        <h6>Cursos</h6>
                                     </div>
-
-                                    <asp:UpdatePanel ID="UpdatePanel3" runat="server">
-                                        <ContentTemplate>
-                                            <asp:Repeater ID="rpt_Courses" runat="server">
-                                                <HeaderTemplate>
-                                                    <div class="card-body px-0 pt-0 pb-2">
-                                                        <div class="table-responsive p-0">
-                                                            <table class="table align-items-center mb-0">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Curso</th>
-                                                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
-                                                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Referencial</th>
-                                                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Código QNQ</th>
-                                                                        <th></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                </HeaderTemplate>
-                                                <ItemTemplate>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex px-2">
-                                                                <div class="my-auto">
-                                                                    <h6 class="mb-0 text-sm"><%# Eval("CodCurso") %></h6>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-sm font-weight-bold mb-0"><%# Eval("Nome") %></p>
-                                                        </td>
-                                                        <td class="text-xs font-weight-bold">
-                                                            <%# Eval("CodRef") %>
-                                                        </td>
-                                                        <td class="text-xs font-weight-bold">Nível <%# Eval("CodQNQ") %>
-                                                        </td>
-                                                        <td class="align-middle text-center">
-                                                            <asp:LinkButton runat="server" CausesValidation="false" ID="lbt_edit" Text="Edit" class="text-secondary font-weight-bold text-xs" OnClientClick="showEdit(); return true;">
-                                                            </asp:LinkButton>
-                                                        </td>
-
-                                                    </tr>
-                                                    <tr>
-                                                </ItemTemplate>
-                                                <FooterTemplate>
-                                                    </tbody>
-                                                                    </table>
-                                                                </div>
-                                                             </div>
-                                                            
-                                                </FooterTemplate>
-                                            </asp:Repeater>
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
+                                    <asp:Repeater ID="rpt_Courses" runat="server" OnItemCommand="rpt_Courses_ItemCommand">
+                                        <HeaderTemplate>
+                                            <div class="card-body px-0 pt-0 pb-2">
+                                                <div class="table-responsive p-0">
+                                                    <table class="table align-items-center mb-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Curso</th>
+                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
+                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Referencial</th>
+                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Código QNQ</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex px-2">
+                                                        <div class="my-auto">
+                                                            <h6 class="mb-0 text-sm">
+                                                                <asp:Label runat="server" ID="lblCod"><%# Eval("CodCurso") %></asp:Label></h6>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="tbNome" CssClass="form-control" runat="server" Text='<%# Bind("Nome") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
+                                                    <p class="text-sm font-weight-bold mb-0">
+                                                        <asp:Label runat="server" ID="lblNome"><%# Eval("Nome") %></asp:Label>
+                                                    </p>
+                                                </td>
+                                                <td class="text-xs font-weight-bold">
+                                                    <asp:TextBox ID="tbCodRef" CssClass="form-control" runat="server" Text='<%# Bind("CodRef") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
+                                                    <asp:Label ID="lblCodRef" runat="server"> <%# Eval("CodRef") %></asp:Label>
+                                                </td>
+                                                <td class="text-xs font-weight-bold">Nível
+                                                        <asp:TextBox ID="tbCodQNQ" CssClass="form-control" runat="server" Text='<%# Bind("CodQNQ") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
+                                                    <asp:Label ID="lblCodQNQ" runat="server">  <%# Eval("CodQNQ") %></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:LinkButton runat="server" ID="lbt_EditModules" CausesValidation="false" OnClientClick="return showEditModules()" CommandName="Modules" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
+                                                        Text="Editar Módulos" class="text-secondary font-weight-bold text-xs">
+                                                    </asp:LinkButton></td>
+                                                <td class="align-middle font-weight-bold text-center">
+                                                    <asp:LinkButton runat="server" ID="lbt_edit" CausesValidation="false" CommandName="Edit" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
+                                                        Text="Edit" class="text-secondary font-weight-bold text-xs">
+                                                    </asp:LinkButton>
+                                                    <asp:LinkButton runat="server" ID="lbt_cancel" OnClick="lbt_cancel_OnClick" CausesValidation="false" CommandName="Cancel" Visible="false" CommandArgument='<%# Container.ItemIndex %>'
+                                                        Text="Cancel" class="text-secondary font-weight-bold text-xs">
+                                                    </asp:LinkButton>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <asp:LinkButton runat="server" ID="lbt_delete" CausesValidation="false" CommandName="Delete" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
+                                                        Text="Delete" class="text-secondary font-weight-bold text-xs">
+                                                    </asp:LinkButton>
+                                                    <asp:LinkButton runat="server" ID="lbt_confirm" CausesValidation="false" CommandName="Confirm" Visible="false" CommandArgument='<%# Container.ItemIndex %>'
+                                                        Text="Confirm" class="text-secondary font-weight-bold text-xs">
+                                                    </asp:LinkButton>
+                                                </td>
+                                            </tr>
+                                        </ItemTemplate>
+                                        <FooterTemplate>
+                                            </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                        </FooterTemplate>
+                                    </asp:Repeater>
                                     <ul class="pagination">
                                         <li class="page-item">
                                             <asp:LinkButton ID="btn_previousC" CssClass="page-link" OnClick="btn_previousC_Click" CausesValidation="false" runat="server">
-                            <i class="fa fa-angle-left"></i>
-                            <span class="sr-only">Previous</span>
-                                            </asp:LinkButton></li>
+                                                <i class="fa fa-angle-left"></i>
+                                                <span class="sr-only">Previous</span>
+                                            </asp:LinkButton>
+                                        </li>
                                         <li class="page-item">
                                             <asp:LinkButton ID="btn_nextC" CssClass="page-link" OnClick="btn_nextC_Click" CausesValidation="false" runat="server">
-                            <i class="fa fa-angle-right"></i>
-                            <span class="sr-only">Next</span>
-                                            </asp:LinkButton></li>
+                                                <i class="fa fa-angle-right"></i>
+                                                <span class="sr-only">Next</span>
+                                            </asp:LinkButton>
+                                        </li>
                                     </ul>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Fim da Listagem de Cursos -->
-                <!-- Inserção de Cursos -->
-                <asp:HiddenField ID="hfInsertCoursesVisible" runat="server" Value="false" />
-
-                <div id="insertCoursesDiv" class="hidden">
-
-                    <div style="padding: 5px;" id="alert" class="hidden" role="alert">
-                        <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
-                    </div>
-
-                    <div class="page-header min-vh-30">
-                        <div class="container">
-                            <div class="row ">
-                                <div class="col-xl-8 col-lg-7 col-md-6">
-                                    <div class="card card-plain">
-                                        <!-- Inserção de Dados de Curso - Textboxes e DDL's -->
-                                        <div class="card-header pb-0 text-left bg-transparent">
-                                            <h5 class="font-weight-bolder text-info text-gradient">Inserção de novo curso:</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div role="form">
-                                                <label>Nome do Curso</label>
-                                                <asp:RequiredFieldValidator ID="rfvCourseName" ErrorMessage="Nome do curso obrigatório" Text="*" runat="server" ControlToValidate="tbCourseName" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-                                                <div class="mb-2">
-                                                    <asp:TextBox ID="tbCourseName" CssClass="form-control" placeholder="Nome do Curso" runat="server"></asp:TextBox>
-                                                </div>
-                                                <label>Tipo de Curso</label>
-                                                <asp:RequiredFieldValidator ID="rfvTipoCurso" runat="server" ErrorMessage="Tipo de curso obrigatório" Text="*" ControlToValidate="ddlTipoCurso" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-                                                <div class="mb-2">
-                                                    <asp:DropDownList ID="ddlTipoCurso" CssClass="form-control" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso"></asp:DropDownList>
-                                                    <asp:SqlDataSource ID="SQLDSTipo" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
-
-                                                </div>
-                                                <label>Área do Curso</label>
-                                                <asp:RequiredFieldValidator ID="rvfarea" runat="server" ErrorMessage="Área do curso obrigatória" Text="*" ControlToValidate="ddlAreaCurso" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-                                                <div class="mb-2">
-                                                    <asp:DropDownList ID="ddlAreaCurso" CssClass="form-control" runat="server" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea"></asp:DropDownList>
-                                                    <asp:SqlDataSource ID="SQLDSArea" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [area]"></asp:SqlDataSource>
-                                                </div>
-                                                <label>Referencial n.º:</label>
-                                                <asp:RequiredFieldValidator ID="rfvRef" runat="server" ErrorMessage="N.º de Referencial obrigatório" Text="*" ControlToValidate="tbRef" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-
-                                                <div class="mb-2">
-                                                    <asp:TextBox ID="tbRef" CssClass="form-control" placeholder="Referencial n.º" runat="server"></asp:TextBox>
-                                                </div>
-                                                <label>Qualificação QNQ</label>
-                                                <asp:RequiredFieldValidator ID="rfvQNQ" runat="server" ErrorMessage="Nível de Qualificação QNQ obrigatória" Text="*" ControlToValidate="ddlQNQ" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
-                                                <div class="mb-2">
-                                                    <asp:DropDownList ID="ddlQNQ" CssClass="form-control" runat="server" DataSourceID="SQLDSQNQ" DataTextField="codQNQ" DataValueField="codQNQ"></asp:DropDownList>
-                                                    <asp:SqlDataSource ID="SQLDSQNQ" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT CONCAT('Nível ', codQNQ) AS codQNQ FROM [nivelQNQ]"></asp:SqlDataSource>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                                        <ContentTemplate>
-                                            <asp:Repeater ID="rpt_insertCourses" runat="server" OnItemDataBound="rpt_insertCourses_ItemDataBound">
-                                                <HeaderTemplate>
-                                                    <div class="row px-2" style="padding: 10px;">
-                                                        <!-- Inserção de Dados de Curso - Seleção dos Módulos -->
-                                                        <small class="text-uppercase font-weight-bold">Módulos do Curso:</small>
-                                                        <p>Seleccione os módulos pertencentes a este curso</p>
-                                                        <asp:Label runat="server" ID="Label1"></asp:Label>
-                                                        <div class="input-group mb-4">
-                                                            <asp:LinkButton runat="server" ID="lbtn_search" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
-                                                            <asp:TextBox runat="server" ID="tb_search" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="table-responsive">
-                                                        <table class="table align-items-center justify-content-center mb-0">
-                                                            <thead>
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="btn_previousC" EventName="Click" />
+                                <asp:AsyncPostBackTrigger ControlID="btn_nextC" EventName="Click" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+                        <asp:UpdatePanel ID="updatePanelEditModulesCourses" runat="server">
+                            <ContentTemplate>
+                                <div id="editModulesCourse" class="hidden">
+                                    <div class="page-header min-vh-30">
+                                        <div class="container">
+                                            <div class="row ">
+                                                <div class="col-xl-8 col-lg-7 col-md-6">
+                                                    <div class="card card-plain">
+                                                        <asp:Repeater ID="rpt_EditModulesCourse" runat="server" OnItemDataBound="rpt_EditModulesCourse_ItemDataBound">
+                                                            <HeaderTemplate>
+                                                                <div class="row px-2" style="padding: 10px;">
+                                                                    <!-- Editar Módulos de um Curso - Seleção dos Módulos -->
+                                                                    <small class="text-uppercase font-weight-bold"></small>
+                                                                    <p>Edite os módulos pertencentes a este curso</p>
+                                                                    <asp:Label runat="server" ID="lbl_CursoModulo"></asp:Label>
+                                                                    <div class="input-group mb-4">
+                                                                        <asp:LinkButton runat="server" ID="lbtn_search" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
+                                                                        <asp:TextBox runat="server" ID="tb_search" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="table-responsive">
+                                                                    <table class="table align-items-center justify-content-center mb-0">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Módulo</th>
+                                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">UFCD</th>
+                                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Pertence</th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
                                                                 <tr>
-                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Módulo</th>
-                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">UFCD</th>
-                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Pertence</th>
-                                                                    <th></th>
+                                                                    <td>
+                                                                        <div class="d-flex px-2">
+                                                                            <div>
+                                                                                <img src="<%# Eval("SVG") %>" class="avatar avatar-sm rounded-circle me-3">
+                                                                            </div>
+                                                                            <div class="my-auto">
+                                                                                <h6 class="mb-0 text-sm"><%# Eval("Nome") %></h6>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="text-sm font-weight-bold mb-0"><%# Eval("UFCD") %></p>
+                                                                    </td>
+                                                                    <td id="ForMyCkbEdit" class="text-xs font-weight-bold">
+                                                                        <div class="stats">
+                                                                            <small><%# Eval("CodModulo") %></small>
+                                                                            <asp:HiddenField ID="hdnModuleIDEdit" runat="server" Value='<%# Eval("CodModulo") %>' />
+                                                                            <asp:HiddenField ID="hdnModuleNameEdit" runat="server" Value='<%# Eval("Nome") %>' />
+                                                                            <div class="form-check">
+                                                                                <asp:CheckBox runat="server" ID="chckBox" />
+                                                                                <asp:Label runat="server" ID="lbl_order">Selecione este módulo</asp:Label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
                                                                 </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                </HeaderTemplate>
-                                                <ItemTemplate>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex px-2">
-                                                                <div>
-                                                                    <img src="<%# Eval("SVG") %>" class="avatar avatar-sm rounded-circle me-3">
-                                                                </div>
-                                                                <div class="my-auto">
-                                                                    <h6 class="mb-0 text-sm"><%# Eval("Nome") %></h6>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <p class="text-sm font-weight-bold mb-0"><%# Eval("UFCD") %></p>
-                                                        </td>
-                                                        <td id="formyckb" class="text-xs font-weight-bold">
-                                                            <div class="stats">
-                                                                <small><%# Eval("CodModulo") %></small>
-                                                                <asp:HiddenField ID="hdnModuleID" runat="server" Value='<%# Eval("CodModulo") %>' />
-                                                                <asp:HiddenField ID="hdnModuleName" runat="server" Value='<%# Eval("Nome") %>' />
-                                                                <div class="form-check">
-                                                                    <asp:CheckBox runat="server" ID="chckBox" OnCheckedChanged="chkBoxMod_CheckedChanged" />
-                                                                    <asp:Label runat="server" ID="lbl_order">Selecione este módulo</asp:Label>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td></td>
-                                                    </tr>
-                                                </ItemTemplate>
-                                                <FooterTemplate>
-                                                    </tbody>
+                                                            </ItemTemplate>
+                                                            <FooterTemplate>
+                                                                </tbody>
                                                         <asp:PlaceHolder runat="server" ID="footerPlaceHolder"></asp:PlaceHolder>
-                                                    </div> 
-                                                </table>                                      
-                                                </FooterTemplate>
-                                            </asp:Repeater>
-                                            <ul class="pagination">
-                                                <li class="page-item">
-                                                    <asp:LinkButton ID="btn_previousM" CssClass="page-link" CausesValidation="false" OnClick="btn_previousM_Click" runat="server">
+                                                                </div>
+                                                </table>
+                                                            </FooterTemplate>
+                                                        </asp:Repeater>
+
+                                                        <!-- Paginação dos Módulos -->
+                                                        <ul class="pagination">
+                                                            <li class="page-item">
+                                                                <asp:LinkButton ID="btn_previousEM" CssClass="page-link" CausesValidation="false" OnClick="btn_previousM_Click" runat="server">
                                                     <i class="fa fa-angle-left"></i>
                                                     <span class="sr-only">Previous</span>
-                                                    </asp:LinkButton></li>
-                                                <li class="page-item">
-                                                    <asp:LinkButton ID="btn_nextM" CssClass="page-link" CausesValidation="false" OnClick="btn_nextM_Click" runat="server">
+                                                                </asp:LinkButton>
+                                                            </li>
+                                                            <li class="page-item">
+                                                                <asp:LinkButton ID="btn_nextEM" CssClass="page-link" CausesValidation="false" OnClick="btn_nextM_Click" runat="server">
                                                     <i class="fa fa-angle-right"></i>
                                                     <span class="sr-only">Next</span>
-                                                    </asp:LinkButton></li>
-                                            </ul>
-                                        </ContentTemplate>
-                                        <Triggers>
-                                            <asp:PostBackTrigger ControlID="btn_previousM" />
-                                            <asp:PostBackTrigger ControlID="btn_nextM" />
-                                        </Triggers>
-                                    </asp:UpdatePanel>
-
-                                    <div class="row px-4" style="padding: 10px;">
-                                        <small class="text-uppercase font-weight-bold">Ordem dos Módulos:</small>
-                                        <asp:Label runat="server" ID="lbl_selection">  </asp:Label>
-                                    </div>
-                                    <div class="text-center">
-                                        <asp:Button ID="btn_insert" runat="server" Text="Inserir" OnClick="btn_insert_Click" class="btn bg-gradient-info w-100 mt-4 mb-0" />
+                                                                </asp:LinkButton>
+                                                            </li>
+                                                        </ul>
+                                                        <!-- Fim da Paginação dos Módulos -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n12">
-                                        <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="btn_previousEM" />
+                                <asp:AsyncPostBackTrigger ControlID="btn_nextEM" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+                        <!-- Fim da Listagem de Cursos -->
+                    </div>
+                    <!-- Inserção de Cursos -->
+                    <asp:HiddenField ID="hfInsertCoursesVisible" runat="server" Value="false" />
+                    <asp:UpdatePanel runat="server" ID="updatePanelInsertCourses">
+                        <ContentTemplate>
+                            <div id="insertCoursesDiv" class="hidden">
+                                <div class="page-header min-vh-30">
+                                    <div class="container">
+                                        <div class="row ">
+                                            <div class="col-xl-8 col-lg-7 col-md-6">
+                                                <div class="card card-plain">
+                                                    <div style="padding: 5px;" id="alert" class="hidden" role="alert">
+                                                        <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
+                                                    </div>
+                                                    <div class="card card-plain">
+                                                        <div class="card-header pb-0 text-left bg-transparent">
+                                                            <h5 class="font-weight-bolder text-info text-gradient">Inserção de novo curso:</h5>
+                                                        </div>
+                                                        <!-- Inserção de Dados de Curso - Textboxes e DDL's -->
+                                                        <div class="card-body">
+                                                            <div role="form">
+                                                                <label>Nome do Curso</label>
+                                                                <asp:RequiredFieldValidator ID="rfvCourseName" ErrorMessage="Nome do curso obrigatório" Text="*" runat="server" ControlToValidate="tbCourseName" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                                                <div class="mb-2">
+                                                                    <asp:TextBox ID="tbCourseName" CssClass="form-control" placeholder="Nome do Curso" runat="server"></asp:TextBox>
+                                                                </div>
+                                                                <label>Tipo de Curso</label>
+                                                                <asp:RequiredFieldValidator ID="rfvTipoCurso" runat="server" ErrorMessage="Tipo de curso obrigatório" Text="*" ControlToValidate="ddlTipoCurso" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                                                <div class="mb-2">
+                                                                    <asp:DropDownList ID="ddlTipoCurso" CssClass="form-control" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso"></asp:DropDownList>
+                                                                    <asp:SqlDataSource ID="SQLDSTipo" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
+                                                                </div>
+                                                                <label>Área do Curso</label>
+                                                                <asp:RequiredFieldValidator ID="rvfarea" runat="server" ErrorMessage="Área do curso obrigatória" Text="*" ControlToValidate="ddlAreaCurso" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                                                <div class="mb-2">
+                                                                    <asp:DropDownList ID="ddlAreaCurso" CssClass="form-control" runat="server" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea"></asp:DropDownList>
+                                                                    <asp:SqlDataSource ID="SQLDSArea" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [area]"></asp:SqlDataSource>
+                                                                </div>
+                                                                <label>Referencial n.º:</label>
+                                                                <asp:RequiredFieldValidator ID="rfvRef" runat="server" ErrorMessage="N.º de Referencial obrigatório" Text="*" ControlToValidate="tbRef" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+
+                                                                <div class="mb-2">
+                                                                    <asp:TextBox ID="tbRef" CssClass="form-control" placeholder="Referencial n.º" runat="server"></asp:TextBox>
+                                                                </div>
+                                                                <label>Qualificação QNQ</label>
+                                                                <asp:RequiredFieldValidator ID="rfvQNQ" runat="server" ErrorMessage="Nível de Qualificação QNQ obrigatória" Text="*" ControlToValidate="ddlQNQ" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                                                                <div class="mb-2">
+                                                                    <asp:DropDownList ID="ddlQNQ" CssClass="form-control" runat="server" DataSourceID="SQLDSQNQ" DataTextField="codQNQ" DataValueField="codQNQ"></asp:DropDownList>
+                                                                    <asp:SqlDataSource ID="SQLDSQNQ" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT CONCAT('Nível ', codQNQ) AS codQNQ FROM [nivelQNQ]"></asp:SqlDataSource>
+                                                                </div>
+                                                            </div>
+                                                            <asp:Repeater ID="rpt_insertCourses" runat="server" OnItemDataBound="rpt_insertCourses_ItemDataBound">
+                                                                <HeaderTemplate>
+                                                                    <div class="row px-2" style="padding: 10px;">
+                                                                        <!-- Inserção de Dados de Curso - Seleção dos Módulos -->
+                                                                        <small class="text-uppercase font-weight-bold">Módulos do Curso:</small>
+                                                                        <p>Seleccione os módulos pertencentes a este curso</p>
+                                                                        <asp:Label runat="server" ID="Label1"></asp:Label>
+                                                                        <div class="input-group mb-4">
+                                                                            <asp:LinkButton runat="server" ID="lbtn_search" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
+                                                                            <asp:TextBox runat="server" ID="tb_search" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="table-responsive">
+                                                                        <table class="table align-items-center justify-content-center mb-0">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Módulo</th>
+                                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">UFCD</th>
+                                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Pertence</th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                </HeaderTemplate>
+                                                                <ItemTemplate>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div class="d-flex px-2">
+                                                                                <div>
+                                                                                    <img src="<%# Eval("SVG") %>" class="avatar avatar-sm rounded-circle me-3">
+                                                                                </div>
+                                                                                <div class="my-auto">
+                                                                                    <h6 class="mb-0 text-sm"><%# Eval("Nome") %></h6>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="text-sm font-weight-bold mb-0"><%# Eval("UFCD") %></p>
+                                                                        </td>
+                                                                        <td id="ForMyCkb" class="text-xs font-weight-bold">
+                                                                            <div class="stats">
+                                                                                <small><%# Eval("CodModulo") %></small>
+                                                                                <asp:HiddenField ID="hdnModuleID" runat="server" Value='<%# Eval("CodModulo") %>' />
+                                                                                <asp:HiddenField ID="hdnModuleName" runat="server" Value='<%# Eval("Nome") %>' />
+                                                                                <div class="form-check">
+                                                                                    <asp:CheckBox runat="server" ID="chckBox" OnCheckedChanged="chkBoxMod_CheckedChanged" AutoPostBack="True" EnableViewState="true" />
+                                                                                    <asp:Label runat="server" ID="lbl_order">Selecione este módulo</asp:Label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </ItemTemplate>
+                                                                <FooterTemplate>
+                                                                    </tbody>
+                                                        <asp:PlaceHolder runat="server" ID="footerPlaceHolder"></asp:PlaceHolder>
+                                                                    </div>
+                                                                </table>
+                                                                </FooterTemplate>
+                                                            </asp:Repeater>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Paginação dos Módulos -->
+                                                    <ul class="pagination">
+                                                        <li class="page-item">
+                                                            <asp:LinkButton ID="btn_previousM" CssClass="page-link" CausesValidation="false" OnClick="btn_previousM_Click" runat="server">
+                                                    <i class="fa fa-angle-left"></i>
+                                                    <span class="sr-only">Previous</span>
+                                                            </asp:LinkButton>
+                                                        </li>
+                                                        <li class="page-item">
+
+                                                                <asp:Label runat="server" ID="lbl_pageNumber"></asp:Label>
+                           
+                                                        </li>
+                                                        <li class="page-item">
+                                                            <asp:LinkButton ID="btn_nextM" CssClass="page-link" CausesValidation="false" OnClick="btn_nextM_Click" runat="server">
+                                                    <i class="fa fa-angle-right"></i>
+                                                    <span class="sr-only">Next</span>
+                                                            </asp:LinkButton>
+                                                        </li>
+                                                    </ul>
+                                                    <!-- Fim da Paginação dos Módulos -->
+                                                    <div class="row px-4" style="padding: 10px;">
+                                                        <small class="text-uppercase font-weight-bold">Ordem dos Módulos:</small>
+                                                        <asp:Label runat="server" ID="lbl_selection">  </asp:Label>
+                                                    </div>
+                                                </div>
+                                                <div class="text-center">
+                                                    <asp:Button ID="btn_insert" runat="server" Text="Inserir" OnClick="btn_insert_Click" class="btn bg-gradient-info w-100 mt-4 mb-0" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n12">
+                                                    <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Fim de Inserção de Cursos -->
-                <!-- Edição de Cursos -->
-                <div id="editCoursesDiv" class="pageDiv">
-                    <div class="col-md-12 col-sm-6 text-end" style="padding-right: 20px; font-family: var(--bs-font-sans-serif)">
-                        <a href="javascript:;" onclick="toggleFilters()">
-                            <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
-                        </a>
-                    </div>
-                    <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-                        <ContentTemplate>
-                            <asp:Repeater ID="Repeater1" runat="server">
-                                <HeaderTemplate>
-                                    <table class="table align-items-center justify-content-center mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Curso</th>
-                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
-                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Referencial</th>
-                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Código QNQ</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                </HeaderTemplate>
-                                <ItemTemplate>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2">
-                                                <div class="my-auto">
-                                                    <h6 class="mb-0 text-sm"><%# Eval("CodCurso") %></h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <p class="text-sm font-weight-bold mb-0"><%# Eval("Nome") %></p>
-                                        </td>
-                                        <td class="text-xs font-weight-bold">
-                                            <%# Eval("CodRef") %>
-                                        </td>
-                                        <td class="text-xs font-weight-bold">Nível <%# Eval("CodQNQ") %>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <asp:LinkButton runat="server" ID="lbt_edit" Text="Edit" class="text-secondary font-weight-bold text-xs" OnClientClick="showEdit(); return true;">
-                                            </asp:LinkButton>
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                </ItemTemplate>
-                                <FooterTemplate>
-                                    </tbody>
-                    </table>
-                                </FooterTemplate>
-                            </asp:Repeater>
+                            <!-- Fim de Inserção de Cursos -->
+                            <!--AsyncPostBackTrigger da CheckBox a ser gerado no C# -->
                         </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="btn_insert" EventName="Click" />
+                            <asp:AsyncPostBackTrigger ControlID="btn_previousM" EventName="Click" />
+                            <asp:AsyncPostBackTrigger ControlID="btn_nextM" EventName="Click" />
+                        </Triggers>
                     </asp:UpdatePanel>
                 </div>
-                <!-- Fim de Edição de Cursos -->
-            </ContentTemplate>
-        </asp:UpdatePanel>
+            </div>
+        </div>
     </div>
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
@@ -434,15 +495,58 @@
         });
     </script>
 
-    <!-- Função de Javascript para Mostrar a Div de Editar após click no LinkButton Edit do Repeater -->
+    <!-- Função de Javascript para Mostrar a Div de Inserir após click no Button Inserir Módulo -->
     <script>
-        function showEdit(event) {
-            event.preventDefault();
-            // Remove 'show' class and add 'hide' class to div1
-            document.getElementById('listCoursesDiv').classList.add('hidden');
+        function showInsert() {
+            var insertDiv = document.getElementById('insertCoursesDiv');
+            var listDiv = document.getElementById('listCoursesDiv');
+            var btnInsert = document.getElementById('<%= btn_insertCourse.ClientID %>');
+            var btnBack = document.getElementById('<%= btn_back.ClientID %>');
+            var filterMenu = document.getElementById('filtermenu');
 
-            // Remove 'hide' class and add 'show' class to div2
-            document.getElementById('editCoursesDiv').classList.remove('hidden');
+            if (insertDiv.classList.contains('hidden')) {
+                insertDiv.classList.remove('hidden');
+                listDiv.classList.add('hidden');
+                btnInsert.classList.add('hidden');
+                btnBack.classList.remove('hidden');
+                filterMenu.classList.add('hidden');
+
+            } else {
+                insertDiv.classList.add('hidden');
+                listDiv.classList.remove('hidden');
+                btnInsert.classList.remove('hidden');
+                btnBack.classList.add('hidden');
+                filterMenu.classList.remove('hidden');
+            }
+        }
+    </script>
+
+    <!-- Função de Javascript para Mostrar a Div de Inserir após click no Button Inserir Curso -->
+    <script>
+        function showEditModules() {
+            var editModulesDiv = document.getElementById('editModulesCourse');
+            var listDiv = document.getElementById('listCoursesDiv');
+            var btnInsert = document.getElementById('<%= btn_insertCourse.ClientID %>');
+            var btnBack = document.getElementById('<%= btn_backEditModules.ClientID %>');
+            var filterMenu = document.getElementById('filtermenu');
+
+            if (editModulesDiv.classList.contains('hidden')) {
+                editModulesDiv.classList.remove('hidden');
+                listDiv.classList.add('hidden');
+                btnInsert.classList.add('hidden');
+                btnBack.classList.remove('hidden');
+                filterMenu.classList.add('hidden');
+
+            } else {
+                editModulesDiv.classList.add('hidden');
+                listDiv.classList.remove('hidden');
+                btnInsert.classList.remove('hidden');
+                btnBack.classList.add('hidden');
+                filterMenu.classList.remove('hidden');
+
+            }
+
+            return false;
         }
     </script>
 
@@ -454,13 +558,11 @@
                 case 'List':
                     url = '../ManageCourses.aspx?List';
                     document.getElementById('listCoursesDiv').classList.remove('hidden');
-                    document.getElementById('editCoursesDiv').classList.add('hidden');
                     document.getElementById('insertCoursesDiv').classList.add('hidden');
                     title = "Listar Cursos";
                     break;
                 case 'Edit':
                     url = '../ManageCourses.aspx?Edit';
-                    document.getElementById('editCoursesDiv').classList.remove('hidden');
                     document.getElementById('listCoursesDiv').classList.add('hidden');
                     document.getElementById('insertCoursesDiv').classList.add('hidden');
                     title = "Editar Cursos";
@@ -469,7 +571,6 @@
                     url = '../ManageCourses.aspx?Insert';
                     document.getElementById('insertCoursesDiv').classList.remove('hidden');
                     document.getElementById('listCoursesDiv').classList.add('hidden');
-                    document.getElementById('editCoursesDiv').classList.add('hidden');
                     title = "Inserir Cursos";
                     break;
                 default:
@@ -530,6 +631,4 @@
             }
         }
     </script>
-
-
 </asp:Content>

@@ -1,8 +1,6 @@
 ﻿using FinalProject.Classes;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
 using System.Web.UI;
 
 namespace FinalProject
@@ -11,7 +9,6 @@ namespace FinalProject
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
 
         protected void btn_changepw_Click(object sender, EventArgs e)
@@ -20,8 +17,7 @@ namespace FinalProject
 
             if (Security.IsValidEmail(tbEmail.Text) == false)
             {
-
-                string script = @"                      
+                string script = @"
                             document.getElementById('alert').classList.remove('hidden');
                             document.getElementById('alert').classList.add('alert');
                             document.getElementById('alert').classList.add('alert-primary');
@@ -35,7 +31,7 @@ namespace FinalProject
             {
                 foreach (var failure in failures)
                 {
-                    string script = @"                      
+                    string script = @"
                             document.getElementById('alert').classList.remove('hidden');
                             document.getElementById('alert').classList.add('alert');
                             document.getElementById('alert').classList.add('alert-primary');
@@ -48,7 +44,7 @@ namespace FinalProject
             }
             else if (tb_pw.Text != tb_pwr.Text)
             {
-                string script = @"                      
+                string script = @"
                             document.getElementById('alert').classList.remove('hidden');
                             document.getElementById('alert').classList.add('alert');
                             document.getElementById('alert').classList.add('alert-primary');
@@ -61,9 +57,9 @@ namespace FinalProject
             else
             {
                 int ChangePass = Classes.Security.ChangePassword(tbEmail.Text, tb_pw.Text, tb_pwr.Text);
-                if(ChangePass == 1)
+                if (ChangePass == 1)
                 {
-                    string script = @"                      
+                    string script = @"
                             document.getElementById('alert').classList.remove('hidden');
                             document.getElementById('alert').classList.add('alert');
                             document.getElementById('alert').classList.add('alert-primary');
@@ -72,11 +68,10 @@ namespace FinalProject
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
                     lbl_message.Text = "Palavra-passe alterada com sucesso!";
-
                 }
                 else
                 {
-                    string script = @"                      
+                    string script = @"
                             document.getElementById('alert').classList.remove('hidden');
                             document.getElementById('alert').classList.add('alert');
                             document.getElementById('alert').classList.add('alert-primary');
@@ -85,9 +80,7 @@ namespace FinalProject
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
                     lbl_message.Text = "Palavra-passe atual incorreta!";
-
                 }
-
             }
         }
     }

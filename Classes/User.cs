@@ -38,13 +38,19 @@ namespace FinalProject.Classes
         public int CodSituacaoProf { get; set; }
         public string LifeMotto { get; set; }
 
+        /// <summary>
+        /// Função para determinar se o Login é permitido
+        /// </summary>
+        /// <param name="Username"></param>
+        /// <param name="Password"></param>
+        /// <returns></returns>
         public static List<int> IsLoginAllowed(string Username, string Password)
         {
             List<int> Users = new List<int>();
 
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL 
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@User", Username); //Adicionar o valor da tb_user ao parâmetro @nome
             myCommand.Parameters.AddWithValue("@Pw", Security.EncryptString(Password));
 
@@ -64,14 +70,6 @@ namespace FinalProject.Classes
 
             myCommand.Parameters.Add(AccountActive);
 
-            //Variável de Output para SP verificar o perfil
-            SqlParameter NumiAdmin = new SqlParameter();
-            NumiAdmin.ParameterName = "@SuAdmin";
-            NumiAdmin.Direction = ParameterDirection.Output;
-            NumiAdmin.SqlDbType = SqlDbType.Int;
-
-            myCommand.Parameters.Add(NumiAdmin);
-
             SqlParameter CodUtilizador = new SqlParameter();
             CodUtilizador.ParameterName = "@CodUtilizador";
             CodUtilizador.Direction = ParameterDirection.Output;
@@ -89,15 +87,12 @@ namespace FinalProject.Classes
             Users.Add(AnswUserExist);
             int AnswAccountActive = Convert.ToInt32(myCommand.Parameters["@AccountActive"].Value);
             Users.Add(AnswAccountActive);
-            int AnswNumiAdmin = Convert.ToInt32(myCommand.Parameters["@SuAdmin"].Value);
-            Users.Add(AnswNumiAdmin);
             int AnswNumiCodUser = Convert.ToInt32(myCommand.Parameters["@CodUtilizador"].Value);
             Users.Add(AnswNumiCodUser);
 
             myCon.Close(); //Fechar a conexão
 
             return Users;
-
         }
 
         /// <summary>
@@ -107,7 +102,7 @@ namespace FinalProject.Classes
         /// <returns></returns>
         public static User LoadUser(string UserC)
         {
-            string query = $"SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador WHERE utilizador='{UserC}'";
+            string query = $"SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador WHERE utilizador='{UserC}' OR email='{UserC}'";
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -145,7 +140,6 @@ namespace FinalProject.Classes
                 informacao.LifeMotto = dr["lifemotto"] == DBNull.Value ? " " : dr["lifemotto"].ToString();
             }
 
-
             myConn.Close();
 
             return informacao;
@@ -156,21 +150,21 @@ namespace FinalProject.Classes
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>
-        public static int registerUser(List<string> values)
+        public static (int, int) RegisterUser(List<string> Values)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL 
-            myCommand.Parameters.AddWithValue("@CodePerfil", values[0]);
-            myCommand.Parameters.AddWithValue("@CompleteName", values[1]);
-            myCommand.Parameters.AddWithValue("@User", values[2]);
-            myCommand.Parameters.AddWithValue("@Email", values[3]);
-            myCommand.Parameters.AddWithValue("@Pw", Classes.Security.EncryptString(values[4]));
-            myCommand.Parameters.AddWithValue("@CodCardType", values[5]);
-            myCommand.Parameters.AddWithValue("@CardNumber", values[6]);
-            myCommand.Parameters.AddWithValue("@CardDate", Convert.ToDateTime(values[7]));
-            myCommand.Parameters.AddWithValue("@Prefix", values[8]);
-            myCommand.Parameters.AddWithValue("@PhoneNumber", values[9]);
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@CodePerfil", Values[0]);
+            myCommand.Parameters.AddWithValue("@CompleteName", Values[1]);
+            myCommand.Parameters.AddWithValue("@User", Values[2]);
+            myCommand.Parameters.AddWithValue("@Email", Values[3]);
+            myCommand.Parameters.AddWithValue("@Pw", Classes.Security.EncryptString(Values[4]));
+            myCommand.Parameters.AddWithValue("@CodCardType", Values[5]);
+            myCommand.Parameters.AddWithValue("@CardNumber", Values[6]);
+            myCommand.Parameters.AddWithValue("@CardDate", Convert.ToDateTime(Values[7]));
+            myCommand.Parameters.AddWithValue("@Prefix", Values[8]);
+            myCommand.Parameters.AddWithValue("@PhoneNumber", Values[9]);
 
             SqlParameter UserRegister = new SqlParameter();
             UserRegister.ParameterName = "@UserRegister";
@@ -179,6 +173,13 @@ namespace FinalProject.Classes
 
             myCommand.Parameters.Add(UserRegister);
 
+            SqlParameter UserCode = new SqlParameter();
+            UserCode.ParameterName = "@UserCode";
+            UserCode.Direction = ParameterDirection.Output;
+            UserCode.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(UserCode);
+
             myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
             myCommand.CommandText = "UserRegister"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
 
@@ -186,11 +187,12 @@ namespace FinalProject.Classes
             myCon.Open(); //Abrir a conexão
             myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
             int AnswUserRegister = Convert.ToInt32(myCommand.Parameters["@UserRegister"].Value);
+            int AnswUserCode = Convert.ToInt32(myCommand.Parameters["@UserCode"].Value);
+
 
             myCon.Close(); //Fechar a conexão
 
-            return AnswUserRegister;
-
+            return (AnswUserRegister, AnswUserCode);
         }
 
         /// <summary>
@@ -198,29 +200,29 @@ namespace FinalProject.Classes
         /// </summary>
         /// <param name="values"></param>
         /// <param name="anexos"></param>
-        public static void completeRegisterUser(List<string> values, List<FileControl> anexos)
+        public static int CompleteRegisterUser(List<string> Values, List<FileControl> Anexos)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL 
-            myCommand.Parameters.AddWithValue("@CodUtilizador", values[0]);
-            myCommand.Parameters.AddWithValue("@Sexo", Convert.ToInt32(values[8]));
-            myCommand.Parameters.AddWithValue("@DataNascimento", Convert.ToDateTime(values[9]));
-            myCommand.Parameters.AddWithValue("@NIF", values[10]);
-            myCommand.Parameters.AddWithValue("@Morada", values[11]);
-            myCommand.Parameters.AddWithValue("@CodPais", Convert.ToInt32(values[12]));
-            myCommand.Parameters.AddWithValue("@CodPostal", values[13]);
-            myCommand.Parameters.AddWithValue("@Freguesia", values[14]);
-            myCommand.Parameters.AddWithValue("@CodEstadoCivil", Convert.ToInt32(values[15]));
-            myCommand.Parameters.AddWithValue("@NrSegSocial", values[16]);
-            myCommand.Parameters.AddWithValue("@IBAN", values[17]);
-            myCommand.Parameters.AddWithValue("@Naturalidade", values[18]);
-            myCommand.Parameters.AddWithValue("@CodNacionalidade", Convert.ToInt32(values[19]));
-            byte[] fotoBytes = Convert.FromBase64String(values[20]);
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@CodUtilizador", Values[0]);
+            myCommand.Parameters.AddWithValue("@Sexo", Convert.ToInt32(Values[1]));
+            myCommand.Parameters.AddWithValue("@DataNascimento", Convert.ToDateTime(Values[2]));
+            myCommand.Parameters.AddWithValue("@NIF", Values[3]);
+            myCommand.Parameters.AddWithValue("@Morada", Values[4]);
+            myCommand.Parameters.AddWithValue("@CodPais", Convert.ToInt32(Values[5]));
+            myCommand.Parameters.AddWithValue("@CodPostal", Values[6]);
+            myCommand.Parameters.AddWithValue("@Freguesia", Values[7]);
+            myCommand.Parameters.AddWithValue("@CodEstadoCivil", Convert.ToInt32(Values[8]));
+            myCommand.Parameters.AddWithValue("@NrSegSocial", Values[9]);
+            myCommand.Parameters.AddWithValue("@IBAN", Values[10]);
+            myCommand.Parameters.AddWithValue("@Naturalidade", Values[11]);
+            myCommand.Parameters.AddWithValue("@CodNacionalidade", Convert.ToInt32(Values[12]));
+            byte[] fotoBytes = Convert.FromBase64String(Values[13]);
             myCommand.Parameters.Add("@Foto", SqlDbType.VarBinary, -1).Value = fotoBytes;
-            myCommand.Parameters.AddWithValue("@CodGrauAcademico", Convert.ToInt32(values[21]));
-            myCommand.Parameters.AddWithValue("@CodSituacaoProf", Convert.ToInt32(values[22]));
-            myCommand.Parameters.AddWithValue("@LifeMotto", values[23]);
+            myCommand.Parameters.AddWithValue("@CodGrauAcademico", Convert.ToInt32(Values[14]));
+            myCommand.Parameters.AddWithValue("@CodSituacaoProf", Convert.ToInt32(Values[15]));
+            myCommand.Parameters.AddWithValue("@LifeMotto", Values[16]);
 
             SqlParameter UserRegister = new SqlParameter();
             UserRegister.ParameterName = "@UserRegister";
@@ -231,7 +233,7 @@ namespace FinalProject.Classes
 
             myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
             myCommand.CommandText = "UserRegisterSecondaryData"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
-            int AnswUserRegister = Convert.ToInt32(myCommand.Parameters["@UserRegister"].Value);
+            int AnswUserRegisterComplete = Convert.ToInt32(myCommand.Parameters["@UserRegister"].Value);
 
             myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
             myCon.Open(); //Abrir a conexão
@@ -247,10 +249,10 @@ namespace FinalProject.Classes
 
             myCon.Open();
 
-            foreach (FileControl anexo in anexos)
+            foreach (FileControl anexo in Anexos)
             {
                 myCommand2.Parameters.Clear();
-                myCommand2.Parameters.AddWithValue("@CodUtilizador", Convert.ToInt32(values[0]));
+                myCommand2.Parameters.AddWithValue("@CodUtilizador", Convert.ToInt32(Values[0]));
                 myCommand2.Parameters.AddWithValue("@NomeFicheiro", anexo.FileName);
                 myCommand2.Parameters.AddWithValue("@ExtensaoFicheiro", anexo.ContentType);
                 myCommand2.Parameters.AddWithValue("@Ficheiro", anexo.FileBytes);
@@ -258,7 +260,124 @@ namespace FinalProject.Classes
             }
 
             myCon.Close();
+
+            return AnswUserRegisterComplete;
+        }
+
+        public static (int, string) DetermineUtilizador(string User)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+
+            SqlCommand myCommand = new SqlCommand();
+            myCommand.Parameters.AddWithValue("@User", User);
+
+            SqlParameter UserCode = new SqlParameter();
+            UserCode.ParameterName = "@UserCode";
+            UserCode.Direction = ParameterDirection.Output;
+            UserCode.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(UserCode);
+
+            SqlParameter Username = new SqlParameter();
+            Username.ParameterName = "@Username";
+            Username.Direction = ParameterDirection.Output;
+            Username.SqlDbType = SqlDbType.VarChar;
+            Username.Size = 50;
+
+            myCommand.Parameters.Add(Username);
+
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "DetermineUtilizador";
+
+            myCommand.Connection = myCon;
+            myCon.Open();
+
+            myCommand.ExecuteNonQuery();
+
+            int AnswUserCode = Convert.ToInt32(myCommand.Parameters["@UserCode"].Value);
+            string AnswUsername = myCommand.Parameters["@Username"].Value.ToString();
+
+            myCon.Close(); //Fechar a conexão
+
+            return (AnswUserCode, AnswUsername);
+        }
+
+        public static (int, int) CheckEmail(string Email)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+
+            SqlCommand myCommand = new SqlCommand();
+            myCommand.Parameters.AddWithValue("@GoogleEmail", Email);
+
+            SqlParameter UserExists = new SqlParameter();
+            UserExists.ParameterName = "@UserExists";
+            UserExists.Direction = ParameterDirection.Output;
+            UserExists.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(UserExists);
+
+            SqlParameter AccountActive = new SqlParameter();
+            AccountActive.ParameterName = "@AccountActive";
+            AccountActive.Direction = ParameterDirection.Output;
+            AccountActive.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(AccountActive);
+
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "CheckEmailFromGoogle";
+
+            myCommand.Connection = myCon;
+            myCon.Open();
+
+            myCommand.ExecuteNonQuery();
+
+            int AnswUserExist = Convert.ToInt32(myCommand.Parameters["@UserExists"].Value);
+            int AnswAccountActive = Convert.ToInt32(myCommand.Parameters["@AccountActive"].Value);
+
+            myCon.Close(); //Fechar a conexão
+
+            return (AnswUserExist, AnswAccountActive);
+        }
+
+        public static List<int> DetermineUserProfile(int UserCode)
+        {
+            List<int> UserProfiles = new List<int>();
+
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+
+            SqlCommand myCommand = new SqlCommand();
+            myCommand.Parameters.AddWithValue("@UserCode", UserCode);
+
+            SqlParameter UserProfileListParam = new SqlParameter();
+            UserProfileListParam.ParameterName = "@UserProfilesList";
+            UserProfileListParam.Direction = ParameterDirection.Output;
+            UserProfileListParam.SqlDbType = SqlDbType.NVarChar;
+            UserProfileListParam.Size = -1;
+
+            myCommand.Parameters.Add(UserProfileListParam);
+
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "DetermineUserProfile";
+
+            myCommand.Connection = myCon;
+            myCon.Open();
+
+            myCommand.ExecuteNonQuery();
+
+            string userProfileListString = (string)myCommand.Parameters["@UserProfilesList"].Value;
+
+            if (!string.IsNullOrEmpty(userProfileListString))
+            {
+                string[] profileCodes = userProfileListString.Split(',');
+                foreach (string code in profileCodes)
+                {
+                    UserProfiles.Add(int.Parse(code));
+                }
+            }
+
+            myCon.Close(); //Fechar a conexão
+
+            return UserProfiles;
         }
     }
-
 }

@@ -44,7 +44,7 @@ namespace FinalProject
                             document.getElementById('navButtonSignOut').classList.add('nav-item');
                             document.getElementById('navButtonSignOut').classList.add('d-flex');
                             document.getElementById('navButtonSignOut').classList.add('align-items-center');
-                            document.getElementById('navButtonSignIn').classList.remove('nav-item'); 
+                            document.getElementById('navButtonSignIn').classList.remove('nav-item');
                             document.getElementById('navButtonSignIn').classList.remove('d-flex');
                             document.getElementById('navButtonSignIn').classList.remove('align-items-center');
                             document.getElementById('navButtonSignIn').classList.add('hidden');
@@ -57,7 +57,7 @@ namespace FinalProject
 
                 if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
                 {
-                    script = @" 
+                    script = @"
                             document.getElementById('management').classList.remove('hidden');
                             document.getElementById('managecourses').classList.remove('hidden');
                             document.getElementById('manageclasses').classList.remove('hidden');
@@ -71,7 +71,6 @@ namespace FinalProject
                 }
 
                 BindDataModules();
-
             }
         }
 
@@ -109,7 +108,7 @@ namespace FinalProject
 
             if (ModuleRegisted == 1)
             {
-                string script = @"                      
+                string script = @"
                             document.getElementById('alert').classList.remove('hidden');
                             document.getElementById('alert').classList.add('alert');
                             document.getElementById('alert').classList.add('alert-primary');
@@ -121,7 +120,7 @@ namespace FinalProject
             }
             else
             {
-                string script = @"                      
+                string script = @"
                             document.getElementById('alert').classList.remove('hidden');
                             document.getElementById('alert').classList.add('alert');
                             document.getElementById('alert').classList.add('alert-primary');
@@ -135,7 +134,6 @@ namespace FinalProject
 
         protected void lbtn_edit_Click(object sender, EventArgs e)
         {
-
         }
 
         protected void rpt_Modules_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -177,15 +175,11 @@ namespace FinalProject
                 // Hide "Edit" and "Delete" buttons
                 lbt_edit.Visible = false;
                 lbt_delete.Visible = false;
-
-
             }
-
         }
 
         protected void lnkUpload_Click(object sender, EventArgs e)
         {
-
         }
 
         protected void btn_previousM_Click(object sender, EventArgs e)
@@ -214,7 +208,6 @@ namespace FinalProject
 
             btn_previousM.Enabled = !pagedData.IsFirstPage; // Adjust with the respective btn_previous control for Users Repeater
             btn_nextM.Enabled = !pagedData.IsLastPage; // Adjust with the respective btn_next control for Users Repeater
-
         }
 
         public int PageNumberModules

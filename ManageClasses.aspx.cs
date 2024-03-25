@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -45,7 +42,7 @@ namespace FinalProject
                             document.getElementById('navButtonSignOut').classList.add('nav-item');
                             document.getElementById('navButtonSignOut').classList.add('d-flex');
                             document.getElementById('navButtonSignOut').classList.add('align-items-center');
-                            document.getElementById('navButtonSignIn').classList.remove('nav-item'); 
+                            document.getElementById('navButtonSignIn').classList.remove('nav-item');
                             document.getElementById('navButtonSignIn').classList.remove('d-flex');
                             document.getElementById('navButtonSignIn').classList.remove('align-items-center');
                             document.getElementById('navButtonSignIn').classList.add('hidden');
@@ -71,6 +68,58 @@ namespace FinalProject
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
             }
+
+            BindDataModules();
+        }
+
+        protected void btn_previousM_Click(object sender, EventArgs e)
+        {
+            PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataModules();
+        }
+
+        protected void btn_nextM_Click(object sender, EventArgs e)
+        {
+            PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataModules();
+        }
+
+        private void BindDataModules()
+        {
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.Module.LoadModules();
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 8;
+            pagedData.CurrentPageIndex = PageNumberModules;
+            ; // Adjust with the respective pagination helper instance
+
+            rpt_Modules.DataSource = pagedData;
+            rpt_Modules.DataBind();
+
+            rpt_Teachers.DataSource = pagedData;
+            rpt_Teachers.DataBind();
+
+            btn_previousM.Enabled = !pagedData.IsFirstPage; // Adjust with the respective btn_previous control for Users Repeater
+            btn_nextM.Enabled = !pagedData.IsLastPage; // Adjust with the respective btn_next control for Users Repeater
+        }
+
+        public int PageNumberModules
+        {
+            get
+            {
+                if (ViewState["PageNumberModules"] != null)
+                    return Convert.ToInt32(ViewState["PageNumberModules"]);
+                else
+                    return 0;
+            }
+            set
+            {
+                ViewState["PageNumberModules"] = value;
+            }
+        }
+
+        protected void rpt_Classes_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
         }
     }
 }

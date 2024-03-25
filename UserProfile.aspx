@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Perfil" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="UserProfile.aspx.cs" Inherits="FinalProject.UserProfile" EnableEventValidation="false" %>
+﻿<%@ Page Title="Perfil" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="UserProfile.aspx.cs" Inherits="FinalProject.UserProfile" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -72,7 +72,7 @@
                                     <span class="ms-1">Avaliações</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item" id="alterarPW">
                                 <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#" role="tab" aria-selected="false" onclick="showChangePw(event); return false;">
                                     <svg width="16px" class="text-dark" height="16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                         <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
@@ -385,7 +385,6 @@
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <asp:Label ID="lblSexo" runat="server" AssociatedControlID="ddlSexo">Sexo</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvSexo" runat="server" Text="*" ErrorMessage="Género Obrigatório" ValidationGroup="Page1" ControlToValidate="ddlSexo" InitialValue="" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                 <asp:DropDownList ID="ddlSexo" runat="server" ValidationGroup="Page1" CssClass="form-control">
                                                     <asp:ListItem Value="0">Feminino</asp:ListItem>
                                                     <asp:ListItem Value="1">Masculino</asp:ListItem>
@@ -395,10 +394,8 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <asp:Label ID="lblDataNascimento" runat="server" AssociatedControlID="tbDataNascimento">Data de Nascimento</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvDataNascimento" Text="*" ValidationGroup="Page1" ErrorMessage="Data de Nascimento Obrigatória" runat="server" ControlToValidate="tbDataNascimento" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-
                                                     <asp:TextBox ID="tbDataNascimento" ValidationGroup="Page1" runat="server" CssClass="form-control datepicker" TextMode="date"></asp:TextBox>
                                                 </div>
                                             </div>
@@ -436,14 +433,12 @@
                                         <div class="col-md-7">
                                             <div class="form-group">
                                                 <asp:Label ID="lblNrSegSocial" runat="server" AssociatedControlID="tbNrSegSocial">Número de Segurança Social</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvNrSegSocial" Text="*" ValidationGroup="Page1" ErrorMessage="Nr.ª da Segurança Social Obrigatório" runat="server" ControlToValidate="tbNrSegSocial" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                 <asp:TextBox ID="tbNrSegSocial" ValidationGroup="Page1" runat="server" CssClass="form-control" placeholder="12345678910"></asp:TextBox>
                                             </div>
                                         </div>
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <asp:Label ID="lblNIF" runat="server" AssociatedControlID="tbNIF">NIF</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvNIF" Text="*" runat="server" ValidationGroup="Page1" ErrorMessage="NIF Obrigatório" ControlToValidate="tbNIF" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                 <asp:TextBox ID="tbNIF" ValidationGroup="Page1" runat="server" CssClass="form-control" placeholder="123456789"></asp:TextBox>
                                             </div>
                                         </div>
@@ -452,7 +447,6 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <asp:Label ID="lblMorada" runat="server" AssociatedControlID="tbMorada">Morada</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvMorada" Text="*" ValidationGroup="Page1" ErrorMessage="Morada Obrigatória" runat="server" ControlToValidate="tbMorada" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                 <asp:TextBox ID="tbMorada" ValidationGroup="Page1" runat="server" CssClass="form-control" TextMode="MultiLine" placeholder="Introduza a sua morada completa"></asp:TextBox>
                                             </div>
                                         </div>
@@ -461,21 +455,18 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <asp:Label ID="lblCodPostal" runat="server" AssociatedControlID="tbCodPostal">Código-Postal</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvcodCodPostal" Text="*" ErrorMessage="Código-Postal Obrigatório" ValidationGroup="Page1" runat="server" ControlToValidate="tbCodPostal" InitialValue="" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                 <asp:TextBox runat="server" ID="tbCodPostal" CssClass="form-control" placeholder="0000-000"></asp:TextBox>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <asp:Label ID="lblfreguesia" runat="server" AssociatedControlID="tbLocalidade">Localidade</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvLocalidade" Text="*" ErrorMessage="Localidade Obrigatória" ValidationGroup="Page1" runat="server" ControlToValidate="tbLocalidade" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                 <asp:TextBox runat="server" ID="tbLocalidade" CssClass="form-control" ValidationGroup="Page1"></asp:TextBox>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <asp:Label ID="lblCodPais" runat="server" AssociatedControlID="ddlCodPais">País</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvCodPais" Text="*" ErrorMessage="País Obrigatório" ValidationGroup="Page1" runat="server" ControlToValidate="ddlCodPais" InitialValue="" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                 <asp:DropDownList ID="ddlCodPais" ValidationGroup="Page1" runat="server" CssClass="form-control" DataSourceID="SQLDSPais" DataTextField="nomePT" DataValueField="codPais">
                                                 </asp:DropDownList>
                                                 <asp:SqlDataSource ID="SQLDSPais" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [pais] ORDER BY nomePT"></asp:SqlDataSource>
@@ -488,7 +479,6 @@
                                             &nbsp;
                                             <asp:Button runat="server" ID="btn_next" ValidationGroup="Page1" OnClientClick="showNextDiv(); return false;" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Seguinte" />
                                         </div>
-
                                     </div>
                                 </ContentTemplate>
                                 <Triggers>
@@ -504,7 +494,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -527,7 +516,6 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <asp:Label ID="lblCodEstadoCivil" runat="server" AssociatedControlID="ddlCodEstadoCivil">Estado Civil</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvCodEstadoCivil" runat="server" ValidationGroup="Page2" ControlToValidate="ddlCodEstadoCivil" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
                                                 <asp:DropDownList ID="ddlCodEstadoCivil" ValidationGroup="Page2" runat="server" CssClass="form-control" DataSourceID="SQLDSEstadoCivil" DataTextField="estadoCivil" DataValueField="codEstadoCivil">
                                                 </asp:DropDownList>
                                                 <asp:SqlDataSource ID="SQLDSEstadoCivil" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [estadoCivil]"></asp:SqlDataSource>
@@ -537,7 +525,6 @@
                                         <div class="col-md-9">
                                             <div class="form-group">
                                                 <asp:Label ID="lblIBAN" runat="server" AssociatedControlID="tbIBAN">IBAN</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvIBAN" ValidationGroup="Page2" runat="server" ControlToValidate="tbIBAN" ForeColor="#cc3a60" ErrorMessage="IBAN obrigatório" Text="*"></asp:RequiredFieldValidator>
                                                 <asp:TextBox ID="tbIBAN" runat="server" ValidationGroup="Page2" CssClass="form-control"></asp:TextBox>
                                             </div>
                                         </div>
@@ -546,14 +533,12 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <asp:Label ID="lblCodNaturalidade" runat="server" AssociatedControlID="tbNaturalidade">Naturalidade</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvCodNaturalidade" ValidationGroup="Page2" runat="server" ControlToValidate="tbNaturalidade" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
                                                 <asp:TextBox runat="server" ID="tbNaturalidade" CssClass="form-control"></asp:TextBox>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <asp:Label ID="lblCodNacionalidade" runat="server" AssociatedControlID="ddlCodNacionalidade">Nacionalidade</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvCodNacionalidade" ValidationGroup="Page2" runat="server" ControlToValidate="ddlCodNacionalidade" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
                                                 <asp:DropDownList ID="ddlCodNacionalidade" ValidationGroup="Page2" runat="server" CssClass="form-control" DataSourceID="SQLDSPais" DataTextField="nacionalidade" DataValueField="codPais">
                                                 </asp:DropDownList>
                                             </div>
@@ -561,7 +546,6 @@
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <asp:Label ID="lblCodSituacaoProfissional" runat="server" AssociatedControlID="ddlCodSituacaoProfissional">Situação Profissional</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvCodSituacaoProfissional" ValidationGroup="Page2" runat="server" ControlToValidate="ddlCodSituacaoProfissional" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
                                                 <asp:DropDownList ID="ddlCodSituacaoProfissional" ValidationGroup="Page2" runat="server" CssClass="form-control" DataSourceID="SQLDSsituacaoProfissional" DataTextField="situacaoProfissional" DataValueField="codSituacaoProfissional">
                                                 </asp:DropDownList>
                                                 <asp:SqlDataSource ID="SQLDSsituacaoProfissional" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [situacaoProfissional]"></asp:SqlDataSource>
@@ -595,7 +579,6 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <asp:Label ID="lblCodGrauAcademico" runat="server" AssociatedControlID="ddlCodGrauAcademico">Grau Académico</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvCodGrauAcademico" ValidationGroup="Page2" runat="server" ControlToValidate="ddlCodGrauAcademico" InitialValue="" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
                                                 <asp:DropDownList ID="ddlCodGrauAcademico" ValidationGroup="Page2" runat="server" CssClass="form-control" DataSourceID="SQLDSGrauAcademico" DataTextField="grauAcademico" DataValueField="codGrauAcademico">
                                                 </asp:DropDownList>
                                                 <asp:SqlDataSource ID="SQLDSGrauAcademico" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [grauAcademico]"></asp:SqlDataSource>
@@ -610,7 +593,6 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <asp:Label ID="lblAnexo" runat="server" AssociatedControlID="fuAnexo">Anexo</asp:Label>
-                                                <asp:RequiredFieldValidator ID="rfvAnexo" ErrorMessage="Anexos Obrigatórios" ValidationGroup="Page2" runat="server" ControlToValidate="fuAnexo" ForeColor="#cc3a60" Text="*"></asp:RequiredFieldValidator>
                                                 <asp:FileUpload ID="fuAnexo" ValidationGroup="Page2" runat="server" CssClass="form-control" AllowMultiple="True" />
                                                 <small>CV, Documento de Identificação</small>
                                             </div>
@@ -637,16 +619,11 @@
                                     <asp:PostBackTrigger ControlID="btn_submit" />
                                 </Triggers>
                             </asp:UpdatePanel>
-
-
                         </div>
                         <div class="col-md-3">
                             <asp:ValidationSummary ID="ValidationSummary2" runat="server" ValidationGroup="Page2" ForeColor="#cc3a60" DisplayMode="List" />
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
@@ -671,22 +648,23 @@
                     <div class="card-body">
                         <div role="form">
                             <label>Password Atual</label>
-                            <asp:RequiredFieldValidator ID="rfvpwa" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tb_pwa" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfvpwa" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tbPwOld" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                             <div class="mb-3">
-                                <asp:TextBox ID="tb_pwa" oninput="validatePassword(this)" CssClass="form-control" placeholder="Password Atual" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="tbPwOld" oninput="validatePassword(this)" CssClass="form-control" placeholder="Password Atual" runat="server"></asp:TextBox>
                             </div>
                             <label>Nova Password</label>
-                            <asp:RequiredFieldValidator ID="rfvpw" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tb_pw" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfvpw" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tbPwNew" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                             <div class="mb-3">
-                                <asp:TextBox ID="tb_pw" oninput="validatePassword(this)" CssClass="form-control" placeholder="Nova Password" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="tbPwNew" oninput="validatePassword(this)" CssClass="form-control" placeholder="Nova Password" runat="server"></asp:TextBox>
                             </div>
                             <label>Repetir a Nova Password</label>
-                            <asp:RequiredFieldValidator ID="rfvpwr" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tb_pwr" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
+                            <asp:RequiredFieldValidator ID="rfvpwr" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tbPwNewRep" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                             <div class="mb-3">
-                                <asp:TextBox ID="tb_pwr" oninput="validatePassword(this)" CssClass="form-control" placeholder="Repita a Password" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="tbPwNewRep" oninput="validatePassword(this)" CssClass="form-control" placeholder="Repita a Password" runat="server"></asp:TextBox>
                             </div>
-                            <div class="text-center col-md-6">
+                            <div class="text-center col-md-12">
                                 <asp:Button ID="btn_changepw" runat="server" Text="Alterar Password" class="btn bg-gradient-primary w-100 mt-4 mb-0" OnClick="btn_changepw_Click" />
+                                <asp:Button ID="btn_BackFromPwChange" runat="server" Text="Voltar" CausesValidation="false" class="btn bg-gradient-primary w-100 mt-4 mb-0" />
                             </div>
                             <div style="padding: 5px;" id="alert" class="hidden" role="alert">
                                 <asp:Label runat="server" ID="Label1" CssClass="text-white"></asp:Label>

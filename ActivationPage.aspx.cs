@@ -1,13 +1,8 @@
 ﻿using FinalProject.Classes;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace FinalProject
 {
@@ -21,7 +16,7 @@ namespace FinalProject
 
                 SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
-                SqlCommand myCommand = new SqlCommand(); //Novo commando SQL 
+                SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
                 myCommand.Parameters.AddWithValue("@User", utilizador); //Adicionar o valor da tb_user ao parâmetro @nome
 
                 myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP

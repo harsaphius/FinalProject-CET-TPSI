@@ -16,7 +16,7 @@ namespace FinalProject
             {
                 string user = Session["User"].ToString();
 
-                //Find lbl_user on MasterPage and 
+                //Find lbl_user on MasterPage and
                 Label lbluser = Master.FindControl("lbl_user") as Label;
                 if (lbluser != null)
                 {
@@ -41,7 +41,7 @@ namespace FinalProject
                             document.getElementById('navButtonSignOut').classList.add('nav-item');
                             document.getElementById('navButtonSignOut').classList.add('d-flex');
                             document.getElementById('navButtonSignOut').classList.add('align-items-center');
-                            document.getElementById('navButtonSignIn').classList.remove('nav-item'); 
+                            document.getElementById('navButtonSignIn').classList.remove('nav-item');
                             document.getElementById('navButtonSignIn').classList.remove('d-flex');
                             document.getElementById('navButtonSignIn').classList.remove('align-items-center');
                             document.getElementById('navButtonSignIn').classList.add('hidden');
@@ -66,9 +66,29 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
-
             }
 
+            //Reinicializar o FlatPickr
+            if (IsPostBack)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "FlatpickrInit", @"
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                flatpickr('#<%= tbDataNascimento.ClientID %>', {
+                                    dateFormat: 'd-m-Y',
+                                    theme: 'light',
+                                    maxDate: new Date()
+                                });
+
+                                flatpickr('#<%= tbDataValidade.ClientID %>', {
+                                    dateFormat: 'd-m-Y',
+                                    theme: 'light',
+                                    minDate: new Date()
+                                });
+                            });
+                        </script>
+                    ", false);
+            }
         }
 
         protected void btn_back_Click(object sender, EventArgs e)

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -17,9 +15,35 @@ namespace FinalProject
             {
                 Response.Redirect("MainPage.aspx");
             }
-            else if(Session["Logado"].ToString() == "Yes")
+            else if (Session["Logado"].ToString() == "Yes")
             {
                 string user = Session["User"].ToString();
+                string userCode = Session["CodUtilizador"].ToString();
+
+                if (Session["Enrollment"] != null)
+                {
+                    if (Session["CodCursoEnrollment"] != null)
+                    {
+                        int CodCurso = Convert.ToInt32(Session["CodCursoEnrollment"].ToString());
+                        List<string> Enrollment = new List<string>();
+
+                        Enrollment.Add(Session["CodUtilizador"].ToString());
+                        Enrollment.Add("1");
+                        Enrollment.Add(Convert.ToString(CodCurso));
+
+                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollment(Enrollment);
+
+                        if (AnswEnrollmentCode == -1 && AnswAnswEnrollmentRegister == -1)
+                        {
+                            lblEnrollment.Text = "Utilizador já registado nesse curso.";
+                        }
+                        else
+                        {
+                            Classes.Student.InsertStudent(Convert.ToInt32(Session["CodUtilizador"]), AnswEnrollmentCode);
+                            lblEnrollment.Text = "Utilizador registado com sucesso no curso!";
+                        }
+                    }
+                }
 
                 Label lbluser = Master.FindControl("lbl_user") as Label;
                 if (lbluser != null)
@@ -33,7 +57,34 @@ namespace FinalProject
                     lbtncourses.PostBackUrl = "./UserCourses.aspx";
                 }
 
-                script = @"
+                List<int> UserProfile = Classes.User.DetermineUserProfile(Convert.ToInt32(userCode));
+
+                foreach (int profileCode in UserProfile)
+                {
+                    if (profileCode == 2)
+                    {
+                        LinkButton linkButton = new LinkButton();
+
+                        linkButton.ID = "profileLinkButton_" + profileCode; // Unique ID for each LinkButton
+                        linkButton.Text = "Formando";
+                        linkButton.CssClass = "nav-link mb-0 px-0 py-1";
+
+                        linkButton.Click += FormandoPerfil_Click;
+                        panelContainer.Controls.Add(linkButton);
+                    }
+                    if (profileCode == 3)
+                    {
+                        LinkButton linkButton = new LinkButton();
+
+                        linkButton.ID = "profileLinkButton_" + profileCode; // Unique ID for each LinkButton
+                        linkButton.Text = "Formador";
+                        linkButton.CssClass = "nav-link mb-0 px-0 py-1";
+
+                        linkButton.Click += FormadorPerfil_Click;
+                        panelContainer.Controls.Add(linkButton);
+                    }
+
+                    script = @"
                             document.getElementById('courses').href = './UserCourses.aspx'
                             document.getElementById('signout').classList.remove('hidden');
                             document.getElementById('signout').classList.add('nav-item');
@@ -45,7 +96,7 @@ namespace FinalProject
                             document.getElementById('navButtonSignOut').classList.add('nav-item');
                             document.getElementById('navButtonSignOut').classList.add('d-flex');
                             document.getElementById('navButtonSignOut').classList.add('align-items-center');
-                            document.getElementById('navButtonSignIn').classList.remove('nav-item'); 
+                            document.getElementById('navButtonSignIn').classList.remove('nav-item');
                             document.getElementById('navButtonSignIn').classList.remove('d-flex');
                             document.getElementById('navButtonSignIn').classList.remove('align-items-center');
                             document.getElementById('navButtonSignIn').classList.add('hidden');
@@ -54,11 +105,11 @@ namespace FinalProject
                             document.getElementById('courses').classList.remove('hidden');
                             ";
 
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
-                {
-                    script = @"                      
+                    if (profileCode == 4 || profileCode == 1)
+                    {
+                        script = @"
                             document.getElementById('management').classList.remove('hidden');
                             document.getElementById('managecourses').classList.remove('hidden');
                             document.getElementById('manageclasses').classList.remove('hidden');
@@ -68,9 +119,18 @@ namespace FinalProject
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             ";
 
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
+                    }
                 }
             }
+        }
+
+        public void FormandoPerfil_Click(object sender, EventArgs e)
+        {
+        }
+
+        public void FormadorPerfil_Click(object sender, EventArgs e)
+        {
         }
     }
 }

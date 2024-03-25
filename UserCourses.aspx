@@ -1,11 +1,26 @@
 ﻿<%@ Page Title="Meus Cursos" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="UserCourses.aspx.cs" Inherits="FinalProject.UserCourses" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style>
+        /* Style to make LinkButtons display horizontally */
+        .horizontal-link-buttons .nav-link {
+            display: inline-block; /* Display LinkButtons inline */
+            margin-right: 10px; /* Add some right margin between LinkButtons */
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
+                <div>
+                    <p>
+                        <asp:Label runat="server" ID="lblEnrollment"></asp:Label>
+                    </p>
+                </div>
+                <div id="panelLinkButton">
+                    <asp:Panel ID="panelContainer" runat="server" CssClass="horizontal-link-buttons"></asp:Panel>
+                </div>
                 <div class="card mb-4">
                     <div class="card-header pb-0">
                         <h6>Authors table</h6>
@@ -417,5 +432,4 @@
             </div>
         </div>
     </div>
-
 </asp:Content>

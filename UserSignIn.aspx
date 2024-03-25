@@ -34,7 +34,7 @@
                                             <a class="nav-link" href="javascript:;" id="openModalLink" data-bs-toggle="tab" role="tab" aria-selected="true" onclick="showModal(event); return false">Recuperar password</a>
                                         </p>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="rememberMe" checked="" runat="server">
+                                            <input class="form-check-input" type="checkbox" id="rememberMe" checked runat="server" />
                                             <label class="form-check-label" for="rememberMe">Lembrar-me?</label>
                                         </div>
 
@@ -42,7 +42,6 @@
                                             <asp:Button ID="btn_signin" ValidationGroup="MainForm" runat="server" Text="Login" class="btn bg-gradient-info w-100 mt-4 mb-0" OnClick="btn_signin_Click" />
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="mt-2 position-relative text-center" style="padding: 10px;">
                                     <p class="text-sm font-weight-bold mb-2 text-secondary text-border d-inline z-index-2 px-3">
@@ -96,7 +95,6 @@
                     </div>
                 </div>
             </div>
-
         </section>
 
         <!-- Div para recuperar Password -->
@@ -118,15 +116,12 @@
                                     </div>
                                     <div>
                                         <div class="text-center">
-                                            <asp:Button ID="btn_back" ValidationGroup="ModalForm" runat="server" Text="Voltar" class="btn bg-gradient-info w-100 mt-4 mb-0" />
-
                                             <asp:Button ID="btn_recover" ValidationGroup="ModalForm" runat="server" Text="Recuperar" class="btn bg-gradient-info w-100 mt-4 mb-0" OnClick="btn_recuperarPW_Click" />
+                                            <asp:Button ID="btn_back" ValidationGroup="ModalForm" runat="server" Text="Voltar" class="btn bg-gradient-info w-100 mt-4 mb-0" />
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -137,7 +132,6 @@
                 </div>
             </div>
         </div>
-
     </main>
 
     <!--Javascript para validar Username e Password e mostrar cores -->
@@ -174,6 +168,4 @@
             document.getElementById('pwdModal').classList.remove('hidden');
         }
     </script>
-
-
 </asp:Content>

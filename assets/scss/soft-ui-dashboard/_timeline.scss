@@ -2,10 +2,8 @@
 // Timeline
 //
 
-
 .timeline {
     position: relative;
-
     // Axis
 
     &:before {
@@ -17,8 +15,6 @@
         border-right: $timeline-axis-width solid $timeline-axis-color;
     }
 }
-
-
 
 // Timeline blocks
 
@@ -64,8 +60,6 @@
     }
 }
 
-
-
 // Timeline content and body
 .timeline-content {
     position: relative;
@@ -81,7 +75,6 @@
     }
 }
 
-
 @include media-breakpoint-up(lg) {
     .timeline {
         &:before {
@@ -95,7 +88,6 @@
     }
 
     .timeline-content {
-
         width: 38%;
     }
 

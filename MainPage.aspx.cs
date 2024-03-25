@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -13,10 +11,13 @@ namespace FinalProject
         {
             string script;
 
-            if (Session["Logado"] == null) { }
-            else if(Session["Logado"] != null && !Page.IsPostBack)
+            if (Session["Logado"] == null)
+            {
+            }
+            else if (Session["Logado"] != null && !Page.IsPostBack)
             {
                 string user = Session["User"].ToString();
+                string userCode = Session["CodUtilizador"].ToString();
 
                 Label lbluser = Master.FindControl("lbl_user") as Label;
                 if (lbluser != null)
@@ -30,8 +31,11 @@ namespace FinalProject
                     lbtncourses.PostBackUrl = "./UserCourses.aspx";
                 }
 
-                script = @"
-                            document.getElementById('home').href = './MainPage.aspx';
+                List<int> UserProfile = Classes.User.DetermineUserProfile(Convert.ToInt32(userCode));
+
+                foreach (int profileCode in UserProfile)
+                {
+                    script = @"
                             document.getElementById('courses').href = './UserCourses.aspx'
                             document.getElementById('signout').classList.remove('hidden');
                             document.getElementById('signout').classList.add('nav-item');
@@ -43,20 +47,20 @@ namespace FinalProject
                             document.getElementById('navButtonSignOut').classList.add('nav-item');
                             document.getElementById('navButtonSignOut').classList.add('d-flex');
                             document.getElementById('navButtonSignOut').classList.add('align-items-center');
-                            document.getElementById('navButtonSignIn').classList.remove('nav-item'); 
+                            document.getElementById('navButtonSignIn').classList.remove('nav-item');
                             document.getElementById('navButtonSignIn').classList.remove('d-flex');
                             document.getElementById('navButtonSignIn').classList.remove('align-items-center');
                             document.getElementById('navButtonSignIn').classList.add('hidden');
-                            document.getElementById('courses').classList.remove('hidden');
                             document.getElementById('profile').classList.remove('hidden');
                             document.getElementById('usercalendar').classList.remove('hidden');
+                            document.getElementById('courses').classList.remove('hidden');
                             ";
 
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
-                {
-                    script = @"
+                    if (profileCode == 4 || profileCode == 1)
+                    {
+                        script = @"
                             document.getElementById('management').classList.remove('hidden');
                             document.getElementById('managecourses').classList.remove('hidden');
                             document.getElementById('manageclasses').classList.remove('hidden');
@@ -66,12 +70,46 @@ namespace FinalProject
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             ";
 
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
+                    }
                 }
             }
 
             rpt_maincourses.DataSource = Classes.Course.LoadCourses();
             rpt_maincourses.DataBind();
+        }
+
+        protected void btn_details_Click(object sender, EventArgs e)
+        {
+            Button btn_details = (Button)sender;
+
+            HiddenField hdnCourseID = (HiddenField)btn_details.NamingContainer.FindControl("hdnCourseID");
+            string codCurso = hdnCourseID.Value;
+
+            Session["CodCurso"] = codCurso;
+            Session["MainPage"] = "Yes";
+
+            Response.Redirect("CourseDetails.aspx?id=" + codCurso);
+        }
+
+        protected void btn_enroll_Click(object sender, EventArgs e)
+        {
+            Session["Enrollment"] = "Yes";
+            Button btn_enroll = (Button)sender;
+
+            HiddenField hdnCourseID = (HiddenField)btn_enroll.NamingContainer.FindControl("hdnCourseID");
+            string codCurso = hdnCourseID.Value;
+
+            Session["CodCursoEnrollment"] = codCurso;
+
+            if (Session["Logado"] == null)
+            {
+                Response.Redirect("UserSignIn.aspx");
+            }
+            else
+            {
+                Response.Redirect("UserCourses.aspx");
+            }
         }
     }
 }

@@ -12,14 +12,18 @@ namespace FinalProject.Classes
         public string Nome { get; set; }
         public int CodTipoCurso { get; set; }
         public int CodArea { get; set; }
+        public string TipoCurso { get; set; }
+        public string Area { get; set; }
         public string CodRef { get; set; }
         public int CodQNQ { get; set; }
+
+        public List<Module> Modules { get; set; }
 
         public static int InsertCourse(List<string> values, List<int> modules)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL 
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@NameCourse", values[0]);
             myCommand.Parameters.AddWithValue("@CodTipoCurso", Convert.ToInt32(values[1]));
             myCommand.Parameters.AddWithValue("@CodArea", Convert.ToInt32(values[2]));
@@ -53,7 +57,6 @@ namespace FinalProject.Classes
 
             myCon.Close(); //Fechar a conexão
 
-
             SqlCommand myCommand2 = new SqlCommand();
             myCommand2.CommandType = CommandType.StoredProcedure;
             myCommand2.CommandText = "CourseModulesRegister";
@@ -69,7 +72,7 @@ namespace FinalProject.Classes
                 myCommand2.Parameters.AddWithValue("@CodMod", moduleID); // Set the value of CodMod parameter
                 myCommand2.ExecuteNonQuery();//Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
             }
-           
+
             myCon.Close();
 
             return AnswCourseRegister;
@@ -80,7 +83,7 @@ namespace FinalProject.Classes
             List<Course> Courses = new List<Course>();
             List<string> conditions = new List<string>();
 
-            string query = "select * from curso";
+            string query = "SELECT * FROM curso";
 
             //// Decisões para colocar ou não os filtros dentro da string query
             //if (!string.IsNullOrEmpty(search_string))
@@ -133,8 +136,46 @@ namespace FinalProject.Classes
             myConn.Close();
 
             return Courses;
-
         }
 
+        public static Course CompleteCourse(int CodCurso)
+        {
+            Course CompleteCourse = new Course();
+            List<Module> ModulesCourse = new List<Module>();
+
+            string query = $"SELECT * FROM curso AS C INNER JOIN tipoCurso AS TC ON C.codTipoCurso=TC.codTipoCurso INNER JOIN area AS A ON C.codArea=A.codArea INNER JOIN moduloCurso AS MC ON C.codCurso=MC.codCurso INNER JOIN  modulo AS M ON MC.codModulo=M.codModulos WHERE C.codCurso={CodCurso}";
+
+            SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
+            SqlCommand myCommand = new SqlCommand(query, myConn);
+            myConn.Open();
+
+            SqlDataReader dr = myCommand.ExecuteReader();
+
+            if (dr.Read())
+            {
+                CompleteCourse.CodCurso = Convert.ToInt32(dr["codCurso"]);
+                CompleteCourse.Nome = dr["nomeCurso"].ToString();
+                CompleteCourse.Area = dr["nomeArea"].ToString();
+                CompleteCourse.TipoCurso = dr["nomeTipoLongo"].ToString();
+                CompleteCourse.CodRef = dr["codRef"].ToString();
+                CompleteCourse.CodQNQ = Convert.ToInt32(dr["codQNQ"]);
+            }
+
+            do
+            {
+                Module module = new Module();
+                module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
+                module.UFCD = (dr["CodUFCD"].ToString()); // Substitua "moduleID" pelo nome correto da coluna na sua tabela
+                module.Nome = dr["NomeModulos"].ToString(); // Substitua "moduleName" pelo nome correto da coluna na sua tabela
+                                                            // Adicione outros atributos do módulo conforme necessário
+                ModulesCourse.Add(module);
+            } while (dr.Read());
+
+            CompleteCourse.Modules = ModulesCourse;
+
+            myConn.Close();
+
+            return CompleteCourse;
+        }
     }
 }

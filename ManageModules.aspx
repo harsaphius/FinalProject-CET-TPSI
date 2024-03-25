@@ -10,8 +10,9 @@
                 <div class="row" style="margin-top: 15px">
                     <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
                         <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Novo Módulo" ID="btn_insertModule" OnClientClick="showInsert()" />
+                        <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_back" OnClientClick="showInsert()" />
                     </div>
-                    <div class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
+                    <div id="filtermenu" class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
                         <a href="javascript:;" onclick="toggleFilters()">
                             <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
                         </a>
@@ -73,7 +74,6 @@
                         </asp:UpdatePanel>
                     </div>
                 </div>
-
                 <div class="container-fluid py-4">
                     <div class="row">
                         <div class="col-12">
@@ -82,84 +82,76 @@
                                     <div class="card-header pb-0">
                                         <h6>Módulos</h6>
                                     </div>
-
-                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                                        <ContentTemplate>
-                                            <asp:Repeater ID="rpt_Modules" runat="server" OnItemDataBound="rpt_Modules_ItemDataBound" OnItemCommand="rpt_Modules_ItemCommand">
-                                                <HeaderTemplate>
-                                                    <div class="card-body px-0 pt-0 pb-2">
-                                                        <div class="table-responsive p-0">
-                                                            <table class="table align-items-center mb-0">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Módulo</th>
-                                                                        <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">UFCD</th>
-                                                                        <th class="col-sm-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Descrição</th>
-                                                                        <th class="col-sm-2"></th>
-                                                                        <th class="col-sm-2"></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                </HeaderTemplate>
-                                                <ItemTemplate>
-                                                    <tr>
-                                                        <td id="cellNome">
-                                                            <div class="d-flex px-2">
-
-                                                                <div>
-
-                                                                    <%-- <a runat="server" href="javascript:;">--%>
-                                                                </div>
-                                                                <asp:Image ID="imgUpload" CssClass="avatar avatar-sm rounded-circle me-3" runat="server" ImageUrl='<%# Eval("SVG") %>' onclick="triggerFileUpload('<%= fileUpload.ClientID %>')" />
-                                                                <%--   <asp:FileUpload ID="fileUpload" runat="server" Visible="false" onchange="uploadFile(this)" />
+                                    <asp:Repeater ID="rpt_Modules" runat="server" OnItemDataBound="rpt_Modules_ItemDataBound" OnItemCommand="rpt_Modules_ItemCommand">
+                                        <HeaderTemplate>
+                                            <div class="card-body px-0 pt-0 pb-2">
+                                                <div class="table-responsive p-0">
+                                                    <table class="table align-items-center mb-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Módulo</th>
+                                                                <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">UFCD</th>
+                                                                <th class="col-sm-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Descrição</th>
+                                                                <th class="col-sm-2"></th>
+                                                                <th class="col-sm-2"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <tr>
+                                                <td id="cellNome">
+                                                    <div class="d-flex px-2">
+                                                        <div>
+                                                            <%-- <a runat="server" href="javascript:;">--%>
+                                                        </div>
+                                                        <asp:Image ID="imgUpload" CssClass="avatar avatar-sm rounded-circle me-3" runat="server" ImageUrl='<%# Eval("SVG") %>' />
+                                                        <%--   <asp:FileUpload ID="fileUpload" runat="server" Visible="false" onchange="uploadFile(this)" /> <%--onclick="triggerFileUpload('<%= fileUpload.ClientID %>')"
                                                                     </a>--%>
-                                                                <div class="my-auto">
-                                                                    <asp:TextBox ID="tbNome" CssClass="form-control" runat="server" Text='<%# Bind("Nome") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
-                                                                    <p class="mb-0 text-sm">
-                                                                        <asp:Label ID="lblNome" runat="server" Text='<%# Eval("Nome") %>' Visible="true"></asp:Label>
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td id="cellUFCD">
-                                                            <asp:TextBox ID="tbUFCD" CssClass="form-control" runat="server" Text='<%# Bind("UFCD") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
-                                                            <p class="text-sm mb-0">
-                                                                <asp:Label ID="lblUFCD" runat="server" Text='<%# Eval("UFCD") %>' Visible="true" Style="width: 100%;"></asp:Label>
+                                                        <div class="my-auto">
+                                                            <asp:TextBox ID="tbNome" CssClass="form-control" runat="server" Text='<%# Bind("Nome") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
+                                                            <p class="mb-0 text-sm">
+                                                                <asp:Label ID="lblNome" runat="server" Text='<%# Eval("Nome") %>' Visible="true"></asp:Label>
                                                             </p>
-                                                        </td>
-                                                        <td id="cellDescricao">
-                                                            <asp:TextBox ID="tbDescricao" CssClass="form-control" runat="server" Text='<%# Bind("Descricao") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
-                                                            <asp:Label ID="lblDescricao" class="text-xs" runat="server" Text='<%# Eval("Descricao") %>' Style="width: 100%;" Visible="true"></asp:Label></p>
-                                                        </td>
-                                                        <td class="align-middle font-weight-bold text-center">
-                                                            <asp:LinkButton runat="server" ID="lbt_edit" CausesValidation="false" CommandName="Edit" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
-                                                                Text="Edit" class="text-secondary font-weight-bold text-xs">
-                                                            </asp:LinkButton>
-                                                            <asp:LinkButton runat="server" ID="lbt_cancel" CausesValidation="false" CommandName="Cancel" Visible="false" CommandArgument='<%# Container.ItemIndex %>'
-                                                                Text="Cancel" class="text-secondary font-weight-bold text-xs">
-                                                            </asp:LinkButton>
-                                                        </td>
-                                                        <td class="align-middle text-center">
-                                                            <asp:LinkButton runat="server" ID="lbt_delete" CausesValidation="false" CommandName="Delete" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
-                                                                Text="Delete" class="text-secondary font-weight-bold text-xs">
-                                                            </asp:LinkButton>
-                                                            <asp:LinkButton runat="server" ID="lbt_confirm" CausesValidation="false" CommandName="Confirm" Visible="false" CommandArgument='<%# Container.ItemIndex %>'
-                                                                Text="Confirm" class="text-secondary font-weight-bold text-xs">
-                                                            </asp:LinkButton>
-                                                        </td>
-                                                    </tr>
-                                                </ItemTemplate>
-                                                <FooterTemplate>
-                                                    </tbody>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td id="cellUFCD">
+                                                    <asp:TextBox ID="tbUFCD" CssClass="form-control" runat="server" Text='<%# Bind("UFCD") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
+                                                    <p class="text-sm mb-0">
+                                                        <asp:Label ID="lblUFCD" runat="server" Text='<%# Eval("UFCD") %>' Visible="true" Style="width: 100%;"></asp:Label>
+                                                    </p>
+                                                </td>
+
+                                                <td id="cellDescricao">
+                                                    <asp:TextBox ID="tbDescricao" CssClass="form-control" runat="server" Text='<%# Bind("Descricao") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
+                                                    <asp:Label ID="lblDescricao" class="text-xs" runat="server" Text='<%# Eval("Descricao") %>' Style="width: 100%;" Visible="true"></asp:Label></p>
+                                                </td>
+                                                <td class="align-middle font-weight-bold text-center">
+                                                    <asp:LinkButton runat="server" ID="lbt_edit" CausesValidation="false" CommandName="Edit" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
+                                                        Text="Edit" class="text-secondary font-weight-bold text-xs">
+                                                    </asp:LinkButton>
+                                                    <asp:LinkButton runat="server" ID="lbt_cancel" CausesValidation="false" CommandName="Cancel" Visible="false" CommandArgument='<%# Container.ItemIndex %>'
+                                                        Text="Cancel" class="text-secondary font-weight-bold text-xs">
+                                                    </asp:LinkButton>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <asp:LinkButton runat="server" ID="lbt_delete" CausesValidation="false" CommandName="Delete" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
+                                                        Text="Delete" class="text-secondary font-weight-bold text-xs">
+                                                    </asp:LinkButton>
+                                                    <asp:LinkButton runat="server" ID="lbt_confirm" CausesValidation="false" CommandName="Confirm" Visible="false" CommandArgument='<%# Container.ItemIndex %>'
+                                                        Text="Confirm" class="text-secondary font-weight-bold text-xs">
+                                                    </asp:LinkButton>
+                                                </td>
+                                            </tr>
+                                        </ItemTemplate>
+                                        <FooterTemplate>
+                                            </tbody>
                                                                     </table>
                                                                 </div>
                                                              </div>
-                                                            
-                                                </FooterTemplate>
-                                            </asp:Repeater>
-
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
+                                        </FooterTemplate>
+                                    </asp:Repeater>
                                     <%-- <script type="text/javascript">
                                     function triggerFileUpload(clientId) {
                                         // Get the FileUpload control
@@ -167,7 +159,6 @@
                                         // Trigger a click event on the FileUpload control
                                         fileUpload.click();
                                     }
-
                                     function uploadFile(input) {
                                         // Handle file upload logic here
                                         // For example, you can access the uploaded file using input.files[0]
@@ -253,12 +244,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
-                </div>
-                        </div>
             </ContentTemplate>
             <Triggers>
                 <asp:AsyncPostBackTrigger ControlID="btn_previousM" />
@@ -268,19 +253,29 @@
         </asp:UpdatePanel>
     </div>
 
-
-
-    <!-- Função de Javascript para Mostrar a Div de Editar após click no LinkButton Edit do Repeater -->
+    <!-- Função de Javascript para Mostrar a Div de Inserir após click no Button Inserir Módulo -->
     <script>
         function showInsert() {
             var insertDiv = document.getElementById('insertModulesDiv');
             var listDiv = document.getElementById('listModulesDiv');
+            var btnInsert = document.getElementById('<%= btn_insertModule.ClientID %>');
+            var btnBack = document.getElementById('<%= btn_back.ClientID %>');
+            var filterMenu = document.getElementById('filtermenu');
+
             if (insertDiv.classList.contains('hidden')) {
                 insertDiv.classList.remove('hidden');
                 listDiv.classList.add('hidden');
+                btnInsert.classList.add('hidden');
+                btnBack.classList.remove('hidden');
+                filterMenu.classList.add('hidden');
+
             } else {
                 insertDiv.classList.add('hidden');
                 listDiv.classList.remove('hidden');
+                btnInsert.classList.remove('hidden');
+                btnBack.classList.add('hidden');
+                filterMenu.classList.remove('hidden');
+
             }
         }
     </script>
@@ -366,5 +361,4 @@
             }
         }
     </script>
-
 </asp:Content>

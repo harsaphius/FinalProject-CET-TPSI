@@ -132,15 +132,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label lblSexo;
 
         /// <summary>
-        /// rfvSexo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvSexo;
-
-        /// <summary>
         /// ddlSexo control.
         /// </summary>
         /// <remarks>
@@ -157,15 +148,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblDataNascimento;
-
-        /// <summary>
-        /// rfvDataNascimento control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDataNascimento;
 
         /// <summary>
         /// tbDataNascimento control.
@@ -276,15 +258,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label lblNrSegSocial;
 
         /// <summary>
-        /// rfvNrSegSocial control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNrSegSocial;
-
-        /// <summary>
         /// tbNrSegSocial control.
         /// </summary>
         /// <remarks>
@@ -301,15 +274,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblNIF;
-
-        /// <summary>
-        /// rfvNIF control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvNIF;
 
         /// <summary>
         /// tbNIF control.
@@ -330,15 +294,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label lblMorada;
 
         /// <summary>
-        /// rfvMorada control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMorada;
-
-        /// <summary>
         /// tbMorada control.
         /// </summary>
         /// <remarks>
@@ -355,15 +310,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCodPostal;
-
-        /// <summary>
-        /// rfvcodCodPostal control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvcodCodPostal;
 
         /// <summary>
         /// tbCodPostal control.
@@ -384,15 +330,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label lblfreguesia;
 
         /// <summary>
-        /// rfvLocalidade control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvLocalidade;
-
-        /// <summary>
         /// tbLocalidade control.
         /// </summary>
         /// <remarks>
@@ -409,15 +346,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCodPais;
-
-        /// <summary>
-        /// rfvCodPais control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCodPais;
 
         /// <summary>
         /// ddlCodPais control.
@@ -483,15 +411,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label lblCodEstadoCivil;
 
         /// <summary>
-        /// rfvCodEstadoCivil control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCodEstadoCivil;
-
-        /// <summary>
         /// ddlCodEstadoCivil control.
         /// </summary>
         /// <remarks>
@@ -519,15 +438,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label lblIBAN;
 
         /// <summary>
-        /// rfvIBAN control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvIBAN;
-
-        /// <summary>
         /// tbIBAN control.
         /// </summary>
         /// <remarks>
@@ -544,15 +454,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCodNaturalidade;
-
-        /// <summary>
-        /// rfvCodNaturalidade control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCodNaturalidade;
 
         /// <summary>
         /// tbNaturalidade control.
@@ -573,15 +474,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label lblCodNacionalidade;
 
         /// <summary>
-        /// rfvCodNacionalidade control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCodNacionalidade;
-
-        /// <summary>
         /// ddlCodNacionalidade control.
         /// </summary>
         /// <remarks>
@@ -598,15 +490,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCodSituacaoProfissional;
-
-        /// <summary>
-        /// rfvCodSituacaoProfissional control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCodSituacaoProfissional;
 
         /// <summary>
         /// ddlCodSituacaoProfissional control.
@@ -717,15 +600,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label lblCodGrauAcademico;
 
         /// <summary>
-        /// rfvCodGrauAcademico control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCodGrauAcademico;
-
-        /// <summary>
         /// ddlCodGrauAcademico control.
         /// </summary>
         /// <remarks>
@@ -769,15 +643,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAnexo;
-
-        /// <summary>
-        /// rfvAnexo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvAnexo;
 
         /// <summary>
         /// fuAnexo control.
@@ -852,13 +717,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvpwa;
 
         /// <summary>
-        /// tb_pwa control.
+        /// tbPwOld control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_pwa;
+        protected global::System.Web.UI.WebControls.TextBox tbPwOld;
 
         /// <summary>
         /// rfvpw control.
@@ -870,13 +735,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvpw;
 
         /// <summary>
-        /// tb_pw control.
+        /// tbPwNew control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_pw;
+        protected global::System.Web.UI.WebControls.TextBox tbPwNew;
 
         /// <summary>
         /// rfvpwr control.
@@ -888,13 +753,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvpwr;
 
         /// <summary>
-        /// tb_pwr control.
+        /// tbPwNewRep control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_pwr;
+        protected global::System.Web.UI.WebControls.TextBox tbPwNewRep;
 
         /// <summary>
         /// btn_changepw control.
@@ -904,6 +769,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btn_changepw;
+
+        /// <summary>
+        /// btn_BackFromPwChange control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btn_BackFromPwChange;
 
         /// <summary>
         /// Label1 control.

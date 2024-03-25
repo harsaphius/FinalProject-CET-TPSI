@@ -14,15 +14,19 @@ namespace FinalProject
         protected void Page_Load(object sender, EventArgs e)
         {
             //Google Data
-            GoogleConnect.ClientId = ConfigurationManager.AppSettings["clientid"];
-            GoogleConnect.ClientSecret = ConfigurationManager.AppSettings["clientsecret"];
-            GoogleConnect.RedirectUri = ConfigurationManager.AppSettings["redirection_url"];
+            GoogleConnect.ClientId = ConfigurationManager.AppSettings["ClientID"];
+            GoogleConnect.ClientSecret = ConfigurationManager.AppSettings["ClientSecret"];
+            GoogleConnect.RedirectUri = ConfigurationManager.AppSettings["RedirectionURL"];
 
             //Facebook Data
             FaceBookConnect.API_Key = ConfigurationManager.AppSettings["FacebookKey"];
             FaceBookConnect.API_Secret = ConfigurationManager.AppSettings["FacebookSecret"];
             FaceBookConnect.Version = ConfigurationManager.AppSettings["FacebookVersion"];
 
+            if (Request.QueryString["redirected"] != null && Request.QueryString["redirected"] == "true")
+            {
+                lbl_message.Text = Session["ActivatedUser"].ToString();
+            }
         }
 
         protected void btn_facebook_Click(object sender, EventArgs e)
@@ -47,11 +51,13 @@ namespace FinalProject
 
                 if (isLoginAllowed[0] == 1 && isLoginAllowed[1] == 1)
                 {
-                    if (isLoginAllowed[0] == 1) Session["Admin"] = "Yes";
+                    (int AnswUserCode, string Username) = Classes.User.DetermineUtilizador(tb_username.Text);
+
+                    if (AnswUserCode == 1 || AnswUserCode == 4) Session["Admin"] = "Yes";
                     else Session["Admin"] = "No";
 
                     Session["User"] = tb_username.Text;
-                    Session["CodUtilizador"] = isLoginAllowed[3];
+                    Session["CodUtilizador"] = isLoginAllowed[2];
                     Session["Logado"] = "Yes";
 
                     Response.Redirect("./UserCourses.aspx");
@@ -60,7 +66,7 @@ namespace FinalProject
                 {
                     Session["ActivatedUser"] = "Conta ativada com sucesso!";
 
-                    script = @"                      
+                    script = @"
                             document.getElementById('alert').classList.remove('hidden');
                             document.getElementById('alert').classList.add('alert');
                             document.getElementById('alert').classList.add('alert-primary');
@@ -68,14 +74,15 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                    Classes.EmailControl.SendEmailActivation(tbEmailRecover.Text);
+                    (int UserCode, string Username) = Classes.User.DetermineUtilizador(tbEmailRecover.Text);
+
+                    Classes.EmailControl.SendEmailActivation(tbEmailRecover.Text, Username);
 
                     lbl_message.Text = $"A sua conta ainda não se encontra ativa! Procedemos ao reenvio do e-mail de ativação!!";
-
                 }
                 else if (isLoginAllowed[0] == -1 && isLoginAllowed[1] == -1)
                 {
-                    script = @"                      
+                    script = @"
                             document.getElementById('alert').classList.remove('hidden');
                             document.getElementById('alert').classList.add('alert');
                             document.getElementById('alert').classList.add('alert-primary');
@@ -87,7 +94,7 @@ namespace FinalProject
                 }
                 else
                 {
-                    script = @"                      
+                    script = @"
                             document.getElementById('alert').classList.remove('hidden');
                             document.getElementById('alert').classList.add('alert');
                             document.getElementById('alert').classList.add('alert-primary');
@@ -100,7 +107,7 @@ namespace FinalProject
             }
             else
             {
-                script = @"                      
+                script = @"
                             document.getElementById('alert').classList.remove('hidden');
                             document.getElementById('alert').classList.add('alert');
                             document.getElementById('alert').classList.add('alert-primary');
@@ -113,10 +120,9 @@ namespace FinalProject
 
         protected void btn_recuperarPW_Click(object sender, EventArgs e)
         {
-
             if (Security.IsValidEmail(tbEmailRecover.Text) == false)
             {
-                string script = @"                      
+                string script = @"
                             document.getElementById('modalAlert').classList.remove('hidden');
                             document.getElementById('modalAlert').classList.add('alert');
                             document.getElementById('modalAlert').classList.add('alert-primary');
@@ -129,8 +135,8 @@ namespace FinalProject
             else
             {
                 //Recuperação de password com envio de email
-                string NovaPasse = Membership.GeneratePassword(8, 2);
- 
+                string NovaPasse = Membership.GeneratePassword(10, 2);
+
                 (int AnswUserExist, int AnswAccountActive) = Security.RecoverPassword(tbEmailRecover.Text, NovaPasse);
                 if (AnswUserExist == 1 && AnswAccountActive == 1) //Caso a conta esteja ativa, envia NovaPasse
                 {
@@ -140,7 +146,9 @@ namespace FinalProject
                 {
                     Session["ActivatedUser"] = "OK";
 
-                    Classes.EmailControl.SendEmailActivation(tbEmailRecover.Text);
+                    (int userCode, string username) = Classes.User.DetermineUtilizador(tbEmailRecover.Text);
+
+                    EmailControl.SendEmailActivation(tbEmailRecover.Text, username);
                 }
                 else //Caso o e-mail não esteja associado a nenhuma conta
                 {

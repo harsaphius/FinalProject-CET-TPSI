@@ -21,6 +21,9 @@
                 <div class="col-xl-8 col-lg-10 col-md-12 mx-auto">
                     <div class="card z-index-0">
                         <div class="registerBoard">
+                            <div style="padding: 5px;" id="alert" class="hidden" role="alert">
+                                <asp:Label runat="server" ID="lblUserFromGoogle" CssClass="text-white"></asp:Label>
+                            </div>
                             <div class="card-header text-center pt-4">
                                 <h5>Registar com</h5>
                             </div>
@@ -127,12 +130,11 @@
                                         <asp:RequiredFieldValidator ID="rfvTelemovel" Text="*" ErrorMessage="Telemóvel Obrigatório" runat="server" ControlToValidate="tbTelemovel" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                         <asp:TextBox ID="tbTelemovel" runat="server" class="form-control" placeholder="Phone Number"></asp:TextBox>
                                     </div>
-
                                 </div>
 
                                 <div class="text-center">
                                     <div class="form-check form-check-info text-left">
-                                        <input runat="server" class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
+                                        <input runat="server" class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked />
                                         <label class="form-check-label" for="flexCheckDefault">
                                             Concordo com <a href="javascript:;" class="text-dark font-weight-bolder">Termos e Condições</a>
                                         </label>

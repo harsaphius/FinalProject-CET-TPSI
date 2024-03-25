@@ -17,7 +17,6 @@ namespace FinalProject
                 string title = currentNode.Title;
                 siteNode.InnerText = title;
             }
-
         }
 
         protected void lbtn_signout_Click(object sender, EventArgs e)
@@ -26,6 +25,5 @@ namespace FinalProject
             Session.Clear();
             Response.Redirect("MainPage.aspx");
         }
-
     }
 }

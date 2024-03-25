@@ -11,7 +11,6 @@ namespace FinalProject.Classes
 {
     public class Security
     {
-
         /// <summary>
         /// Função de Encriptação de Dados MD5
         /// </summary>
@@ -94,7 +93,6 @@ namespace FinalProject.Classes
             Message = Message.Replace("KKK", "+");
             Message = Message.Replace("JJJ", "/");
             Message = Message.Replace("III", "\\");
-
 
             byte[] DataToDecrypt = Convert.FromBase64String(Message);
 
@@ -194,34 +192,34 @@ namespace FinalProject.Classes
         /// <param name="OldPass"></param>
         /// <param name="NewPass"></param>
         /// <returns></returns>
-        public static int ChangePassword(string User, string OldPass, string NewPass)
+        public static int ChangePassword(string Email, string OldPass, string NewPass)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["NumiCoinConnectionString"].ConnectionString); //Definir a conexão à base de dados
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL 
-            myCommand.Parameters.AddWithValue("@Utilizador", User);
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@Email", Email);
             myCommand.Parameters.AddWithValue("@PWAtual", EncryptString(OldPass));
             myCommand.Parameters.AddWithValue("@PWNova", EncryptString(NewPass));
 
             //Variável de Output para SP verificar se o utilizador e pw estão corretos
-            SqlParameter UserExists = new SqlParameter();
-            UserExists.ParameterName = "@UserExists";
-            UserExists.Direction = ParameterDirection.Output;
-            UserExists.SqlDbType = SqlDbType.Int;
+            SqlParameter PasswordChanged = new SqlParameter();
+            PasswordChanged.ParameterName = "@PasswordChanged";
+            PasswordChanged.Direction = ParameterDirection.Output;
+            PasswordChanged.SqlDbType = SqlDbType.Int;
 
-            myCommand.Parameters.Add(UserExists);
+            myCommand.Parameters.Add(PasswordChanged);
 
             myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
-            myCommand.CommandText = "ChangePw"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+            myCommand.CommandText = "ChangePassword"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
 
             myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
             myCon.Open(); //Abrir a conexão
             myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
-            int AnswUserExists = Convert.ToInt32(myCommand.Parameters["@UserExists"].Value);
+            int AnswPasswordChanged = Convert.ToInt32(myCommand.Parameters["@PasswordChanged"].Value);
 
             myCon.Close(); //Fechar a conexão
 
-            return AnswUserExists;
+            return AnswPasswordChanged;
         }
 
         /// <summary>
@@ -234,7 +232,7 @@ namespace FinalProject.Classes
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL 
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@Email", Email); //Adicionar o valor da tb_user ao parâmetro @nome
             myCommand.Parameters.AddWithValue("@PwNova", EncryptString(NovaPasse));
 
@@ -264,7 +262,6 @@ namespace FinalProject.Classes
             myCon.Close(); //Fechar a conexão
 
             return (AnswUserExist, AnswAccountActive);
-
         }
 
         /// <summary>
@@ -273,14 +270,12 @@ namespace FinalProject.Classes
         /// <param name="date1"></param>
         /// <param name="date2"></param>
         /// <returns></returns>
-        public static string DataComparison(DateTime date1, DateTime date2)
+        public static bool DataComparison(DateTime date1)
         {
-            string message;
-
-            if (date2 > date1)
-                return message = "A data de nascimento não pode ser superior à data de validade";
-            else return message = "";
-
+            bool isSup = true;
+            if (date1 > DateTime.Now)
+                return isSup = false;
+            else return isSup = true;
         }
 
         /// <summary>
@@ -292,6 +287,5 @@ namespace FinalProject.Classes
         {
             return string.IsNullOrWhiteSpace(textBox.Text);
         }
-
     }
 }
