@@ -51,85 +51,40 @@ namespace FinalProject
         protected global::System.Web.UI.UpdatePanel UpdatePanel4;
 
         /// <summary>
-        /// lbtn_search control.
+        /// lbtSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtn_search;
+        protected global::System.Web.UI.WebControls.LinkButton lbtSearch;
 
         /// <summary>
-        /// tb_search control.
+        /// tbSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_search;
+        protected global::System.Web.UI.WebControls.TextBox tbSearch;
 
         /// <summary>
-        /// ddl_area control.
+        /// btnApplyFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddl_area;
+        protected global::System.Web.UI.WebControls.Button btnApplyFilters;
 
         /// <summary>
-        /// SQLDSArea control.
+        /// btnClearFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSArea;
-
-        /// <summary>
-        /// ddl_tipo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddl_tipo;
-
-        /// <summary>
-        /// SQLDSTipo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSTipo;
-
-        /// <summary>
-        /// tb_dataInicio control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_dataInicio;
-
-        /// <summary>
-        /// tb_dataFim control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_dataFim;
-
-        /// <summary>
-        /// btn_clear control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_clear;
+        protected global::System.Web.UI.WebControls.Button btnClearFilters;
 
         /// <summary>
         /// rpt_Modules control.
@@ -141,22 +96,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Repeater rpt_Modules;
 
         /// <summary>
-        /// btn_previousM control.
+        /// btnPreviousModule control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_previousM;
+        protected global::System.Web.UI.WebControls.LinkButton btnPreviousModule;
 
         /// <summary>
-        /// btn_nextM control.
+        /// btnNextModule control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_nextM;
+        protected global::System.Web.UI.WebControls.LinkButton btnNextModule;
 
         /// <summary>
         /// lbl_message control.
@@ -231,15 +186,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tbDescricao;
 
         /// <summary>
-        /// revCredits control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCredits;
-
-        /// <summary>
         /// rvfCredits control.
         /// </summary>
         /// <remarks>
@@ -247,6 +193,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rvfCredits;
+
+        /// <summary>
+        /// revCredits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCredits;
 
         /// <summary>
         /// tbCredits control.
@@ -267,12 +222,12 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.FileUpload fuSvgUFCD;
 
         /// <summary>
-        /// btn_insert control.
+        /// btnInsertModule control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_insert;
+        protected global::System.Web.UI.WebControls.Button btnInsertModule;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinalProject.Classes;
+using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -81,37 +82,46 @@ namespace FinalProject
             {
                 RepeaterItem item = rpt_Classrooms.Items[e.Item.ItemIndex];
 
-                // Find TextBox and Label controls
                 TextBox tbNrSala = (TextBox)item.FindControl("tbNrSala");
                 Label lblNrSala = (Label)item.FindControl("lblNrSala");
 
-                TextBox tbTipoSala = (TextBox)item.FindControl("tbTipoSala");
+                DropDownList ddlTipoSala = (DropDownList)item.FindControl("ddlTipoSala");
                 Label lblTipoSala = (Label)item.FindControl("lblTipoSala");
 
-                TextBox tbLocalSala = (TextBox)item.FindControl("tbLocalSala");
+                DropDownList ddlLocalSala = (DropDownList)item.FindControl("ddlLocalSala");
                 Label lblLocalSala = (Label)item.FindControl("lblLocalSala");
 
-                // Toggle visibility
                 tbNrSala.Visible = !tbNrSala.Visible;
                 lblNrSala.Visible = !lblNrSala.Visible;
 
-                tbTipoSala.Visible = !tbTipoSala.Visible;
+                ddlTipoSala.Visible = !ddlTipoSala.Visible;
                 lblTipoSala.Visible = !lblTipoSala.Visible;
+                ListItem selectedTipoSalaItem = ddlTipoSala.Items.FindByText(lblTipoSala.Text);
 
-                tbLocalSala.Visible = !tbLocalSala.Visible;
+                if (selectedTipoSalaItem != null)
+                {
+                    ddlTipoSala.ClearSelection();
+                    selectedTipoSalaItem.Selected = true;
+                }
+
+                ddlLocalSala.Visible = !ddlLocalSala.Visible;
                 lblLocalSala.Visible = !lblLocalSala.Visible;
+                ListItem selectedLocalSalaItem = ddlLocalSala.Items.FindByText(lblLocalSala.Text);
 
-                // Find the buttons
+                if (selectedLocalSalaItem != null)
+                {
+                    ddlLocalSala.ClearSelection();
+                    selectedLocalSalaItem.Selected = true;
+                }
+
                 LinkButton lbt_edit = (LinkButton)item.FindControl("lbt_edit");
                 LinkButton lbt_cancel = (LinkButton)item.FindControl("lbt_cancel");
                 LinkButton lbt_delete = (LinkButton)item.FindControl("lbt_delete");
                 LinkButton lbt_confirm = (LinkButton)item.FindControl("lbt_confirm");
 
-                // Show "Cancel" and "Confirm" buttons
                 lbt_cancel.Visible = true;
                 lbt_confirm.Visible = true;
 
-                // Hide "Edit" and "Delete" buttons
                 lbt_edit.Visible = false;
                 lbt_delete.Visible = false;
             }
@@ -136,13 +146,13 @@ namespace FinalProject
             pagedData.AllowPaging = true;
             pagedData.PageSize = 5;
             pagedData.CurrentPageIndex = PageNumberClassrooms;
-            ; // Adjust with the respective pagination helper instance
+
 
             rpt_Classrooms.DataSource = pagedData;
             rpt_Classrooms.DataBind();
 
-            btn_previous.Enabled = !pagedData.IsFirstPage; // Adjust with the respective btn_previous control for Users Repeater
-            btn_next.Enabled = !pagedData.IsLastPage; // Adjust with the respective btn_next control for Users Repeater
+            btn_previous.Enabled = !pagedData.IsFirstPage;
+            btn_next.Enabled = !pagedData.IsLastPage;
         }
 
         public int PageNumberClassrooms
@@ -158,6 +168,23 @@ namespace FinalProject
             {
                 ViewState["PageNumberClassrooms"] = value;
             }
+        }
+
+        protected void btnInsertClassroom_OnClick(object sender, EventArgs e)
+        {
+            Classroom classroom = new Classroom();
+
+            classroom.NrSala = tbClassroomNr.Text;
+            classroom.CodTipoSala = Convert.ToInt32(ddlTipoSala.SelectedValue);
+            classroom.CodLocalSala = Convert.ToInt32(ddlLocalSala.SelectedValue);
+
+            int AnswClassroomRegisted = Classes.Classroom.InsertClassroom(classroom);
+
+            if (AnswClassroomRegisted == 1)
+            {
+                lbl_message.Text = "Sala inserida com sucesso!";
+            }
+
         }
     }
 }

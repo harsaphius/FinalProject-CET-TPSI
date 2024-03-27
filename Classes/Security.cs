@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
@@ -283,9 +284,17 @@ namespace FinalProject.Classes
         /// </summary>
         /// <param name="textBox"></param>
         /// <returns></returns>
-        public bool IsTextBoxEmpty(TextBox textBox)
+        public static bool IsTextBoxEmpty(TextBox textBox)
         {
             return string.IsNullOrWhiteSpace(textBox.Text);
+        }
+
+        public static bool IsValidDecimal(string value)
+        {
+            // Check if the string contains only digits, dot or comma
+            bool isValidDecimal = value.All(c => char.IsDigit(c) || c == '.' || c == ',');
+
+            return isValidDecimal;
         }
     }
 }

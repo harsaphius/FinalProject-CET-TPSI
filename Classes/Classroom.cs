@@ -20,14 +20,14 @@ namespace FinalProject.Classes
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>
-        public static int InsertClassroom(List<string> values)
+        public static int InsertClassroom(Classroom Classroom)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
-            myCommand.Parameters.AddWithValue("@NrSala", values[0]);
-            myCommand.Parameters.AddWithValue("@CodTipoSala", Convert.ToInt32(values[1]));
-            myCommand.Parameters.AddWithValue("@CodLocalSala", values[2]);
+            myCommand.Parameters.AddWithValue("@NrSala", Classroom.NrSala);
+            myCommand.Parameters.AddWithValue("@CodTipoSala", Classroom.CodTipoSala);
+            myCommand.Parameters.AddWithValue("@CodLocalSala", Classroom.CodLocalSala);
 
             SqlParameter ClassroomRegister = new SqlParameter();
             ClassroomRegister.ParameterName = "@ClassroomRegisted";
@@ -110,5 +110,7 @@ namespace FinalProject.Classes
 
             return Classrooms;
         }
+
+
     }
 }

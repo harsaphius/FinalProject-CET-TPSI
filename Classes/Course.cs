@@ -16,19 +16,18 @@ namespace FinalProject.Classes
         public string Area { get; set; }
         public string CodRef { get; set; }
         public int CodQNQ { get; set; }
-
         public List<Module> Modules { get; set; }
 
-        public static int InsertCourse(List<string> values, List<int> modules)
+        public static int InsertCourse(Course Course, List<int> modules)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
-            myCommand.Parameters.AddWithValue("@NameCourse", values[0]);
-            myCommand.Parameters.AddWithValue("@CodTipoCurso", Convert.ToInt32(values[1]));
-            myCommand.Parameters.AddWithValue("@CodArea", Convert.ToInt32(values[2]));
-            myCommand.Parameters.AddWithValue("@CodRef", values[3]);
-            myCommand.Parameters.AddWithValue("@CodQNQ", Convert.ToInt32(values[4]));
+            myCommand.Parameters.AddWithValue("@NameCourse", Course.Nome);
+            myCommand.Parameters.AddWithValue("@CodTipoCurso", Course.CodTipoCurso);
+            myCommand.Parameters.AddWithValue("@CodArea", Course.CodArea);
+            myCommand.Parameters.AddWithValue("@CodRef", Course.CodRef);
+            myCommand.Parameters.AddWithValue("@CodQNQ", Course.CodQNQ);
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             SqlParameter CourseRegister = new SqlParameter();
@@ -81,6 +80,7 @@ namespace FinalProject.Classes
         public static List<Course> LoadCourses()
         {
             List<Course> Courses = new List<Course>();
+
             List<string> conditions = new List<string>();
 
             string query = "SELECT * FROM curso";
@@ -155,7 +155,9 @@ namespace FinalProject.Classes
             {
                 CompleteCourse.CodCurso = Convert.ToInt32(dr["codCurso"]);
                 CompleteCourse.Nome = dr["nomeCurso"].ToString();
+                CompleteCourse.CodArea = Convert.ToInt32(dr["codArea"]);
                 CompleteCourse.Area = dr["nomeArea"].ToString();
+                CompleteCourse.CodTipoCurso = Convert.ToInt32(dr["codTipoCurso"]);
                 CompleteCourse.TipoCurso = dr["nomeTipoLongo"].ToString();
                 CompleteCourse.CodRef = dr["codRef"].ToString();
                 CompleteCourse.CodQNQ = Convert.ToInt32(dr["codQNQ"]);
@@ -170,6 +172,37 @@ namespace FinalProject.Classes
                                                             // Adicione outros atributos do módulo conforme necessário
                 ModulesCourse.Add(module);
             } while (dr.Read());
+
+            CompleteCourse.Modules = ModulesCourse;
+
+            myConn.Close();
+
+            return CompleteCourse;
+        }
+
+        public static Course ReturnCompleteCourse(int CodCurso)
+        {
+            Course CompleteCourse = new Course();
+            List<Module> ModulesCourse = Classes.Module.LoadModules(CodCurso);
+
+            string query = $"SELECT * FROM curso AS C INNER JOIN tipoCurso AS TC ON C.codTipoCurso=TC.codTipoCurso INNER JOIN area AS A ON C.codArea=A.codArea INNER JOIN moduloCurso AS MC ON C.codCurso=MC.codCurso INNER JOIN  modulo AS M ON MC.codModulo=M.codModulos WHERE C.codCurso={CodCurso}";
+
+            SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
+            SqlCommand myCommand = new SqlCommand(query, myConn);
+            myConn.Open();
+
+            SqlDataReader dr = myCommand.ExecuteReader();
+
+            if (dr.Read())
+            {
+                CompleteCourse.CodCurso = Convert.ToInt32(dr["codCurso"]);
+                CompleteCourse.Nome = dr["nomeCurso"].ToString();
+                CompleteCourse.Area = dr["nomeArea"].ToString();
+                CompleteCourse.TipoCurso = dr["nomeTipoLongo"].ToString();
+                CompleteCourse.CodRef = dr["codRef"].ToString();
+                CompleteCourse.CodQNQ = Convert.ToInt32(dr["codQNQ"]);
+
+            }
 
             CompleteCourse.Modules = ModulesCourse;
 

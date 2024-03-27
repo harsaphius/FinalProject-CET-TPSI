@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FinalProject.Classes;
+using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -83,63 +84,190 @@ namespace FinalProject
             }
         }
 
-        protected void chkBoxMod_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox checkBox = (CheckBox)sender;
-            RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
-            HiddenField hdnModuleId = (HiddenField)item.FindControl("hdnModuleID");
-            HiddenField hdnModuleName = (HiddenField)item.FindControl("hdnModuleName");
-            Label lbl_order = (Label)item.FindControl("lbl_order");
 
-            if (hdnModuleId != null && hdnModuleName != null && lbl_order != null)
+        //Funções de ItemDataBound
+
+        /// <summary>
+        /// Função do Repeater ListCourses que anexa o respetivo AsynPostBackTrigger Event a cada botão EDit/Delete do Repeater
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptListCourses_OnItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                if (checkBox.Checked)
+                // Find the buttons
+                LinkButton lbtEditEditCourse = (LinkButton)e.Item.FindControl("lbtEditEditCourse");
+                AsyncPostBackTrigger triggerEdit = new AsyncPostBackTrigger();
+                triggerEdit.ControlID = lbtEditEditCourse.UniqueID;
+                triggerEdit.EventName = "Click";
+
+                LinkButton lbtDeleteEditCourse = (LinkButton)e.Item.FindControl("lbtDeleteEditCourse");
+                AsyncPostBackTrigger triggerDelete = new AsyncPostBackTrigger();
+                triggerDelete.ControlID = lbtDeleteEditCourse.UniqueID;
+                triggerDelete.EventName = "Click";
+
+            }
+        }
+
+        /// <summary>
+        /// Função do Repeater InsertCourses que anexa o respetivo AsyncPostBackTrigger Event às CheckBoxes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptInsertCourses_OnItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                CheckBox chkBoxInsertModulesCourse = (CheckBox)e.Item.FindControl("chkBoxInsertModulesCourse");
+
+                // Create an AsyncPostBackTrigger for the CheckBox control
+                AsyncPostBackTrigger trigger = new AsyncPostBackTrigger();
+                trigger.ControlID = chkBoxInsertModulesCourse.UniqueID;
+                trigger.EventName = "CheckedChanged";
+
+                // Add the trigger to the UpdatePanel's triggers collection
+                updatePanelInsertCourses.Triggers.Add(trigger);
+                // Attach an event handler for the CheckedChanged event
+                chkBoxInsertModulesCourse.CheckedChanged += chkBoxInsertModulesCourse_CheckedChanged;
+
+            }
+
+        }
+
+        /// <summary>
+        /// Função do Repeater EditCourses que anexa o respetivo AsyncPostBackTrigger Event às CheckBoxes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptEditModulesCourse_OnItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                CheckBox chkBoxEditModulesCourse = (CheckBox)e.Item.FindControl("chkBoxEditModulesCourse");
+
+                // Create an AsyncPostBackTrigger for the CheckBox control
+                AsyncPostBackTrigger trigger = new AsyncPostBackTrigger();
+                trigger.ControlID = chkBoxEditModulesCourse.UniqueID;
+                trigger.EventName = "CheckedChanged";
+
+                // Add the trigger to the UpdatePanel's triggers collection
+                updatePanelInsertCourses.Triggers.Add(trigger);
+                // Attach an event handler for the CheckedChanged event
+                chkBoxEditModulesCourse.CheckedChanged += chkBoxEditModulesCourse_CheckedChanged;
+
+            }
+        }
+
+
+        //Funções de ItemCommand dos Repeaters
+
+        /// <summary>
+        /// Função de ItemCommand do Repeater de Listagem dos Cursos para a Edição de um Curso
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptListCourses_OnItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "Edit")
+            {
+                Course selectedCourse = Classes.Course.CompleteCourse(Convert.ToInt32(e.CommandArgument));
+
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "showEditModulesScript",
+                       "showEditModules();", true);
+
+                TextBox tbCourseNameEditCourse = updatePanelEditModulesCourses.FindControl("tbCourseNameEditCourse") as TextBox;
+                TextBox tbRefEditCourse = updatePanelEditModulesCourses.FindControl("tbRefEditCourse") as TextBox;
+                DropDownList ddlTipoCursoEditCourse = (DropDownList)updatePanelEditModulesCourses.FindControl("ddlTipoCursoEditCourse");
+                DropDownList ddlAreaCursoEditCourse = (DropDownList)updatePanelEditModulesCourses.FindControl("ddlAreaCursoEditCourse");
+                DropDownList ddlQNQEditCourse = (DropDownList)updatePanelEditModulesCourses.FindControl("ddlQNQEditCourse");
+
+                if (tbCourseNameEditCourse != null)
                 {
-                    lbl_order.Text = "Seleccionado";
-                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"] ?? new List<int>();
-                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"] ?? new List<string>();
-                    selectedItems.Add(Convert.ToInt32(hdnModuleId.Value));
-                    itemsNames.Add(hdnModuleName.Value);
-                    lbl_selection.Text = string.Join(" | ", itemsNames);
-                    ViewState["SelectedItems"] = selectedItems;
-                    ViewState["SelectedItemsNames"] = itemsNames;
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsertScript", "showInsert();", true);
+                    tbCourseNameEditCourse.Text = selectedCourse.Nome;
+
+                    string selectedCodTipoCurso = Convert.ToString(selectedCourse.CodTipoCurso);
+                    ddlTipoCursoEditCourse.SelectedValue = selectedCodTipoCurso;
+
+                    string selectedCodAreaCurso = Convert.ToString(selectedCourse.CodArea);
+                    ddlAreaCursoEditCourse.SelectedValue = selectedCodAreaCurso;
+
+                    tbRefEditCourse.Text = selectedCourse.CodRef;
+
+                    string selectedValue = Convert.ToString(selectedCourse.CodQNQ);
+                    ddlQNQEditCourse.SelectedValue = "Nível " + selectedValue;
+
                 }
-                else
+
+
+
+                //foreach (RepeaterItem item in rptEditModulesCourse.Items)
+                //{
+                //    if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
+                //    {
+                //        // Retrieve the hidden field containing the module ID
+                //        HiddenField hdnFieldEditCourseModuleID = (HiddenField)item.FindControl("hdnEditCourseModuleID");
+
+                //        // Ensure hdnModuleID is not null
+                //        if (hdnFieldEditCourseModuleID != null)
+                //        {
+                //            // Parse moduleID from the hidden field
+                //            if (int.TryParse(hdnFieldEditCourseModuleID.Value, out int moduleID))
+                //            {
+                //                // Find the checkbox corresponding to this module
+                //                CheckBox chkBoxEditModulesCourse = (CheckBox)item.FindControl("chkBoxEditModulesCourse");
+
+                //                // Check if the module is part of the selected course
+                //                bool isModuleInCourse = false;
+                //                foreach (Module module in selectedCourse.Modules)
+                //                {
+                //                    if (module.CodModulo == moduleID)
+                //                    {
+                //                        isModuleInCourse = true;
+                //                        break; // Exit the loop once the module is found
+                //                    }
+                //                }
+
+                //                // Set the checkbox state based on whether the module is part of the selected course
+                //                chkBoxEditModulesCourse.Checked = isModuleInCourse;
+                //            }
+                //        }
+                //    }
+                //}
+
+                if (e.CommandName == "Delete")
                 {
-                    lbl_order.Text = "Selecione este módulo";
-                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
-                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"];
-                    if (selectedItems != null)
-                    {
-                        selectedItems.Remove(Convert.ToInt32(hdnModuleId.Value));
-                        itemsNames.Remove(hdnModuleName.Value);
-                        lbl_selection.Text = string.Join(" | ", itemsNames);
-                        ViewState["SelectedItems"] = selectedItems;
-                        ViewState["SelectedItemsNames"] = itemsNames;
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsertScript", "showInsert();", true);
-                    }
+
                 }
             }
         }
 
-        protected void btn_insert_Click(object sender, EventArgs e)
+
+        //Funções de Inserção/Edição
+
+        /// <summary>
+        /// Função para Inserção de um novo curso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnInsertCourse_Click(object sender, EventArgs e)
         {
             List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
-            List<string> courseData = new List<string>();
+            Course courseData = new Course();
 
             if (selectedItems != null && selectedItems.Count > 0)
             {
-                courseData.Add(tbCourseName.Text);
-                courseData.Add(ddlTipoCurso.SelectedValue);
-                courseData.Add(ddlAreaCurso.SelectedValue);
-                courseData.Add(tbRef.Text);
+                courseData.Nome = tbCourseName.Text;
+                courseData.CodTipoCurso = Convert.ToInt32(ddlTipoCurso.SelectedValue);
+                courseData.CodArea = Convert.ToInt32(ddlAreaCurso.SelectedValue);
+                courseData.CodRef = tbRef.Text;
+
                 string selectedValue = ddlQNQ.SelectedValue;
                 string[] parts = selectedValue.Split(' '); // Split the selected value by space
                 if (parts.Length == 2) // Ensure there are two parts
                 {
                     string codQNQ = parts[1];
-                    courseData.Add(codQNQ);
+                    courseData.CodQNQ = Convert.ToInt32(codQNQ);
                 }
 
                 int CourseRegisted = Classes.Course.InsertCourse(courseData, selectedItems);
@@ -156,7 +284,6 @@ namespace FinalProject
 
                     lbl_message.Text = "Curso registado com sucesso!";
 
-                    // Clear the ViewState after processing
                     ViewState["SelectedItems"] = null;
                 }
                 else
@@ -174,113 +301,23 @@ namespace FinalProject
             }
         }
 
-        protected void rpt_insertCourses_ItemDataBound(object sender, RepeaterItemEventArgs e)
+
+        /// <summary>
+        /// Função para a edição de um curso existente
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnEditCourse_OnClick(object sender, EventArgs e)
         {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                CheckBox chkBoxMod = (CheckBox)e.Item.FindControl("chckBox");
-
-                // Create an AsyncPostBackTrigger for the CheckBox control
-                AsyncPostBackTrigger trigger = new AsyncPostBackTrigger();
-                trigger.ControlID = chkBoxMod.UniqueID;
-                trigger.EventName = "CheckedChanged";
-
-                // Add the trigger to the UpdatePanel's triggers collection
-                updatePanelInsertCourses.Triggers.Add(trigger);
-                // Attach an event handler for the CheckedChanged event
-                chkBoxMod.CheckedChanged += chkBoxMod_CheckedChanged;
-            }
+            lbl_message.Text = "Edição de cursos";
         }
 
-        protected void rpt_Courses_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            if (e.CommandName == "Edit")
-            {
-                RepeaterItem item = rpt_Courses.Items[e.Item.ItemIndex];
 
-                // Find TextBox and Label controls
-                TextBox tbNome = (TextBox)item.FindControl("tbNome");
-                Label lblNome = (Label)item.FindControl("lblNome");
+        //Funções de Databinding
 
-                TextBox tbCodRef = (TextBox)item.FindControl("tbCodRef");
-                Label lblCodRef = (Label)item.FindControl("lblCodRef");
-
-                TextBox tbCodQNQ = (TextBox)item.FindControl("tbCodQNQ");
-                Label lblCodQNQ = (Label)item.FindControl("lblCodQNQ");
-
-                // Toggle visibility
-                tbNome.Visible = !tbNome.Visible;
-                lblNome.Visible = !lblNome.Visible;
-
-                tbCodRef.Visible = !tbCodRef.Visible;
-                lblCodRef.Visible = !lblCodRef.Visible;
-
-                tbCodQNQ.Visible = !tbCodQNQ.Visible;
-                lblCodQNQ.Visible = !lblCodQNQ.Visible;
-
-                // Find the buttons
-                LinkButton lbt_edit = (LinkButton)item.FindControl("lbt_edit");
-                AsyncPostBackTrigger triggerEdit = new AsyncPostBackTrigger();
-                triggerEdit.ControlID = lbt_edit.UniqueID;
-                triggerEdit.EventName = "Click";
-
-                LinkButton lbt_cancel = (LinkButton)item.FindControl("lbt_cancel");
-                AsyncPostBackTrigger triggerCancel = new AsyncPostBackTrigger();
-                triggerCancel.ControlID = lbt_cancel.UniqueID;
-                triggerCancel.EventName = "Click";
-
-                LinkButton lbt_delete = (LinkButton)item.FindControl("lbt_delete");
-                AsyncPostBackTrigger triggerDelete = new AsyncPostBackTrigger();
-                triggerDelete.ControlID = lbt_delete.UniqueID;
-                triggerDelete.EventName = "Click";
-
-                LinkButton lbt_confirm = (LinkButton)item.FindControl("lbt_confirm");
-                AsyncPostBackTrigger triggerConfirm = new AsyncPostBackTrigger();
-                triggerConfirm.ControlID = lbt_confirm.UniqueID;
-                triggerConfirm.EventName = "Click";
-
-                // Show "Cancel" and "Confirm" buttons
-                lbt_cancel.Visible = true;
-                lbt_confirm.Visible = true;
-
-                // Hide "Edit" and "Delete" buttons
-                lbt_edit.Visible = false;
-                lbt_delete.Visible = false;
-            }
-        }
-
-        protected void btn_previousC_Click(object sender, EventArgs e)
-        {
-            PageNumberCourses -= 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataCourses();
-        }
-
-        protected void btn_nextC_Click(object sender, EventArgs e)
-        {
-            PageNumberCourses += 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataCourses();
-        }
-
-        protected void btn_previousM_Click(object sender, EventArgs e)
-        {
-            PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataModules();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsertScript", "showInsert();", true);
-        }
-
-        protected void btn_nextM_Click(object sender, EventArgs e)
-        {
-            PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataModules();
-
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsertScript", "showInsert();", true);
-        }
-
-        protected void UpdatePanel_Load(object sender, EventArgs e)
-        {
-            hfInsertCoursesVisible.Value = "true"; // or "false" based on your condition
-        }
-
+        /// <summary>
+        /// Função para DataBind dos Cursos
+        /// </summary>
         private void BindDataCourses()
         {
             PagedDataSource pagedData = new PagedDataSource();
@@ -289,16 +326,18 @@ namespace FinalProject
             pagedData.PageSize = 2;
             pagedData.CurrentPageIndex = PageNumberCourses;
             int PageNumber = PageNumberCourses + 1;
-            lbl_pageNumber.Text = (PageNumber).ToString();
+            lblPageNumberListCourses.Text = (PageNumber).ToString();
 
-            rpt_Courses.DataSource = pagedData;
-            rpt_Courses.DataBind();
+            rptListCourses.DataSource = pagedData;
+            rptListCourses.DataBind();
 
-            btn_previousC.Enabled = !pagedData.IsFirstPage;
-            btn_nextC.Enabled = !pagedData.IsLastPage;
-
+            btnPreviousListCourses.Enabled = !pagedData.IsFirstPage;
+            btnNextListCourses.Enabled = !pagedData.IsLastPage;
         }
 
+        /// <summary>
+        /// Função para DataBind dos Módulos
+        /// </summary>
         private void BindDataModules()
         {
             PagedDataSource pagedData = new PagedDataSource();
@@ -307,23 +346,122 @@ namespace FinalProject
             pagedData.PageSize = 5;
             pagedData.CurrentPageIndex = PageNumberModules;
             int PageNumber = PageNumberCourses + 1;
-            lbl_pageNumber.Text = (PageNumber).ToString();
+            lblPageNumberEditCoursesModules.Text = (PageNumber).ToString();
 
-            rpt_insertCourses.DataSource = pagedData;
-            rpt_insertCourses.DataBind();
+            rptInsertCourses.DataSource = pagedData;
+            rptInsertCourses.DataBind();
 
-            btn_previousM.Enabled = !pagedData.IsFirstPage; // Adjust with the respective btn_previous control for Users Repeater
-            btn_nextM.Enabled = !pagedData.IsLastPage; // Adjust with the respective btn_next control for Users Repeater
+            btnPreviousInsertCoursesModules.Enabled = !pagedData.IsFirstPage;
+            btnNextInsertCoursesModules.Enabled = !pagedData.IsLastPage;
 
-            rpt_EditModulesCourse.DataSource = pagedData;
-            rpt_EditModulesCourse.DataBind();
+            rptEditModulesCourse.DataSource = pagedData;
+            rptEditModulesCourse.DataBind();
 
-            btn_previousEM.Enabled = !pagedData.IsFirstPage;
-            btn_nextEM.Enabled = !pagedData.IsLastPage;
+            btnPreviousEditModulesCourses.Enabled = !pagedData.IsFirstPage;
+            btnNextEditModulesCourses.Enabled = !pagedData.IsLastPage;
 
         }
 
-        public int PageNumberCourses
+
+        //Funções para as CheckBoxes
+
+        /// <summary>
+        /// Função para determinar se a CheckBox do Repeater EditModulesCourse is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void chkBoxEditModulesCourse_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
+            HiddenField hdnEditCourseModuleID = (HiddenField)item.FindControl("hdnEditCourseModuleID");
+            HiddenField hdnEditCourseModuleName = (HiddenField)item.FindControl("hdnEditCourseModuleName");
+            Label lblOrderEditModulesCourse = (Label)item.FindControl("lblOrderEditModulesCourse");
+
+            if (hdnEditCourseModuleID != null && hdnEditCourseModuleName != null && lblOrderEditModulesCourse != null)
+            {
+                if (checkBox.Checked)
+                {
+                    lblOrderEditModulesCourse.Text = "Seleccionado";
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItemsEdit"] ?? new List<int>();
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNamesEdit"] ?? new List<string>();
+                    selectedItems.Add(Convert.ToInt32(hdnEditCourseModuleID.Value));
+                    itemsNames.Add(hdnEditCourseModuleName.Value);
+                    lblOrderOfModulesSelected.Text = string.Join(" | ", itemsNames);
+                    ViewState["SelectedItemsEdit"] = selectedItems;
+                    ViewState["SelectedItemsNamesEdit"] = itemsNames;
+                }
+                else
+                {
+                    lblOrderEditModulesCourse.Text = "Selecione este módulo";
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItemsEdit"];
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNamesEdit"];
+                    if (selectedItems != null)
+                    {
+                        selectedItems.Remove(Convert.ToInt32(hdnEditCourseModuleID.Value));
+                        itemsNames.Remove(hdnEditCourseModuleName.Value);
+                        lblOrderOfModulesSelected.Text = string.Join(" | ", itemsNames);
+                        ViewState["SelectedItemsEdit"] = selectedItems;
+                        ViewState["SelectedItemsNamesEdit"] = itemsNames;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Função para determinar se a CheckBox do Repeater InsertModulesCourse is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void chkBoxInsertModulesCourse_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
+            HiddenField hdnInsertModuleID = (HiddenField)item.FindControl("hdnInsertModuleID");
+            HiddenField hdnInsertModuleName = (HiddenField)item.FindControl("hdnInsertModuleName");
+            Label lblOrderInsertModules = (Label)item.FindControl("lblOrderInsertModules");
+
+            if (hdnInsertModuleID != null && hdnInsertModuleName != null && lblOrderInsertModules != null)
+            {
+                if (checkBox.Checked)
+                {
+                    lblOrderInsertModules.Text = "Seleccionado";
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"] ?? new List<int>();
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"] ?? new List<string>();
+                    selectedItems.Add(Convert.ToInt32(hdnInsertModuleID.Value));
+                    itemsNames.Add(hdnInsertModuleName.Value);
+                    lblOrderOfModulesSelected.Text = string.Join(" | ", itemsNames);
+                    ViewState["SelectedItems"] = selectedItems;
+                    ViewState["SelectedItemsNames"] = itemsNames;
+
+                }
+                else
+                {
+                    lblOrderInsertModules.Text = "Selecione este módulo";
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"];
+                    if (selectedItems != null)
+                    {
+                        selectedItems.Remove(Convert.ToInt32(hdnInsertModuleID.Value));
+                        itemsNames.Remove(hdnInsertModuleName.Value);
+                        lblOrderOfModulesSelected.Text = string.Join(" | ", itemsNames);
+                        ViewState["SelectedItems"] = selectedItems;
+                        ViewState["SelectedItemsNames"] = itemsNames;
+
+                    }
+                }
+            }
+
+
+        }
+
+
+        //Funções de paginação
+
+        /// <summary>
+        /// Paginação dos Cursos
+        /// </summary>
+        private int PageNumberCourses
         {
             get
             {
@@ -338,7 +476,10 @@ namespace FinalProject
             }
         }
 
-        public int PageNumberModules
+        /// <summary>
+        /// Paginação dos Módulos
+        /// </summary>
+        private int PageNumberModules
         {
             get
             {
@@ -353,19 +494,88 @@ namespace FinalProject
             }
         }
 
-        protected void rpt_EditModulesCourse_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            //if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            //{
-            //    CheckBox chkBoxMod = (CheckBox)e.Item.FindControl("chckBox");
 
-            //    chkBoxMod.CheckedChanged += chkBoxMod_CheckedChanged;
-            //}
+        //Funções para os botões de paginação
+
+        /// <summary>
+        /// Função Click do Botão de Previous na Listagem de Cursos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnPreviousListCourses_Click(object sender, EventArgs e)
+        {
+            PageNumberCourses -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataCourses();
         }
 
-        protected void lbt_cancel_OnClick(object sender, EventArgs e)
+        /// <summary>
+        /// Função Click do Botão de Next na Listagem de Cursos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnNextListCourses_Click(object sender, EventArgs e)
         {
-            Response.Redirect("ManageCourses.aspx");
+            PageNumberCourses += 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataCourses();
+
+        }
+
+        /// <summary>
+        /// Função Click do Botão de Previous na Inserção de Módulos de um Novo Curso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnPreviousInsertCoursesModules_Click(object sender, EventArgs e)
+        {
+            PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataModules();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsertScript", "showInsert(); return false;", true);
+        }
+
+        /// <summary>
+        /// Função Click do Botão de Next na Inserção de Módulos de um Novo Curso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnNextInsertCoursesModules_Click(object sender, EventArgs e)
+        {
+            PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataModules();
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsertScript", "showInsert(); return false;", true);
+        }
+
+        /// <summary>
+        /// Função Click do Botão de Previous na Edição de Módulos de um Novo Curso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnPreviousEditModulesCourses_OnClick(object sender, EventArgs e)
+        {
+            PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataModules();
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "showEditScript", "showEditModules(); return false;", true);
+        }
+
+        /// <summary>
+        /// Função Click do Botão de Next na Edição de Módulos de um Novo Curso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnNextEditModulesCourses_OnClick(object sender, EventArgs e)
+        {
+            PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataModules();
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "showEditScript", "showEditModules(); return false;", true);
+        }
+
+
+        protected void btn_back_OnClick(object sender, EventArgs e)
+        {
+            ViewState["SelectedItems"] = null ;
+            ViewState["SelectedItemsNames"] = null;
         }
     }
 }

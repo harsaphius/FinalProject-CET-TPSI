@@ -15,6 +15,7 @@ namespace FinalProject.Classes
         public string Descricao { get; set; }
         public decimal Creditos { get; set; }
         public string SVG { get; set; }
+        public byte[] SVGBytes { get; set; }
 
         /// <summary>
         /// Função para inserir um módulo novo
@@ -22,17 +23,25 @@ namespace FinalProject.Classes
         /// <param name="values"></param>
         /// <param name="imageBytes"></param>
         /// <returns></returns>
-        public static int InsertModule(List<string> values, byte[] imageBytes)
+        public static int InsertModule(Module module)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
-            myCommand.Parameters.AddWithValue("@NameModule", values[0]);
-            myCommand.Parameters.AddWithValue("@Duration", Convert.ToInt32(values[1]));
-            myCommand.Parameters.AddWithValue("@UFCD", values[2]);
-            myCommand.Parameters.AddWithValue("@Description", values[3]);
-            myCommand.Parameters.AddWithValue("@Credits", Convert.ToDecimal(values[4]));
-            myCommand.Parameters.AddWithValue("@SVG", imageBytes);
+            myCommand.Parameters.AddWithValue("@NameModule", module.Nome);
+            myCommand.Parameters.AddWithValue("@Duration", module.Duracao);
+            myCommand.Parameters.AddWithValue("@UFCD", module.UFCD);
+            myCommand.Parameters.AddWithValue("@Description", module.Descricao);
+            myCommand.Parameters.AddWithValue("@Credits", module.Creditos);
+            //myCommand.Parameters.AddWithValue("@SVG", imageBytes);
+            if (module.SVG != null)
+            {
+                myCommand.Parameters.AddWithValue("@SVG", module.SVG);
+            }
+            else
+            {
+                myCommand.Parameters.AddWithValue("@SVG", DBNull.Value);
+            }
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             SqlParameter ModuleRegister = new SqlParameter();
@@ -112,7 +121,14 @@ namespace FinalProject.Classes
                 informacao.Descricao = dr.GetString(4);
                 informacao.Creditos = dr.GetDecimal(5);
 
-                informacao.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
+                if (dr["svg"] != DBNull.Value)
+                {
+                    informacao.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
+                }
+                else
+                {
+                    informacao.SVG = null; // or set it to any default value you prefer
+                }
 
                 Modules.Add(informacao);
             }
@@ -180,5 +196,74 @@ namespace FinalProject.Classes
             myConn.Close();
             return Modules;
         }
+
+        public static int UpdateModule(Module module)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@ModuleID", module.CodModulo);
+            myCommand.Parameters.AddWithValue("@NameModule", module.Nome);
+            myCommand.Parameters.AddWithValue("@Duration", module.Duracao);
+            myCommand.Parameters.AddWithValue("@UFCD", module.UFCD);
+            myCommand.Parameters.AddWithValue("@Description", module.Descricao);
+            myCommand.Parameters.AddWithValue("@Credits", module.Creditos);
+            if (module.SVGBytes != null && module.SVGBytes.Length > 0)
+            {
+                myCommand.Parameters.Add("@SVG", SqlDbType.VarBinary, -1).Value = module.SVGBytes;
+            }
+            else
+            {
+                myCommand.Parameters.Add("@SVG", SqlDbType.VarBinary, -1).Value = DBNull.Value;
+            }
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
+
+            SqlParameter ModuleUpdated = new SqlParameter();
+            ModuleUpdated.ParameterName = "@ModuleUpdated";
+            ModuleUpdated.Direction = ParameterDirection.Output;
+            ModuleUpdated.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(ModuleUpdated);
+
+            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
+            myCommand.CommandText = "UpdateModule"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+
+            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
+            myCon.Open(); //Abrir a conexão
+            myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+            int AnswModuleUpdated = Convert.ToInt32(myCommand.Parameters["@ModuleUpdated"].Value);
+
+            myCon.Close(); //Fechar a conexão
+
+            return AnswModuleUpdated;
+        }
+
+        public static int DeleteModule(int CodModulo)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@ModuleID", CodModulo);
+
+            SqlParameter ModuleDeleted = new SqlParameter();
+            ModuleDeleted.ParameterName = "@ModuleDeleted";
+            ModuleDeleted.Direction = ParameterDirection.Output;
+            ModuleDeleted.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(ModuleDeleted);
+
+            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
+            myCommand.CommandText = "DeleteModule"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+
+            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
+            myCon.Open(); //Abrir a conexão
+            myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+            int AnswModuleDeleted = Convert.ToInt32(myCommand.Parameters["@ModuleDeleted"].Value);
+
+            myCon.Close(); //Fechar a conexão
+
+            return AnswModuleDeleted;
+        }
+
     }
 }

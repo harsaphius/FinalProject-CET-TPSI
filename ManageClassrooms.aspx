@@ -21,40 +21,39 @@
                         <asp:UpdatePanel ID="UpdatePanel6" runat="server">
                             <ContentTemplate>
                                 <div class="row">
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                                         <span>Designação:</span>
                                         <div class="input-group mb-4">
-                                            <asp:LinkButton runat="server" ID="LinkButton1" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
-                                            <asp:TextBox runat="server" ID="TextBox1" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
+                                            <asp:LinkButton runat="server" ID="lbtSearch" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
+                                            <asp:TextBox runat="server" ID="tbSearch" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
                                         </div>
                                     </div>
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                        <span>Data de Início: </span>
+                                    <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+                                        <span>Tipo de Sala: </span>
                                         <div class="input-group mb-4">
-                                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                            <asp:TextBox runat="server" ID="TextBox2" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
+                                            <asp:DropDownList ID="ddlTipoSalaFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipoSala" DataTextField="tipoSala" DataValueField="codTipoSala"></asp:DropDownList>
                                         </div>
                                     </div>
 
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                        <span>Data de Fim: </span>
+                                    <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+                                        <span>Local da Sala: </span>
                                         <div class="input-group mb-4">
-                                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                            <asp:TextBox runat="server" ID="TextBox3" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
+                                            <asp:DropDownList ID="ddlLocalSalaFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSLocalSala" DataTextField="localSala" DataValueField="codLocalSala"></asp:DropDownList>
                                         </div>
                                     </div>
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                        <span>
-                                            <br />
-                                        </span>
+                                    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                                        <br />
                                         <div class="input-group mb-4">
-                                            <asp:Button runat="server" ID="btn_clear" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
+                                            <asp:Button runat="server" ID="btnApplyFilters" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" />
+                                            <span>&nbsp; &nbsp;</span>
+                                            <asp:Button runat="server" ID="btnClearFilters" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
                                         </div>
                                     </div>
                                 </div>
                             </ContentTemplate>
                             <Triggers>
-                                <asp:AsyncPostBackTrigger ControlID="btn_clear" />
+                                <asp:AsyncPostBackTrigger ControlID="btnApplyFilters"/>
+                                <asp:AsyncPostBackTrigger ControlID="btnClearFilters" />
                             </Triggers>
                         </asp:UpdatePanel>
                     </div>
@@ -95,14 +94,14 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td id="cellUFCD">
-                                                    <asp:TextBox ID="tbTipoSala" CssClass="form-control" runat="server" Text='<%# Bind("TipoSala") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
+                                                <td>
+                                                    <asp:DropDownList ID="ddlTipoSala" runat="server" DataSourceID="SQLDSTipoSala" DataTextField="tipoSala" DataValueField="codTipoSala" Visible="false"></asp:DropDownList>
                                                     <p class="text-sm mb-0">
                                                         <asp:Label ID="lblTipoSala" runat="server" Text='<%# Eval("TipoSala") %>' Visible="true" Style="width: 100%;"></asp:Label>
                                                     </p>
                                                 </td>
                                                 <td>
-                                                    <asp:TextBox ID="tbLocalSala" CssClass="form-control" runat="server" Text='<%# Bind("LocalSala") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
+                                                    <asp:DropDownList ID="ddlLocalSala" runat="server" DataSourceID="SQLDSLocalSala" DataTextField="localSala" DataValueField="codLocalSala" Visible="false"></asp:DropDownList>
                                                     <p class="text-sm mb-0">
                                                         <asp:Label ID="lblLocalSala" class="text-xs" runat="server" Text='<%# Eval("LocalSala") %>' Style="width: 100%;" Visible="true"></asp:Label>
                                                     </p>
@@ -182,7 +181,7 @@
                                                                     <asp:SqlDataSource ID="SQLDSLocalSala" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [localSala]"></asp:SqlDataSource>
                                                                 </div>
                                                                 <div class="text-center">
-                                                                    <asp:Button ID="btn_insert" runat="server" Text="Inserir" class="btn bg-gradient-info w-100 mt-4 mb-0" />
+                                                                    <asp:Button ID="btnInsertClassroom" runat="server" OnClick="btnInsertClassroom_OnClick" Text="Inserir" class="btn bg-gradient-info w-100 mt-4 mb-0" />
                                                                 </div>
                                                             </div>
                                                         </div>
