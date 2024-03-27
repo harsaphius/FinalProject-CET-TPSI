@@ -312,6 +312,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.LinkButton btnNextEditModulesCourses;
 
         /// <summary>
+        /// lblOrderOfModulesEditSelected control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblOrderOfModulesEditSelected;
+
+        /// <summary>
         /// btnEditCourse control.
         /// </summary>
         /// <remarks>
@@ -483,13 +492,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.LinkButton btnNextInsertCoursesModules;
 
         /// <summary>
-        /// lblOrderOfModulesSelected control.
+        /// lblOrderOfModulesInsertedSelected control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOrderOfModulesSelected;
+        protected global::System.Web.UI.WebControls.Label lblOrderOfModulesInsertedSelected;
 
         /// <summary>
         /// btnInsertCourse control.

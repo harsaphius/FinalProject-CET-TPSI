@@ -7,7 +7,7 @@
         <div class="row" style="margin-top: 15px">
             <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
                 <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Novo Curso" ID="btn_insertCourse" OnClientClick="showInsert(); return false;" />
-                <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_back" OnClientClick="showInsert(); return false;" OnClick="btn_back_OnClick" />
+                <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_back" OnClientClick="showInsert(); return false;" />
                 <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_backEditModules" OnClientClick="showEditModules(); return false;" />
             </div>
             <div id="filtermenu" class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
@@ -263,8 +263,8 @@
                                                                                     <asp:HiddenField ID="hdnEditCourseModuleID" runat="server" Value='<%# Eval("CodModulo") %>' />
                                                                                     <asp:HiddenField ID="hdnEditCourseModuleName" runat="server" Value='<%# Eval("Nome") %>' />
                                                                                     <div class="form-check">
-                                                                                        <asp:CheckBox runat="server" ID="chkBoxEditModulesCourse" OnCheckedChanged="chkBoxEditModulesCourse_CheckedChanged" />
-                                                                                        <asp:Label runat="server" ID="lblOrderEditModulesCourse">Selecione este módulo</asp:Label>
+                                                                                        <asp:CheckBox runat="server" ID="chkBoxEditModulesCourse" OnCheckedChanged="chkBoxEditModulesCourse_CheckedChanged" AutoPostBack="true" EnableViewState="true"/>
+                                                                                        <asp:Label runat="server" ID="lblOrderEditModulesCourse">Seleccione este módulo</asp:Label>
                                                                                     </div>
                                                                                 </div>
                                                                             </td>
@@ -297,7 +297,10 @@
                                                                     </li>
                                                                 </ul>
                                                                 <!-- Fim da Paginação dos Módulos -->
-
+                                                                <div class="row px-4" style="padding: 10px;">
+                                                                    <small class="text-uppercase font-weight-bold">Módulos seleccionados:</small>
+                                                                    <asp:Label runat="server" ID="lblOrderOfModulesEditSelected">  </asp:Label>
+                                                                </div>
                                                                 <asp:Button runat="server" CssClass="btn btn-primary" Text="Editar Curso" ID="btnEditCourse" ValidationGroup="EditForm" CausesValidation="true" AutoPostBack="true" OnClick="btnEditCourse_OnClick" />
 
                                                             </div>
@@ -451,7 +454,7 @@
                                                 <!-- Fim da Paginação dos Módulos -->
                                                 <div class="row px-4" style="padding: 10px;">
                                                     <small class="text-uppercase font-weight-bold">Ordem dos Módulos:</small>
-                                                    <asp:Label runat="server" ID="lblOrderOfModulesSelected">  </asp:Label>
+                                                    <asp:Label runat="server" ID="lblOrderOfModulesInsertedSelected">  </asp:Label>
                                                 </div>
                                             </div>
                                             <div class="row flex-row">

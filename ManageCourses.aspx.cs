@@ -380,6 +380,11 @@ namespace FinalProject
 
             if (hdnEditCourseModuleID != null && hdnEditCourseModuleName != null && lblOrderEditModulesCourse != null)
             {
+
+                int moduleID = Convert.ToInt32(hdnEditCourseModuleID.Value);
+                Dictionary<int, bool> checkboxStates = (Dictionary<int, bool>)ViewState["CheckboxStatesEdit"] ?? new Dictionary<int, bool>();
+
+
                 if (checkBox.Checked)
                 {
                     lblOrderEditModulesCourse.Text = "Seleccionado";
@@ -387,7 +392,9 @@ namespace FinalProject
                     List<string> itemsNames = (List<string>)ViewState["SelectedItemsNamesEdit"] ?? new List<string>();
                     selectedItems.Add(Convert.ToInt32(hdnEditCourseModuleID.Value));
                     itemsNames.Add(hdnEditCourseModuleName.Value);
-                    lblOrderOfModulesSelected.Text = string.Join(" | ", itemsNames);
+                    lblOrderOfModulesEditSelected.Text = string.Join(" | ", itemsNames);
+                    checkboxStates[moduleID] = true;
+
                     ViewState["SelectedItemsEdit"] = selectedItems;
                     ViewState["SelectedItemsNamesEdit"] = itemsNames;
                 }
@@ -400,11 +407,16 @@ namespace FinalProject
                     {
                         selectedItems.Remove(Convert.ToInt32(hdnEditCourseModuleID.Value));
                         itemsNames.Remove(hdnEditCourseModuleName.Value);
-                        lblOrderOfModulesSelected.Text = string.Join(" | ", itemsNames);
+                        lblOrderOfModulesEditSelected.Text = string.Join(" | ", itemsNames);
+                        checkboxStates[moduleID] = false;
+
                         ViewState["SelectedItemsEdit"] = selectedItems;
                         ViewState["SelectedItemsNamesEdit"] = itemsNames;
                     }
                 }
+
+                ViewState["CheckboxStatesEdit"] = checkboxStates;
+
             }
         }
 
@@ -423,38 +435,114 @@ namespace FinalProject
 
             if (hdnInsertModuleID != null && hdnInsertModuleName != null && lblOrderInsertModules != null)
             {
+                int moduleID = Convert.ToInt32(hdnInsertModuleID.Value);
+                Dictionary<int, bool> checkboxStates = (Dictionary<int, bool>)ViewState["CheckboxStatesInsert"] ?? new Dictionary<int, bool>();
+
                 if (checkBox.Checked)
                 {
                     lblOrderInsertModules.Text = "Seleccionado";
-                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"] ?? new List<int>();
-                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"] ?? new List<string>();
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItemsInsert"] ?? new List<int>();
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNamesInsert"] ?? new List<string>();
                     selectedItems.Add(Convert.ToInt32(hdnInsertModuleID.Value));
                     itemsNames.Add(hdnInsertModuleName.Value);
-                    lblOrderOfModulesSelected.Text = string.Join(" | ", itemsNames);
-                    ViewState["SelectedItems"] = selectedItems;
-                    ViewState["SelectedItemsNames"] = itemsNames;
+                    lblOrderOfModulesInsertedSelected.Text = string.Join(" | ", itemsNames);
+                    checkboxStates[moduleID] = true;
+                    ViewState["SelectedItemsInsert"] = selectedItems;
+                    ViewState["SelectedItemsNamesInsert"] = itemsNames;
 
                 }
                 else
                 {
                     lblOrderInsertModules.Text = "Selecione este módulo";
-                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
-                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"];
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItemsInsert"];
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNamesInsert"];
                     if (selectedItems != null)
                     {
                         selectedItems.Remove(Convert.ToInt32(hdnInsertModuleID.Value));
                         itemsNames.Remove(hdnInsertModuleName.Value);
-                        lblOrderOfModulesSelected.Text = string.Join(" | ", itemsNames);
-                        ViewState["SelectedItems"] = selectedItems;
-                        ViewState["SelectedItemsNames"] = itemsNames;
+                        lblOrderOfModulesInsertedSelected.Text = string.Join(" | ", itemsNames);
+                        checkboxStates[moduleID] = false;
+                        ViewState["SelectedItemsInsert"] = selectedItems;
+                        ViewState["SelectedItemsNamesInsert"] = itemsNames;
 
                     }
                 }
+
+                ViewState["CheckboxStatesInsert"] = checkboxStates;
+
             }
-
-
         }
 
+
+        //Funções para Update de ViewStates
+
+        /// <summary>
+        /// Função para update de ViewState ao mudar de paginação no Repeater de InsertCourse
+        /// </summary>
+        private void UpdateSelectedItemsViewStateInsert()
+        {
+            List<int> selectedItems = (List<int>)ViewState["SelectedItemsInsert"] ?? new List<int>();
+            Dictionary<int, bool> checkboxStates = (Dictionary<int, bool>)ViewState["CheckboxStatesInsert"];
+
+            // Loop through the Repeater items to find selected items
+            foreach (RepeaterItem item in rptInsertCourses.Items)
+            {
+                CheckBox chkBoxInsertModulesCourse = (CheckBox)item.FindControl("chkBoxInsertModulesCourse");
+                HiddenField hdnInsertModuleID = (HiddenField)item.FindControl("hdnInsertModuleID");
+                Label lblOrderInsertModules = (Label)item.FindControl("lblOrderInsertModules");
+
+                if (chkBoxInsertModulesCourse != null && hdnInsertModuleID != null)
+                {
+                    int moduleID = Convert.ToInt32(hdnInsertModuleID.Value);
+
+                    if (checkboxStates.ContainsKey(moduleID))
+                    {
+                        chkBoxInsertModulesCourse.Checked = checkboxStates[moduleID];
+                        lblOrderInsertModules.Text = checkboxStates[moduleID] ? "Seleccionado" : "Selecione este módulo";
+                    }
+
+                    if (chkBoxInsertModulesCourse.Checked)
+                    {
+                        selectedItems.Add(moduleID);
+                    }
+                }
+            }
+            ViewState["SelectedItemsInsert"] = selectedItems;
+        }
+
+        /// <summary>
+        /// Função para update de ViewState ao mudar de paginação no Repeater de EditCourse
+        /// </summary>
+        private void UpdateSelectedItemsViewStateEdit()
+        {
+            List<int> selectedItems = (List<int>)ViewState["SelectedItemsEdit"] ?? new List<int>();
+            Dictionary<int, bool> checkboxStates = (Dictionary<int, bool>)ViewState["CheckboxStatesEdit"];
+
+            // Loop through the Repeater items to find selected items
+            foreach (RepeaterItem item in rptInsertCourses.Items)
+            {
+                CheckBox chkBoxEditModulesCourse = (CheckBox)item.FindControl("chkBoxEditModulesCourse");
+                HiddenField hdnEditCourseModuleID = (HiddenField)item.FindControl("hdnEditCourseModuleID");
+                Label lblOrderEditModulesCourse = (Label)item.FindControl("lblOrderEditModulesCourse");
+
+                if (chkBoxEditModulesCourse != null && hdnEditCourseModuleID != null)
+                {
+                    int moduleID = Convert.ToInt32(hdnEditCourseModuleID.Value);
+
+                    if (checkboxStates.ContainsKey(moduleID))
+                    {
+                        chkBoxEditModulesCourse.Checked = checkboxStates[moduleID];
+                        lblOrderEditModulesCourse.Text = checkboxStates[moduleID] ? "Seleccionado" : "Selecione este módulo";
+                    }
+
+                    if (chkBoxEditModulesCourse.Checked)
+                    {
+                        selectedItems.Add(moduleID);
+                    }
+                }
+            }
+            ViewState["SelectedItemsEdit"] = selectedItems;
+        }
 
         //Funções de paginação
 
@@ -529,6 +617,8 @@ namespace FinalProject
         {
             PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
             BindDataModules();
+            UpdateSelectedItemsViewStateInsert();
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsertScript", "showInsert(); return false;", true);
         }
 
@@ -541,6 +631,7 @@ namespace FinalProject
         {
             PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
             BindDataModules();
+            UpdateSelectedItemsViewStateInsert();
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsertScript", "showInsert(); return false;", true);
         }
@@ -554,6 +645,7 @@ namespace FinalProject
         {
             PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
             BindDataModules();
+            UpdateSelectedItemsViewStateEdit();
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "showEditScript", "showEditModules(); return false;", true);
         }
@@ -567,15 +659,10 @@ namespace FinalProject
         {
             PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
             BindDataModules();
+            UpdateSelectedItemsViewStateEdit();
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "showEditScript", "showEditModules(); return false;", true);
         }
 
-
-        protected void btn_back_OnClick(object sender, EventArgs e)
-        {
-            ViewState["SelectedItems"] = null ;
-            ViewState["SelectedItemsNames"] = null;
-        }
     }
 }
