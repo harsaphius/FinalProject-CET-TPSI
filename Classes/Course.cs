@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 
 namespace FinalProject.Classes
 {
+    [Serializable]
     public class Course
     {
         public int CodCurso { get; set; }
@@ -166,6 +167,7 @@ namespace FinalProject.Classes
             do
             {
                 Module module = new Module();
+                module.CodModulo = Convert.ToInt32(dr["codModulos"]);
                 module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
                 module.UFCD = (dr["CodUFCD"].ToString()); // Substitua "moduleID" pelo nome correto da coluna na sua tabela
                 module.Nome = dr["NomeModulos"].ToString(); // Substitua "moduleName" pelo nome correto da coluna na sua tabela
@@ -178,6 +180,58 @@ namespace FinalProject.Classes
             myConn.Close();
 
             return CompleteCourse;
+        }
+
+        public static int UpdateCourse(Course Course, List<int> modules)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@CourseID", Course.CodCurso);
+            myCommand.Parameters.AddWithValue("@NameCourse", Course.Nome);
+            myCommand.Parameters.AddWithValue("@CodTipoCurso", Course.CodTipoCurso);
+            myCommand.Parameters.AddWithValue("@CodArea", Course.CodArea);
+            myCommand.Parameters.AddWithValue("@CodRef", Course.CodRef);
+            myCommand.Parameters.AddWithValue("@CodQNQ", Course.CodQNQ);
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
+
+            SqlParameter CourseUpdated = new SqlParameter();
+            CourseUpdated.ParameterName = "@CourseUpdated";
+            CourseUpdated.Direction = ParameterDirection.Output;
+            CourseUpdated.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(CourseUpdated);
+
+            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
+            myCommand.CommandText = "UpdateCourse"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+
+            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
+            myCon.Open(); //Abrir a conexão
+            myCommand.ExecuteNonQuery();
+
+            int AnswCourseUpdated = Convert.ToInt32(myCommand.Parameters["@CourseUpdated"].Value);
+
+            myCon.Close(); //Fechar a conexão
+
+            SqlCommand myCommand2 = new SqlCommand();
+            myCommand2.CommandType = CommandType.StoredProcedure;
+            myCommand2.CommandText = "UpdateCourseModules";
+
+            myCommand2.Connection = myCon;
+
+            myCon.Open();
+
+            foreach (int moduleID in modules)
+            {
+                myCommand2.Parameters.Clear();
+                myCommand2.Parameters.AddWithValue("@CodCourse", Course.CodCurso);
+                myCommand2.Parameters.AddWithValue("@CodMod", moduleID); // Set the value of CodMod parameter
+                myCommand2.ExecuteNonQuery();//Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+            }
+
+            myCon.Close();
+
+            return AnswCourseUpdated;
         }
 
         public static Course ReturnCompleteCourse(int CodCurso)

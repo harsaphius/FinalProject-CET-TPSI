@@ -42,15 +42,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label profileemail;
 
         /// <summary>
-        /// lbLifeMotto control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbLifeMotto;
-
-        /// <summary>
         /// infoname control.
         /// </summary>
         /// <remarks>
@@ -76,6 +67,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label infoemail;
+
+        /// <summary>
+        /// lbLifeMotto control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbLifeMotto;
 
         /// <summary>
         /// fileRepeater control.
@@ -366,22 +366,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSPais;
 
         /// <summary>
-        /// btn_back control.
+        /// btnBackMainPage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_back;
+        protected global::System.Web.UI.WebControls.Button btnBackMainPage;
 
         /// <summary>
-        /// btn_next control.
+        /// btnNextPage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_next;
+        protected global::System.Web.UI.WebControls.Button btnNextPage;
 
         /// <summary>
         /// ValidationSummary1 control.
@@ -672,22 +672,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tbLifeMotto;
 
         /// <summary>
-        /// Button1 control.
+        /// btnBackToPage1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.Button btnBackToPage1;
 
         /// <summary>
-        /// btn_submit control.
+        /// btnSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_submit;
+        protected global::System.Web.UI.WebControls.Button btnSubmit;
 
         /// <summary>
         /// ValidationSummary2 control.
@@ -762,22 +762,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tbPwNewRep;
 
         /// <summary>
-        /// btn_changepw control.
+        /// btnChangePW control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_changepw;
+        protected global::System.Web.UI.WebControls.Button btnChangePW;
 
         /// <summary>
-        /// btn_BackFromPwChange control.
+        /// btnBackFromPwChange control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_BackFromPwChange;
+        protected global::System.Web.UI.WebControls.Button btnBackFromPwChange;
 
         /// <summary>
         /// Label1 control.

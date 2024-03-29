@@ -15,31 +15,22 @@ namespace FinalProject
     {
 
         /// <summary>
-        /// updatePanel control.
+        /// btnInsertStudent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updatePanel;
+        protected global::System.Web.UI.WebControls.Button btnInsertStudent;
 
         /// <summary>
-        /// btn_insertStudent control.
+        /// btnBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_insertStudent;
-
-        /// <summary>
-        /// btn_main control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_main;
+        protected global::System.Web.UI.WebControls.Button btnBack;
 
         /// <summary>
         /// UpdatePanel4 control.
@@ -132,40 +123,58 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btn_clear;
 
         /// <summary>
-        /// rpt_Students control.
+        /// updatePanelListStudent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpt_Students;
+        protected global::System.Web.UI.UpdatePanel updatePanelListStudent;
 
         /// <summary>
-        /// btn_previousP control.
+        /// rptListStudents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_previousP;
+        protected global::System.Web.UI.WebControls.Repeater rptListStudents;
 
         /// <summary>
-        /// btn_nextP control.
+        /// btnPreviousListStudents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_nextP;
+        protected global::System.Web.UI.WebControls.LinkButton btnPreviousListStudents;
 
         /// <summary>
-        /// UpdatePanel1 control.
+        /// btnNextListStudents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.WebControls.LinkButton btnNextListStudents;
+
+        /// <summary>
+        /// updatePanelInsertStudent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updatePanelInsertStudent;
+
+        /// <summary>
+        /// updatePanelInsertStudentPage1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updatePanelInsertStudentPage1;
 
         /// <summary>
         /// lblNome control.
@@ -438,22 +447,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSPais;
 
         /// <summary>
-        /// btn_back control.
+        /// btnÑextPage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_back;
-
-        /// <summary>
-        /// btn_next control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_next;
+        protected global::System.Web.UI.WebControls.Button btnÑextPage;
 
         /// <summary>
         /// ValidationSummary1 control.
@@ -465,13 +465,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
 
         /// <summary>
-        /// UpdatePanel2 control.
+        /// updatePanelInsertStudentPage2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
+        protected global::System.Web.UI.UpdatePanel updatePanelInsertStudentPage2;
 
         /// <summary>
         /// lblCodEstadoCivil control.
@@ -591,13 +591,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label lblCodPrefixo;
 
         /// <summary>
-        /// ddlprefixo control.
+        /// ddlPrefixo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlprefixo;
+        protected global::System.Web.UI.WebControls.DropDownList ddlPrefixo;
 
         /// <summary>
         /// SQLDSPrefixo control.
@@ -726,22 +726,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.FileUpload fuAnexo;
 
         /// <summary>
-        /// btn_backPageOne control.
+        /// btnBackPageOne control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_backPageOne;
+        protected global::System.Web.UI.WebControls.Button btnBackPageOne;
 
         /// <summary>
-        /// btn_submit control.
+        /// btnSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_submit;
+        protected global::System.Web.UI.WebControls.Button btnSubmit;
 
         /// <summary>
         /// ValidationSummary2 control.
@@ -753,48 +753,48 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary2;
 
         /// <summary>
-        /// lbl_message control.
+        /// lblMessageRegistration control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_message;
+        protected global::System.Web.UI.WebControls.Label lblMessageRegistration;
 
         /// <summary>
-        /// rpt_Courses control.
+        /// rptListCoursesForStudents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpt_Courses;
+        protected global::System.Web.UI.WebControls.Repeater rptListCoursesForStudents;
 
         /// <summary>
-        /// btn_previousC control.
+        /// btnPreviousListCoursesForStudents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_previousC;
+        protected global::System.Web.UI.WebControls.LinkButton btnPreviousListCoursesForStudents;
 
         /// <summary>
-        /// btn_nextC control.
+        /// btnNextListCoursesForStudents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_nextC;
+        protected global::System.Web.UI.WebControls.LinkButton btnNextListCoursesForStudents;
 
         /// <summary>
-        /// btn_enroll control.
+        /// btnEnroll control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_enroll;
+        protected global::System.Web.UI.WebControls.Button btnEnroll;
     }
 }

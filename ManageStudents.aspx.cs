@@ -72,77 +72,75 @@ namespace FinalProject
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
 
-                //Reinicializar o FlatPickr
                 if (!IsPostBack)
                 {
-                    InitializeFlatpickrDatePickers();
+                    //InitializeFlatpickrDatePickers();    
+                    
+                    BindDataStudents();
+                    BindDataCourses();
                 }
 
-                BindDataStudents();
-                BindDataCourses();
+            
             }
         }
 
-        protected void btn_submit_Click(object sender, EventArgs e)
+        protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            List<string> userData = new List<string>();
-            List<string> userDataSecondary = new List<string>();
+            User user = new User();
 
             if (Security.IsValidEmail(tbEmail.Text) == true)
             {
                 string email = tbEmail.Text;
 
-                userData.Add(Convert.ToString(2));
-                userData.Add(tbNome.Text);
-
+                user.CodPerfil = 2;
+                user.Nome = tbNome.Text;
                 string[] parts = email.Split('@');
                 if (parts.Length == 2)
                 {
                     string beforeAt = parts[0];
-                    userData.Add(beforeAt);
+                    user.Username = beforeAt;
                 }
 
-                userData.Add(tbEmail.Text);
+                user.Email = tbEmail.Text;
                 string NovaPasse = Membership.GeneratePassword(10, 2);
-                userData.Add(NovaPasse);
-                userData.Add(ddlDocumentoIdent.SelectedValue);
-                userData.Add(tbCC.Text);
-                userData.Add(tbDataValidade.Text);
-                userData.Add(ddlprefixo.SelectedValue);
-                userData.Add(tbTelemovel.Text);
+                user.Password = NovaPasse;
+                user.DocIdent = ddlDocumentoIdent.SelectedValue;
+                user.DocIdent = tbCC.Text;
+                user.DataValidade = Convert.ToDateTime(tbDataValidade.Text);
+                user.CodPrefix = Convert.ToInt32(ddlPrefixo.SelectedValue);
+                user.Phone = tbTelemovel.Text;
 
-                (int UserRegister, int userCode) = Classes.User.RegisterUser(userData);
+                (int UserRegister, int userCode) = Classes.User.RegisterUser(user);
 
                 if (UserRegister == 0)
                 {
                     EmailControl.SendEmailActivationWithPW(tbEmail.Text, parts[0], NovaPasse);
 
-                    userDataSecondary.Add(Convert.ToString(userCode));
-                    userDataSecondary.Add(ddlSexo.SelectedValue);
-                    userDataSecondary.Add(tbDataNascimento.Text);
-                    userDataSecondary.Add(tbNIF.Text);
-                    userDataSecondary.Add(tbMorada.Text);
-                    userDataSecondary.Add(ddlCodPais.SelectedValue);
-                    userDataSecondary.Add(tbCodPostal.Text);
-                    userDataSecondary.Add(tbLocalidade.Text);
-                    userDataSecondary.Add(ddlCodEstadoCivil.SelectedValue);
-                    userDataSecondary.Add(tbNrSegSocial.Text);
-                    userDataSecondary.Add(tbIBAN.Text);
-                    userDataSecondary.Add(tbNaturalidade.Text);
-                    userDataSecondary.Add(ddlCodNacionalidade.SelectedValue);
+                    user.CodUser = userCode;
+                    user.Sexo = Convert.ToInt32(ddlSexo.SelectedValue);
+                    user.DataNascimento = Convert.ToDateTime(tbDataNascimento.Text);
+                    user.NIF = tbNIF.Text;
+                    user.Morada = tbMorada.Text;
+                    user.CodPais = Convert.ToInt32(ddlCodPais.SelectedValue);
+                    user.CodPostal =tbCodPostal.Text;
+                    user.Localidade = tbLocalidade.Text;
+                    user.CodEstadoCivil = Convert.ToInt32(ddlCodEstadoCivil.SelectedValue);
+                    user.NrSegSocial = tbNrSegSocial.Text;
+                    user.IBAN = tbIBAN.Text;
+                    user.Naturalidade = (tbNaturalidade.Text);
+                    user.CodNacionalidade = Convert.ToInt32(ddlCodNacionalidade.SelectedValue);
                     HttpPostedFile photoFile = fuFoto.PostedFile;
 
                     byte[] photoBytes = FileControl.ProcessPhotoFile(photoFile);
-                    userDataSecondary.Add(Convert.ToBase64String(photoBytes));
+                    user.Foto = (Convert.ToBase64String(photoBytes));
 
-                    userDataSecondary.Add(ddlCodGrauAcademico.SelectedValue);
-                    userDataSecondary.Add(ddlCodSituacaoProfissional.SelectedValue);
-                    userDataSecondary.Add(""); //Substituir LifeMotto
+                    user.CodGrauAcademico = Convert.ToInt32(ddlCodGrauAcademico.SelectedValue);
+                    user.CodSituacaoProf = Convert.ToInt32(ddlCodSituacaoProfissional.SelectedValue);
+                    user.LifeMotto = ""; //Substituir LifeMotto
 
                     List<FileControl> uploadedFiles = FileControl.ProcessUploadedFiles(fuAnexo);
 
-                    int CompleteUser = Classes.User.CompleteRegisterUser(userDataSecondary, uploadedFiles);
-
+                    int CompleteUser = Classes.User.CompleteRegisterUser(user, uploadedFiles);
 
                     string script = @"
                             document.getElementById('alert').classList.remove('hidden');
@@ -152,7 +150,7 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), key: "ShowPageElements", script, true);
 
-                    lbl_message.Text = "Formando registado com sucesso!";
+                    lblMessageRegistration.Text = "Formando registado com sucesso!";
                 }
                 else
                 {
@@ -164,7 +162,7 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                    lbl_message.Text = "Formando já registado!";
+                    lblMessageRegistration.Text = "Formando já registado!";
                 }
             }
             else
@@ -183,130 +181,61 @@ namespace FinalProject
 
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                lbl_message.Text = "Introduza um e-mail válido!";
+                lblMessageRegistration.Text = "Introduza um e-mail válido!";
             }
 
         }
+        
 
-        protected void btn_back_Click(object sender, EventArgs e)
+        protected void rptListStudents_OnItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            Response.Redirect("~/ManageSudents.aspx?Insert");
-        }
-
-        protected void btn_previousP_Click(object sender, EventArgs e)
-        {
-            PageNumberStudents -= 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataStudents();
-        }
-
-        protected void btn_nextP_Click(object sender, EventArgs e)
-        {
-            PageNumberStudents += 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataStudents();
-        }
-
-        protected void btn_previousC_Click(object sender, EventArgs e)
-        {
-            PageNumberCourses -= 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataCourses();
-        }
-
-        protected void btn_nextC_Click(object sender, EventArgs e)
-        {
-            PageNumberCourses += 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataCourses();
-        }
-
-        private void BindDataCourses()
-        {
-            PagedDataSource pagedData = new PagedDataSource();
-            pagedData.DataSource = Classes.Course.LoadCourses();
-            pagedData.AllowPaging = true;
-            pagedData.PageSize = 2;
-            pagedData.CurrentPageIndex = PageNumberCourses;
-
-            rpt_Courses.DataSource = pagedData;
-            rpt_Courses.DataBind();
-
-            btn_previousC.Enabled = !pagedData.IsFirstPage;
-            btn_nextC.Enabled = !pagedData.IsLastPage;
-        }
-
-        public int PageNumberCourses
-        {
-            get
+            if (e.CommandName == "Edit")
             {
-                if (ViewState["PageNumberCourses"] != null)
-                    return Convert.ToInt32(ViewState["PageNumberCourses"]);
-                else
-                    return 0;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsert",
+                    "showInsert();", true);
+                InitializeFlatpickrDatePickers();
+
+                (Student student, User user) = Classes.Student.LoadStudent(Convert.ToInt32(e.CommandArgument));
+
+                tbNome.Text = student.Nome;
+                ddlSexo.SelectedValue = Convert.ToString(user.Sexo);
+                tbDataNascimento.Text = user.DataNascimento.ToShortDateString();
+                ddlDocumentoIdent.SelectedValue = Convert.ToString(user.CodTipoDoc);
+                tbCC.Text = user.DocIdent;
+                tbDataValidade.Text = user.DataValidade.ToShortDateString();
+                tbNrSegSocial.Text = user.NrSegSocial;
+                tbNIF.Text = user.NIF;
+                tbMorada.Text = user.Morada;
+                tbCodPostal.Text = user.CodPostal;
+                tbLocalidade.Text = user.Localidade;
+                ddlCodPais.SelectedValue = Convert.ToString(user.CodPais);
+
+                ddlCodEstadoCivil.SelectedValue = Convert.ToString(user.CodEstadoCivil);
+                tbIBAN.Text = user.IBAN;
+                tbNaturalidade.Text = user.Naturalidade;
+                ddlCodNacionalidade.SelectedValue = Convert.ToString(user.CodNacionalidade);
+                ddlCodGrauAcademico.SelectedValue = Convert.ToString(user.CodGrauAcademico);
+                ddlPrefixo.SelectedValue = Convert.ToString(user.CodPrefix);
+                tbTelemovel.Text = user.Phone;
+                tbEmail.Text = user.Email;
+
+                ddlCodGrauAcademico.SelectedValue = Convert.ToString(user.CodGrauAcademico);
+                //HttpPostedFile photoFile = fuFoto.PostedFile;
+
+                //byte[] photoBytes = FileControl.ProcessPhotoFile(photoFile);
+                //user.Foto = (Convert.ToBase64String(photoBytes));
+
+                //List<FileControl> uploadedFiles = FileControl.ProcessUploadedFiles(fuAnexo);
+
+                //int CompleteUser = Classes.User.CompleteRegisterUser(user, uploadedFiles);
+
+                //if (CompleteUser == 0) lblMessageRegistration.Text = "Perfil atualizado com sucesso.";
+                //else lblMessageRegistration.Text = "Erro na atualização de perfil.";
+
             }
-            set
-            {
-                ViewState["PageNumberCourses"] = value;
-            }
         }
 
-        private void BindDataStudents()
-        {
-            PagedDataSource pagedData = new PagedDataSource();
-            pagedData.DataSource = Classes.Student.LoadStudents();
-            pagedData.AllowPaging = true;
-            pagedData.PageSize = 8;
-            pagedData.CurrentPageIndex = PageNumberStudents;
-            ;
-
-            rpt_Students.DataSource = pagedData;
-            rpt_Students.DataBind();
-
-            btn_previousP.Enabled = !pagedData.IsFirstPage;
-            btn_nextP.Enabled = !pagedData.IsLastPage;
-        }
-
-        private int PageNumberStudents
-        {
-            get
-            {
-                if (ViewState["PageNumberStudents"] != null)
-                    return Convert.ToInt32(ViewState["PageNumberStudents"]);
-                else
-                    return 0;
-            }
-            set
-            {
-                ViewState["PageNumberStudents"] = value;
-            }
-        }
-
-        private void InitializeFlatpickrDatePickers()
-        {
-            string script = @"
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                flatpickr('#" + tbDataNascimento.ClientID + @"', {
-                                    dateFormat: 'd-m-Y',
-                                    theme: 'light',
-                                    maxDate: new Date()
-                                });
-
-                                flatpickr('#" + tbDataValidade.ClientID + @"', {
-                                    dateFormat: 'd-m-Y',
-                                    theme: 'light',
-                                    minDate: new Date()
-                                });
-                            });
-                        </script>
-                    ";
-
-            ScriptManager.RegisterStartupScript(this, GetType(), "FlatpickrInit", script, false);
-        }
-
-        protected void rpt_Students_OnItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected void rpt_Courses_OnItemCommand(object source, RepeaterCommandEventArgs e)
+        protected void rptListCoursesForStudents_OnItemCommand(object source, RepeaterCommandEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
@@ -351,7 +280,7 @@ namespace FinalProject
             }
         }
 
-        protected void btn_enroll_OnClick(object sender, EventArgs e)
+        protected void btnEnroll_OnClick(object sender, EventArgs e)
         {
             List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
             foreach (int selectedItem in selectedItems)
@@ -360,22 +289,22 @@ namespace FinalProject
                 {
                     if (Session["CodUtilizador"] != null)
                     {
-                        List<string> Enrollment = new List<string>();
+                        Enrollment enrollment = new Enrollment();
 
-                        Enrollment.Add(Session["CodUtilizador"].ToString());
-                        Enrollment.Add("1");
-                        Enrollment.Add(Convert.ToString(selectedItem));
+                        enrollment.CodUtilizador = Convert.ToInt32(Session["CodUtilizador"].ToString());
+                        enrollment.CodSituacao = 1;
+                        enrollment.CodCurso = selectedItem;
 
-                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollment(Enrollment);
+                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollment(enrollment);
 
                         if (AnswEnrollmentCode == -1 && AnswAnswEnrollmentRegister == -1)
                         {
-                            lbl_message.Text = "Utilizador já registado nesse curso.";
+                            lblMessageRegistration.Text = "Utilizador já registado nesse curso.";
                         }
                         else
                         {
                             Classes.Student.InsertStudent(Convert.ToInt32(Session["CodUtilizador"]), AnswEnrollmentCode);
-                            lbl_message.Text = "Utilizador registado com sucesso no curso!";
+                            lblMessageRegistration.Text = "Utilizador registado com sucesso no curso!";
                         }
 
                     }
@@ -383,5 +312,130 @@ namespace FinalProject
 
             }
         }
+
+
+        //Funções de DataBinding
+        private void BindDataStudents()
+        {
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.Student.LoadStudents();
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 2;
+            pagedData.CurrentPageIndex = PageNumberStudents;
+            int PageNumber = PageNumberStudents + 1;
+
+            rptListStudents.DataSource = pagedData;
+            rptListStudents.DataBind();
+
+            btnPreviousListStudents.Enabled = !pagedData.IsFirstPage;
+            btnNextListStudents.Enabled = !pagedData.IsLastPage;
+        }
+
+        private void BindDataCourses()
+        {
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.Course.LoadCourses();
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 2;
+            pagedData.CurrentPageIndex = PageNumberCourses;
+            int PageNumber = PageNumberCourses + 1;
+
+            rptListCoursesForStudents.DataSource = pagedData;
+            rptListCoursesForStudents.DataBind();
+
+            btnPreviousListCoursesForStudents.Enabled = !pagedData.IsFirstPage;
+            btnNextListCoursesForStudents.Enabled = !pagedData.IsLastPage;
+        }
+
+        //Funções de movimentação na página
+        protected void btnBackManageStudents_OnClick(object sender, EventArgs e)
+        {
+            Response.Redirect("ManageStudents.aspx");
+        }
+
+
+        //Funções de Paginação
+
+        private int PageNumberCourses
+        {
+            get
+            {
+                if (ViewState["PageNumberCourses"] != null)
+                    return Convert.ToInt32(ViewState["PageNumberCourses"]);
+                else
+                    return 0;
+            }
+            set
+            {
+                ViewState["PageNumberCourses"] = value;
+            }
+        }
+
+        private int PageNumberStudents
+        {
+            get
+            {
+                if (ViewState["PageNumberStudents"] != null)
+                    return Convert.ToInt32(ViewState["PageNumberStudents"]);
+                else
+                    return 0;
+            }
+            set
+            {
+                ViewState["PageNumberStudents"] = value;
+            }
+        }
+
+
+        //Funções para os botões de paginação
+        protected void btnPreviousListStudents_Click(object sender, EventArgs e)
+        {
+            PageNumberStudents -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataStudents();
+        }
+
+        protected void btnNextListStudents_Click(object sender, EventArgs e)
+        {
+            PageNumberStudents += 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataStudents();
+        }
+
+        protected void btnPreviousListCoursesForStudents_Click(object sender, EventArgs e)
+        {
+            PageNumberCourses -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataCourses();
+        }
+
+        protected void btnNextListCoursesForStudents_Click(object sender, EventArgs e)
+        {
+            PageNumberCourses += 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataCourses();
+        }
+
+
+        //Função de Reinicialização do FlatPickr
+        private void InitializeFlatpickrDatePickers()
+        {
+            string script = @"
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                flatpickr('#" + tbDataNascimento.ClientID + @"', {
+                                    dateFormat: 'd-m-Y',
+                                    theme: 'light',
+                                    maxDate: new Date()
+                                });
+
+                                flatpickr('#" + tbDataValidade.ClientID + @"', {
+                                    dateFormat: 'd-m-Y',
+                                    theme: 'light',
+                                    minDate: new Date()
+                                });
+                            });
+                        </script>
+                    ";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "FlatpickrInit", script, false);
+        }
+
     }
 }

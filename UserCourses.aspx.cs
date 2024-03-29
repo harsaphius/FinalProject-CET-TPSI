@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using FinalProject.Classes;
 
 namespace FinalProject
 {
@@ -25,13 +26,12 @@ namespace FinalProject
                     if (Session["CodCursoEnrollment"] != null)
                     {
                         int CodCurso = Convert.ToInt32(Session["CodCursoEnrollment"].ToString());
-                        List<string> Enrollment = new List<string>();
+                        Enrollment enrollment = new Enrollment();
+                        enrollment.CodUtilizador = Convert.ToInt32(Session["CodUtilizador"].ToString());
+                        enrollment.CodSituacao = 1;
+                        enrollment.CodCurso = CodCurso;
 
-                        Enrollment.Add(Session["CodUtilizador"].ToString());
-                        Enrollment.Add("1");
-                        Enrollment.Add(Convert.ToString(CodCurso));
-
-                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollment(Enrollment);
+                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollment(enrollment);
 
                         if (AnswEnrollmentCode == -1 && AnswAnswEnrollmentRegister == -1)
                         {

@@ -156,19 +156,20 @@ namespace FinalProject
                 }
                 else
                 {
-                    List<string> userData = new List<string>();
-                    userData.Add(ddlPerfil.SelectedValue);
-                    userData.Add(tb_name.Text);
-                    userData.Add(tb_username.Text);
-                    userData.Add(tb_email.Text);
-                    userData.Add(tb_pw.Text);
-                    userData.Add(ddl_tipoDocIdent.SelectedValue);
-                    userData.Add(tbCC.Text);
-                    userData.Add(tbdataValidade.Text);
-                    userData.Add(ddlprefixo.SelectedValue);
-                    userData.Add(tbTelemovel.Text);
+                    User user = new User();
 
-                    (int UserRegister, int UserCode) = Classes.User.RegisterUser(userData);
+                    user.CodPerfil = Convert.ToInt32(ddlPerfil.SelectedValue);
+                    user.Nome = tb_name.Text;
+                    user.Username = tb_username.Text;
+                    user.Email = tb_email.Text;
+                    user.Password  = tb_pw.Text;
+                    user.CodTipoDoc = Convert.ToInt32(ddl_tipoDocIdent.SelectedValue) ;
+                    user.DocIdent = tbCC.Text;
+                    user.DataValidade = Convert.ToDateTime(tbdataValidade.Text);
+                    user.CodPrefix = Convert.ToInt32(ddlprefixo.SelectedValue);
+                    user.Phone = tbTelemovel.Text;
+
+                    (int UserRegister, int UserCode) = Classes.User.RegisterUser(user);
 
                     if (UserRegister == 1)
                     {

@@ -57,7 +57,7 @@ namespace FinalProject.Classes
             List<Student> Students = new List<Student>();
             List<string> conditions = new List<string>();
 
-            string query = "SELECT DISTINCT codFormando,nome,foto FROM formando AS F INNER JOIN inscricao AS I ON F.codInscricao=I.codInscricao INNER JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador INNER JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador INNER JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador";
+            string query = "SELECT DISTINCT codFormando,nome,foto FROM formando AS F LEFT JOIN inscricao AS I ON F.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador";
 
             //// Decisões para colocar ou não os filtros dentro da string query
             //if (!string.IsNullOrEmpty(search_string))
@@ -102,7 +102,8 @@ namespace FinalProject.Classes
                 //informacao.CodInscricao = Convert.ToInt32(dr["codInscricao"]);
                 informacao.Nome = dr["nome"].ToString();
 
-                informacao.Foto = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["foto"]);
+                if(informacao.Foto != null)
+                    informacao.Foto = "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
 
                 Students.Add(informacao);
             }
@@ -110,5 +111,55 @@ namespace FinalProject.Classes
 
             return Students;
         }
+
+        public static (Student,User) LoadStudent(int CodFormando)
+        {
+            Student Student = new Student();
+            User User = new User();
+
+            string query = $"SELECT DISTINCT * FROM formando AS F LEFT JOIN inscricao AS I ON F.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizadorDataSecondary WHERE F.CodFormando={CodFormando}";
+
+            SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
+            SqlCommand myCommand = new SqlCommand(query, myConn);
+            myConn.Open();
+
+            SqlDataReader dr = myCommand.ExecuteReader();
+
+            if (dr.Read())
+            {
+                Student.CodFormando = Convert.ToInt32(dr["codFormando"]);
+                //Student.CodInscricao = Convert.ToInt32(dr["codInscricao"]);
+                Student.Nome = dr["nome"].ToString();
+
+                User.CodTipoDoc = Convert.ToInt32(dr["codTipoDoc"]);
+                User.DocIdent = dr["docIdent"].ToString();
+                User.DataValidade = Convert.ToDateTime(dr["dataValidadeDocIdent"]).Date;
+                User.Email = dr["email"].ToString();
+                User.Phone = dr["telemovel"].ToString();
+                User.CodPrefix = Convert.ToInt32(dr["prefixo"]);
+                User.Sexo = Convert.ToInt32(dr["sexo"]);
+                User.DataNascimento = Convert.ToDateTime(dr["dataNascimento"]).Date;
+                User.NIF = dr["nif"].ToString();
+                User.Morada = dr["morada"].ToString();
+                User.CodPais = Convert.ToInt32(dr["codPais"]);
+                User.CodPostal = dr["codPostal"].ToString();
+                User.CodEstadoCivil = Convert.ToInt32(dr["codEstadoCivil"]);
+                User.NrSegSocial = dr["nrSegSocial"].ToString();
+                User.IBAN = dr["IBAN"].ToString();
+                User.Naturalidade = dr["naturalidade"].ToString();
+                User.CodNacionalidade = Convert.ToInt32(dr["codNacionalidade"]);
+                if (User.Foto != null)
+                    User.Foto = "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
+                User.CodGrauAcademico = Convert.ToInt32(dr["codGrauAcademico"]);
+                User.CodSituacaoProf = Convert.ToInt32(dr["codSituacaoProfissional"]);
+                User.Localidade = dr["localidade"].ToString();
+                User.LifeMotto = dr["lifeMotto"].ToString();
+            }
+
+            myConn.Close();
+
+            return (Student, User);
+        }
+
     }
 }

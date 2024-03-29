@@ -13,14 +13,15 @@
             <div class="row gx-4">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        <a href="/UserProfile.aspx">
-                            <asp:Image ID="foto" runat="server" alt="profile_image" class="w-100 border-radius-lg shadow-sm"></asp:Image></a>
+                        <asp:Image ID="foto" runat="server" alt="profile_image" class="w-100 border-radius-lg shadow-sm"></asp:Image>
                     </div>
                 </div>
                 <div class="col-auto my-auto">
                     <div class="h-100">
                         <h5 class="mb-1">
-                            <asp:Label runat="server" ID="profilename"></asp:Label>
+                            <a href="/UserProfile.aspx">
+                                <asp:Label runat="server" ID="profilename"></asp:Label>
+                            </a>
                         </h5>
                         <p class="mb-0 font-weight-bold text-sm">
                             <asp:Label runat="server" ID="profileemail"></asp:Label>
@@ -119,22 +120,28 @@
                         </div>
                     </div>
                     <div class="card-body p-3">
-                        <p class="text-sm">
-                            <asp:Label runat="server" ID="lbLifeMotto"></asp:Label>
-                        </p>
-                        <hr class="horizontal gray-light my-4">
+
+                        <hr class="horizontal gray-light my-2">
                         <ul class="list-group">
+
                             <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Nome Completo:</strong> &nbsp;
                                 <asp:Label runat="server" ID="infoname"></asp:Label></li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Telemóvel:</strong> &nbsp;
                                 <asp:Label runat="server" ID="infocell"></asp:Label></li>
                             <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">E-mail:</strong> &nbsp;
                                 <asp:Label runat="server" ID="infoemail"></asp:Label></li>
+
+                            <li class="list-group-item border-0 ps-0 pb-0">
+                                <p class="text-sm">
+                                    <strong class="text-dark">Life Motto:</strong> &nbsp;<i>
+                                        <asp:Label runat="server" ID="lbLifeMotto"></asp:Label></i>
+                                </p>
+                            </li>
                             <li class="list-group-item border-0 ps-0 pb-0">
                                 <strong class="text-dark text-sm">Social:</strong> &nbsp;
-                  <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
-                      <i class="fab fa-facebook fa-lg"></i>
-                  </a>
+                                <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
+                                    <i class="fab fa-facebook fa-lg"></i>
+                                </a>
                                 <a class="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
                                     <i class="fab fa-twitter fa-lg"></i>
                                 </a>
@@ -396,7 +403,7 @@
                                                 <asp:Label ID="lblDataNascimento" runat="server" AssociatedControlID="tbDataNascimento">Data de Nascimento</asp:Label>
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                                    <asp:TextBox ID="tbDataNascimento" ValidationGroup="Page1" runat="server" CssClass="form-control datepicker" TextMode="date"></asp:TextBox>
+                                                    <asp:TextBox ID="tbDataNascimento" ValidationGroup="Page1" runat="server" CssClass="form-control datepicker" TextMode="DateTime"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
@@ -424,7 +431,7 @@
                                                 <asp:RequiredFieldValidator ID="rfvDataValidade" Text="*" ValidationGroup="Page1" ErrorMessage="Data de Validade Obrigatória" runat="server" ControlToValidate="tbDataValidade" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                 <div class="input-group">
                                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                                    <asp:TextBox ID="tbDataValidade" ValidationGroup="Page1" runat="server" CssClass="form-control datepicker" TextMode="date"></asp:TextBox>
+                                                    <asp:TextBox ID="tbDataValidade" ValidationGroup="Page1" runat="server" CssClass="form-control datepicker" TextMode="DateTime"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
@@ -475,14 +482,15 @@
                                     </div>
                                     <div class="card card-footer">
                                         <div class="col-md-12 align-items-start">
-                                            <asp:Button runat="server" ID="btn_back" ValidationGroup="Page1" OnClick="btn_back_Click" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
+                                            <asp:Button runat="server" ID="btnBackMainPage" ValidationGroup="Page1" OnClientClick="showMainPage();" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
                                             &nbsp;
-                                            <asp:Button runat="server" ID="btn_next" ValidationGroup="Page1" OnClientClick="showNextDiv(); return false;" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Seguinte" />
+                                            <asp:Button runat="server" ID="btnNextPage" ValidationGroup="Page1" OnClientClick="showNextDiv(); return false;" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Seguinte" />
                                         </div>
                                     </div>
                                 </ContentTemplate>
                                 <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID="btn_next" />
+                                    <asp:AsyncPostBackTrigger ControlID="btnBackMainPage"/>
+                                    <asp:AsyncPostBackTrigger ControlID="btnNextPage" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>
@@ -608,15 +616,15 @@
                                     </div>
                                     <div class="card card-footer">
                                         <div class="col-md-12 align-items-center">
-                                            <asp:Button runat="server" ID="Button1" ValidationGroup="Page2" OnClientClick="showPrevDiv(); return false;" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
+                                            <asp:Button runat="server" ID="btnBackToPage1" ValidationGroup="Page2" OnClientClick="showPrevDiv(); return false;" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
                                             &nbsp;
 
-                                            <asp:Button runat="server" ID="btn_submit" OnClick="btn_submit_Click" ValidationGroup="Page2" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Submeter"></asp:Button>
+                                            <asp:Button runat="server" ID="btnSubmit" OnClick="btnSubmit_Click" ValidationGroup="Page2" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Submeter"></asp:Button>
                                         </div>
                                     </div>
                                 </ContentTemplate>
                                 <Triggers>
-                                    <asp:PostBackTrigger ControlID="btn_submit" />
+                                    <asp:PostBackTrigger ControlID="btnSubmit" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>
@@ -663,8 +671,8 @@
                                 <asp:TextBox ID="tbPwNewRep" oninput="validatePassword(this)" CssClass="form-control" placeholder="Repita a Password" runat="server"></asp:TextBox>
                             </div>
                             <div class="text-center col-md-12">
-                                <asp:Button ID="btn_changepw" runat="server" Text="Alterar Password" class="btn bg-gradient-primary w-100 mt-4 mb-0" OnClick="btn_changepw_Click" />
-                                <asp:Button ID="btn_BackFromPwChange" runat="server" Text="Voltar" CausesValidation="false" class="btn bg-gradient-primary w-100 mt-4 mb-0" />
+                                <asp:Button ID="btnChangePW" runat="server" Text="Alterar Password" class="btn bg-gradient-primary w-100 mt-4 mb-0" OnClick="btnChangePW_Click" />
+                                <asp:Button ID="btnBackFromPwChange" runat="server" Text="Voltar" OnClientClick="showMainPage(); return false;" CausesValidation="false" class="btn bg-gradient-primary w-100 mt-4 mb-0" />
                             </div>
                             <div style="padding: 5px;" id="alert" class="hidden" role="alert">
                                 <asp:Label runat="server" ID="Label1" CssClass="text-white"></asp:Label>
@@ -704,6 +712,17 @@
             document.getElementById('registration').classList.remove('hidden');
         }
     </script>
+    
+    <script>
+        function showMainPage() {
+            event.preventDefault();
+
+            document.getElementById('registration').classList.add('hidden');
+
+            document.getElementById('profileSinapse').classList.remove('hidden');
+        }
+    </script>
+
 
     <!--Javascript para mostrar a div de mudar a pw-->
     <script>

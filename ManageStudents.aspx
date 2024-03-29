@@ -7,84 +7,85 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
-        <asp:UpdatePanel ID="updatePanel" runat="server">
-            <ContentTemplate>
-                <div class="row" style="margin-top: 15px">
-                    <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
-                        <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Novo Formando" ID="btn_insertStudent" OnClientClick="showInsert()" />
-                        <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_main" />
-                    </div>
-                    <div id="filtermenu" class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
-                        <a href="javascript:;" onclick="toggleFilters()">
-                            <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
-                        </a>
-                    </div>
-                    <div id="filters" class="col-md-12 col-md-6 hidden" style="padding-left: 30px;">
-                        <asp:UpdatePanel ID="UpdatePanel4" runat="server">
-                            <ContentTemplate>
-                                <div class="row">
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                        <span>Designação:</span>
-                                        <div class="input-group mb-4">
-                                            <asp:LinkButton runat="server" ID="lbtn_search" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
-                                            <asp:TextBox runat="server" ID="tb_search" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                        <span>Área:</span>
-                                        <div class="dropdown">
-                                            <asp:DropDownList ID="ddl_area" runat="server" class="btn bg-gradient-secundary dropdown-toggle" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea"></asp:DropDownList>
-                                            <asp:SqlDataSource ID="SQLDSArea" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [area]"></asp:SqlDataSource>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                        <span>Tipo:</span>
-                                        <div class="dropdown">
-                                            <asp:DropDownList ID="ddl_tipo" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso">
-                                            </asp:DropDownList>
-                                            <asp:SqlDataSource ID="SQLDSTipo" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                        <span>Data de Início: </span>
-                                        <div class="input-group mb-4">
-                                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                            <asp:TextBox runat="server" ID="tb_dataInicio" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
-                                        </div>
-                                    </div>
 
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                        <span>Data de Fim: </span>
-                                        <div class="input-group mb-4">
-                                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                            <asp:TextBox runat="server" ID="tb_dataFim" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                        <span>
-                                            <br />
-                                        </span>
-                                        <div class="input-group mb-4">
-                                            <asp:Button runat="server" ID="btn_clear" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
-                                        </div>
-                                    </div>
+        <div class="row" style="margin-top: 15px">
+            <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
+                <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Novo Formando" ID="btnInsertStudent" OnClientClick="showInsert(); return false;" />
+                <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btnBack" OnClientClick="showInsert(); return false;" />
+            </div>
+            <div id="filtermenu" class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
+                <a href="javascript:;" onclick="toggleFilters()">
+                    <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
+                </a>
+            </div>
+            <div id="filters" class="col-md-12 col-md-6 hidden" style="padding-left: 30px;">
+                <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                    <ContentTemplate>
+                        <div class="row">
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>Designação:</span>
+                                <div class="input-group mb-4">
+                                    <asp:LinkButton runat="server" ID="lbtn_search" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
+                                    <asp:TextBox runat="server" ID="tb_search" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
                                 </div>
-                            </ContentTemplate>
-                            <Triggers>
-                                <asp:AsyncPostBackTrigger ControlID="btn_clear" />
-                            </Triggers>
-                        </asp:UpdatePanel>
-                    </div>
-                </div>
-                <div class="container-fluid py-4">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card mb-4">
-                                <div id="listStudentsDiv" card="hidden">
+                            </div>
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>Área:</span>
+                                <div class="dropdown">
+                                    <asp:DropDownList ID="ddl_area" runat="server" class="btn bg-gradient-secundary dropdown-toggle" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea"></asp:DropDownList>
+                                    <asp:SqlDataSource ID="SQLDSArea" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [area]"></asp:SqlDataSource>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>Tipo:</span>
+                                <div class="dropdown">
+                                    <asp:DropDownList ID="ddl_tipo" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso">
+                                    </asp:DropDownList>
+                                    <asp:SqlDataSource ID="SQLDSTipo" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>Data de Início: </span>
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    <asp:TextBox runat="server" ID="tb_dataInicio" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>Data de Fim: </span>
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    <asp:TextBox runat="server" ID="tb_dataFim" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>
+                                    <br />
+                                </span>
+                                <div class="input-group mb-4">
+                                    <asp:Button runat="server" ID="btn_clear" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
+                                </div>
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="btn_clear" />
+                    </Triggers>
+                </asp:UpdatePanel>
+            </div>
+        </div>
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div id="listStudentsDiv">
+                            <asp:UpdatePanel ID="updatePanelListStudent" runat="server">
+                                <ContentTemplate>
                                     <div class="card-header pb-0">
                                         <h6>Formandos</h6>
                                     </div>
-                                    <asp:Repeater ID="rpt_Students" runat="server" OnItemCommand="rpt_Students_OnItemCommand">
+                                    <asp:Repeater ID="rptListStudents" runat="server" OnItemCommand="rptListStudents_OnItemCommand">
                                         <HeaderTemplate>
                                             <div class="card-body px-0 pt-0 pb-2">
                                                 <div class="table-responsive p-0">
@@ -123,23 +124,17 @@
                                                     </div>
                                                 </td>
                                                 <td class="align-middle font-weight-bold text-center">
-                                                    <asp:LinkButton runat="server" ID="lbtn_editCourses" CausesValidation="false" CommandName="EditCourses" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
-                                                        Text="Editar Cursos" class="text-secondary font-weight-bold text-xs">
+                                                    <asp:LinkButton runat="server" ID="lbtEditStudentsCourses" CausesValidation="false" CommandName="EditCoursesStudents" Visible="true" CommandArgument='<%# Eval("CodFormando") %>'
+                                                        Text="Escolher Cursos" class="text-secondary font-weight-bold text-xs">
                                                     </asp:LinkButton></td>
                                                 <td class="align-middle font-weight-bold text-center">
-                                                    <asp:LinkButton runat="server" ID="lbt_edit" CausesValidation="false" CommandName="Edit" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
+                                                    <asp:LinkButton runat="server" ID="lbtEditStudents" CausesValidation="false" CommandName="Edit" Visible="true" CommandArgument='<%# Eval("CodFormando") %>'
                                                         Text="Edit" class="text-secondary font-weight-bold text-xs">
-                                                    </asp:LinkButton>
-                                                    <asp:LinkButton runat="server" ID="lbt_cancel" CausesValidation="false" CommandName="Cancel" Visible="false" CommandArgument='<%# Container.ItemIndex %>'
-                                                        Text="Cancel" class="text-secondary font-weight-bold text-xs">
                                                     </asp:LinkButton>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <asp:LinkButton runat="server" ID="lbt_delete" CausesValidation="false" CommandName="Delete" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
                                                         Text="Delete" class="text-secondary font-weight-bold text-xs">
-                                                    </asp:LinkButton>
-                                                    <asp:LinkButton runat="server" ID="lbt_confirm" CausesValidation="false" CommandName="Confirm" Visible="false" CommandArgument='<%# Container.ItemIndex %>'
-                                                        Text="Confirm" class="text-secondary font-weight-bold text-xs">
                                                     </asp:LinkButton>
                                                 </td>
                                             </tr>
@@ -155,21 +150,26 @@
                                     <!--Paginação -->
                                     <ul class="pagination">
                                         <li class="page-item">
-                                            <asp:LinkButton ID="btn_previousP" CssClass="page-link" CausesValidation="false" OnClick="btn_previousP_Click" runat="server">
+                                            <asp:LinkButton ID="btnPreviousListStudents" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousListStudents_Click" runat="server">
                                                     <i class="fa fa-angle-left"></i>
                                                     <span class="sr-only">Previous</span>
                                             </asp:LinkButton>
                                         </li>
                                         <li></li>
                                         <li class="page-item">
-                                            <asp:LinkButton ID="btn_nextP" CssClass="page-link" CausesValidation="false" OnClick="btn_nextP_Click" runat="server">
+                                            <asp:LinkButton ID="btnNextListStudents" CssClass="page-link" CausesValidation="false" OnClick="btnNextListStudents_Click" runat="server">
                                                     <i class="fa fa-angle-right"></i>
                                                     <span class="sr-only">Next</span>
                                             </asp:LinkButton>
                                         </li>
                                     </ul>
-                                </div>
-                                <div id="insertStudentsDiv">
+                                    </div>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                        </div>
+                        <div id="insertStudentsDiv" class="hidden">
+                            <asp:UpdatePanel ID="updatePanelInsertStudent" runat="server">
+                                <ContentTemplate>
                                     <div class="page-header min-vh-50">
                                         <div class="container-fluid">
                                             <div class="row ">
@@ -185,8 +185,8 @@
                                                                 </div>
                                                                 <div class="card-body">
                                                                     <div class="row">
-                                                                        <div class="col-md-9">
-                                                                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                                                        <div class="col-md-12">
+                                                                            <asp:UpdatePanel ID="updatePanelInsertStudentPage1" runat="server">
                                                                                 <ContentTemplate>
                                                                                     <div class="row px-xl-5 px-sm-4 px-3">
                                                                                         <div class="col-md-6">
@@ -199,7 +199,7 @@
                                                                                         <div class="col-md-2">
                                                                                             <div class="form-group">
                                                                                                 <asp:Label ID="lblSexo" runat="server" AssociatedControlID="ddlSexo">Sexo</asp:Label>
-                                                                                                <asp:DropDownList ID="ddlSexo" runat="server" ValidationGroup="Page1" CssClass="form-control" Width="152px">
+                                                                                                <asp:DropDownList ID="ddlSexo" runat="server" ValidationGroup="Page1" CssClass="form-control">
                                                                                                     <asp:ListItem Value="0">Feminino</asp:ListItem>
                                                                                                     <asp:ListItem Value="1">Masculino</asp:ListItem>
                                                                                                 </asp:DropDownList>
@@ -210,7 +210,7 @@
                                                                                                 <asp:Label ID="lblDataNascimento" runat="server" AssociatedControlID="tbDataNascimento">Data de Nascimento</asp:Label>
                                                                                                 <div class="input-group">
                                                                                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                                                                                    <asp:TextBox ID="tbDataNascimento" ValidationGroup="Page1" runat="server" CssClass="form-control datepicker" TextMode="date"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="tbDataNascimento" ValidationGroup="Page1" runat="server" placeholder="Pick a date" CssClass="form-control datepicker" TextMode="DateTime"></asp:TextBox>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -238,7 +238,7 @@
                                                                                                 <asp:RequiredFieldValidator ID="rfvDataValidade" Text="*" ValidationGroup="Page1" ErrorMessage="Data de Validade Obrigatória" runat="server" ControlToValidate="tbDataValidade" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                                                                 <div class="input-group">
                                                                                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                                                                                    <asp:TextBox ID="tbDataValidade" ValidationGroup="Page1" runat="server" CssClass="form-control datepicker" TextMode="date"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="tbDataValidade" ValidationGroup="Page1"  placeholder="Pick a date" runat="server" CssClass="form-control datepicker" TextMode="DateTime"></asp:TextBox>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -289,9 +289,9 @@
                                                                                     </div>
                                                                                     <div class="card card-footer">
                                                                                         <div class="col-md-12 align-items-start">
-                                                                                            <asp:Button runat="server" ID="btn_back" ValidationGroup="Page1" OnClick="btn_back_Click" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
-                                                                                            &nbsp;
-                                                                                        <asp:Button runat="server" ID="btn_next" ValidationGroup="Page1" OnClientClick="showNextDiv(); return false;" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Seguinte" />
+                                                                                           <%-- <asp:Button runat="server" ID="btnBackManageStudents" ValidationGroup="Page1" OnClientClick="showMainPage(); return false;" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
+                                                                                            &nbsp;--%>
+                                                                                        <asp:Button runat="server" ID="btnÑextPage" ValidationGroup="Page1" OnClientClick="showNextDiv(); return false;" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Seguinte" />
                                                                                         </div>
                                                                                     </div>
                                                                                 </ContentTemplate>
@@ -318,10 +318,9 @@
                                                                 </div>
                                                                 <div class="card-body">
                                                                     <div class="row">
-                                                                        <div class="col-md-9">
-                                                                            <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                                                        <div class="col-md-12">
+                                                                            <asp:UpdatePanel ID="updatePanelInsertStudentPage2" runat="server">
                                                                                 <ContentTemplate>
-
                                                                                     <div class="row px-xl-5 px-sm-4 px-3">
                                                                                         <div class="col-md-3">
                                                                                             <div class="form-group">
@@ -365,8 +364,8 @@
                                                                                     <div class="row px-xl-5 px-sm-4 px-3">
                                                                                         <div class="col-md-4">
                                                                                             <div class="form-group">
-                                                                                                <asp:Label ID="lblCodPrefixo" runat="server" AssociatedControlID="ddlprefixo">Prefixo</asp:Label>
-                                                                                                <asp:DropDownList ID="ddlprefixo" CssClass="form-control" runat="server" DataSourceID="SQLDSPrefixo" DataTextField="prefixo" DataValueField="codPais"></asp:DropDownList>
+                                                                                                <asp:Label ID="lblCodPrefixo" runat="server" AssociatedControlID="ddlPrefixo">Prefixo</asp:Label>
+                                                                                                <asp:DropDownList ID="ddlPrefixo" CssClass="form-control" runat="server" DataSourceID="SQLDSPrefixo" DataTextField="prefixo" DataValueField="codPais"></asp:DropDownList>
                                                                                                 <asp:SqlDataSource ID="SQLDSPrefixo" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codPais,CONCAT(nomePT, ': ' , prefixo) AS prefixo FROM [pais] order by nomePT"></asp:SqlDataSource>
                                                                                             </div>
                                                                                         </div>
@@ -410,10 +409,10 @@
                                                                                     </div>
                                                                                     <div class="card card-footer">
                                                                                         <div class="col-md-12 align-items-center">
-                                                                                            <asp:Button runat="server" ID="btn_backPageOne" ValidationGroup="Page2" OnClientClick="showPrevDiv(); return false;" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
+                                                                                            <asp:Button runat="server" ID="btnBackPageOne" ValidationGroup="Page2" OnClientClick="showPrevDiv(); return false;" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
                                                                                             &nbsp;
 
-                                                                                            <asp:Button runat="server" ID="btn_submit" OnClick="btn_submit_Click" ValidationGroup="Page2" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Submeter"></asp:Button>
+                                                                                            <asp:Button runat="server" ID="btnSubmit" OnClick="btnSubmit_Click" ValidationGroup="Page2" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Submeter"></asp:Button>
                                                                                         </div>
 
                                                                                     </div>
@@ -433,97 +432,101 @@
                                                     <div id="registrationMessage" class="hidden">
                                                         <div class="alert alert-primary text-white font-weight-bold" role="alert">
                                                             <small class="text-uppercase font-weight-bold">
-                                                                <asp:Label runat="server" ID="lbl_message"></asp:Label></small>
+                                                                <asp:Label runat="server" ID="lblMessageRegistration"></asp:Label></small>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="page-header min-vh-50">
-                                        <div class="container-fluid">
-                                            <div class="row ">
-                                                <div class="col-md-12">
-                                                    <div class="card">
-                                                        <div class="card-header pb-0 p-3">
-                                                            <h6 class="mb-1">Cursos disponíveis</h6>
-                                                            <p class="text-sm">Escolher os cursos para registar</p>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="card mb-4">
-                                                                <!-- Listagem de Cursos -->
-                                                                <asp:Repeater ID="rpt_Courses" runat="server" OnItemCommand="rpt_Courses_OnItemCommand">
-                                                                    <HeaderTemplate>
-                                                                        <div class="card-body px-0 pt-0 pb-2">
-                                                                            <div class="table-responsive p-0">
-                                                                                <table class="table align-items-center mb-0">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Curso</th>
-                                                                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
-                                                                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Referencial</th>
-                                                                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Código QNQ</th>
-                                                                                            <th></th>
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                    </HeaderTemplate>
-                                                                    <ItemTemplate>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <div class="d-flex px-2">
-                                                                                    <div class="my-auto">
-                                                                                        <h6 class="mb-0 text-sm">
-                                                                                            <asp:Label runat="server" ID="lblCod"><%# Eval("CodCurso") %></asp:Label></h6>
+                                    <br />
+                                    <br />
+                                    <div id="CourseRegisterForStudent">
+                                        <div class="page-header min-vh-50">
+                                            <div class="container-fluid">
+                                                <div class="row ">
+                                                    <div class="col-md-12">
+                                                        <div class="card">
+                                                            <div class="card-header pb-0 p-3">
+                                                                <h6 class="mb-1">Cursos disponíveis</h6>
+                                                                <p class="text-sm">Escolher os cursos para registar</p>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="card mb-4">
+                                                                    <!-- Listagem de Cursos -->
+                                                                    <asp:Repeater ID="rptListCoursesForStudents" runat="server" OnItemCommand="rptListCoursesForStudents_OnItemCommand">
+                                                                        <HeaderTemplate>
+                                                                            <div class="card-body px-0 pt-0 pb-2">
+                                                                                <div class="table-responsive p-0">
+                                                                                    <table class="table align-items-center mb-0">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Curso</th>
+                                                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
+                                                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Referencial</th>
+                                                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Código QNQ</th>
+                                                                                                <th></th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                        </HeaderTemplate>
+                                                                        <ItemTemplate>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <div class="d-flex px-2">
+                                                                                        <div class="my-auto">
+                                                                                            <h6 class="mb-0 text-sm">
+                                                                                                <asp:Label runat="server" ID="lblCod"><%# Eval("CodCurso") %></asp:Label></h6>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td>
-                                                                                <asp:LinkButton ID="tbNome" CssClass="form-control" runat="server" Text='<%# Bind("Nome") %>' Visible="false" Style="width: 100%;"></asp:LinkButton>
-                                                                                <p class="text-sm font-weight-bold mb-0">
-                                                                                    <asp:Label runat="server" ID="lblNome"><%# Eval("Nome") %></asp:Label>
-                                                                                </p>
-                                                                            </td>
-                                                                            <td class="text-xs font-weight-bold">
-                                                                                <asp:TextBox ID="tbCodRef" CssClass="form-control" runat="server" Text='<%# Bind("CodRef") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
-                                                                                <asp:Label ID="lblCodRef" runat="server"> <%# Eval("CodRef") %></asp:Label>
-                                                                            </td>
-                                                                            <td class="text-xs font-weight-bold">
-                                                                                <asp:HiddenField ID="hdnCourseID" runat="server" Value='<%# Eval("CodCurso") %>' />
-                                                                                <asp:HiddenField ID="hdnCourseName" runat="server" Value='<%# Eval("Nome") %>' />
-                                                                                <div class="form-check">
-                                                                                    <asp:CheckBox runat="server" ID="chckBox" OnCheckedChanged="chkBoxMod_CheckedChanged" />
-                                                                                    <asp:Label runat="server" ID="lbl_order">Selecione este curso</asp:Label>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </ItemTemplate>
-                                                                    <FooterTemplate>
-                                                                        </tbody>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <asp:LinkButton ID="tbNome" CssClass="form-control" runat="server" Text='<%# Bind("Nome") %>' Visible="false" Style="width: 100%;"></asp:LinkButton>
+                                                                                    <p class="text-sm font-weight-bold mb-0">
+                                                                                        <asp:Label runat="server" ID="lblNome"><%# Eval("Nome") %></asp:Label>
+                                                                                    </p>
+                                                                                </td>
+                                                                                <td class="text-xs font-weight-bold">
+                                                                                    <asp:TextBox ID="tbCodRef" CssClass="form-control" runat="server" Text='<%# Bind("CodRef") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
+                                                                                    <asp:Label ID="lblCodRef" runat="server"> <%# Eval("CodRef") %></asp:Label>
+                                                                                </td>
+                                                                                <td class="text-xs font-weight-bold">
+                                                                                    <asp:HiddenField ID="hdnCourseID" runat="server" Value='<%# Eval("CodCurso") %>' />
+                                                                                    <asp:HiddenField ID="hdnCourseName" runat="server" Value='<%# Eval("Nome") %>' />
+                                                                                    <div class="form-check">
+                                                                                        <asp:CheckBox runat="server" ID="chckBox" OnCheckedChanged="chkBoxMod_CheckedChanged" />
+                                                                                        <asp:Label runat="server" ID="lbl_order">Selecione este curso</asp:Label>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </ItemTemplate>
+                                                                        <FooterTemplate>
+                                                                            </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
-                                                                    </FooterTemplate>
-                                                                </asp:Repeater>
-                                                                <ul class="pagination">
-                                                                    <li class="page-item">
-                                                                        <asp:LinkButton ID="btn_previousC" CssClass="page-link" CausesValidation="false" runat="server">
+                                                                        </FooterTemplate>
+                                                                    </asp:Repeater>
+                                                                    <ul class="pagination">
+                                                                        <li class="page-item">
+                                                                            <asp:LinkButton ID="btnPreviousListCoursesForStudents" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousListCoursesForStudents_Click" runat="server">
                                                                                 <i class="fa fa-angle-left"></i>
                                                                                 <span class="sr-only">Previous</span>
-                                                                        </asp:LinkButton>
-                                                                    </li>
-                                                                    <li class="page-item">
-                                                                        <asp:LinkButton ID="btn_nextC" CssClass="page-link" CausesValidation="false" runat="server">
+                                                                            </asp:LinkButton>
+                                                                        </li>
+                                                                        <li class="page-item">
+                                                                            <asp:LinkButton ID="btnNextListCoursesForStudents" CssClass="page-link" CausesValidation="false" OnClick="btnNextListCoursesForStudents_Click" runat="server">
                                                                                 <i class="fa fa-angle-right"></i>
                                                                                 <span class="sr-only">Next</span>
-                                                                        </asp:LinkButton>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
+                                                                            </asp:LinkButton>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
 
-                                                            <div>
-                                                                <asp:Button runat="server" ID="btn_enroll" class="btn btn-outline-primary btn-sm mb-0 text-end" CausesValidation="false" OnClick="btn_enroll_OnClick" Text="Inscrever" />
+                                                                <div>
+                                                                    <asp:Button runat="server" ID="btnEnroll" class="btn btn-outline-primary btn-sm mb-0 text-end" CausesValidation="false" OnClick="btnEnroll_OnClick" Text="Inscrever" />
 
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -531,21 +534,21 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
                         </div>
                     </div>
-            </ContentTemplate>
-        </asp:UpdatePanel>
+                </div>
+            </div>
+        </div>
     </div>
-
     <!-- Função de Javascript para Mostrar a Div de Inserir após click no Button Inserir Módulo -->
     <script>
         function showInsert() {
             var listDiv = document.getElementById('listStudentsDiv');
             var insertDiv = document.getElementById('insertStudentsDiv');
-            var btnInsert = document.getElementById('<%= btn_insertStudent.ClientID %>');
-            var btnBack = document.getElementById('<%= btn_main.ClientID %>');
+            var btnInsert = document.getElementById('<%= btnInsertStudent.ClientID %>');
+            var btnBack = document.getElementById('<%= btnBack.ClientID %>');
             var filterMenu = document.getElementById('filtermenu');
 
             if (insertDiv.classList.contains('hidden')) {
@@ -564,6 +567,17 @@
             }
         }
     </script>
+    <script>
+    function showMainPage() {
+        event.preventDefault();
+
+        document.getElementById('insertStudentsDiv').classList.add('hidden');
+
+        document.getElementById('listStudentsDiv').classList.remove('hidden');
+    }
+    </script>
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             flatpickr('#<%= tbDataNascimento.ClientID %>', {

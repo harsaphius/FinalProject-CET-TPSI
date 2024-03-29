@@ -15,7 +15,7 @@ namespace FinalProject.Classes
         public int CodPerfil { get; set; }
         public bool Ativo { get; set; }
         public string Perfil { get; set; }
-        public string Name { get; set; }
+        public string Nome { get; set; }
         public string Phone { get; set; }
         public int CodTipoDoc { get; set; }
         public string DocIdent { get; set; }
@@ -116,7 +116,7 @@ namespace FinalProject.Classes
                 informacao.CodUser = Convert.ToInt32(dr["codUtilizador"]);
                 informacao.Username = dr["utilizador"].ToString();
                 informacao.Email = dr["email"].ToString();
-                informacao.Name = dr["nome"] == DBNull.Value ? " " : dr["nome"].ToString();
+                informacao.Nome = dr["nome"] == DBNull.Value ? " " : dr["nome"].ToString();
                 informacao.CodTipoDoc = (int)(dr["codTipoDoc"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codTipoDoc"]));
                 informacao.DocIdent = dr["docIdent"] == DBNull.Value ? " " : dr["docIdent"].ToString();
                 informacao.DataValidade = (DateTime)(dr["dataValidadeDocIdent"] == DBNull.Value ? DateTime.Today : Convert.ToDateTime(dr["dataValidadeDocIdent"]).Date);
@@ -134,7 +134,7 @@ namespace FinalProject.Classes
                 informacao.IBAN = dr["IBAN"] == DBNull.Value ? " " : dr["IBAN"].ToString();
                 informacao.Naturalidade = dr["naturalidade"] == DBNull.Value ? " " : dr["naturalidade"].ToString();
                 informacao.CodNacionalidade = (int)(dr["codNacionalidade"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codNacionalidade"]));
-                informacao.Foto = informacao.Foto = dr["foto"] == DBNull.Value ? "default_image_url" : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
+                informacao.Foto = dr["foto"] == DBNull.Value ? "default_image_url" : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
                 informacao.CodGrauAcademico = (int)(dr["codGrauAcademico"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codGrauAcademico"]));
                 informacao.CodSituacaoProf = (int)(dr["codSituacaoProfissional"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codSituacaoProfissional"]));
                 informacao.LifeMotto = dr["lifemotto"] == DBNull.Value ? " " : dr["lifemotto"].ToString();
@@ -150,21 +150,21 @@ namespace FinalProject.Classes
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>
-        public static (int, int) RegisterUser(List<string> Values)
+        public static (int, int) RegisterUser(User user)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
-            myCommand.Parameters.AddWithValue("@CodePerfil", Values[0]);
-            myCommand.Parameters.AddWithValue("@CompleteName", Values[1]);
-            myCommand.Parameters.AddWithValue("@User", Values[2]);
-            myCommand.Parameters.AddWithValue("@Email", Values[3]);
-            myCommand.Parameters.AddWithValue("@Pw", Classes.Security.EncryptString(Values[4]));
-            myCommand.Parameters.AddWithValue("@CodCardType", Values[5]);
-            myCommand.Parameters.AddWithValue("@CardNumber", Values[6]);
-            myCommand.Parameters.AddWithValue("@CardDate", Convert.ToDateTime(Values[7]));
-            myCommand.Parameters.AddWithValue("@Prefix", Values[8]);
-            myCommand.Parameters.AddWithValue("@PhoneNumber", Values[9]);
+            myCommand.Parameters.AddWithValue("@CodePerfil", user.CodPerfil);
+            myCommand.Parameters.AddWithValue("@CompleteName", user.Nome);
+            myCommand.Parameters.AddWithValue("@User", user.Username);
+            myCommand.Parameters.AddWithValue("@Email", user.Email);
+            myCommand.Parameters.AddWithValue("@Pw", Classes.Security.EncryptString(user.Password));
+            myCommand.Parameters.AddWithValue("@CodCardType", user.CodTipoDoc);
+            myCommand.Parameters.AddWithValue("@CardNumber", user.DocIdent);
+            myCommand.Parameters.AddWithValue("@CardDate", user.DataValidade);
+            myCommand.Parameters.AddWithValue("@Prefix", user.CodPrefix);
+            myCommand.Parameters.AddWithValue("@PhoneNumber", user.Phone);
 
             SqlParameter UserRegister = new SqlParameter();
             UserRegister.ParameterName = "@UserRegister";
@@ -200,29 +200,29 @@ namespace FinalProject.Classes
         /// </summary>
         /// <param name="values"></param>
         /// <param name="anexos"></param>
-        public static int CompleteRegisterUser(List<string> Values, List<FileControl> Anexos)
+        public static int CompleteRegisterUser(User user, List<FileControl> Anexos)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
-            myCommand.Parameters.AddWithValue("@CodUtilizador", Values[0]);
-            myCommand.Parameters.AddWithValue("@Sexo", Convert.ToInt32(Values[1]));
-            myCommand.Parameters.AddWithValue("@DataNascimento", Convert.ToDateTime(Values[2]));
-            myCommand.Parameters.AddWithValue("@NIF", Values[3]);
-            myCommand.Parameters.AddWithValue("@Morada", Values[4]);
-            myCommand.Parameters.AddWithValue("@CodPais", Convert.ToInt32(Values[5]));
-            myCommand.Parameters.AddWithValue("@CodPostal", Values[6]);
-            myCommand.Parameters.AddWithValue("@Freguesia", Values[7]);
-            myCommand.Parameters.AddWithValue("@CodEstadoCivil", Convert.ToInt32(Values[8]));
-            myCommand.Parameters.AddWithValue("@NrSegSocial", Values[9]);
-            myCommand.Parameters.AddWithValue("@IBAN", Values[10]);
-            myCommand.Parameters.AddWithValue("@Naturalidade", Values[11]);
-            myCommand.Parameters.AddWithValue("@CodNacionalidade", Convert.ToInt32(Values[12]));
-            byte[] fotoBytes = Convert.FromBase64String(Values[13]);
+            myCommand.Parameters.AddWithValue("@CodUtilizador", user.CodUser);
+            myCommand.Parameters.AddWithValue("@Sexo", user.Sexo);
+            myCommand.Parameters.AddWithValue("@DataNascimento", user.DataNascimento);
+            myCommand.Parameters.AddWithValue("@NIF", user.NIF);
+            myCommand.Parameters.AddWithValue("@Morada", user.Morada);
+            myCommand.Parameters.AddWithValue("@CodPais", user.CodPais);
+            myCommand.Parameters.AddWithValue("@CodPostal", user.CodPostal);
+            myCommand.Parameters.AddWithValue("@Freguesia", user.Localidade);
+            myCommand.Parameters.AddWithValue("@CodEstadoCivil", user.CodEstadoCivil);
+            myCommand.Parameters.AddWithValue("@NrSegSocial", user.NrSegSocial);
+            myCommand.Parameters.AddWithValue("@IBAN", user.IBAN);
+            myCommand.Parameters.AddWithValue("@Naturalidade",user.Naturalidade);
+            myCommand.Parameters.AddWithValue("@CodNacionalidade", user.CodNacionalidade);
+            byte[] fotoBytes = Convert.FromBase64String(user.Foto);
             myCommand.Parameters.Add("@Foto", SqlDbType.VarBinary, -1).Value = fotoBytes;
-            myCommand.Parameters.AddWithValue("@CodGrauAcademico", Convert.ToInt32(Values[14]));
-            myCommand.Parameters.AddWithValue("@CodSituacaoProf", Convert.ToInt32(Values[15]));
-            myCommand.Parameters.AddWithValue("@LifeMotto", Values[16]);
+            myCommand.Parameters.AddWithValue("@CodGrauAcademico", user.CodGrauAcademico);
+            myCommand.Parameters.AddWithValue("@CodSituacaoProf", user.CodSituacaoProf);
+            myCommand.Parameters.AddWithValue("@LifeMotto", user.LifeMotto);
 
             SqlParameter UserRegister = new SqlParameter();
             UserRegister.ParameterName = "@UserRegister";
@@ -252,7 +252,7 @@ namespace FinalProject.Classes
             foreach (FileControl anexo in Anexos)
             {
                 myCommand2.Parameters.Clear();
-                myCommand2.Parameters.AddWithValue("@CodUtilizador", Convert.ToInt32(Values[0]));
+                myCommand2.Parameters.AddWithValue("@CodUtilizador", user.CodUser);
                 myCommand2.Parameters.AddWithValue("@NomeFicheiro", anexo.FileName);
                 myCommand2.Parameters.AddWithValue("@ExtensaoFicheiro", anexo.ContentType);
                 myCommand2.Parameters.AddWithValue("@Ficheiro", anexo.FileBytes);

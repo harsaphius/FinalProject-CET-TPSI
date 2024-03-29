@@ -22,15 +22,15 @@ namespace FinalProject.Classes
         /// <param name="values"></param>
         /// <param name="imageBytes"></param>
         /// <returns></returns>
-        public static (int, int) InsertEnrollment(List<string> values)
+        public static (int, int) InsertEnrollment(Enrollment enrollment)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
-            myCommand.Parameters.AddWithValue("@CodUtilizador", Convert.ToInt32(values[0]));
-            myCommand.Parameters.AddWithValue("@CodSituacao", Convert.ToInt32(values[1]));
+            myCommand.Parameters.AddWithValue("@CodUtilizador", enrollment.CodUtilizador);
+            myCommand.Parameters.AddWithValue("@CodSituacao", enrollment.CodSituacao);
             myCommand.Parameters.AddWithValue("@DataInscricao", DateTime.Now);
-            myCommand.Parameters.AddWithValue("@CodCurso", Convert.ToInt32(values[2]));
+            myCommand.Parameters.AddWithValue("@CodCurso", enrollment.CodCurso);
 
             SqlParameter EnrollmentRegister = new SqlParameter();
             EnrollmentRegister.ParameterName = "@EnrollmentRegisted";

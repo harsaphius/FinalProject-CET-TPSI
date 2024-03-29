@@ -1,6 +1,7 @@
 ﻿using FinalProject.Classes;
 using System;
 using System.Collections.Generic;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -78,9 +79,25 @@ namespace FinalProject
 
                 if (!IsPostBack)
                 {
+
+                    if (ViewState["SelectedItemsEdit"] == null)
+                        ViewState["SelectedItemsEdit"] = new List<int>();
+
+                    if (ViewState["CheckboxStatesEdit"] == null)
+                        ViewState["CheckboxStatesEdit"] = new Dictionary<int, bool>();
+
+                    //Reinicializar o FlatPickr
+                    InitializeFlatpickrDatePickers();
+
                     BindDataCourses();
                     BindDataModules();
+
+                    rptEditModulesCourse.DataSource = Classes.Module.LoadModules();
+                    rptEditModulesCourse.DataBind();
+
                 }
+
+                InitializeFlatpickrDatePickers();
             }
         }
 
@@ -171,77 +188,80 @@ namespace FinalProject
         {
             if (e.CommandName == "Edit")
             {
+                Dictionary<int, bool> checkboxStates =
+                    ViewState["CheckboxStatesEdit"] as Dictionary<int, bool>;
                 Course selectedCourse = Classes.Course.CompleteCourse(Convert.ToInt32(e.CommandArgument));
 
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                string courseViewState = serializer.Serialize(selectedCourse);
+                ViewState["SelectedCourse"] = courseViewState;
+
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "showEditModulesScript",
-                       "showEditModules();", true);
+                    "showEditModules();", true);
 
-                TextBox tbCourseNameEditCourse = updatePanelEditModulesCourses.FindControl("tbCourseNameEditCourse") as TextBox;
+                TextBox tbCourseNameEditCourse =
+                    updatePanelEditModulesCourses.FindControl("tbCourseNameEditCourse") as TextBox;
                 TextBox tbRefEditCourse = updatePanelEditModulesCourses.FindControl("tbRefEditCourse") as TextBox;
-                DropDownList ddlTipoCursoEditCourse = (DropDownList)updatePanelEditModulesCourses.FindControl("ddlTipoCursoEditCourse");
-                DropDownList ddlAreaCursoEditCourse = (DropDownList)updatePanelEditModulesCourses.FindControl("ddlAreaCursoEditCourse");
-                DropDownList ddlQNQEditCourse = (DropDownList)updatePanelEditModulesCourses.FindControl("ddlQNQEditCourse");
+                DropDownList ddlTipoCursoEditCourse =
+                    (DropDownList)updatePanelEditModulesCourses.FindControl("ddlTipoCursoEditCourse");
+                DropDownList ddlAreaCursoEditCourse =
+                    (DropDownList)updatePanelEditModulesCourses.FindControl("ddlAreaCursoEditCourse");
+                DropDownList ddlQNQEditCourse =
+                    (DropDownList)updatePanelEditModulesCourses.FindControl("ddlQNQEditCourse");
 
-                if (tbCourseNameEditCourse != null)
+                tbCourseNameEditCourse.Text = selectedCourse.Nome;
+
+                string selectedCodTipoCurso = Convert.ToString(selectedCourse.CodTipoCurso);
+                ddlTipoCursoEditCourse.SelectedValue = selectedCodTipoCurso;
+
+                string selectedCodAreaCurso = Convert.ToString(selectedCourse.CodArea);
+                ddlAreaCursoEditCourse.SelectedValue = selectedCodAreaCurso;
+
+                tbRefEditCourse.Text = selectedCourse.CodRef;
+
+                string selectedValue = Convert.ToString(selectedCourse.CodQNQ);
+                ddlQNQEditCourse.SelectedValue = "Nível " + selectedValue;
+
+                foreach (RepeaterItem item in rptEditModulesCourse.Items)
                 {
-                    tbCourseNameEditCourse.Text = selectedCourse.Nome;
+                    if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
+                    {
+                        HiddenField hdnFieldEditCourseModuleID = (HiddenField)item.FindControl("hdnEditCourseModuleID");
+                        Label lblOrderEditModulesCourse = (Label)item.FindControl("lblOrderEditModulesCourse");
 
-                    string selectedCodTipoCurso = Convert.ToString(selectedCourse.CodTipoCurso);
-                    ddlTipoCursoEditCourse.SelectedValue = selectedCodTipoCurso;
+                        if (hdnFieldEditCourseModuleID != null)
+                        {
+                            if (int.TryParse(hdnFieldEditCourseModuleID.Value, out int moduleID))
+                            {
+                                CheckBox chkBoxEditModulesCourse =
+                                    (CheckBox)item.FindControl("chkBoxEditModulesCourse");
 
-                    string selectedCodAreaCurso = Convert.ToString(selectedCourse.CodArea);
-                    ddlAreaCursoEditCourse.SelectedValue = selectedCodAreaCurso;
+                                bool isModuleInCourse = CheckIfModuleIsInCourse(selectedCourse.CodCurso, moduleID);
 
-                    tbRefEditCourse.Text = selectedCourse.CodRef;
+                                chkBoxEditModulesCourse.Checked = isModuleInCourse;
 
-                    string selectedValue = Convert.ToString(selectedCourse.CodQNQ);
-                    ddlQNQEditCourse.SelectedValue = "Nível " + selectedValue;
+                                if (checkboxStates != null)
+                                {
+                                    checkboxStates[moduleID] = isModuleInCourse;
+                                    lblOrderEditModulesCourse.Text = checkboxStates[moduleID]
+                                        ? "Seleccionado"
+                                        : "Selecione este módulo";
+
+                                    ViewState["CheckboxStatesEdit"] = checkboxStates;
+                                }
+                            }
+                        }
+                    }
 
                 }
+                BindDataModulesEdit();
 
+            }
+            if (e.CommandName == "Delete")
+            {
 
-
-                //foreach (RepeaterItem item in rptEditModulesCourse.Items)
-                //{
-                //    if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
-                //    {
-                //        // Retrieve the hidden field containing the module ID
-                //        HiddenField hdnFieldEditCourseModuleID = (HiddenField)item.FindControl("hdnEditCourseModuleID");
-
-                //        // Ensure hdnModuleID is not null
-                //        if (hdnFieldEditCourseModuleID != null)
-                //        {
-                //            // Parse moduleID from the hidden field
-                //            if (int.TryParse(hdnFieldEditCourseModuleID.Value, out int moduleID))
-                //            {
-                //                // Find the checkbox corresponding to this module
-                //                CheckBox chkBoxEditModulesCourse = (CheckBox)item.FindControl("chkBoxEditModulesCourse");
-
-                //                // Check if the module is part of the selected course
-                //                bool isModuleInCourse = false;
-                //                foreach (Module module in selectedCourse.Modules)
-                //                {
-                //                    if (module.CodModulo == moduleID)
-                //                    {
-                //                        isModuleInCourse = true;
-                //                        break; // Exit the loop once the module is found
-                //                    }
-                //                }
-
-                //                // Set the checkbox state based on whether the module is part of the selected course
-                //                chkBoxEditModulesCourse.Checked = isModuleInCourse;
-                //            }
-                //        }
-                //    }
-                //}
-
-                if (e.CommandName == "Delete")
-                {
-
-                }
             }
         }
-
 
         //Funções de Inserção/Edição
 
@@ -309,9 +329,31 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnEditCourse_OnClick(object sender, EventArgs e)
         {
-            lbl_message.Text = "Edição de cursos";
-        }
+            string courseViewState = ViewState["SelectedCourse"] as String;
 
+            List<int> modulesSelected = (List<int>)ViewState["SelectedItemsEdit"];
+            if (!string.IsNullOrEmpty(courseViewState))
+            {
+                JavaScriptSerializer deSerializer = new JavaScriptSerializer();
+                Course selelectCourse = deSerializer.Deserialize<Course>(courseViewState);
+
+                int AnswUpdateCourse = Classes.Course.UpdateCourse(selelectCourse, modulesSelected);
+
+                if (AnswUpdateCourse == 1)
+                {
+
+                    lblMessageForEdit.Text = "Curso atualizado com sucesso!";
+                }
+                else
+                {
+                    lblMessageForEdit.Text = "Não foi possível atualizar o curso selecionado. Já existem turmas com este curso!";
+                }
+
+            }
+
+
+            Response.AddHeader("REFRESH", "3; URL=ManageCourses.aspx");
+        }
 
         //Funções de Databinding
 
@@ -354,6 +396,18 @@ namespace FinalProject
             btnPreviousInsertCoursesModules.Enabled = !pagedData.IsFirstPage;
             btnNextInsertCoursesModules.Enabled = !pagedData.IsLastPage;
 
+        }
+
+        private void BindDataModulesEdit()
+        {
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.Module.LoadModules();
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 5;
+            pagedData.CurrentPageIndex = PageNumberModules;
+            int PageNumber = PageNumberCourses + 1;
+            lblPageNumberEditCoursesModules.Text = (PageNumber).ToString();
+
             rptEditModulesCourse.DataSource = pagedData;
             rptEditModulesCourse.DataBind();
 
@@ -361,7 +415,6 @@ namespace FinalProject
             btnNextEditModulesCourses.Enabled = !pagedData.IsLastPage;
 
         }
-
 
         //Funções para as CheckBoxes
 
@@ -380,10 +433,8 @@ namespace FinalProject
 
             if (hdnEditCourseModuleID != null && hdnEditCourseModuleName != null && lblOrderEditModulesCourse != null)
             {
-
                 int moduleID = Convert.ToInt32(hdnEditCourseModuleID.Value);
                 Dictionary<int, bool> checkboxStates = (Dictionary<int, bool>)ViewState["CheckboxStatesEdit"] ?? new Dictionary<int, bool>();
-
 
                 if (checkBox.Checked)
                 {
@@ -464,13 +515,27 @@ namespace FinalProject
                         checkboxStates[moduleID] = false;
                         ViewState["SelectedItemsInsert"] = selectedItems;
                         ViewState["SelectedItemsNamesInsert"] = itemsNames;
-
                     }
                 }
 
                 ViewState["CheckboxStatesInsert"] = checkboxStates;
 
             }
+        }
+
+
+        public static bool CheckIfModuleIsInCourse(int CodCurso, int moduleID)
+        {
+            Course completeCourse = Classes.Course.CompleteCourse(CodCurso);
+
+            foreach (Module module in completeCourse.Modules)
+            {
+                if (module.CodModulo == moduleID)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
 
@@ -519,13 +584,13 @@ namespace FinalProject
             Dictionary<int, bool> checkboxStates = (Dictionary<int, bool>)ViewState["CheckboxStatesEdit"];
 
             // Loop through the Repeater items to find selected items
-            foreach (RepeaterItem item in rptInsertCourses.Items)
+            foreach (RepeaterItem item in rptEditModulesCourse.Items)
             {
                 CheckBox chkBoxEditModulesCourse = (CheckBox)item.FindControl("chkBoxEditModulesCourse");
                 HiddenField hdnEditCourseModuleID = (HiddenField)item.FindControl("hdnEditCourseModuleID");
                 Label lblOrderEditModulesCourse = (Label)item.FindControl("lblOrderEditModulesCourse");
 
-                if (chkBoxEditModulesCourse != null && hdnEditCourseModuleID != null)
+                if (chkBoxEditModulesCourse != null && hdnEditCourseModuleID != null && lblOrderEditModulesCourse != null)
                 {
                     int moduleID = Convert.ToInt32(hdnEditCourseModuleID.Value);
 
@@ -541,6 +606,7 @@ namespace FinalProject
                     }
                 }
             }
+
             ViewState["SelectedItemsEdit"] = selectedItems;
         }
 
@@ -644,7 +710,7 @@ namespace FinalProject
         protected void btnPreviousEditModulesCourses_OnClick(object sender, EventArgs e)
         {
             PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataModules();
+            BindDataModulesEdit();
             UpdateSelectedItemsViewStateEdit();
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "showEditScript", "showEditModules(); return false;", true);
@@ -658,10 +724,33 @@ namespace FinalProject
         protected void btnNextEditModulesCourses_OnClick(object sender, EventArgs e)
         {
             PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataModules();
+            BindDataModulesEdit();
             UpdateSelectedItemsViewStateEdit();
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "showEditScript", "showEditModules(); return false;", true);
+        }
+
+        private void InitializeFlatpickrDatePickers()
+        {
+            string script = @"
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                flatpickr('#" + tbDataInicioFilters.ClientID + @"', {
+                                    dateFormat: 'd-m-Y',
+                                    theme: 'light',
+                                    maxDate: new Date()
+                                });
+
+                                flatpickr('#" + tbDataFimFilters.ClientID + @"', {
+                                    dateFormat: 'd-m-Y',
+                                    theme: 'light',
+                                    minDate: new Date()
+                                });
+                            });
+                        </script>
+                    ";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "FlatpickrInit", script, false);
         }
 
     }

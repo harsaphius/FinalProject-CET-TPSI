@@ -1,6 +1,9 @@
 ﻿<%@ Page Title="Gestão de Cursos" EnableEventValidation="false" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="ManageCourses.aspx.cs" EnableViewState="true" Inherits="FinalProject.ManageCourses" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <!-- FlatPickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
@@ -45,7 +48,7 @@
                                 <span>Data de Início: </span>
                                 <div class="input-group mb-4">
                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                    <asp:TextBox runat="server" ID="tbDataInicioFilters" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="tbDataInicioFilters" class="form-control datepicker" TextMode="Date"></asp:TextBox>
                                 </div>
                             </div>
 
@@ -59,7 +62,7 @@
                             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                                 <br />
                                 <div class="input-group mb-4">
-                                    <asp:Button runat="server" ID="btnApplyFilters" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" />
+                                    <asp:Button runat="server" ID="btnApplyFilters" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" AutoPostBack="True"/>
                                     <span>&nbsp; &nbsp;</span>
                                     <asp:Button runat="server" ID="btnClearFilters" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
                                 </div>
@@ -67,6 +70,7 @@
                         </div>
                     </ContentTemplate>
                     <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="btnApplyFilters"/>
                         <asp:AsyncPostBackTrigger ControlID="btnClearFilters" />
                     </Triggers>
                 </asp:UpdatePanel>
@@ -180,7 +184,7 @@
                                                 <div class="col-xl-8 col-lg-7 col-md-6">
                                                     <div class="card card-plain">
                                                         <div style="padding: 5px;" id="alert" class="hidden" role="alert">
-                                                            <asp:Label runat="server" ID="Label1" CssClass="text-white"></asp:Label>
+                                                            <asp:Label runat="server" ID="lblMessageForEdit" CssClass="text-white"></asp:Label>
                                                         </div>
                                                         <div class="card card-plain">
                                                             <div class="card-header pb-0 text-left bg-transparent">
@@ -217,7 +221,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <br />
-                                                                <asp:Repeater ID="rptEditModulesCourse" runat="server" OnItemDataBound="rptEditModulesCourse_OnItemDataBound">
+                                                                <asp:Repeater ID="rptEditModulesCourse" runat="server" OnItemDataBound="rptEditModulesCourse_OnItemDataBound" EnableViewState="True">
                                                                     <HeaderTemplate>
                                                                         <div class="row px-2" style="padding: 10px;">
                                                                             <!-- Editar Módulos de um Curso - Seleção dos Módulos -->
@@ -664,7 +668,21 @@
             }
         }
     </script>
+<script>
+         document.addEventListener('DOMContentLoaded', function () {
+             flatpickr('#<%= tbDataInicioFilters.ClientID %>', {
+                dateFormat: 'd-m-Y',
+                theme: 'light',
+                maxDate: new Date()
+            });
 
+            flatpickr('#<%= tbDataFimFilters.ClientID %>', {
+                dateFormat: 'd-m-Y',
+                theme: 'light',
+                minDate: new Date()
+            });
+        });
+</script>
     <!-- Javascript para ativar/desativar a div dos filtros -->
     <script>
         function toggleFilters() {

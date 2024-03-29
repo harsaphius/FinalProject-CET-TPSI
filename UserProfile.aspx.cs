@@ -81,14 +81,16 @@ namespace FinalProject
 
                         if (profileuser != null)
                         {
+                            //Carregar informação para as labels da página inicial do profile
                             profilename.Text = profileuser.Username;
                             profileemail.Text = profileuser.Email;
-                            infoname.Text = profileuser.Name;
+                            infoname.Text = profileuser.Nome;
                             infocell.Text = profileuser.Phone;
                             infoemail.Text = profileuser.Email;
                             lbLifeMotto.Text = profileuser.LifeMotto;
 
-                            tbNome.Text = profileuser.Name;
+                            //Load informação para as textboxes do menu Edit Profile
+                            tbNome.Text = profileuser.Nome;
                             ddlSexo.SelectedValue = profileuser.Sexo.ToString();
                             tbDataNascimento.Text = profileuser.DataNascimento.ToShortDateString();
                             ddlDocumentoIdent.SelectedValue = profileuser.CodTipoDoc.ToString();
@@ -110,7 +112,7 @@ namespace FinalProject
                             tbTelemovel.Text = profileuser.Phone;
                             tbEmail.Text = profileuser.Email;
                             ddlCodGrauAcademico.SelectedValue = profileuser.CodGrauAcademico.ToString();
-                            lbLifeMotto.Text = profileuser.LifeMotto;
+                            tbLifeMotto.Text = profileuser.LifeMotto;
                             LoadSubmittedFiles();
                         }
                     }
@@ -123,50 +125,48 @@ namespace FinalProject
             Response.Redirect("~/UserProfile.aspx");
         }
 
-        protected void btn_submit_Click(object sender, EventArgs e)
+        protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            List<string> userData = new List<string>();
-            List<string> userDataSecondary = new List<string>();
-
+            User user = new User();
             List<FileControl> uploadedFiles = FileControl.ProcessUploadedFiles(fuAnexo);
 
-            userData.Add(tbNome.Text);
-            userData.Add(tbEmail.Text);
-            userData.Add(ddlDocumentoIdent.SelectedValue);
-            userData.Add(tbCC.Text);
-            userData.Add(tbDataValidade.Text);
-            userData.Add(ddlprefixo.SelectedValue);
-            userData.Add(tbTelemovel.Text);
+            user.Nome = tbNome.Text;
+            user.Email = tbEmail.Text;
+            user.DocIdent = ddlDocumentoIdent.SelectedValue;
+            user.DocIdent = tbCC.Text;
+            user.DataValidade = Convert.ToDateTime(tbDataValidade.Text);
+            user.CodPrefix = Convert.ToInt32(ddlprefixo.SelectedValue);
+            user.Phone = tbTelemovel.Text;
 
-            userDataSecondary.Add(Convert.ToString(Session["CodUtilizador"]));
-            userDataSecondary.Add(ddlSexo.SelectedValue);
-            userDataSecondary.Add(tbDataNascimento.Text);
-            userDataSecondary.Add(tbNIF.Text);
-            userDataSecondary.Add(tbMorada.Text);
-            userDataSecondary.Add(ddlCodPais.SelectedValue);
-            userDataSecondary.Add(tbCodPostal.Text);
-            userDataSecondary.Add(tbLocalidade.Text);
-            userDataSecondary.Add(ddlCodEstadoCivil.SelectedValue);
-            userDataSecondary.Add(tbNrSegSocial.Text);
-            userDataSecondary.Add(tbIBAN.Text);
-            userDataSecondary.Add(tbNaturalidade.Text);
-            userDataSecondary.Add(ddlCodNacionalidade.SelectedValue);
+            user.CodUser = Convert.ToInt32(Session["CodUtilizador"].ToString());
+            user.Sexo = Convert.ToInt32(ddlSexo.SelectedValue);
+            user.DataNascimento = Convert.ToDateTime(tbDataNascimento.Text);
+            user.NIF = tbNIF.Text;
+            user.Morada = tbMorada.Text;
+            user.CodPais = Convert.ToInt32(ddlCodPais.SelectedValue);
+            user.CodPostal = tbCodPostal.Text;
+            user.Localidade = tbLocalidade.Text;
+            user.CodEstadoCivil = Convert.ToInt32(ddlCodEstadoCivil.SelectedValue);
+            user.NrSegSocial = tbNrSegSocial.Text;
+            user.IBAN = tbIBAN.Text;
+            user.Naturalidade = (tbNaturalidade.Text);
+            user.CodNacionalidade = Convert.ToInt32(ddlCodNacionalidade.SelectedValue);
             HttpPostedFile photoFile = fuFoto.PostedFile;
 
             byte[] photoBytes = FileControl.ProcessPhotoFile(photoFile);
-            userDataSecondary.Add(Convert.ToBase64String(photoBytes));
+            user.Foto = (Convert.ToBase64String(photoBytes));
 
-            userDataSecondary.Add(ddlCodGrauAcademico.SelectedValue);
-            userDataSecondary.Add(ddlCodSituacaoProfissional.SelectedValue);
-            userDataSecondary.Add(tbLifeMotto.Text);
+            user.CodGrauAcademico = Convert.ToInt32(ddlCodGrauAcademico.SelectedValue);
+            user.CodSituacaoProf = Convert.ToInt32(ddlCodSituacaoProfissional.SelectedValue);
+            user.LifeMotto = tbLifeMotto.Text;
 
-            int CompleteUser = Classes.User.CompleteRegisterUser(userDataSecondary, uploadedFiles);
+            int CompleteUser = Classes.User.CompleteRegisterUser(user, uploadedFiles);
 
             if (CompleteUser == 0) lbl_message.Text = "Perfil atualizado com sucesso.";
             else lbl_message.Text = "Erro na atualização de perfil.";
         }
 
-        protected void btn_changepw_Click(object sender, EventArgs e)
+        protected void btnChangePW_Click(object sender, EventArgs e)
         {
             (bool password, List<string> failures) = Security.IsPasswordStrong(tbPwNew.Text);
 

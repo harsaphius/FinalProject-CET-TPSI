@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 
 namespace FinalProject.Classes
 {
+    [Serializable]
     public class Module
     {
         public int CodModulo { get; set; }
@@ -16,6 +17,7 @@ namespace FinalProject.Classes
         public decimal Creditos { get; set; }
         public string SVG { get; set; }
         public byte[] SVGBytes { get; set; }
+        public bool IsChecked { get; set; }
 
         /// <summary>
         /// Função para inserir um módulo novo
