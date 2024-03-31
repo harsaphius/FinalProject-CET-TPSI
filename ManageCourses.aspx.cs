@@ -11,8 +11,6 @@ namespace FinalProject
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string script;
-
             if (Session["Logado"] == null)
             {
                 Response.Redirect("MainPage.aspx");
@@ -21,7 +19,6 @@ namespace FinalProject
             {
                 string user = Session["User"].ToString();
 
-                //Find lbl_user on MasterPage and
                 Label lbluser = Master.FindControl("lbl_user") as Label;
                 if (lbluser != null)
                 {
@@ -33,7 +30,7 @@ namespace FinalProject
                 {
                     lbtncourses.PostBackUrl = "./UserCourses.aspx";
                 }
-                script = @"
+                var script = @"
                             document.getElementById('courses').href = './UserCourses.aspx';
                             document.getElementById('signout').classList.remove('hidden');
                             document.getElementById('signout').classList.add('nav-item');
@@ -105,7 +102,7 @@ namespace FinalProject
         }
 
 
-        //Funções de ItemDataBound
+        //Funções de ItemDataBound dos Repeaters
 
         /// <summary>
         /// Função do Repeater ListCourses que anexa o respetivo AsynPostBackTrigger Event a cada botão EDit/Delete do Repeater
@@ -255,8 +252,8 @@ namespace FinalProject
                             }
                         }
                     }
-
                 }
+
                 BindDataModulesEdit();
 
             }
@@ -324,7 +321,6 @@ namespace FinalProject
             }
         }
 
-
         /// <summary>
         /// Função para a edição de um curso existente
         /// </summary>
@@ -344,7 +340,6 @@ namespace FinalProject
 
                 if (AnswUpdateCourse == 1)
                 {
-
                     lblMessageForEdit.Text = "Curso atualizado com sucesso!";
                 }
                 else
@@ -363,10 +358,10 @@ namespace FinalProject
         /// <summary>
         /// Função para DataBind dos Cursos
         /// </summary>
-        private void BindDataCourses()
+        private void BindDataCourses(List<string> conditions = null)
         {
             PagedDataSource pagedData = new PagedDataSource();
-            pagedData.DataSource = Classes.Course.LoadCourses();
+            pagedData.DataSource = Classes.Course.LoadCourses(conditions);
             pagedData.AllowPaging = true;
             pagedData.PageSize = 2;
             pagedData.CurrentPageIndex = PageNumberCourses;
@@ -426,7 +421,7 @@ namespace FinalProject
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void chkBoxEditModulesCourse_CheckedChanged(object sender, EventArgs e)
+        protected void chkBoxEditModulesCourse_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkBox = (CheckBox)sender;
             RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
@@ -479,7 +474,7 @@ namespace FinalProject
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void chkBoxInsertModulesCourse_CheckedChanged(object sender, EventArgs e)
+        protected void chkBoxInsertModulesCourse_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkBox = (CheckBox)sender;
             RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
@@ -526,8 +521,13 @@ namespace FinalProject
             }
         }
 
-
-        public static bool CheckIfModuleIsInCourse(int CodCurso, int moduleID)
+        /// <summary>
+        /// Função para verificar se o módulo pertence ao curso
+        /// </summary>
+        /// <param name="CodCurso"></param>
+        /// <param name="moduleID"></param>
+        /// <returns></returns>
+        private static bool CheckIfModuleIsInCourse(int CodCurso, int moduleID)
         {
             Course completeCourse = Classes.Course.CompleteCourse(CodCurso);
 
@@ -540,7 +540,6 @@ namespace FinalProject
             }
             return false;
         }
-
 
         //Funções para Update de ViewStates
 
@@ -627,10 +626,7 @@ namespace FinalProject
                 else
                     return 0;
             }
-            set
-            {
-                ViewState["PageNumberCourses"] = value;
-            }
+            set => ViewState["PageNumberCourses"] = value;
         }
 
         /// <summary>
@@ -645,12 +641,8 @@ namespace FinalProject
                 else
                     return 0;
             }
-            set
-            {
-                ViewState["PageNumberModules"] = value;
-            }
+            set => ViewState["PageNumberModules"] = value;
         }
-
 
         //Funções para os botões de paginação
 
@@ -661,7 +653,7 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnPreviousListCourses_Click(object sender, EventArgs e)
         {
-            PageNumberCourses -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            PageNumberCourses -= 1;
             BindDataCourses();
         }
 
@@ -672,7 +664,7 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnNextListCourses_Click(object sender, EventArgs e)
         {
-            PageNumberCourses += 1; // Adjust with the respective PageNumber property for Users Repeater
+            PageNumberCourses += 1;
             BindDataCourses();
 
         }
@@ -684,7 +676,7 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnPreviousInsertCoursesModules_Click(object sender, EventArgs e)
         {
-            PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            PageNumberModules -= 1;
             BindDataModules();
             UpdateSelectedItemsViewStateInsert();
 
@@ -698,7 +690,7 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnNextInsertCoursesModules_Click(object sender, EventArgs e)
         {
-            PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
+            PageNumberModules += 1;
             BindDataModules();
             UpdateSelectedItemsViewStateInsert();
 
@@ -712,7 +704,7 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnPreviousEditModulesCourses_OnClick(object sender, EventArgs e)
         {
-            PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            PageNumberModules -= 1;
             BindDataModulesEdit();
             UpdateSelectedItemsViewStateEdit();
 
@@ -726,13 +718,16 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnNextEditModulesCourses_OnClick(object sender, EventArgs e)
         {
-            PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
+            PageNumberModules += 1;
             BindDataModulesEdit();
             UpdateSelectedItemsViewStateEdit();
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "showEditScript", "showEditModules(); return false;", true);
         }
 
+        /// <summary>
+        /// Função de inicialização do Flatpickr
+        /// </summary>
         private void InitializeFlatpickrDatePickers()
         {
             string script = @"
@@ -756,5 +751,38 @@ namespace FinalProject
             ScriptManager.RegisterStartupScript(this, GetType(), "FlatpickrInit", script, false);
         }
 
+        /// <summary>
+        /// Função Click do Botão de Aplicar os Filtros
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnApplyFilters_OnClick(object sender, EventArgs e)
+        {
+            List<string> conditions = new List<string>();
+            conditions.Add(tbSearchFilters.Text);
+            conditions.Add(ddlAreaCursoFilters.SelectedValue);
+            conditions.Add(ddlTipoCursoFilters.SelectedValue);
+            conditions.Add(tbDataInicioFilters.Text);
+            conditions.Add(tbDataFimFilters.Text);
+
+            BindDataCourses(conditions);
+        }
+
+        /// <summary>
+        /// Função Click do Botão de Limpar os filtros
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnClearFilters_OnClick(object sender, EventArgs e)
+        {
+            tbSearchFilters.Text = "";
+            ddlAreaCursoFilters.SelectedIndex = 0;
+            ddlTipoCursoFilters.SelectedIndex = 0;
+            tbDataInicioFilters.Text = "";
+            tbDataFimFilters.Text = "";
+
+            BindDataCourses();
+
+        }
     }
 }

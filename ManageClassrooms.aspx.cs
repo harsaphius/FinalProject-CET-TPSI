@@ -164,10 +164,7 @@ namespace FinalProject
                 else
                     return 0;
             }
-            set
-            {
-                ViewState["PageNumberClassrooms"] = value;
-            }
+            set => ViewState["PageNumberClassrooms"] = value;
         }
 
         protected void btnInsertClassroom_OnClick(object sender, EventArgs e)

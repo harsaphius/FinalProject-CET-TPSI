@@ -26,7 +26,7 @@
                                 <span>Designação:</span>
                                 <div class="input-group mb-4">
                                     <asp:LinkButton runat="server" ID="lbtnSearchFilters" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
-                                    <asp:TextBox runat="server" ID="tbSearchFilters" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="tbSearchFilters" CssClass="form-control" placeholder="Type here..."></asp:TextBox>
                                 </div>
                             </div>
                             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
@@ -62,9 +62,9 @@
                             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                                 <br />
                                 <div class="input-group mb-4">
-                                    <asp:Button runat="server" ID="btnApplyFilters" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" AutoPostBack="True"/>
+                                    <asp:Button runat="server" ID="btnApplyFilters" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" AutoPostBack="True" OnClick="btnApplyFilters_OnClick"/>
                                     <span>&nbsp; &nbsp;</span>
-                                    <asp:Button runat="server" ID="btnClearFilters" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
+                                    <asp:Button runat="server" ID="btnClearFilters" CssClass="btn btn-outline-primary mb-0" Text="Limpar" OnClick="btnClearFilters_OnClick"/>
                                 </div>
                             </div>
                         </div>

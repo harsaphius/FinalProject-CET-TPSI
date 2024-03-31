@@ -146,6 +146,90 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
+        /// Função para carregar todos os utilizadores
+        /// </summary>
+        /// <returns></returns>
+        public static List<User> LoadUsers(string condition = null)
+        {
+            List<User> Users = new List<User>();
+            List<string> conditions = new List<string>();
+
+            string query = "SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador";
+            query += condition;
+
+            //// Decisões para colocar ou não os filtros dentro da string query
+            //if (!string.IsNullOrEmpty(search_string))
+            //{
+            //    conditions.Add($"moeda.nome LIKE '%{search_string}%'");
+            //}
+            //if (grade != 0)
+            //{
+            //    conditions.Add($"moeda_estado.cod_estado = {grade}");
+            //}
+            //if (coin_type != 0)
+            //{
+            //    conditions.Add($"moeda.cod_tipo = {coin_type}");
+            //}
+            //if (status == 0)
+            //{
+            //    conditions.Add($"moeda_estado.deleted = {status}");
+            //}
+            //else if (status == 1)
+            //{
+            //    conditions.Add($"moeda_estado.deleted = {status}");
+            //}
+            //if (conditions.Count > 0)
+            //{
+            //    query += " WHERE " + string.Join(" AND ", conditions);
+            //}
+            //if (!string.IsNullOrEmpty(sort_order))
+            //{
+            //    query += " ORDER BY moeda_estado.valor_atual " + sort_order;
+            //}
+
+            SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
+            SqlCommand myCommand = new SqlCommand(query, myConn);
+            myConn.Open();
+
+            SqlDataReader dr = myCommand.ExecuteReader();
+
+            while (dr.Read())
+            {
+                User informacao = new User();
+                informacao.CodUser = Convert.ToInt32(dr["codUtilizador"]);
+                informacao.Username = dr["utilizador"].ToString();
+                informacao.Email = dr["email"].ToString();
+                informacao.Nome = dr["nome"] == DBNull.Value ? " " : dr["nome"].ToString();
+                informacao.CodTipoDoc = (int)(dr["codTipoDoc"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codTipoDoc"]));
+                informacao.DocIdent = dr["docIdent"] == DBNull.Value ? " " : dr["docIdent"].ToString();
+                informacao.DataValidade = (DateTime)(dr["dataValidadeDocIdent"] == DBNull.Value ? DateTime.Today : Convert.ToDateTime(dr["dataValidadeDocIdent"]).Date);
+                informacao.CodPrefix = (int)(dr["prefixo"] == DBNull.Value ? 1 : Convert.ToInt32(dr["prefixo"]));
+                informacao.Phone = dr["telemovel"] == DBNull.Value ? " " : dr["telemovel"].ToString();
+                informacao.Sexo = (int)(dr["sexo"] == DBNull.Value ? 1 : Convert.ToInt32(dr["sexo"]));
+                informacao.DataNascimento = (DateTime)(dr["dataNascimento"] == DBNull.Value ? DateTime.Today : Convert.ToDateTime(dr["dataNascimento"]).Date);
+                informacao.NIF = dr["nif"] == DBNull.Value ? " " : dr["nif"].ToString();
+                informacao.Morada = dr["morada"] == DBNull.Value ? " " : dr["morada"].ToString();
+                informacao.Localidade = dr["localidade"] == DBNull.Value ? " " : dr["localidade"].ToString();
+                informacao.CodPais = (int)(dr["codPais"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codPais"]));
+                informacao.CodPostal = dr["codPostal"] == DBNull.Value ? " " : dr["codPostal"].ToString();
+                informacao.CodEstadoCivil = (int)(dr["codEstadoCivil"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codEstadoCivil"]));
+                informacao.NrSegSocial = dr["nrSegSocial"] == DBNull.Value ? " " : dr["nrSegSocial"].ToString();
+                informacao.IBAN = dr["IBAN"] == DBNull.Value ? " " : dr["IBAN"].ToString();
+                informacao.Naturalidade = dr["naturalidade"] == DBNull.Value ? " " : dr["naturalidade"].ToString();
+                informacao.CodNacionalidade = (int)(dr["codNacionalidade"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codNacionalidade"]));
+                informacao.Foto = dr["foto"] == DBNull.Value ? "default_image_url" : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
+                informacao.CodGrauAcademico = (int)(dr["codGrauAcademico"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codGrauAcademico"]));
+                informacao.CodSituacaoProf = (int)(dr["codSituacaoProfissional"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codSituacaoProfissional"]));
+                informacao.LifeMotto = dr["lifemotto"] == DBNull.Value ? " " : dr["lifemotto"].ToString();
+
+                Users.Add(informacao);
+            }
+            myConn.Close();
+
+            return Users;
+        }
+
+        /// <summary>
         /// Função para registar um utilizador
         /// </summary>
         /// <param name="values"></param>

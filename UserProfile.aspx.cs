@@ -288,8 +288,8 @@ namespace FinalProject
                     Classes.FileControl.ProcessRequest(HttpContext.Current, fileId);
                 }
             }
-        }  
-        
+        }
+
         [WebMethod]
         public static string UploadImage(HttpPostedFile file)
         {

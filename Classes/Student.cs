@@ -166,5 +166,32 @@ namespace FinalProject.Classes
             return (Student, User);
         }
 
+
+        public static int DeleteStudent(int CodUtilizador)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@CodUtilizador", CodUtilizador);
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
+
+            SqlParameter StudentDeleted = new SqlParameter();
+            StudentDeleted.ParameterName = "@StudentDeleted";
+            StudentDeleted.Direction = ParameterDirection.Output;
+            StudentDeleted.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(StudentDeleted);
+
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "DeleteStudent";
+
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
+            int AnswStudentDeleted = Convert.ToInt32(myCommand.Parameters["@StudentDeleted"].Value);
+
+            myCon.Close();
+
+            return AnswStudentDeleted;
+        }
     }
 }

@@ -19,11 +19,17 @@ namespace FinalProject.Classes
         public int CodQNQ { get; set; }
         public List<Module> Modules { get; set; }
 
+        /// <summary>
+        /// Função para inserir um curso completo
+        /// </summary>
+        /// <param name="Course"></param>
+        /// <param name="modules"></param>
+        /// <returns></returns>
         public static int InsertCourse(Course Course, List<int> modules)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            SqlCommand myCommand = new SqlCommand();
             myCommand.Parameters.AddWithValue("@NameCourse", Course.Nome);
             myCommand.Parameters.AddWithValue("@CodTipoCurso", Course.CodTipoCurso);
             myCommand.Parameters.AddWithValue("@CodArea", Course.CodArea);
@@ -45,17 +51,17 @@ namespace FinalProject.Classes
 
             myCommand.Parameters.Add(CourseNumber);
 
-            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
-            myCommand.CommandText = "CourseRegister"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "CourseRegister";
 
-            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
-            myCon.Open(); //Abrir a conexão
+            myCommand.Connection = myCon;
+            myCon.Open();
             myCommand.ExecuteNonQuery();
 
             int AnswCourseRegister = Convert.ToInt32(myCommand.Parameters["@CourseRegisted"].Value);
             int AnswCourseNumber = Convert.ToInt32(myCommand.Parameters["@CourseNumber"].Value);
 
-            myCon.Close(); //Fechar a conexão
+            myCon.Close();
 
             SqlCommand myCommand2 = new SqlCommand();
             myCommand2.CommandType = CommandType.StoredProcedure;
@@ -69,8 +75,8 @@ namespace FinalProject.Classes
             {
                 myCommand2.Parameters.Clear();
                 myCommand2.Parameters.AddWithValue("@CodCourse", AnswCourseNumber);
-                myCommand2.Parameters.AddWithValue("@CodMod", moduleID); // Set the value of CodMod parameter
-                myCommand2.ExecuteNonQuery();//Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+                myCommand2.Parameters.AddWithValue("@CodMod", moduleID);
+                myCommand2.ExecuteNonQuery();
             }
 
             myCon.Close();
@@ -78,43 +84,49 @@ namespace FinalProject.Classes
             return AnswCourseRegister;
         }
 
-        public static List<Course> LoadCourses()
+        /// <summary>
+        /// Função para carregar a listagem de cursos, podendo ou não conter filtros
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        public static List<Course> LoadCourses(List<string> conditions = null)
         {
             List<Course> Courses = new List<Course>();
 
-            List<string> conditions = new List<string>();
+            string query = "SELECT * FROM curso ";
 
-            string query = "SELECT * FROM curso";
+            if (conditions != null && conditions.Count > 0)
+            {
+                query += " WHERE";
 
-            //// Decisões para colocar ou não os filtros dentro da string query
-            //if (!string.IsNullOrEmpty(search_string))
-            //{
-            //    conditions.Add($"moeda.nome LIKE '%{search_string}%'");
-            //}
-            //if (grade != 0)
-            //{
-            //    conditions.Add($"moeda_estado.cod_estado = {grade}");
-            //}
-            //if (coin_type != 0)
-            //{
-            //    conditions.Add($"moeda.cod_tipo = {coin_type}");
-            //}
-            //if (status == 0)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //else if (status == 1)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //if (conditions.Count > 0)
-            //{
-            //    query += " WHERE " + string.Join(" AND ", conditions);
-            //}
-            //if (!string.IsNullOrEmpty(sort_order))
-            //{
-            //    query += " ORDER BY moeda_estado.valor_atual " + sort_order;
-            //}
+                bool isFirstCondition = true;
+
+                if (!string.IsNullOrEmpty(conditions[0]))
+                {
+                    query += " nomeCurso LIKE '%" + conditions[0] + "%'";
+                    isFirstCondition = false;
+                }
+                if (!string.IsNullOrEmpty(conditions[1]))
+                {
+                    if (!isFirstCondition)
+                        query += " AND";
+                    query += " codArea =" + conditions[1];
+                    isFirstCondition = false;
+                }
+                if (!string.IsNullOrEmpty(conditions[2]))
+                {
+                    if (!isFirstCondition)
+                        query += " AND";
+                    query += " codTipoCurso =" + conditions[2];
+                    isFirstCondition = false;
+                }
+                if (!string.IsNullOrEmpty(conditions[3]))
+                {
+                    if (!isFirstCondition)
+                        query += " AND";
+                    query += " auditRow =" + conditions[3];
+                }
+            }
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -139,12 +151,17 @@ namespace FinalProject.Classes
             return Courses;
         }
 
+        /// <summary>
+        /// Função para carregar um curso com todas as suas características pelo se codCurso
+        /// </summary>
+        /// <param name="CodCurso"></param>
+        /// <returns></returns>
         public static Course CompleteCourse(int CodCurso)
         {
             Course CompleteCourse = new Course();
             List<Module> ModulesCourse = new List<Module>();
 
-            string query = $"SELECT * FROM curso AS C INNER JOIN tipoCurso AS TC ON C.codTipoCurso=TC.codTipoCurso INNER JOIN area AS A ON C.codArea=A.codArea INNER JOIN moduloCurso AS MC ON C.codCurso=MC.codCurso INNER JOIN  modulo AS M ON MC.codModulo=M.codModulos WHERE C.codCurso={CodCurso}";
+            string query = $"SELECT * FROM curso AS C INNER JOIN tipoCurso AS TC ON C.codTipoCurso=TC.codTipoCurso INNER JOIN area AS A ON C.codArea=A.codArea INNER JOIN moduloCurso AS MC ON C.codCurso=MC.codCurso INNER JOIN modulo AS M ON MC.codModulo=M.codModulos WHERE C.codCurso={CodCurso}";
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -169,9 +186,9 @@ namespace FinalProject.Classes
                 Module module = new Module();
                 module.CodModulo = Convert.ToInt32(dr["codModulos"]);
                 module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
-                module.UFCD = (dr["CodUFCD"].ToString()); // Substitua "moduleID" pelo nome correto da coluna na sua tabela
-                module.Nome = dr["NomeModulos"].ToString(); // Substitua "moduleName" pelo nome correto da coluna na sua tabela
-                                                            // Adicione outros atributos do módulo conforme necessário
+                module.UFCD = (dr["CodUFCD"].ToString());
+                module.Nome = dr["NomeModulos"].ToString();
+
                 ModulesCourse.Add(module);
             } while (dr.Read());
 
@@ -182,11 +199,17 @@ namespace FinalProject.Classes
             return CompleteCourse;
         }
 
+        /// <summary>
+        /// Função para efetuar o update de um curso existente
+        /// </summary>
+        /// <param name="Course"></param>
+        /// <param name="modules"></param>
+        /// <returns></returns>
         public static int UpdateCourse(Course Course, List<int> modules)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            SqlCommand myCommand = new SqlCommand();
             myCommand.Parameters.AddWithValue("@CourseID", Course.CodCurso);
             myCommand.Parameters.AddWithValue("@NameCourse", Course.Nome);
             myCommand.Parameters.AddWithValue("@CodTipoCurso", Course.CodTipoCurso);
@@ -202,31 +225,39 @@ namespace FinalProject.Classes
 
             myCommand.Parameters.Add(CourseUpdated);
 
-            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
-            myCommand.CommandText = "UpdateCourse"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "UpdateCourse";
 
-            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
-            myCon.Open(); //Abrir a conexão
+            myCommand.Connection = myCon;
+            myCon.Open();
             myCommand.ExecuteNonQuery();
 
             int AnswCourseUpdated = Convert.ToInt32(myCommand.Parameters["@CourseUpdated"].Value);
 
-            myCon.Close(); //Fechar a conexão
+            myCon.Close();
 
-            SqlCommand myCommand2 = new SqlCommand();
-            myCommand2.CommandType = CommandType.StoredProcedure;
-            myCommand2.CommandText = "UpdateCourseModules";
+            //Deleting all modules already on the course
+            string query = $"DELETE FROM moduloCurso WHERE codCurso = {Course.CodCurso}";
+            SqlCommand myCommand2 = new SqlCommand(query, myCon);
+            myCon.Open();
+            myCommand2.ExecuteNonQuery();
+            myCon.Close();
 
-            myCommand2.Connection = myCon;
+
+            SqlCommand myCommand3 = new SqlCommand();
+            myCommand3.CommandType = CommandType.StoredProcedure;
+            myCommand3.CommandText = "UpdateCourseModules";
+
+            myCommand3.Connection = myCon;
 
             myCon.Open();
 
             foreach (int moduleID in modules)
             {
-                myCommand2.Parameters.Clear();
-                myCommand2.Parameters.AddWithValue("@CodCourse", Course.CodCurso);
-                myCommand2.Parameters.AddWithValue("@CodMod", moduleID); // Set the value of CodMod parameter
-                myCommand2.ExecuteNonQuery();//Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+                myCommand3.Parameters.Clear();
+                myCommand3.Parameters.AddWithValue("@CodCourse", Course.CodCurso);
+                myCommand3.Parameters.AddWithValue("@CodMod", moduleID);
+                myCommand3.ExecuteNonQuery();
             }
 
             myCon.Close();
@@ -234,35 +265,5 @@ namespace FinalProject.Classes
             return AnswCourseUpdated;
         }
 
-        public static Course ReturnCompleteCourse(int CodCurso)
-        {
-            Course CompleteCourse = new Course();
-            List<Module> ModulesCourse = Classes.Module.LoadModules(CodCurso);
-
-            string query = $"SELECT * FROM curso AS C INNER JOIN tipoCurso AS TC ON C.codTipoCurso=TC.codTipoCurso INNER JOIN area AS A ON C.codArea=A.codArea INNER JOIN moduloCurso AS MC ON C.codCurso=MC.codCurso INNER JOIN  modulo AS M ON MC.codModulo=M.codModulos WHERE C.codCurso={CodCurso}";
-
-            SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
-            SqlCommand myCommand = new SqlCommand(query, myConn);
-            myConn.Open();
-
-            SqlDataReader dr = myCommand.ExecuteReader();
-
-            if (dr.Read())
-            {
-                CompleteCourse.CodCurso = Convert.ToInt32(dr["codCurso"]);
-                CompleteCourse.Nome = dr["nomeCurso"].ToString();
-                CompleteCourse.Area = dr["nomeArea"].ToString();
-                CompleteCourse.TipoCurso = dr["nomeTipoLongo"].ToString();
-                CompleteCourse.CodRef = dr["codRef"].ToString();
-                CompleteCourse.CodQNQ = Convert.ToInt32(dr["codQNQ"]);
-
-            }
-
-            CompleteCourse.Modules = ModulesCourse;
-
-            myConn.Close();
-
-            return CompleteCourse;
-        }
     }
 }

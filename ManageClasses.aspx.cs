@@ -112,10 +112,7 @@ namespace FinalProject
                 else
                     return 0;
             }
-            set
-            {
-                ViewState["PageNumberModules"] = value;
-            }
+            set => ViewState["PageNumberModules"] = value;
         }
 
         protected void rpt_Classes_ItemDataBound(object sender, RepeaterItemEventArgs e)
