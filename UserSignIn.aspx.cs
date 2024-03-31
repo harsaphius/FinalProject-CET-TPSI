@@ -27,6 +27,12 @@ namespace FinalProject
             {
                 lbl_message.Text = Session["ActivatedUser"].ToString();
             }
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "validadeUsername",
+                "validadeUsername(element);", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "validadePassword",
+                "validadePassword(element);", true);
+
         }
 
         protected void btn_facebook_Click(object sender, EventArgs e)

@@ -75,12 +75,12 @@ namespace FinalProject
                 if (!IsPostBack)
                 {
                     //InitializeFlatpickrDatePickers();    
-                    
+
                     BindDataStudents();
                     BindDataCourses();
                 }
 
-            
+
             }
         }
 
@@ -122,7 +122,7 @@ namespace FinalProject
                     user.NIF = tbNIF.Text;
                     user.Morada = tbMorada.Text;
                     user.CodPais = Convert.ToInt32(ddlCodPais.SelectedValue);
-                    user.CodPostal =tbCodPostal.Text;
+                    user.CodPostal = tbCodPostal.Text;
                     user.Localidade = tbLocalidade.Text;
                     user.CodEstadoCivil = Convert.ToInt32(ddlCodEstadoCivil.SelectedValue);
                     user.NrSegSocial = tbNrSegSocial.Text;
@@ -185,7 +185,7 @@ namespace FinalProject
             }
 
         }
-        
+
 
         protected void rptListStudents_OnItemCommand(object source, RepeaterCommandEventArgs e)
         {

@@ -86,6 +86,9 @@ namespace FinalProject
                     if (ViewState["CheckboxStatesEdit"] == null)
                         ViewState["CheckboxStatesEdit"] = new Dictionary<int, bool>();
 
+                    if (ViewState["CheckboxStates"] == null)
+                        ViewState["CheckboxStates"] = new Dictionary<int, bool>();
+
                     //Reinicializar o FlatPickr
                     InitializeFlatpickrDatePickers();
 

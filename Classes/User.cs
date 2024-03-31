@@ -152,9 +152,9 @@ namespace FinalProject.Classes
         /// <returns></returns>
         public static (int, int) RegisterUser(User user)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            SqlCommand myCommand = new SqlCommand();
             myCommand.Parameters.AddWithValue("@CodePerfil", user.CodPerfil);
             myCommand.Parameters.AddWithValue("@CompleteName", user.Nome);
             myCommand.Parameters.AddWithValue("@User", user.Username);
@@ -165,6 +165,7 @@ namespace FinalProject.Classes
             myCommand.Parameters.AddWithValue("@CardDate", user.DataValidade);
             myCommand.Parameters.AddWithValue("@Prefix", user.CodPrefix);
             myCommand.Parameters.AddWithValue("@PhoneNumber", user.Phone);
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             SqlParameter UserRegister = new SqlParameter();
             UserRegister.ParameterName = "@UserRegister";
@@ -180,17 +181,17 @@ namespace FinalProject.Classes
 
             myCommand.Parameters.Add(UserCode);
 
-            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
-            myCommand.CommandText = "UserRegister"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "UserRegister";
 
-            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
-            myCon.Open(); //Abrir a conexão
-            myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
             int AnswUserRegister = Convert.ToInt32(myCommand.Parameters["@UserRegister"].Value);
             int AnswUserCode = Convert.ToInt32(myCommand.Parameters["@UserCode"].Value);
 
 
-            myCon.Close(); //Fechar a conexão
+            myCon.Close();
 
             return (AnswUserRegister, AnswUserCode);
         }
@@ -202,7 +203,7 @@ namespace FinalProject.Classes
         /// <param name="anexos"></param>
         public static int CompleteRegisterUser(User user, List<FileControl> Anexos)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
 
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@CodUtilizador", user.CodUser);
@@ -216,13 +217,23 @@ namespace FinalProject.Classes
             myCommand.Parameters.AddWithValue("@CodEstadoCivil", user.CodEstadoCivil);
             myCommand.Parameters.AddWithValue("@NrSegSocial", user.NrSegSocial);
             myCommand.Parameters.AddWithValue("@IBAN", user.IBAN);
-            myCommand.Parameters.AddWithValue("@Naturalidade",user.Naturalidade);
+            myCommand.Parameters.AddWithValue("@Naturalidade", user.Naturalidade);
             myCommand.Parameters.AddWithValue("@CodNacionalidade", user.CodNacionalidade);
-            byte[] fotoBytes = Convert.FromBase64String(user.Foto);
-            myCommand.Parameters.Add("@Foto", SqlDbType.VarBinary, -1).Value = fotoBytes;
+
+            if (user.Foto != null)
+            {
+                byte[] fotoBytes = Convert.FromBase64String(user.Foto);
+                myCommand.Parameters.Add("@Foto", SqlDbType.VarBinary, -1).Value = fotoBytes;
+            }
+            else
+            {
+                myCommand.Parameters.Add("@Foto", SqlDbType.VarBinary, -1).Value = DBNull.Value;
+            }
             myCommand.Parameters.AddWithValue("@CodGrauAcademico", user.CodGrauAcademico);
             myCommand.Parameters.AddWithValue("@CodSituacaoProf", user.CodSituacaoProf);
             myCommand.Parameters.AddWithValue("@LifeMotto", user.LifeMotto);
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
+
 
             SqlParameter UserRegister = new SqlParameter();
             UserRegister.ParameterName = "@UserRegister";
@@ -231,15 +242,15 @@ namespace FinalProject.Classes
 
             myCommand.Parameters.Add(UserRegister);
 
-            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
-            myCommand.CommandText = "UserRegisterSecondaryData"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "UserRegisterSecondaryData";
             int AnswUserRegisterComplete = Convert.ToInt32(myCommand.Parameters["@UserRegister"].Value);
 
-            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
-            myCon.Open(); //Abrir a conexão
-            myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
 
-            myCon.Close(); //Fechar a conexão
+            myCon.Close();
 
             SqlCommand myCommand2 = new SqlCommand();
             myCommand2.CommandType = CommandType.StoredProcedure;
@@ -264,6 +275,11 @@ namespace FinalProject.Classes
             return AnswUserRegisterComplete;
         }
 
+        /// <summary>
+        /// Função para determinar CodUtilizador e Username
+        /// </summary>
+        /// <param name="User"></param>
+        /// <returns></returns>
         public static (int, string) DetermineUtilizador(string User)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
@@ -297,11 +313,16 @@ namespace FinalProject.Classes
             int AnswUserCode = Convert.ToInt32(myCommand.Parameters["@UserCode"].Value);
             string AnswUsername = myCommand.Parameters["@Username"].Value.ToString();
 
-            myCon.Close(); //Fechar a conexão
+            myCon.Close();
 
             return (AnswUserCode, AnswUsername);
         }
 
+        /// <summary>
+        /// Função para determinar se o utilizador que entrou com o Google existe e se tem conta ativa - Funcionalidade Login Google
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <returns></returns>
         public static (int, int) CheckEmail(string Email)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
@@ -334,11 +355,16 @@ namespace FinalProject.Classes
             int AnswUserExist = Convert.ToInt32(myCommand.Parameters["@UserExists"].Value);
             int AnswAccountActive = Convert.ToInt32(myCommand.Parameters["@AccountActive"].Value);
 
-            myCon.Close(); //Fechar a conexão
+            myCon.Close();
 
             return (AnswUserExist, AnswAccountActive);
         }
 
+        /// <summary>
+        /// Função para determinar os profiles afetos a um utilizador
+        /// </summary>
+        /// <param name="UserCode"></param>
+        /// <returns></returns>
         public static List<int> DetermineUserProfile(int UserCode)
         {
             List<int> UserProfiles = new List<int>();
@@ -375,9 +401,40 @@ namespace FinalProject.Classes
                 }
             }
 
-            myCon.Close(); //Fechar a conexão
+            myCon.Close();
 
             return UserProfiles;
+        }
+
+        public static int ChangeProfilePic(User User)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+
+            SqlCommand myCommand = new SqlCommand();
+            myCommand.Parameters.AddWithValue("@UserCode", User.CodUser);
+            byte[] fotoBytes = Convert.FromBase64String(User.Foto);
+            myCommand.Parameters.Add("@Foto", SqlDbType.VarBinary, -1).Value = fotoBytes;
+
+            SqlParameter UserPhotoUpdated = new SqlParameter();
+            UserPhotoUpdated.ParameterName = "@UserPhotoUpdated";
+            UserPhotoUpdated.Direction = ParameterDirection.Output;
+            UserPhotoUpdated.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(UserPhotoUpdated);
+
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "ChangeProfilePicture";
+
+            myCommand.Connection = myCon;
+            myCon.Open();
+
+            myCommand.ExecuteNonQuery();
+
+            int AnswUserPhotoUpdated = Convert.ToInt32(myCommand.Parameters["@UserPhotoUpdated"].Value);
+
+            myCon.Close();
+
+            return AnswUserPhotoUpdated;
         }
     }
 }

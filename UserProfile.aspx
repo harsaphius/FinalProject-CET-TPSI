@@ -5,6 +5,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <!-- Header Content -->
     <div class="container-fluid">
         <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('../assets/img/curved-images/curved0.jpg'); background-position-y: 50%;">
             <span class="mask bg-gradient-primary opacity-6"></span>
@@ -13,7 +14,11 @@
             <div class="row gx-4">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        <asp:Image ID="foto" runat="server" alt="profile_image" class="w-100 border-radius-lg shadow-sm"></asp:Image>
+                        <asp:FileUpload runat="server" ID="fuProfileImage" CssClass="hidden" />
+                        <a href="#" id="UploadLink">
+                            <asp:Image ID="foto" runat="server" alt="profile_image" class="w-100 border-radius-lg shadow-sm"></asp:Image>
+                            <asp:Button ID="btnUpload" Text="Upload" runat="server" CssClass="hidden" />
+                        </a>
                     </div>
                 </div>
                 <div class="col-auto my-auto">
@@ -31,7 +36,7 @@
                 <div class="col-lg-5 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
                     <div class="nav-wrapper position-relative end-0">
                         <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">
-                            <li class="nav-item">
+                           <%-- <li class="nav-item">
                                 <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="#" role="tab" aria-selected="true" onclick="showChangeCursos(event); return false;">
                                     <svg width="16px" class="text-dark" height="16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                         <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
@@ -72,7 +77,7 @@
                                     </svg>
                                     <span class="ms-1">Avaliações</span>
                                 </a>
-                            </li>
+                            </li>--%>
                             <li class="nav-item" id="alterarPW">
                                 <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#" role="tab" aria-selected="false" onclick="showChangePw(event); return false;">
                                     <svg width="16px" class="text-dark" height="16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -160,12 +165,15 @@
                         <h6 class="mb-0">Documentos Submetidos</h6>
                     </div>
                     <div class="card-body p-3">
-                        <asp:Repeater ID="fileRepeater" runat="server">
+                        <asp:Label runat="server" ID="lblSubmittedFiles"></asp:Label>
+                        <asp:Repeater ID="fileRepeater" runat="server" OnItemCommand="fileRepeater_OnItemCommand">
                             <HeaderTemplate></HeaderTemplate>
                             <ItemTemplate>
-                                <asp:HyperLink ID="downloadLink" runat="server" Target="_blank"
-                                    NavigateUrl='<%# FileControlInstance.GenerateFileUrl() %>'
-                                    Text='<%# Eval("FileName") %>' />
+                                <asp:LinkButton ID="downloadLink" runat="server"
+                                    Text='<%# Eval("FileName") %>'
+                                    CommandName="Download"
+                                    CommandArgument='<%# Eval("FileID") %>'
+                                    CausesValidation="false" />
                                 <br />
                             </ItemTemplate>
                             <FooterTemplate></FooterTemplate>
@@ -173,7 +181,7 @@
                     </div>
                 </div>
             </div>
-            <%--            <div class="col-12 col-xl-4">
+            <div class="col-12 col-xl-4">
                 <div class="card h-100">
                     <div class="card-header pb-0 p-3">
                         <h6 class="mb-0">Conversations</h6>
@@ -210,30 +218,11 @@
                                 </div>
                                 <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
                             </li>
-                            <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
-                                <div class="avatar me-3">
-                                    <img src="../assets/img/team-4.jpg" alt="kal" class="border-radius-lg shadow">
-                                </div>
-                                <div class="d-flex align-items-start flex-column justify-content-center">
-                                    <h6 class="mb-0 text-sm">Peterson</h6>
-                                    <p class="mb-0 text-xs">Have a great afternoon..</p>
-                                </div>
-                                <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
-                            </li>
-                            <li class="list-group-item border-0 d-flex align-items-center px-0">
-                                <div class="avatar me-3">
-                                    <img src="../assets/img/team-3.jpg" alt="kal" class="border-radius-lg shadow">
-                                </div>
-                                <div class="d-flex align-items-start flex-column justify-content-center">
-                                    <h6 class="mb-0 text-sm">Nick Daniel</h6>
-                                    <p class="mb-0 text-xs">Hi! I need more information..</p>
-                                </div>
-                                <a class="btn btn-link pe-3 ps-0 mb-0 ms-auto" href="javascript:;">Reply</a>
-                            </li>
+                           
                         </ul>
                     </div>
                 </div>
-            </div>--%>
+            </div>
             <div class="col-12 mt-4">
                 <div class="card mb-4">
                     <div class="card-header pb-0 p-3">
@@ -366,6 +355,7 @@
             </div>
         </div>
     </div>
+
     <!-- Fim de Profile Div -->
     <!-- Registration Completion -->
     <div id="registration" class="container-fluid mt-4 py-4 hidden">
@@ -489,7 +479,7 @@
                                     </div>
                                 </ContentTemplate>
                                 <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID="btnBackMainPage"/>
+                                    <asp:AsyncPostBackTrigger ControlID="btnBackMainPage" />
                                     <asp:AsyncPostBackTrigger ControlID="btnNextPage" />
                                 </Triggers>
                             </asp:UpdatePanel>
@@ -712,7 +702,8 @@
             document.getElementById('registration').classList.remove('hidden');
         }
     </script>
-    
+
+    <!--Javascript para voltar para a MainPage -->
     <script>
         function showMainPage() {
             event.preventDefault();
@@ -755,7 +746,7 @@
         }
     </script>
 
-    <!-- Javascript para mostrar a página um do form se carregado o botão voltar-->
+    <!-- Javascript para mostrar a página um do form se carregado o botão voltar na página dois-->
     <script>
         function showPrevDiv() {
             // Remove 'show' class and add 'hide' class to div2
@@ -768,7 +759,7 @@
         }
     </script>
 
-    <!-- Javascript para mostrar a página anterior -->
+    <!-- Javascript para mostrar a página principal depois de submeter info -->
     <script>
         function submitInfo() {
             // Check if all validators are valid
@@ -781,4 +772,37 @@
             }
         }
     </script>
+
+    <!-- -->
+    <script>
+        $(document).ready(function () {
+            $('#UploadLink').click(function (e) {
+                e.preventDefault(); // Prevent default link behavior
+                $('#fuProfileImage').click(); // Trigger file upload control
+            });
+
+            $('#fuProfileImage').change(function () {
+                var fileUpload = $('#fuProfileImage')[0].files[0];
+                var formData = new FormData();
+                formData.append('file', fileUpload);
+
+                $.ajax({
+                    url: 'UserProfile.aspx/UploadImage',
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function (response) {
+                        // Handle success
+                        alert('Image uploaded successfully!');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        // Handle error
+                        alert('Error uploading image: ' + textStatus);
+                    }
+                });
+            });
+        });
+    </script>
+
 </asp:Content>

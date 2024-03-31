@@ -35,14 +35,14 @@ namespace FinalProject.Classes
             myCommand.Parameters.AddWithValue("@UFCD", module.UFCD);
             myCommand.Parameters.AddWithValue("@Description", module.Descricao);
             myCommand.Parameters.AddWithValue("@Credits", module.Creditos);
-            //myCommand.Parameters.AddWithValue("@SVG", imageBytes);
+
             if (module.SVG != null)
             {
-                myCommand.Parameters.AddWithValue("@SVG", module.SVG);
+                myCommand.Parameters.Add("@SVG", SqlDbType.VarBinary, -1).Value = module.SVG;
             }
             else
             {
-                myCommand.Parameters.AddWithValue("@SVG", DBNull.Value);
+                myCommand.Parameters.Add("@SVG", SqlDbType.VarBinary, -1).Value = DBNull.Value;
             }
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
@@ -75,7 +75,7 @@ namespace FinalProject.Classes
             List<Module> Modules = new List<Module>();
             List<string> conditions = new List<string>();
 
-            string query = "SELECT * FROM modulo";
+            string query = "SELECT * FROM modulo WHERE isActive=1";
 
             //// Decisões para colocar ou não os filtros dentro da string query
             //if (!string.IsNullOrEmpty(search_string))
@@ -138,6 +138,11 @@ namespace FinalProject.Classes
             return Modules;
         }
 
+        /// <summary>
+        /// Funnção para carregar os módulos de um curso específico
+        /// </summary>
+        /// <param name="CodCurso"></param>
+        /// <returns></returns>
         public static List<Module> LoadModules(int CodCurso)
         {
             List<Module> Modules = new List<Module>();
@@ -199,6 +204,11 @@ namespace FinalProject.Classes
             return Modules;
         }
 
+        /// <summary>
+        /// Função para update de um módulo
+        /// </summary>
+        /// <param name="module"></param>
+        /// <returns></returns>
         public static int UpdateModule(Module module)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
@@ -227,25 +237,30 @@ namespace FinalProject.Classes
 
             myCommand.Parameters.Add(ModuleUpdated);
 
-            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
-            myCommand.CommandText = "UpdateModule"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "UpdateModule";
 
-            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
-            myCon.Open(); //Abrir a conexão
-            myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
             int AnswModuleUpdated = Convert.ToInt32(myCommand.Parameters["@ModuleUpdated"].Value);
 
-            myCon.Close(); //Fechar a conexão
+            myCon.Close();
 
             return AnswModuleUpdated;
         }
 
+        /// <summary>
+        /// Função para efetuar delete de um módulo
+        /// </summary>
+        /// <param name="CodModulo"></param>
+        /// <returns></returns>
         public static int DeleteModule(int CodModulo)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
-
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@ModuleID", CodModulo);
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             SqlParameter ModuleDeleted = new SqlParameter();
             ModuleDeleted.ParameterName = "@ModuleDeleted";
@@ -254,15 +269,15 @@ namespace FinalProject.Classes
 
             myCommand.Parameters.Add(ModuleDeleted);
 
-            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
-            myCommand.CommandText = "DeleteModule"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "DeleteModule";
 
-            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
-            myCon.Open(); //Abrir a conexão
-            myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
             int AnswModuleDeleted = Convert.ToInt32(myCommand.Parameters["@ModuleDeleted"].Value);
 
-            myCon.Close(); //Fechar a conexão
+            myCon.Close();
 
             return AnswModuleDeleted;
         }

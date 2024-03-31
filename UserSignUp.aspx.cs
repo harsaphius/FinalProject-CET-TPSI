@@ -162,8 +162,8 @@ namespace FinalProject
                     user.Nome = tb_name.Text;
                     user.Username = tb_username.Text;
                     user.Email = tb_email.Text;
-                    user.Password  = tb_pw.Text;
-                    user.CodTipoDoc = Convert.ToInt32(ddl_tipoDocIdent.SelectedValue) ;
+                    user.Password = tb_pw.Text;
+                    user.CodTipoDoc = Convert.ToInt32(ddl_tipoDocIdent.SelectedValue);
                     user.DocIdent = tbCC.Text;
                     user.DataValidade = Convert.ToDateTime(tbdataValidade.Text);
                     user.CodPrefix = Convert.ToInt32(ddlprefixo.SelectedValue);

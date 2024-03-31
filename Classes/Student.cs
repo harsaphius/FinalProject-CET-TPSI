@@ -102,7 +102,7 @@ namespace FinalProject.Classes
                 //informacao.CodInscricao = Convert.ToInt32(dr["codInscricao"]);
                 informacao.Nome = dr["nome"].ToString();
 
-                if(informacao.Foto != null)
+                if (informacao.Foto != null)
                     informacao.Foto = "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
 
                 Students.Add(informacao);
@@ -112,7 +112,12 @@ namespace FinalProject.Classes
             return Students;
         }
 
-        public static (Student,User) LoadStudent(int CodFormando)
+        /// <summary>
+        /// Função para carregar os dados de um formando
+        /// </summary>
+        /// <param name="CodFormando"></param>
+        /// <returns></returns>
+        public static (Student, User) LoadStudent(int CodFormando)
         {
             Student Student = new Student();
             User User = new User();

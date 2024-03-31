@@ -22,12 +22,13 @@ namespace FinalProject.Classes
         /// <returns></returns>
         public static int InsertClassroom(Classroom Classroom)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            SqlCommand myCommand = new SqlCommand();
             myCommand.Parameters.AddWithValue("@NrSala", Classroom.NrSala);
             myCommand.Parameters.AddWithValue("@CodTipoSala", Classroom.CodTipoSala);
             myCommand.Parameters.AddWithValue("@CodLocalSala", Classroom.CodLocalSala);
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             SqlParameter ClassroomRegister = new SqlParameter();
             ClassroomRegister.ParameterName = "@ClassroomRegisted";
@@ -36,15 +37,15 @@ namespace FinalProject.Classes
 
             myCommand.Parameters.Add(ClassroomRegister);
 
-            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
-            myCommand.CommandText = "ClassroomRegister"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "ClassroomRegister";
 
-            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
-            myCon.Open(); //Abrir a conexão
-            myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
             int AnswClassroomRegister = Convert.ToInt32(myCommand.Parameters["@ClassroomRegisted"].Value);
 
-            myCon.Close(); //Fechar a conexão
+            myCon.Close();
 
             return AnswClassroomRegister;
         }
@@ -110,6 +111,8 @@ namespace FinalProject.Classes
 
             return Classrooms;
         }
+
+
 
 
     }

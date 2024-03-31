@@ -201,6 +201,7 @@ namespace FinalProject.Classes
             myCommand.Parameters.AddWithValue("@Email", Email);
             myCommand.Parameters.AddWithValue("@PWAtual", EncryptString(OldPass));
             myCommand.Parameters.AddWithValue("@PWNova", EncryptString(NewPass));
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             //Variável de Output para SP verificar se o utilizador e pw estão corretos
             SqlParameter PasswordChanged = new SqlParameter();
@@ -231,10 +232,10 @@ namespace FinalProject.Classes
         /// <returns></returns>
         public static (int AnswUserExists, int AnswAccountActive) RecoverPassword(string Email, string NovaPasse)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
-            myCommand.Parameters.AddWithValue("@Email", Email); //Adicionar o valor da tb_user ao parâmetro @nome
+            SqlCommand myCommand = new SqlCommand();
+            myCommand.Parameters.AddWithValue("@Email", Email);
             myCommand.Parameters.AddWithValue("@PwNova", EncryptString(NovaPasse));
 
             SqlParameter UserExist = new SqlParameter();
@@ -251,16 +252,16 @@ namespace FinalProject.Classes
 
             myCommand.Parameters.Add(AccountActive);
 
-            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
-            myCommand.CommandText = "RecoverPw"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "RecoverPw";
 
-            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
-            myCon.Open(); //Abrir a conexão
-            myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
             int AnswUserExist = Convert.ToInt32(myCommand.Parameters["@UserExist"].Value);
             int AnswAccountActive = Convert.ToInt32(myCommand.Parameters["@AccountActive"].Value);
 
-            myCon.Close(); //Fechar a conexão
+            myCon.Close();
 
             return (AnswUserExist, AnswAccountActive);
         }
@@ -289,9 +290,13 @@ namespace FinalProject.Classes
             return string.IsNullOrWhiteSpace(textBox.Text);
         }
 
+        /// <summary>
+        /// Função para avaliar se é decimal
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static bool IsValidDecimal(string value)
         {
-            // Check if the string contains only digits, dot or comma
             bool isValidDecimal = value.All(c => char.IsDigit(c) || c == '.' || c == ',');
 
             return isValidDecimal;

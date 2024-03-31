@@ -8,7 +8,7 @@
             <div style="padding: 5px;" id="alert" class="hidden" role="alert">
                 <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
             </div>
-            <div class="page-header min-vh-50" id="section">
+            <div class="page-header min-vh-50" id="Login">
                 <div class="container">
                     <div class="row ">
                         <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
@@ -31,7 +31,7 @@
                                         </div>
 
                                         <p class="mb-4 text-sm mx-auto">
-                                            <a class="nav-link" href="javascript:;" id="openModalLink" data-bs-toggle="tab" role="tab" aria-selected="true" onclick="showModal(event); return false">Recuperar password</a>
+                                            <a class="nav-link" href="javascript:;" id="openModalLink" data-bs-toggle="tab" role="tab" aria-selected="true" onclick="showRecoverPassword(event); return false">Recuperar password</a>
                                         </p>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="rememberMe" checked runat="server" />
@@ -82,7 +82,7 @@
                                 <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                     <p class="mb-4 text-sm mx-auto">
                                         Não tem acesso?
-                        <asp:LinkButton runat="server" ID="lbtn_signup" href="./UserSignUp.aspx" class="text-info text-gradient font-weight-bold">Registe-se aqui!</asp:LinkButton>
+                                        <asp:LinkButton runat="server" ID="lbtn_signup" href="./UserSignUp.aspx" class="text-info text-gradient font-weight-bold">Registe-se aqui!</asp:LinkButton>
                                     </p>
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
         </section>
 
         <!-- Div para recuperar Password -->
-        <div id="pwdModal" class="page-header hidden">
+        <div id="RecoverPassword" class="page-header hidden">
             <div class="container">
                 <div class="row ">
                     <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
@@ -134,38 +134,32 @@
         </div>
     </main>
 
-    <!--Javascript para validar Username e Password e mostrar cores -->
+    <!--Javascript para validar se username e password estão vazios e mostrar cores -->
     <script>
         function validateUsername(element) {
-            // Check if username is empty
             if (element.value.trim() === "") {
-                // Add is-invalid class if empty
                 element.classList.add("is-invalid");
             } else {
-                // Remove is-invalid class if not empty
                 element.classList.remove("is-invalid");
             }
         }
         function validatePassword(element) {
-            // Check if password is empty
             if (element.value.trim() === "") {
-                // Add is-invalid class if empty
                 element.classList.add("is-invalid");
             } else {
-                // Remove is-invalid class if not empty
                 element.classList.remove("is-invalid");
             }
         }
     </script>
-
+    
+    <!--Javascript para mostrar a div de Recover Password -->
     <script>
-        function showModal(event) {
+        function showRecoverPassword(event) {
             event.preventDefault();
-            // Remove 'show' class and add 'hide' class to div1
-            document.getElementById('section').classList.add('hidden');
 
-            // Remove 'hide' class and add 'show' class to div2
-            document.getElementById('pwdModal').classList.remove('hidden');
+            document.getElementById('Login').classList.add('hidden');
+
+            document.getElementById('RecoverPassword').classList.remove('hidden');
         }
     </script>
 </asp:Content>

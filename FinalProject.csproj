@@ -148,6 +148,7 @@
     <Content Include="assets\js\plugins\smooth-scrollbar.min.js" />
     <Content Include="assets\js\soft-ui-dashboard.js" />
     <Content Include="assets\js\soft-ui-dashboard.min.js" />
+    <Content Include="assets\img\tpsi.jpg" />
     <Content Include="bin\ASPSnippets.FaceBookAPI.dll" />
     <Content Include="bin\ASPSnippets.GoogleAPI.dll" />
     <Content Include="bin\FinalProject.dll" />

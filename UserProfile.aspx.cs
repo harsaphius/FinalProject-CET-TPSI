@@ -1,7 +1,9 @@
 ﻿using FinalProject.Classes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -9,12 +11,9 @@ namespace FinalProject
 {
     public partial class UserProfile : System.Web.UI.Page
     {
-        protected FileControl FileControlInstance;
-
         protected void Page_Load(object sender, EventArgs e)
         {
             string script;
-            FileControlInstance = new FileControl();
 
             if (Session["Logado"] == null)
             {
@@ -113,18 +112,23 @@ namespace FinalProject
                             tbEmail.Text = profileuser.Email;
                             ddlCodGrauAcademico.SelectedValue = profileuser.CodGrauAcademico.ToString();
                             tbLifeMotto.Text = profileuser.LifeMotto;
-                            LoadSubmittedFiles();
+
+
+                            if (LoadSubmittedFiles() == 0)
+                            {
+                                lblSubmittedFiles.Text = "Ainda não foram submetidos ficheiros!";
+                            }
                         }
                     }
                 }
             }
         }
 
-        protected void btn_back_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("~/UserProfile.aspx");
-        }
-
+        /// <summary>
+        /// Função para editar os dados do utilizador
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             User user = new User();
@@ -151,11 +155,13 @@ namespace FinalProject
             user.IBAN = tbIBAN.Text;
             user.Naturalidade = (tbNaturalidade.Text);
             user.CodNacionalidade = Convert.ToInt32(ddlCodNacionalidade.SelectedValue);
-            HttpPostedFile photoFile = fuFoto.PostedFile;
+            if (fuFoto.HasFile)
+            {
+                HttpPostedFile photoFile = fuFoto.PostedFile;
 
-            byte[] photoBytes = FileControl.ProcessPhotoFile(photoFile);
-            user.Foto = (Convert.ToBase64String(photoBytes));
-
+                byte[] photoBytes = FileControl.ProcessPhotoFile(photoFile);
+                user.Foto = (Convert.ToBase64String(photoBytes));
+            }
             user.CodGrauAcademico = Convert.ToInt32(ddlCodGrauAcademico.SelectedValue);
             user.CodSituacaoProf = Convert.ToInt32(ddlCodSituacaoProfissional.SelectedValue);
             user.LifeMotto = tbLifeMotto.Text;
@@ -166,6 +172,11 @@ namespace FinalProject
             else lbl_message.Text = "Erro na atualização de perfil.";
         }
 
+        /// <summary>
+        /// Função para alterar a password
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnChangePW_Click(object sender, EventArgs e)
         {
             (bool password, List<string> failures) = Security.IsPasswordStrong(tbPwNew.Text);
@@ -232,16 +243,82 @@ namespace FinalProject
             }
         }
 
-        public void LoadSubmittedFiles()
+        /// <summary>
+        /// Função para mostrar os ficheiros submetidos pelo utilizador
+        /// </summary>
+        /// <returns></returns>
+        private int LoadSubmittedFiles()
         {
             if ((Session["CodUtilizador"].ToString() != null))
             {
                 int CodUtilizador = Convert.ToInt32(Session["CodUtilizador"].ToString());
                 List<FileControl> files = FileControl.GetFilesForUser(CodUtilizador);
 
-                fileRepeater.DataSource = files;
-                fileRepeater.DataBind();
+                if (files != null)
+                {
+                    if (files.Count > 0)
+                    {
+                        fileRepeater.DataSource = files;
+                        fileRepeater.DataBind();
+
+                        return 1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
             }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Função do Repeater FileRepeater que permite o download de cada ficheiro
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void fileRepeater_OnItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "Download")
+            {
+                int fileId;
+                if (int.TryParse(e.CommandArgument.ToString(), out fileId))
+                {
+                    Classes.FileControl.ProcessRequest(HttpContext.Current, fileId);
+                }
+            }
+        }  
+        
+        [WebMethod]
+        public static string UploadImage(HttpPostedFile file)
+        {
+            if (HttpContext.Current.Session["CodUtilizador"] != null)
+            {
+                int CodUtilizador = Convert.ToInt32(HttpContext.Current.Session["CodUtilizador"]);
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    // Save the file to the server
+                    string fileName = Path.GetFileName(file.FileName);
+                    string filePath = HttpContext.Current.Server.MapPath("~/Uploads/" + fileName);
+                    file.SaveAs(filePath);
+
+                    // Process the uploaded file
+                    byte[] photoBytes = FileControl.ProcessPhotoFile(file);
+                    User user = new User();
+                    user.Foto = Convert.ToBase64String(photoBytes);
+                    user.CodUser = CodUtilizador;
+
+                    int AnswChangeProfilePic = Classes.User.ChangeProfilePic(user);
+
+                    if (AnswChangeProfilePic == 1)
+                    {
+                        return "success";
+                    }
+                }
+            }
+            return "failed";
         }
     }
 }

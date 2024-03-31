@@ -238,7 +238,7 @@
                                                                                                 <asp:RequiredFieldValidator ID="rfvDataValidade" Text="*" ValidationGroup="Page1" ErrorMessage="Data de Validade Obrigatória" runat="server" ControlToValidate="tbDataValidade" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                                                                 <div class="input-group">
                                                                                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                                                                                    <asp:TextBox ID="tbDataValidade" ValidationGroup="Page1"  placeholder="Pick a date" runat="server" CssClass="form-control datepicker" TextMode="DateTime"></asp:TextBox>
+                                                                                                    <asp:TextBox ID="tbDataValidade" ValidationGroup="Page1" placeholder="Pick a date" runat="server" CssClass="form-control datepicker" TextMode="DateTime"></asp:TextBox>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -289,19 +289,17 @@
                                                                                     </div>
                                                                                     <div class="card card-footer">
                                                                                         <div class="col-md-12 align-items-start">
-                                                                                           <%-- <asp:Button runat="server" ID="btnBackManageStudents" ValidationGroup="Page1" OnClientClick="showMainPage(); return false;" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
+                                                                                            <%-- <asp:Button runat="server" ID="btnBackManageStudents" ValidationGroup="Page1" OnClientClick="showMainPage(); return false;" CausesValidation="False" class="btn btn-outline-primary btn-sm mb-0" Text="Voltar" />
                                                                                             &nbsp;--%>
-                                                                                        <asp:Button runat="server" ID="btnÑextPage" ValidationGroup="Page1" OnClientClick="showNextDiv(); return false;" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Seguinte" />
+                                                                                            <asp:Button runat="server" ID="btnNextPage" ValidationGroup="Page1" OnClientClick="showNextDiv(); return false;" CausesValidation="True" class="btn btn-outline-primary btn-sm mb-0" Text="Seguinte" />
                                                                                         </div>
                                                                                     </div>
                                                                                 </ContentTemplate>
                                                                             </asp:UpdatePanel>
                                                                         </div>
                                                                         <div class="col-md-3">
-                                                                            <div>
-                                                                                <div class="alert text-white font-weight-bold" role="alert">
-                                                                                    <asp:ValidationSummary ID="ValidationSummary1" runat="server" ValidationGroup="Page1" ForeColor="#cc3a60" DisplayMode="List" />
-                                                                                </div>
+                                                                            <div class="alert text-white font-weight-bold" role="alert">
+                                                                                <asp:ValidationSummary ID="ValidationSummary1" runat="server" ValidationGroup="Page1" ForeColor="#cc3a60" DisplayMode="List" />
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -420,7 +418,9 @@
                                                                             </asp:UpdatePanel>
                                                                         </div>
                                                                         <div class="col-md-3">
-                                                                            <asp:ValidationSummary ID="ValidationSummary2" runat="server" ValidationGroup="Page2" ForeColor="#cc3a60" DisplayMode="List" />
+                                                                            <div class="alert text-white font-weight-bold" role="alert">
+                                                                                <asp:ValidationSummary ID="ValidationSummary2" runat="server" ValidationGroup="Page2" ForeColor="#cc3a60" DisplayMode="List" />
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -568,13 +568,13 @@
         }
     </script>
     <script>
-    function showMainPage() {
-        event.preventDefault();
+        function showMainPage() {
+            event.preventDefault();
 
-        document.getElementById('insertStudentsDiv').classList.add('hidden');
+            document.getElementById('insertStudentsDiv').classList.add('hidden');
 
-        document.getElementById('listStudentsDiv').classList.remove('hidden');
-    }
+            document.getElementById('listStudentsDiv').classList.remove('hidden');
+        }
     </script>
 
 

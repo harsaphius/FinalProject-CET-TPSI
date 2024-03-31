@@ -447,13 +447,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSPais;
 
         /// <summary>
-        /// btnÑextPage control.
+        /// btnNextPage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnÑextPage;
+        protected global::System.Web.UI.WebControls.Button btnNextPage;
 
         /// <summary>
         /// ValidationSummary1 control.

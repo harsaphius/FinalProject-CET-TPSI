@@ -41,7 +41,7 @@
                         <div class="card card-blog card-plain">
                             <div class="position-relative">
                                 <a class="d-block shadow-xl border-radius-xl">
-                                    <img src="../assets/img/home-decor-1.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
+                                    <img src="../assets/img/tpsi.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                                 </a>
                             </div>
                             <div class="card-body px-1 pb-0">
