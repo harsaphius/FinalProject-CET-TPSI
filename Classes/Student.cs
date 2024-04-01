@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
+using System.Web;
 
 namespace FinalProject.Classes
 {
@@ -52,12 +54,11 @@ namespace FinalProject.Classes
         /// Função para carregar os formandos
         /// </summary>
         /// <returns></returns>
-        public static List<Student> LoadStudents()
+        public static List<Student> LoadStudents(List<string> conditions = null)
         {
             List<Student> Students = new List<Student>();
-            List<string> conditions = new List<string>();
 
-            string query = "SELECT DISTINCT codFormando,nome,foto FROM formando AS F LEFT JOIN inscricao AS I ON F.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador";
+            string query = "SELECT DISTINCT F.codFormando, UD.nome, UDS.foto FROM formando AS F LEFT JOIN inscricao AS I ON F.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador";
 
             //// Decisões para colocar ou não os filtros dentro da string query
             //if (!string.IsNullOrEmpty(search_string))
@@ -102,8 +103,11 @@ namespace FinalProject.Classes
                 //informacao.CodInscricao = Convert.ToInt32(dr["codInscricao"]);
                 informacao.Nome = dr["nome"].ToString();
 
-                if (informacao.Foto != null)
-                    informacao.Foto = "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
+                string relativeImagePath = "~/assets/img/default.png";
+                string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                byte[] imageData = File.ReadAllBytes(absoluteImagePath);
+
+                informacao.Foto = dr["foto"] == DBNull.Value ? "data:image/jpeg;base64," + Convert.ToBase64String(imageData) : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
 
                 Students.Add(informacao);
             }
@@ -122,7 +126,7 @@ namespace FinalProject.Classes
             Student Student = new Student();
             User User = new User();
 
-            string query = $"SELECT DISTINCT * FROM formando AS F LEFT JOIN inscricao AS I ON F.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizadorDataSecondary WHERE F.CodFormando={CodFormando}";
+            string query = $"SELECT DISTINCT * FROM formando AS F LEFT JOIN inscricao AS I ON F.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador WHERE F.CodFormando={CodFormando}";
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -166,7 +170,11 @@ namespace FinalProject.Classes
             return (Student, User);
         }
 
-
+        /// <summary>
+        /// Função para eliminar um formando
+        /// </summary>
+        /// <param name="CodUtilizador"></param>
+        /// <returns></returns>
         public static int DeleteStudent(int CodUtilizador)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);

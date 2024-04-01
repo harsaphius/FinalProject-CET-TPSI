@@ -74,8 +74,6 @@ namespace FinalProject
 
                 if (!IsPostBack)
                 {
-                    //InitializeFlatpickrDatePickers();    
-
                     BindDataStudents();
                     BindDataCourses();
                     BindDataUsers();
@@ -84,15 +82,19 @@ namespace FinalProject
 
             }
         }
-        
+
+        //Funções de ItemDataBound dos Repeaters
+
         protected void rptUserForStudents_OnItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 CheckBox chkBoxUser = (CheckBox)e.Item.FindControl("chkBoxUser");
-                chkBoxUser.CheckedChanged += chkBoxMod_CheckedChanged;
+                chkBoxUser.CheckedChanged += chkBoxUser_OnCheckedChanged;
             }
         }
+
+        //Funções de ItemCommand dos Repeaters
 
         protected void rptListStudents_OnItemCommand(object source, RepeaterCommandEventArgs e)
         {
@@ -183,10 +185,12 @@ namespace FinalProject
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 CheckBox chkBoxMod = (CheckBox)e.Item.FindControl("chckBox");
-                chkBoxMod.CheckedChanged += chkBoxMod_CheckedChanged;
+                chkBoxMod.CheckedChanged += chkBoxMod_OnCheckedChanged;
             }
         }
 
+
+        //Funções de Inserção/Edição
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             User user = new User();
@@ -207,7 +211,7 @@ namespace FinalProject
                 user.Email = tbEmail.Text;
                 string NovaPasse = Membership.GeneratePassword(10, 2);
                 user.Password = NovaPasse;
-                user.DocIdent = ddlDocumentoIdent.SelectedValue;
+                user.CodTipoDoc = Convert.ToInt32(ddlDocumentoIdent.SelectedValue);
                 user.DocIdent = tbCC.Text;
                 user.DataValidade = Convert.ToDateTime(tbDataValidade.Text);
                 user.CodPrefix = Convert.ToInt32(ddlPrefixo.SelectedValue);
@@ -215,7 +219,7 @@ namespace FinalProject
 
                 (int UserRegister, int userCode) = Classes.User.RegisterUser(user);
 
-                if (UserRegister == 0)
+                if (UserRegister == 1)
                 {
                     EmailControl.SendEmailActivationWithPW(tbEmail.Text, parts[0], NovaPasse);
 
@@ -234,8 +238,11 @@ namespace FinalProject
                     user.CodNacionalidade = Convert.ToInt32(ddlCodNacionalidade.SelectedValue);
                     HttpPostedFile photoFile = fuFoto.PostedFile;
 
-                    byte[] photoBytes = FileControl.ProcessPhotoFile(photoFile);
-                    user.Foto = (Convert.ToBase64String(photoBytes));
+                    if (fuFoto.HasFile && photoFile != null)
+                    {
+                        byte[] photoBytes = FileControl.ProcessPhotoFile(photoFile);
+                        user.Foto = (Convert.ToBase64String(photoBytes));
+                    }
 
                     user.CodGrauAcademico = Convert.ToInt32(ddlCodGrauAcademico.SelectedValue);
                     user.CodSituacaoProf = Convert.ToInt32(ddlCodSituacaoProfissional.SelectedValue);
@@ -361,6 +368,7 @@ namespace FinalProject
             }
         }
 
+
         //Funções de DataBinding
         private void BindDataStudents()
         {
@@ -413,6 +421,70 @@ namespace FinalProject
             btnNextsUsersForStudents.Enabled = !pagedData.IsLastPage;
         }
 
+        //Funções para as CheckBoxes
+        protected void chkBoxMod_OnCheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
+            HiddenField hdnCourseID = (HiddenField)item.FindControl("hdnCourseID");
+            HiddenField hdnCourseName = (HiddenField)item.FindControl("hdnCourseName");
+            Label lblSelected = (Label)item.FindControl("lbl_order");
+
+            if (hdnCourseID != null && hdnCourseName != null && lblSelected != null)
+            {
+                if (checkBox.Checked)
+                {
+                    lblSelected.Text = "Seleccionado";
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"] ?? new List<int>();
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"] ?? new List<string>();
+                    selectedItems.Add(Convert.ToInt32(hdnCourseID.Value));
+                    itemsNames.Add(hdnCourseName.Value);
+                    ViewState["SelectedItems"] = selectedItems;
+                    ViewState["SelectedItemsNames"] = itemsNames;
+                }
+                else
+                {
+                    lblSelected.Text = "Selecione este módulo";
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"];
+                    if (selectedItems != null)
+                    {
+                        selectedItems.Remove(Convert.ToInt32(hdnCourseID.Value));
+                        itemsNames.Remove(hdnCourseName.Value);
+                        ViewState["SelectedItems"] = selectedItems;
+                        ViewState["SelectedItemsNames"] = itemsNames;
+                    }
+                }
+            }
+        }
+
+        protected void chkBoxUser_OnCheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
+            HiddenField hdnUserID = (HiddenField)item.FindControl("hdnUserID");
+
+            if (hdnUserID != null)
+            {
+                if (checkBox.Checked)
+                {
+                    List<int> selectedItems = (List<int>)ViewState["SelectedUsers"] ?? new List<int>();
+                    selectedItems.Add(Convert.ToInt32(hdnUserID.Value));
+                    ViewState["SelectedUsers"] = selectedItems;
+                }
+                else
+                {
+                    List<int> selectedItems = (List<int>)ViewState["SelectedUsers"];
+                    if (selectedItems != null)
+                    {
+                        selectedItems.Remove(Convert.ToInt32(hdnUserID.Value));
+                        ViewState["SelectedUsers"] = selectedItems;
+                    }
+                }
+            }
+        }
+
+
         //Funções de Paginação
 
         private int PageNumberCourses
@@ -450,7 +522,6 @@ namespace FinalProject
             }
             set => ViewState["PageNumberUsers"] = value;
         }
-
 
 
         //Funções para os botões de paginação
@@ -519,68 +590,6 @@ namespace FinalProject
             ScriptManager.RegisterStartupScript(this, GetType(), "FlatpickrInit", script, false);
         }
 
-        protected void chkBoxMod_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox checkBox = (CheckBox)sender;
-            RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
-            HiddenField hdnCourseID = (HiddenField)item.FindControl("hdnCourseID");
-            HiddenField hdnCourseName = (HiddenField)item.FindControl("hdnCourseName");
-            Label lblSelected = (Label)item.FindControl("lbl_order");
-
-            if (hdnCourseID != null && hdnCourseName != null && lblSelected != null)
-            {
-                if (checkBox.Checked)
-                {
-                    lblSelected.Text = "Seleccionado";
-                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"] ?? new List<int>();
-                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"] ?? new List<string>();
-                    selectedItems.Add(Convert.ToInt32(hdnCourseID.Value));
-                    itemsNames.Add(hdnCourseName.Value);
-                    ViewState["SelectedItems"] = selectedItems;
-                    ViewState["SelectedItemsNames"] = itemsNames;
-                }
-                else
-                {
-                    lblSelected.Text = "Selecione este módulo";
-                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
-                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"];
-                    if (selectedItems != null)
-                    {
-                        selectedItems.Remove(Convert.ToInt32(hdnCourseID.Value));
-                        itemsNames.Remove(hdnCourseName.Value);
-                        ViewState["SelectedItems"] = selectedItems;
-                        ViewState["SelectedItemsNames"] = itemsNames;
-                    }
-                }
-            }
-        }
-
-
-        protected void chkBoxUser_OnCheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox checkBox = (CheckBox)sender;
-            RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
-            HiddenField hdnUserID = (HiddenField)item.FindControl("hdnUserID");
-
-            if (hdnUserID != null)
-            {
-                if (checkBox.Checked)
-                {
-                    List<int> selectedItems = (List<int>)ViewState["SelectedUsers"] ?? new List<int>();
-                    selectedItems.Add(Convert.ToInt32(hdnUserID.Value));
-                    ViewState["SelectedUsers"] = selectedItems;
-                }
-                else
-                {
-                    List<int> selectedItems = (List<int>)ViewState["SelectedUsers"];
-                    if (selectedItems != null)
-                    {
-                        selectedItems.Remove(Convert.ToInt32(hdnUserID.Value));
-                        ViewState["SelectedUsers"] = selectedItems;
-                    }
-                }
-            }
-        }
 
 
     }

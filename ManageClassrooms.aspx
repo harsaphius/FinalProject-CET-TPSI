@@ -4,65 +4,66 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
-        <asp:UpdatePanel ID="updatePanel" runat="server">
-            <ContentTemplate>
-                <div class="row" style="margin-top: 15px">
-                    <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
-                        <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Nova Sala" ID="btn_insertClassroom" OnClientClick="showInsert()" />
-                        <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_back" OnClientClick="showInsert()" />
-                        <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_backEditClassroom" OnClientClick="showEditClassroom()" />
-                    </div>
-                    <div id="filtermenu" class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
-                        <a href="javascript:;" onclick="toggleFilters()">
-                            <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
-                        </a>
-                    </div>
-                    <div id="filters" class="col-md-12 col-md-6 hidden" style="padding-left: 30px;">
-                        <asp:UpdatePanel ID="UpdatePanel6" runat="server">
-                            <ContentTemplate>
-                                <div class="row">
-                                    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                                        <span>Designação:</span>
-                                        <div class="input-group mb-4">
-                                            <asp:LinkButton runat="server" ID="lbtSearch" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
-                                            <asp:TextBox runat="server" ID="tbSearch" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
-                                        <span>Tipo de Sala: </span>
-                                        <div class="input-group mb-4">
-                                            <asp:DropDownList ID="ddlTipoSalaFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipoSala" DataTextField="tipoSala" DataValueField="codTipoSala"></asp:DropDownList>
-                                        </div>
-                                    </div>
 
-                                    <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
-                                        <span>Local da Sala: </span>
-                                        <div class="input-group mb-4">
-                                            <asp:DropDownList ID="ddlLocalSalaFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSLocalSala" DataTextField="localSala" DataValueField="codLocalSala"></asp:DropDownList>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                                        <br />
-                                        <div class="input-group mb-4">
-                                            <asp:Button runat="server" ID="btnApplyFilters" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" />
-                                            <span>&nbsp; &nbsp;</span>
-                                            <asp:Button runat="server" ID="btnClearFilters" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
-                                        </div>
-                                    </div>
+        <div class="row" style="margin-top: 15px">
+            <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
+                <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Nova Sala" ID="btn_insertClassroom" OnClientClick="showInsert(); return false;" />
+                <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_back" OnClientClick="showInsert(); return false;" />
+                <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_backEditClassroom" OnClientClick="showEditClassroom(); return false;" />
+            </div>
+            <div id="filtermenu" class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
+                <a href="javascript:;" onclick="toggleFilters()">
+                    <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
+                </a>
+            </div>
+            <div id="filters" class="col-md-12 col-md-6 hidden" style="padding-left: 30px;">
+                <asp:UpdatePanel ID="updatePanelFilters" runat="server">
+                    <ContentTemplate>
+                        <div class="row">
+                            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                                <span>Designação:</span>
+                                <div class="input-group mb-4">
+                                    <asp:LinkButton runat="server" ID="lbtSearch" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
+                                    <asp:TextBox runat="server" ID="tbSearch" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
                                 </div>
-                            </ContentTemplate>
-                            <Triggers>
-                                <asp:AsyncPostBackTrigger ControlID="btnApplyFilters"/>
-                                <asp:AsyncPostBackTrigger ControlID="btnClearFilters" />
-                            </Triggers>
-                        </asp:UpdatePanel>
-                    </div>
-                </div>
-                <div class="container-fluid py-4">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card mb-4">
-                                <div id="listClassroomsDiv">
+                            </div>
+                            <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+                                <span>Tipo de Sala: </span>
+                                <div class="input-group mb-4">
+                                    <asp:DropDownList ID="ddlTipoSalaFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipoSala" DataTextField="tipoSala" DataValueField="codTipoSala"></asp:DropDownList>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+                                <span>Local da Sala: </span>
+                                <div class="input-group mb-4">
+                                    <asp:DropDownList ID="ddlLocalSalaFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSLocalSala" DataTextField="localSala" DataValueField="codLocalSala"></asp:DropDownList>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                                <br />
+                                <div class="input-group mb-4">
+                                    <asp:Button runat="server" ID="btnApplyFilters" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" />
+                                    <span>&nbsp; &nbsp;</span>
+                                    <asp:Button runat="server" ID="btnClearFilters" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
+                                </div>
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="btnApplyFilters" />
+                        <asp:AsyncPostBackTrigger ControlID="btnClearFilters" />
+                    </Triggers>
+                </asp:UpdatePanel>
+            </div>
+        </div>
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div id="listClassroomsDiv">
+                            <asp:UpdatePanel ID="updatePanelListClassrooms" runat="server">
+                                <ContentTemplate>
                                     <div class="card-header pb-0">
                                         <h6>Salas</h6>
                                     </div>
@@ -85,6 +86,7 @@
                                         <ItemTemplate>
                                             <tr>
                                                 <td>
+                                                    <asp:HiddenField runat="server" ID="hdnClassroomID" Value='<%# Eval("CodSala") %>' />
                                                     <div class="d-flex px-2">
                                                         <div class="my-auto">
                                                             <asp:TextBox ID="tbNrSala" CssClass="form-control" runat="server" Text='<%# Bind("NrSala") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
@@ -118,7 +120,7 @@
                                                     <asp:LinkButton runat="server" ID="lbt_delete" CausesValidation="false" CommandName="Delete" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
                                                         Text="Delete" class="text-secondary font-weight-bold text-xs">
                                                     </asp:LinkButton>
-                                                    <asp:LinkButton runat="server" ID="lbt_confirm" CausesValidation="false" CommandName="Confirm" Visible="false" CommandArgument='<%# Container.ItemIndex %>'
+                                                    <asp:LinkButton runat="server" ID="lbt_confirm" CausesValidation="false" CommandName="Confirm" Visible="false" AutoPostBack="true" CommandArgument='<%# Container.ItemIndex %>'
                                                         Text="Confirm" class="text-secondary font-weight-bold text-xs">
                                                     </asp:LinkButton>
                                                 </td>
@@ -134,21 +136,29 @@
                                     <!--Paginação -->
                                     <ul class="pagination">
                                         <li class="page-item">
-                                            <asp:LinkButton ID="btn_previous" CssClass="page-link" CausesValidation="false" OnClick="btn_previous_Click" runat="server">
+                                            <asp:LinkButton ID="btnPreviousClassroom" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousClassroom_OnClick" runat="server">
                                                     <i class="fa fa-angle-left"></i>
                                                     <span class="sr-only">Previous</span>
                                             </asp:LinkButton>
                                         </li>
                                         <li></li>
                                         <li class="page-item">
-                                            <asp:LinkButton ID="btn_next" CssClass="page-link" OnClick="btn_next_Click" CausesValidation="false" runat="server">
+                                            <asp:LinkButton ID="btnNextClassroom" CssClass="page-link" OnClick="btnNextClassroom_OnClick" CausesValidation="false" runat="server">
                                                     <i class="fa fa-angle-right"></i>
                                                     <span class="sr-only">Next</span>
                                             </asp:LinkButton>
                                         </li>
                                     </ul>
-                                </div>
-                                <div id="insertClassroomsDiv" class="hidden">
+                                </ContentTemplate>
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="btnPreviousClassroom" />
+                                    <asp:AsyncPostBackTrigger ControlID="btnNextClassroom" />
+                                </Triggers>
+                            </asp:UpdatePanel>
+                        </div>
+                        <div id="insertClassroomsDiv" class="hidden">
+                            <asp:UpdatePanel ID="updatePanelInsertClassrooms" runat="server">
+                                <ContentTemplate>
                                     <div style="padding: 5px;" id="alert" role="alert">
                                         <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
                                     </div>
@@ -195,13 +205,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </ContentTemplate>
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="btnInsertClassroom" />
+                                </Triggers>
+                            </asp:UpdatePanel>
                         </div>
                     </div>
                 </div>
-            </ContentTemplate>
-        </asp:UpdatePanel>
+            </div>
+        </div>
     </div>
     <!-- Função de Javascript para Mostrar a Div de Inserir após click no Button Inserir Módulo -->
     <script>

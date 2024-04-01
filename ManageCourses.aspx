@@ -39,8 +39,7 @@
                             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                                 <span>Tipo:</span>
                                 <div class="dropdown">
-                                    <asp:DropDownList ID="ddlTipoCursoFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso">
-                                    </asp:DropDownList>
+                                    <asp:DropDownList ID="ddlTipoCursoFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso"></asp:DropDownList>
                                     <asp:SqlDataSource ID="SQLDSTipo" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
                                 </div>
                             </div>
@@ -48,7 +47,7 @@
                                 <span>Data de Início: </span>
                                 <div class="input-group mb-4">
                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                    <asp:TextBox runat="server" ID="tbDataInicioFilters" class="form-control datepicker" TextMode="Date"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="tbDataInicioFilters" class="form-control datepicker"  placeholder="Please select date" TextMode="Date"></asp:TextBox>
                                 </div>
                             </div>
 
@@ -594,7 +593,6 @@
                 btnInsert.classList.remove('hidden');
                 btnBack.classList.add('hidden');
                 filterMenu.classList.remove('hidden');
-
             }
         }
     </script>

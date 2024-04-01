@@ -72,10 +72,13 @@ namespace FinalProject
             }
         }
 
+        //Função de ItemDataBound do Repeater
         protected void rpt_Classrooms_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
         }
 
+
+        //Função de ItemCommand do Repeater
         protected void rpt_Classrooms_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "Edit")
@@ -125,48 +128,115 @@ namespace FinalProject
                 lbt_edit.Visible = false;
                 lbt_delete.Visible = false;
             }
-        }
-
-        protected void btn_previous_Click(object sender, EventArgs e)
-        {
-            PageNumberClassrooms -= 1;
-            BindDataClassrooms();
-        }
-
-        protected void btn_next_Click(object sender, EventArgs e)
-        {
-            PageNumberClassrooms += 1;
-            BindDataClassrooms();
-        }
-
-        private void BindDataClassrooms()
-        {
-            PagedDataSource pagedData = new PagedDataSource();
-            pagedData.DataSource = Classes.Classroom.LoadClassrooms();
-            pagedData.AllowPaging = true;
-            pagedData.PageSize = 5;
-            pagedData.CurrentPageIndex = PageNumberClassrooms;
-
-
-            rpt_Classrooms.DataSource = pagedData;
-            rpt_Classrooms.DataBind();
-
-            btn_previous.Enabled = !pagedData.IsFirstPage;
-            btn_next.Enabled = !pagedData.IsLastPage;
-        }
-
-        public int PageNumberClassrooms
-        {
-            get
+            if (e.CommandName == "Confirm")
             {
-                if (ViewState["PageNumberClassrooms"] != null)
-                    return Convert.ToInt32(ViewState["PageNumberClassrooms"]);
-                else
-                    return 0;
+                RepeaterItem item = rpt_Classrooms.Items[e.Item.ItemIndex];
+
+                HiddenField hdnClassroomID = (HiddenField)item.FindControl("hdnClassroomID");
+                string ClassroomID = hdnClassroomID.Value;
+
+                TextBox tbNrSala = (TextBox)item.FindControl("tbNrSala");
+                DropDownList ddlTipoSala = (DropDownList)item.FindControl("ddlTipoSala");
+                DropDownList ddlLocalSala = (DropDownList)item.FindControl("ddlLocalSala");
+
+                Label lblNrSala = (Label)item.FindControl("lblNrSala");
+                Label lblTipoSala = (Label)item.FindControl("lblTipoSala");
+                Label lblLocalSala = (Label)item.FindControl("lblLocalSala");
+
+
+                LinkButton lbt_edit = (LinkButton)item.FindControl("lbt_edit");
+                LinkButton lbt_cancel = (LinkButton)item.FindControl("lbt_cancel");
+                LinkButton lbt_delete = (LinkButton)item.FindControl("lbt_delete");
+                LinkButton lbt_confirm = (LinkButton)item.FindControl("lbt_confirm");
+
+                if (!string.IsNullOrEmpty(tbNrSala.Text))
+                {
+                    Classroom classroom = new Classroom();
+
+                    classroom.CodSala = Convert.ToInt32(ClassroomID);
+                    classroom.NrSala = tbNrSala.Text;
+                    classroom.CodTipoSala = Convert.ToInt32(ddlTipoSala.SelectedValue);
+                    classroom.CodLocalSala = Convert.ToInt32(ddlLocalSala.SelectedValue);
+
+                    int AnswClassroomUpdated = Classes.Classroom.UpdateClassroom(classroom);
+
+                    if (AnswClassroomUpdated == 1)
+                    {
+                        tbNrSala.Visible = !tbNrSala.Visible;
+                        lblNrSala.Visible = !lblNrSala.Visible;
+                        lblNrSala.Text = tbNrSala.Text;
+
+                        ddlLocalSala.Visible = !ddlLocalSala.Visible;
+                        lblLocalSala.Visible = !lblLocalSala.Visible;
+                        lblLocalSala.Text = ddlLocalSala.Text;
+
+                        ddlTipoSala.Visible = !ddlTipoSala.Visible;
+                        lblTipoSala.Visible = !lblTipoSala.Visible;
+                        lblTipoSala.Text = ddlTipoSala.Text;
+
+                        // Show "Cancel" and "Confirm" buttons
+                        lbt_cancel.Visible = false;
+                        lbt_confirm.Visible = false;
+
+                        // Hide "Edit" and "Delete" buttons
+                        lbt_edit.Visible = true;
+                        lbt_delete.Visible = true;
+
+                        lbl_message.Text = "Sala atualizada com sucesso";
+                    }
+                    else if (AnswClassroomUpdated == -2)
+                    {
+                        tbNrSala.Visible = !tbNrSala.Visible;
+                        lblNrSala.Visible = !lblNrSala.Visible;
+                        lblNrSala.Text = lblNrSala.Text;
+
+                        ddlLocalSala.Visible = !ddlLocalSala.Visible;
+                        lblLocalSala.Visible = !lblLocalSala.Visible;
+                        lblLocalSala.Text = lblLocalSala.Text;
+
+                        ddlTipoSala.Visible = !ddlTipoSala.Visible;
+                        lblTipoSala.Visible = !lblTipoSala.Visible;
+                        lblTipoSala.Text = lblTipoSala.Text;
+
+                        // Show "Cancel" and "Confirm" buttons
+                        lbt_cancel.Visible = false;
+                        lbt_confirm.Visible = false;
+
+                        // Hide "Edit" and "Delete" buttons
+                        lbt_edit.Visible = true;
+                        lbt_delete.Visible = true;
+
+                        lbl_message.Text = "Sala não pode ser atualizada por já se encontrar a ser utilizada. Insira uma nova sala.";
+                    }
+                }
             }
-            set => ViewState["PageNumberClassrooms"] = value;
+
+            if (e.CommandName == "Delete")
+            {
+                RepeaterItem item = rpt_Classrooms.Items[e.Item.ItemIndex];
+
+                HiddenField hdnClassroomID = (HiddenField)item.FindControl("hdnClassroomID");
+                string ClassroomID = hdnClassroomID.Value;
+
+                int AnswClassroomDeleted = Classes.Classroom.DeleteClassroom(Convert.ToInt32(ClassroomID));
+
+                if (AnswClassroomDeleted == 1)
+                {
+                    BindDataClassrooms();
+                    lbl_message.Text = "Sala apagada com sucesso!";
+
+                }
+                else
+                {
+                    lbl_message.Text = "Sala não pode ser eliminada por fazer parte de um horário!";
+                }
+
+
+            }
         }
 
+
+        //Função de Inserção
         protected void btnInsertClassroom_OnClick(object sender, EventArgs e)
         {
             Classroom classroom = new Classroom();
@@ -183,5 +253,49 @@ namespace FinalProject
             }
 
         }
+
+        //Função de Databinding
+        private void BindDataClassrooms()
+        {
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.Classroom.LoadClassrooms();
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 5;
+            pagedData.CurrentPageIndex = PageNumberClassrooms;
+
+
+            rpt_Classrooms.DataSource = pagedData;
+            rpt_Classrooms.DataBind();
+
+            btnPreviousClassroom.Enabled = !pagedData.IsFirstPage;
+            btnNextClassroom.Enabled = !pagedData.IsLastPage;
+        }
+
+        //Função de Paginação
+        private int PageNumberClassrooms
+        {
+            get
+            {
+                if (ViewState["PageNumberClassrooms"] != null)
+                    return Convert.ToInt32(ViewState["PageNumberClassrooms"]);
+                else
+                    return 0;
+            }
+            set => ViewState["PageNumberClassrooms"] = value;
+        }
+
+        //Funções para os botões de paginação
+        protected void btnPreviousClassroom_OnClick(object sender, EventArgs e)
+        {
+            PageNumberClassrooms -= 1;
+            BindDataClassrooms();
+        }
+
+        protected void btnNextClassroom_OnClick(object sender, EventArgs e)
+        {
+            PageNumberClassrooms += 1;
+            BindDataClassrooms();
+        }
+
     }
 }

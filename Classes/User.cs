@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
+using System.Web;
 
 namespace FinalProject.Classes
 {
@@ -48,7 +50,9 @@ namespace FinalProject.Classes
         {
             List<int> Users = new List<int>();
 
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["ProjetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+            SqlConnection myCon = new SqlConnection(ConfigurationManager
+                .ConnectionStrings["ProjetoFinalConnectionString"]
+                .ConnectionString); //Definir a conexão à base de dados
 
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@User", Username); //Adicionar o valor da tb_user ao parâmetro @nome
@@ -80,7 +84,8 @@ namespace FinalProject.Classes
             myCommand.CommandType = CommandType.StoredProcedure;
             myCommand.CommandText = "UserSignIn";
 
-            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
+            myCommand.Connection =
+                myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
             myCon.Open(); //Abrir a conexão
             myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
             int AnswUserExist = Convert.ToInt32(myCommand.Parameters["@UserExists"].Value);
@@ -102,9 +107,11 @@ namespace FinalProject.Classes
         /// <returns></returns>
         public static User LoadUser(string UserC)
         {
-            string query = $"SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador WHERE utilizador='{UserC}' OR email='{UserC}'";
+            string query =
+                $"SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador WHERE utilizador='{UserC}' OR email='{UserC}'";
 
-            SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
+            SqlConnection myConn = new SqlConnection(ConfigurationManager
+                .ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
             myConn.Open();
 
@@ -119,24 +126,42 @@ namespace FinalProject.Classes
                 informacao.Nome = dr["nome"] == DBNull.Value ? " " : dr["nome"].ToString();
                 informacao.CodTipoDoc = (int)(dr["codTipoDoc"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codTipoDoc"]));
                 informacao.DocIdent = dr["docIdent"] == DBNull.Value ? " " : dr["docIdent"].ToString();
-                informacao.DataValidade = (DateTime)(dr["dataValidadeDocIdent"] == DBNull.Value ? DateTime.Today : Convert.ToDateTime(dr["dataValidadeDocIdent"]).Date);
+                informacao.DataValidade = (DateTime)(dr["dataValidadeDocIdent"] == DBNull.Value
+                    ? DateTime.Today
+                    : Convert.ToDateTime(dr["dataValidadeDocIdent"]).Date);
                 informacao.CodPrefix = (int)(dr["prefixo"] == DBNull.Value ? 1 : Convert.ToInt32(dr["prefixo"]));
                 informacao.Phone = dr["telemovel"] == DBNull.Value ? " " : dr["telemovel"].ToString();
                 informacao.Sexo = (int)(dr["sexo"] == DBNull.Value ? 1 : Convert.ToInt32(dr["sexo"]));
-                informacao.DataNascimento = (DateTime)(dr["dataNascimento"] == DBNull.Value ? DateTime.Today : Convert.ToDateTime(dr["dataNascimento"]).Date);
+                informacao.DataNascimento = (DateTime)(dr["dataNascimento"] == DBNull.Value
+                    ? DateTime.Today
+                    : Convert.ToDateTime(dr["dataNascimento"]).Date);
                 informacao.NIF = dr["nif"] == DBNull.Value ? " " : dr["nif"].ToString();
                 informacao.Morada = dr["morada"] == DBNull.Value ? " " : dr["morada"].ToString();
                 informacao.Localidade = dr["localidade"] == DBNull.Value ? " " : dr["localidade"].ToString();
                 informacao.CodPais = (int)(dr["codPais"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codPais"]));
                 informacao.CodPostal = dr["codPostal"] == DBNull.Value ? " " : dr["codPostal"].ToString();
-                informacao.CodEstadoCivil = (int)(dr["codEstadoCivil"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codEstadoCivil"]));
+                informacao.CodEstadoCivil =
+                    (int)(dr["codEstadoCivil"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codEstadoCivil"]));
                 informacao.NrSegSocial = dr["nrSegSocial"] == DBNull.Value ? " " : dr["nrSegSocial"].ToString();
                 informacao.IBAN = dr["IBAN"] == DBNull.Value ? " " : dr["IBAN"].ToString();
                 informacao.Naturalidade = dr["naturalidade"] == DBNull.Value ? " " : dr["naturalidade"].ToString();
-                informacao.CodNacionalidade = (int)(dr["codNacionalidade"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codNacionalidade"]));
-                informacao.Foto = dr["foto"] == DBNull.Value ? "default_image_url" : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
-                informacao.CodGrauAcademico = (int)(dr["codGrauAcademico"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codGrauAcademico"]));
-                informacao.CodSituacaoProf = (int)(dr["codSituacaoProfissional"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codSituacaoProfissional"]));
+                informacao.CodNacionalidade = (int)(dr["codNacionalidade"] == DBNull.Value
+                    ? 1
+                    : Convert.ToInt32(dr["codNacionalidade"]));
+
+                string relativeImagePath = "~/assets/img/default.png";
+                string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                byte[] imageData = File.ReadAllBytes(absoluteImagePath);
+
+                informacao.Foto = dr["foto"] == DBNull.Value
+                    ? "data:image/jpeg;base64," + Convert.ToBase64String(imageData)
+                    : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
+                informacao.CodGrauAcademico = (int)(dr["codGrauAcademico"] == DBNull.Value
+                    ? 1
+                    : Convert.ToInt32(dr["codGrauAcademico"]));
+                informacao.CodSituacaoProf = (int)(dr["codSituacaoProfissional"] == DBNull.Value
+                    ? 1
+                    : Convert.ToInt32(dr["codSituacaoProfissional"]));
                 informacao.LifeMotto = dr["lifemotto"] == DBNull.Value ? " " : dr["lifemotto"].ToString();
             }
 
@@ -154,7 +179,8 @@ namespace FinalProject.Classes
             List<User> Users = new List<User>();
             List<string> conditions = new List<string>();
 
-            string query = "SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador";
+            string query =
+                "SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador";
             query += condition;
 
             //// Decisões para colocar ou não os filtros dentro da string query
@@ -187,7 +213,8 @@ namespace FinalProject.Classes
             //    query += " ORDER BY moeda_estado.valor_atual " + sort_order;
             //}
 
-            SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
+            SqlConnection myConn = new SqlConnection(ConfigurationManager
+                .ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
             myConn.Open();
 
@@ -202,28 +229,47 @@ namespace FinalProject.Classes
                 informacao.Nome = dr["nome"] == DBNull.Value ? " " : dr["nome"].ToString();
                 informacao.CodTipoDoc = (int)(dr["codTipoDoc"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codTipoDoc"]));
                 informacao.DocIdent = dr["docIdent"] == DBNull.Value ? " " : dr["docIdent"].ToString();
-                informacao.DataValidade = (DateTime)(dr["dataValidadeDocIdent"] == DBNull.Value ? DateTime.Today : Convert.ToDateTime(dr["dataValidadeDocIdent"]).Date);
+                informacao.DataValidade = (DateTime)(dr["dataValidadeDocIdent"] == DBNull.Value
+                    ? DateTime.Today
+                    : Convert.ToDateTime(dr["dataValidadeDocIdent"]).Date);
                 informacao.CodPrefix = (int)(dr["prefixo"] == DBNull.Value ? 1 : Convert.ToInt32(dr["prefixo"]));
                 informacao.Phone = dr["telemovel"] == DBNull.Value ? " " : dr["telemovel"].ToString();
                 informacao.Sexo = (int)(dr["sexo"] == DBNull.Value ? 1 : Convert.ToInt32(dr["sexo"]));
-                informacao.DataNascimento = (DateTime)(dr["dataNascimento"] == DBNull.Value ? DateTime.Today : Convert.ToDateTime(dr["dataNascimento"]).Date);
+                informacao.DataNascimento = (DateTime)(dr["dataNascimento"] == DBNull.Value
+                    ? DateTime.Today
+                    : Convert.ToDateTime(dr["dataNascimento"]).Date);
                 informacao.NIF = dr["nif"] == DBNull.Value ? " " : dr["nif"].ToString();
                 informacao.Morada = dr["morada"] == DBNull.Value ? " " : dr["morada"].ToString();
                 informacao.Localidade = dr["localidade"] == DBNull.Value ? " " : dr["localidade"].ToString();
                 informacao.CodPais = (int)(dr["codPais"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codPais"]));
                 informacao.CodPostal = dr["codPostal"] == DBNull.Value ? " " : dr["codPostal"].ToString();
-                informacao.CodEstadoCivil = (int)(dr["codEstadoCivil"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codEstadoCivil"]));
+                informacao.CodEstadoCivil =
+                    (int)(dr["codEstadoCivil"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codEstadoCivil"]));
                 informacao.NrSegSocial = dr["nrSegSocial"] == DBNull.Value ? " " : dr["nrSegSocial"].ToString();
                 informacao.IBAN = dr["IBAN"] == DBNull.Value ? " " : dr["IBAN"].ToString();
                 informacao.Naturalidade = dr["naturalidade"] == DBNull.Value ? " " : dr["naturalidade"].ToString();
-                informacao.CodNacionalidade = (int)(dr["codNacionalidade"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codNacionalidade"]));
-                informacao.Foto = dr["foto"] == DBNull.Value ? "default_image_url" : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
-                informacao.CodGrauAcademico = (int)(dr["codGrauAcademico"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codGrauAcademico"]));
-                informacao.CodSituacaoProf = (int)(dr["codSituacaoProfissional"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codSituacaoProfissional"]));
+                informacao.CodNacionalidade = (int)(dr["codNacionalidade"] == DBNull.Value
+                    ? 1
+                    : Convert.ToInt32(dr["codNacionalidade"]));
+
+                string relativeImagePath = "~/assets/img/default.png";
+                string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                byte[] imageData = File.ReadAllBytes(absoluteImagePath);
+
+                informacao.Foto = dr["foto"] == DBNull.Value
+                    ? "data:image/jpeg;base64," + Convert.ToBase64String(imageData)
+                    : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
+                informacao.CodGrauAcademico = (int)(dr["codGrauAcademico"] == DBNull.Value
+                    ? 1
+                    : Convert.ToInt32(dr["codGrauAcademico"]));
+                informacao.CodSituacaoProf = (int)(dr["codSituacaoProfissional"] == DBNull.Value
+                    ? 1
+                    : Convert.ToInt32(dr["codSituacaoProfissional"]));
                 informacao.LifeMotto = dr["lifemotto"] == DBNull.Value ? " " : dr["lifemotto"].ToString();
 
                 Users.Add(informacao);
             }
+
             myConn.Close();
 
             return Users;
@@ -236,7 +282,8 @@ namespace FinalProject.Classes
         /// <returns></returns>
         public static (int, int) RegisterUser(User user)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            SqlConnection myCon = new SqlConnection(ConfigurationManager
+                .ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
 
             SqlCommand myCommand = new SqlCommand();
             myCommand.Parameters.AddWithValue("@CodePerfil", user.CodPerfil);
@@ -287,7 +334,8 @@ namespace FinalProject.Classes
         /// <param name="anexos"></param>
         public static int CompleteRegisterUser(User user, List<FileControl> Anexos)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            SqlConnection myCon = new SqlConnection(ConfigurationManager
+                .ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
 
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@CodUtilizador", user.CodUser);
@@ -313,6 +361,7 @@ namespace FinalProject.Classes
             {
                 myCommand.Parameters.Add("@Foto", SqlDbType.VarBinary, -1).Value = DBNull.Value;
             }
+
             myCommand.Parameters.AddWithValue("@CodGrauAcademico", user.CodGrauAcademico);
             myCommand.Parameters.AddWithValue("@CodSituacaoProf", user.CodSituacaoProf);
             myCommand.Parameters.AddWithValue("@LifeMotto", user.LifeMotto);
@@ -366,7 +415,8 @@ namespace FinalProject.Classes
         /// <returns></returns>
         public static (int, string) DetermineUtilizador(string User)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            SqlConnection myCon = new SqlConnection(ConfigurationManager
+                .ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
 
             SqlCommand myCommand = new SqlCommand();
             myCommand.Parameters.AddWithValue("@User", User);
@@ -409,7 +459,8 @@ namespace FinalProject.Classes
         /// <returns></returns>
         public static (int, int) CheckEmail(string Email)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            SqlConnection myCon = new SqlConnection(ConfigurationManager
+                .ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
 
             SqlCommand myCommand = new SqlCommand();
             myCommand.Parameters.AddWithValue("@GoogleEmail", Email);
@@ -453,7 +504,8 @@ namespace FinalProject.Classes
         {
             List<int> UserProfiles = new List<int>();
 
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            SqlConnection myCon = new SqlConnection(ConfigurationManager
+                .ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
 
             SqlCommand myCommand = new SqlCommand();
             myCommand.Parameters.AddWithValue("@UserCode", UserCode);
@@ -492,7 +544,8 @@ namespace FinalProject.Classes
 
         public static int ChangeProfilePic(User User)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            SqlConnection myCon = new SqlConnection(ConfigurationManager
+                .ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
 
             SqlCommand myCommand = new SqlCommand();
             myCommand.Parameters.AddWithValue("@UserCode", User.CodUser);
@@ -519,6 +572,89 @@ namespace FinalProject.Classes
             myCon.Close();
 
             return AnswUserPhotoUpdated;
+        }
+
+        public static int UpdateUser(User User, List<FileControl> Anexos)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager
+                .ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+
+            SqlCommand myCommand = new SqlCommand();
+            myCommand.Parameters.AddWithValue("@CodUtilizador", User.CodUser);
+            myCommand.Parameters.AddWithValue("@CompleteName", User.Nome);
+            myCommand.Parameters.AddWithValue("@Email", User.Email);
+            myCommand.Parameters.AddWithValue("@CodCardType", User.CodTipoDoc);
+            myCommand.Parameters.AddWithValue("@CardNumber", User.DocIdent);
+            myCommand.Parameters.AddWithValue("@CardDate", User.DataValidade);
+            myCommand.Parameters.AddWithValue("@Prefix", User.CodPrefix);
+            myCommand.Parameters.AddWithValue("@PhoneNumber", User.Phone);
+            myCommand.Parameters.AddWithValue("@Sexo", User.Sexo);
+            myCommand.Parameters.AddWithValue("@DataNascimento", User.DataNascimento);
+            myCommand.Parameters.AddWithValue("@NIF", User.NIF);
+            myCommand.Parameters.AddWithValue("@Morada", User.Morada);
+            myCommand.Parameters.AddWithValue("@CodPais", User.CodPais);
+            myCommand.Parameters.AddWithValue("@CodPostal", User.CodPostal);
+            myCommand.Parameters.AddWithValue("@Freguesia", User.Localidade);
+            myCommand.Parameters.AddWithValue("@CodEstadoCivil", User.CodEstadoCivil);
+            myCommand.Parameters.AddWithValue("@NrSegSocial", User.NrSegSocial);
+            myCommand.Parameters.AddWithValue("@IBAN", User.IBAN);
+            myCommand.Parameters.AddWithValue("@Naturalidade", User.Naturalidade);
+            myCommand.Parameters.AddWithValue("@CodNacionalidade", User.CodNacionalidade);
+
+            if (User.Foto != null)
+            {
+                byte[] fotoBytes = Convert.FromBase64String(User.Foto);
+                myCommand.Parameters.Add("@Foto", SqlDbType.VarBinary, -1).Value = fotoBytes;
+            }
+            else
+            {
+                myCommand.Parameters.Add("@Foto", SqlDbType.VarBinary, -1).Value = DBNull.Value;
+            }
+
+            myCommand.Parameters.AddWithValue("@CodGrauAcademico", User.CodGrauAcademico);
+            myCommand.Parameters.AddWithValue("@CodSituacaoProf", User.CodSituacaoProf);
+            myCommand.Parameters.AddWithValue("@LifeMotto", User.LifeMotto);
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
+
+
+            SqlParameter UserUpdated = new SqlParameter();
+            UserUpdated.ParameterName = "@UserUpdated";
+            UserUpdated.Direction = ParameterDirection.Output;
+            UserUpdated.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(UserUpdated);
+
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "UpdateUser";
+            int AnswUserRegisterComplete = Convert.ToInt32(myCommand.Parameters["@UserUpdated"].Value);
+
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
+
+            myCon.Close();
+
+            SqlCommand myCommand2 = new SqlCommand();
+            myCommand2.CommandType = CommandType.StoredProcedure;
+            myCommand2.CommandText = "UserRegisterDocuments";
+
+            myCommand2.Connection = myCon;
+
+            myCon.Open();
+
+            foreach (FileControl anexo in Anexos)
+            {
+                myCommand2.Parameters.Clear();
+                myCommand2.Parameters.AddWithValue("@CodUtilizador", User.CodUser);
+                myCommand2.Parameters.AddWithValue("@NomeFicheiro", anexo.FileName);
+                myCommand2.Parameters.AddWithValue("@ExtensaoFicheiro", anexo.ContentType);
+                myCommand2.Parameters.AddWithValue("@Ficheiro", anexo.FileBytes);
+                myCommand2.ExecuteNonQuery();
+            }
+
+            myCon.Close();
+
+            return AnswUserRegisterComplete;
         }
     }
 }

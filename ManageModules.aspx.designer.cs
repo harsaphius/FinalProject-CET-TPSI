@@ -15,15 +15,6 @@ namespace FinalProject
     {
 
         /// <summary>
-        /// updatePanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updatePanel;
-
-        /// <summary>
         /// btn_insertModule control.
         /// </summary>
         /// <remarks>
@@ -42,31 +33,49 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btn_back;
 
         /// <summary>
-        /// UpdatePanel4 control.
+        /// updatePanelFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel4;
+        protected global::System.Web.UI.UpdatePanel updatePanelFilters;
 
         /// <summary>
-        /// lbtSearch control.
+        /// lbtSearchFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtSearch;
+        protected global::System.Web.UI.WebControls.LinkButton lbtSearchFilters;
 
         /// <summary>
-        /// tbSearch control.
+        /// tbSearchFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbSearch;
+        protected global::System.Web.UI.WebControls.TextBox tbSearchFilters;
+
+        /// <summary>
+        /// ddlNrHoras control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlNrHoras;
+
+        /// <summary>
+        /// ddlOrder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlOrder;
 
         /// <summary>
         /// btnApplyFilters control.
@@ -87,13 +96,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btnClearFilters;
 
         /// <summary>
-        /// rpt_Modules control.
+        /// updatePanelListModules control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpt_Modules;
+        protected global::System.Web.UI.UpdatePanel updatePanelListModules;
+
+        /// <summary>
+        /// rptModules control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptModules;
 
         /// <summary>
         /// btnPreviousModule control.
@@ -112,6 +130,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnNextModule;
+
+        /// <summary>
+        /// updatePanelInsertModules control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updatePanelInsertModules;
 
         /// <summary>
         /// lbl_message control.

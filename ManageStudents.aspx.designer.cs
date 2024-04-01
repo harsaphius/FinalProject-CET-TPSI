@@ -24,6 +24,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btnInsertStudent;
 
         /// <summary>
+        /// btnInsertStudentFromList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnInsertStudentFromList;
+
+        /// <summary>
         /// btnBack control.
         /// </summary>
         /// <remarks>
@@ -31,6 +40,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnBack;
+
+        /// <summary>
+        /// btnBackFromListUsers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnBackFromListUsers;
 
         /// <summary>
         /// btnBackFromCourses control.

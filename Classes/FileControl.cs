@@ -48,7 +48,6 @@ namespace FinalProject.Classes
         }
 
 
-
         /// <summary>
         /// Função para carregar os ficheiros do utilizador no FileControl
         /// </summary>
@@ -101,7 +100,6 @@ namespace FinalProject.Classes
 
                 if (files != null && files.Count > 0)
                 {
-                    // Assuming you want to download the first file in the list
                     FileControl file = files.FirstOrDefault(f => f.FileID == fileId);
                     if (file != null && file.FileBytes != null)
                     {

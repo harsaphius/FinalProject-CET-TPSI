@@ -4,55 +4,76 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
-        <asp:UpdatePanel ID="updatePanel" runat="server">
-            <ContentTemplate>
-                <div class="row" style="margin-top: 15px">
-                    <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
-                        <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Novo Módulo" ID="btn_insertModule" OnClientClick="showInsert()" />
-                        <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_back" OnClientClick="showInsert()" />
-                    </div>
-                    <div id="filtermenu" class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
-                        <a href="javascript:;" onclick="toggleFilters()">
-                            <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
-                        </a>
-                    </div>
-                    <div id="filters" class="col-md-12 col-md-6 hidden" style="padding-left: 30px;">
-                        <asp:UpdatePanel ID="UpdatePanel4" runat="server">
-                            <ContentTemplate>
-                                <div class="row">
-                                    <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-                                        <span> Designação:</span>
-                                        <div class="input-group mb-4">
-                                            <asp:LinkButton runat="server" ID="lbtSearch" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
-                                            <asp:TextBox runat="server" ID="tbSearch" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-                                        <br />
-                                        <div class="input-group mb-4">
-                                            <asp:Button runat="server" ID="btnApplyFilters" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" />
-                                             <span>&nbsp; &nbsp;</span>
-                                            <asp:Button runat="server" ID="btnClearFilters" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
-                                        </div>
-                                    </div>
+
+        <div class="row" style="margin-top: 15px">
+            <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
+                <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Novo Módulo" ID="btn_insertModule" OnClientClick="showInsert(); return false;" />
+                <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btn_back" OnClientClick="showInsert(); return false;" />
+            </div>
+            <div id="filtermenu" class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
+                <a href="javascript:;" onclick="toggleFilters()">
+                    <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
+                </a>
+            </div>
+            <div id="filters" class="col-md-12 col-md-6 hidden" style="padding-left: 30px;">
+                <asp:UpdatePanel ID="updatePanelFilters" runat="server">
+                    <ContentTemplate>
+                        <div class="row">
+                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                <span>Designação:</span>
+                                <div class="input-group mb-4">
+                                    <asp:LinkButton runat="server" ID="lbtSearchFilters" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
+                                    <asp:TextBox runat="server" ID="tbSearchFilters" CssClass="form-control" placeholder="Type here..."></asp:TextBox>
                                 </div>
-                            </ContentTemplate>
-                            <Triggers>
-                                <asp:AsyncPostBackTrigger ControlID="btnApplyFilters"/>
-                                <asp:AsyncPostBackTrigger ControlID="btnClearFilters" />
-                            </Triggers>
-                        </asp:UpdatePanel>
-                    </div>
-                </div>
-                <div class="container-fluid py-4">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card mb-4">
-                                <div id="listModulesDiv">
+                            </div>
+                            <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+                                <span>Nr.º de Horas:</span>
+                                <div class="dropdown">
+                                    <asp:DropDownList ID="ddlNrHoras" runat="server" class="btn bg-gradient-secundary dropdown-toggle">
+                                        <asp:ListItem Value="25">25 horas</asp:ListItem>
+                                        <asp:ListItem Value="50">50 Horas</asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-4 mb-xl-0 mb-0">
+                                <span>
+                                    <br />
+                                </span>
+                                <div class="input-group mb-0 text-end">
+                                    <asp:DropDownList runat="server" ID="ddlOrder" class="btn bg-gradient-secundary dropdown-toggle">
+                                        <asp:ListItem Value="ASC">A-Z</asp:ListItem>
+                                        <asp:ListItem Value="DESC">Z-A</asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-xl-0 mb-0">
+                                <br />
+                                <div class="input-group mb-0">
+                                    <asp:Button runat="server" ID="btnApplyFilters" CausesValidation="False" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" AutoPostBack="True" OnClick="btnApplyFilters_OnClick" />
+                                    <span>&nbsp; &nbsp;</span>
+                                    <asp:Button runat="server" ID="btnClearFilters" CausesValidation="False" CssClass="btn btn-outline-primary mb-0" Text="Limpar" OnClick="btnClearFilters_OnClick" />
+                                </div>
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="btnApplyFilters" />
+                        <asp:AsyncPostBackTrigger ControlID="btnClearFilters" />
+                    </Triggers>
+                </asp:UpdatePanel>
+            </div>
+        </div>
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div id="listModulesDiv">
+                            <asp:UpdatePanel ID="updatePanelListModules" runat="server">
+                                <ContentTemplate>
                                     <div class="card-header pb-0">
                                         <h6>Módulos</h6>
                                     </div>
-                                    <asp:Repeater ID="rpt_Modules" runat="server" OnItemDataBound="rpt_Modules_ItemDataBound" OnItemCommand="rpt_Modules_ItemCommand">
+                                    <asp:Repeater ID="rptModules" runat="server" OnItemDataBound="rptModules_ItemDataBound" OnItemCommand="rptModules_ItemCommand">
                                         <HeaderTemplate>
                                             <div class="card-body px-0 pt-0 pb-2">
                                                 <div class="table-responsive p-0">
@@ -151,35 +172,43 @@
                                         </FooterTemplate>
                                     </asp:Repeater>
                                     <%-- <script type="text/javascript">
-                                    function triggerFileUpload(clientId) {
-                                        // Get the FileUpload control
-                                        var fileUpload = document.getElementById(clientId);
-                                        // Trigger a click event on the FileUpload control
-                                        fileUpload.click();
-                                    }
-                                    function uploadFile(input) {
-                                        // Handle file upload logic here
-                                        // For example, you can access the uploaded file using input.files[0]
-                                    }
-                                </script>--%>
+                                            function triggerFileUpload(clientId) {
+                                                // Get the FileUpload control
+                                                var fileUpload = document.getElementById(clientId);
+                                                // Trigger a click event on the FileUpload control
+                                                fileUpload.click();
+                                            }
+                                            function uploadFile(input) {
+                                                // Handle file upload logic here
+                                                // For example, you can access the uploaded file using input.files[0]
+                                            }
+                                        </script>--%>
                                     <!--Paginação -->
                                     <ul class="pagination">
                                         <li class="page-item">
                                             <asp:LinkButton ID="btnPreviousModule" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousModule_Click" runat="server">
-                                                    <i class="fa fa-angle-left"></i>
-                                                    <span class="sr-only">Previous</span>
+                                                        <i class="fa fa-angle-left"></i>
+                                                        <span class="sr-only">Previous</span>
                                             </asp:LinkButton>
                                         </li>
                                         <li></li>
                                         <li class="page-item">
                                             <asp:LinkButton ID="btnNextModule" CssClass="page-link" CausesValidation="false" OnClick="btnNextModule_Click" runat="server">
-                                                    <i class="fa fa-angle-right"></i>
-                                                    <span class="sr-only">Next</span>
+                                                        <i class="fa fa-angle-right"></i>
+                                                        <span class="sr-only">Next</span>
                                             </asp:LinkButton>
                                         </li>
                                     </ul>
-                                </div>
-                                <div id="insertModulesDiv" class="hidden">
+                                </ContentTemplate>
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="btnPreviousModule" />
+                                    <asp:AsyncPostBackTrigger ControlID="btnNextModule" />
+                                </Triggers>
+                            </asp:UpdatePanel>
+                        </div>
+                        <div id="insertModulesDiv" class="hidden">
+                            <asp:UpdatePanel runat="server" ID="updatePanelInsertModules">
+                                <ContentTemplate>
                                     <div style="padding: 5px;" id="alert" class="hidden" role="alert">
                                         <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
                                     </div>
@@ -237,18 +266,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </ContentTemplate>
+                                <Triggers>
+                                    <asp:PostBackTrigger ControlID="btnInsertModule" />
+                                </Triggers>
+                            </asp:UpdatePanel>
                         </div>
                     </div>
                 </div>
-            </ContentTemplate>
-            <Triggers>
-                <asp:AsyncPostBackTrigger ControlID="btnPreviousModule" />
-                <asp:AsyncPostBackTrigger ControlID="btnNextModule" />
-                <asp:AsyncPostBackTrigger ControlID="btnInsertModule" />
-            </Triggers>
-        </asp:UpdatePanel>
+            </div>
+        </div>
+
     </div>
 
     <!-- Função de Javascript para Mostrar a Div de Inserir após click no Button Inserir Módulo -->

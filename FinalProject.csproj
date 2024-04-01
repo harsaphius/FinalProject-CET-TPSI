@@ -104,6 +104,7 @@
     <Content Include="assets\img\curved-images\curved6.jpg" />
     <Content Include="assets\img\curved-images\curved8.jpg" />
     <Content Include="assets\img\curved-images\white-curved.jpeg" />
+    <Content Include="assets\img\default.png" />
     <Content Include="assets\img\down-arrow-dark.svg" />
     <Content Include="assets\img\down-arrow.svg" />
     <Content Include="assets\img\favicon.png" />
@@ -340,6 +341,7 @@
     <Compile Include="ActivationPage.aspx.designer.cs">
       <DependentUpon>ActivationPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Array.cs" />
     <Compile Include="CinelMP.Master.cs">
       <DependentUpon>CinelMP.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

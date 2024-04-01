@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
+using System.Web;
 
 namespace FinalProject.Classes
 {
@@ -70,42 +72,43 @@ namespace FinalProject.Classes
         /// Função para carregar os módulos
         /// </summary>
         /// <returns></returns>
-        public static List<Module> LoadModules()
+        public static List<Module> LoadModules(List<string> conditions = null, string order = null)
         {
             List<Module> Modules = new List<Module>();
-            List<string> conditions = new List<string>();
 
             string query = "SELECT * FROM modulo WHERE isActive=1";
 
-            //// Decisões para colocar ou não os filtros dentro da string query
-            //if (!string.IsNullOrEmpty(search_string))
-            //{
-            //    conditions.Add($"moeda.nome LIKE '%{search_string}%'");
-            //}
-            //if (grade != 0)
-            //{
-            //    conditions.Add($"moeda_estado.cod_estado = {grade}");
-            //}
-            //if (coin_type != 0)
-            //{
-            //    conditions.Add($"moeda.cod_tipo = {coin_type}");
-            //}
-            //if (status == 0)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //else if (status == 1)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //if (conditions.Count > 0)
-            //{
-            //    query += " WHERE " + string.Join(" AND ", conditions);
-            //}
-            //if (!string.IsNullOrEmpty(sort_order))
-            //{
-            //    query += " ORDER BY moeda_estado.valor_atual " + sort_order;
-            //}
+            if (conditions != null)
+            {
+                for (int i = 0; i < conditions.Count; i++)
+                {
+                    if (!string.IsNullOrEmpty(conditions[i]))
+                    {
+                        switch (i)
+                        {
+                            case 0:
+                                query += " AND (nomeModulos LIKE '%" + conditions[i] + "%' OR codUFCD LIKE '%" +
+                                         conditions[i] + "%')";
+                                break;
+                            case 1:
+                                query += " AND duracao =" + conditions[i];
+                                break;
+                        }
+                    }
+                }
+            }
+
+            if (order != null)
+            {
+                if (order.Contains("ASC"))
+                {
+                    query += " ORDER BY nomeModulos ASC";
+                }
+                else if (order.Contains("DESC"))
+                {
+                    query += " ORDER BY nomeModulos DESC";
+                }
+            }
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -129,7 +132,11 @@ namespace FinalProject.Classes
                 }
                 else
                 {
-                    informacao.SVG = null; // or set it to any default value you prefer
+                    string relativeImagePath = "~/assets/img/small-logos/default.svg";
+                    string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                    byte[] imageData = File.ReadAllBytes(absoluteImagePath);
+
+                    informacao.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String(imageData);
                 }
 
                 Modules.Add(informacao);
@@ -195,8 +202,16 @@ namespace FinalProject.Classes
                 informacao.UFCD = dr.GetString(3);
                 informacao.Descricao = dr.GetString(4);
                 informacao.Creditos = dr.GetDecimal(5);
+                if(informacao.SVG != null)
+                    informacao.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
+                else
+                {
+                    string relativeImagePath = "~/assets/img/small-logos/default.svg";
+                    string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                    byte[] imageData = File.ReadAllBytes(absoluteImagePath);
 
-                informacao.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
+                    informacao.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String(imageData);
+                }
 
                 Modules.Add(informacao);
             }

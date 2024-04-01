@@ -136,7 +136,7 @@ namespace FinalProject
 
             user.Nome = tbNome.Text;
             user.Email = tbEmail.Text;
-            user.DocIdent = ddlDocumentoIdent.SelectedValue;
+            user.CodTipoDoc = Convert.ToInt32(ddlDocumentoIdent.SelectedValue);
             user.DocIdent = tbCC.Text;
             user.DataValidade = Convert.ToDateTime(tbDataValidade.Text);
             user.CodPrefix = Convert.ToInt32(ddlprefixo.SelectedValue);

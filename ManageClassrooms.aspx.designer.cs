@@ -15,15 +15,6 @@ namespace FinalProject
     {
 
         /// <summary>
-        /// updatePanel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updatePanel;
-
-        /// <summary>
         /// btn_insertClassroom control.
         /// </summary>
         /// <remarks>
@@ -51,13 +42,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btn_backEditClassroom;
 
         /// <summary>
-        /// UpdatePanel6 control.
+        /// updatePanelFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel6;
+        protected global::System.Web.UI.UpdatePanel updatePanelFilters;
 
         /// <summary>
         /// lbtSearch control.
@@ -114,6 +105,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btnClearFilters;
 
         /// <summary>
+        /// updatePanelListClassrooms control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updatePanelListClassrooms;
+
+        /// <summary>
         /// rpt_Classrooms control.
         /// </summary>
         /// <remarks>
@@ -123,22 +123,31 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Repeater rpt_Classrooms;
 
         /// <summary>
-        /// btn_previous control.
+        /// btnPreviousClassroom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_previous;
+        protected global::System.Web.UI.WebControls.LinkButton btnPreviousClassroom;
 
         /// <summary>
-        /// btn_next control.
+        /// btnNextClassroom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_next;
+        protected global::System.Web.UI.WebControls.LinkButton btnNextClassroom;
+
+        /// <summary>
+        /// updatePanelInsertClassrooms control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updatePanelInsertClassrooms;
 
         /// <summary>
         /// lbl_message control.

@@ -7,11 +7,12 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
-
         <div class="row" style="margin-top: 15px">
             <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
                 <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Novo Formando" ID="btnInsertStudent" OnClientClick="showInsert(); return false;" />
+                <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir da Lista de Utilizadores" ID="btnInsertStudentFromList" OnClientClick="showUserList(); return false;" />
                 <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btnBack" OnClientClick="showInsert(); return false;" />
+                <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btnBackFromListUsers" OnClientClick="showUserList(); return false;" />
                 <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btnBackFromCourses" OnClientClick="showListCourses(); return false;" />
             </div>
             <div id="filtermenu" class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
@@ -117,7 +118,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="d-flex px-2">
-                                                        <asp:Image ID="imgUpload" CssClass="avatar avatar-sm rounded-circle me-3" runat="server" ImageUrl='<%# Eval("Foto") %>' />
+                                                        <asp:Image ID="imgPhoto" CssClass="avatar avatar-sm rounded-circle me-3" runat="server" ImageUrl='<%# Eval("Foto") %>' />
                                                         <div class="my-auto">
                                                             <asp:TextBox ID="tbNome" CssClass="form-control" runat="server" Text='<%# Bind("Nome") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
                                                             <p class="mb-0 text-sm">
@@ -170,97 +171,97 @@
                                 </ContentTemplate>
                             </asp:UpdatePanel>
                         </div>
-                    <div class="card mb-4">
-                        <div id="listUsersDiv">
-                            <asp:UpdatePanel ID="updatePanelUsersForStudents" runat="server">
-                                <ContentTemplate>
-                                    <div class="card-header pb-0 p-3">
-                                        <h6 class="mb-1">Utilizadores disponíveis</h6>
-                                        <p class="text-sm">Escolher os utilizadores para registar</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="card mb-4">
-                                            <!-- Listagem de Utilizador Disponíveis -->
-                                            <asp:Repeater ID="rptUserForStudents" runat="server" OnItemDataBound="rptUserForStudents_OnItemDataBound" OnItemCommand="rptUserForStudents_OnItemCommand">
-                                                <HeaderTemplate>
-                                                    <div class="card-body px-0 pt-0 pb-2">
-                                                        <div class="table-responsive p-0">
-                                                            <table class="table align-items-center mb-0">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Utilizador n.º </th>
-                                                                        <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
-                                                                        <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cursos</th>
-                                                                        <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Registar como formando</th>
-                                                                        <th class="col-sm-2"></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                </HeaderTemplate>
-                                                <ItemTemplate>
-                                                    <tr>
-                                                        <td>
-                                                            <p class="mb-0 text-sm text-center">
-                                                                <asp:Label runat="server" Text='<%# Eval("CodUser") %>'></asp:Label>
-                                                            </p>
-                                                        </td>
-                                                        <td>
-                                                            <div class="d-flex px-2">
-                                                                <asp:Image ID="imgUpload" CssClass="avatar avatar-sm rounded-circle me-3" runat="server" ImageUrl='<%# Eval("Foto") %>' />
-                                                                <div class="my-auto">
-                                                                    <asp:TextBox ID="tbNome" CssClass="form-control" runat="server" Text='<%# Bind("Nome") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
-                                                                    <p class="mb-0 text-sm">
-                                                                        <asp:Label ID="lblNome" runat="server" Text='<%# Eval("Nome") %>' Visible="true"></asp:Label>
-                                                                    </p>
+                        <div class="card mb-4">
+                            <div id="listUsersDiv" class="hidden">
+                                <asp:UpdatePanel ID="updatePanelUsersForStudents" runat="server">
+                                    <ContentTemplate>
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-1">Utilizadores disponíveis</h6>
+                                            <p class="text-sm">Escolher os utilizadores para registar</p>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="card mb-4">
+                                                <!-- Listagem de Utilizador Disponíveis -->
+                                                <asp:Repeater ID="rptUserForStudents" runat="server" OnItemDataBound="rptUserForStudents_OnItemDataBound" OnItemCommand="rptUserForStudents_OnItemCommand">
+                                                    <HeaderTemplate>
+                                                        <div class="card-body px-0 pt-0 pb-2">
+                                                            <div class="table-responsive p-0">
+                                                                <table class="table align-items-center mb-0">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Utilizador n.º </th>
+                                                                            <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
+                                                                            <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cursos</th>
+                                                                            <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Registar como formando</th>
+                                                                            <th class="col-sm-2"></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td>
+                                                                <p class="mb-0 text-sm text-center">
+                                                                    <asp:Label runat="server" Text='<%# Eval("CodUser") %>'></asp:Label>
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <div class="d-flex px-2">
+                                                                    <asp:Image ID="imgUpload" CssClass="avatar avatar-sm rounded-circle me-3" runat="server" ImageUrl='<%# Eval("Foto") %>' />
+                                                                    <div class="my-auto">
+                                                                        <asp:TextBox ID="tbNome" CssClass="form-control" runat="server" Text='<%# Bind("Nome") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
+                                                                        <p class="mb-0 text-sm">
+                                                                            <asp:Label ID="lblNome" runat="server" Text='<%# Eval("Nome") %>' Visible="true"></asp:Label>
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="align-middle font-weight-bold text-center">
-                                                            <asp:LinkButton runat="server" ID="lbtSelectCoursesForUser" CausesValidation="false" CommandName="EditCoursesStudents" Visible="true" CommandArgument='<%# Eval("CodUser") %>'
-                                                                Text="Escolher Cursos" class="text-secondary font-weight-bold text-xs">
-                                                            </asp:LinkButton>
-                                                        </td>
-                                                        <td class="align-middle font-weight-bold text-center">
-                                                            <asp:HiddenField ID="hdnUserID" runat="server" Value='<%# Eval("CodUser") %>' />
-                                                            <div class="form-check">
-                                                                <asp:CheckBox runat="server" ID="chkBoxUser" OnCheckedChanged="chkBoxUser_OnCheckedChanged" />
-                                                            </div>
+                                                            </td>
+                                                            <td class="align-middle font-weight-bold text-center">
+                                                                <asp:LinkButton runat="server" ID="lbtSelectCoursesForUser" CausesValidation="false" CommandName="EditCoursesStudents" Visible="true" CommandArgument='<%# Eval("CodUser") %>'
+                                                                    Text="Escolher Cursos" class="text-secondary font-weight-bold text-xs">
+                                                                </asp:LinkButton>
+                                                            </td>
+                                                            <td class="align-middle font-weight-bold text-center">
+                                                                <asp:HiddenField ID="hdnUserID" runat="server" Value='<%# Eval("CodUser") %>' />
+                                                                <div class="form-check">
+                                                                    <asp:CheckBox runat="server" ID="chkBoxUser" OnCheckedChanged="chkBoxUser_OnCheckedChanged" />
+                                                                </div>
 
-                                                        </td>
-                                                    </tr>
-                                                </ItemTemplate>
-                                                <FooterTemplate>
-                                                    </tbody>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                    <FooterTemplate>
+                                                        </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
-                                                </FooterTemplate>
-                                            </asp:Repeater>
-                                            <ul class="pagination">
-                                                <li class="page-item">
-                                                    <asp:LinkButton ID="btnPreviousUsersForStudents" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousUsersForStudents_OnClick" runat="server">
+                                                    </FooterTemplate>
+                                                </asp:Repeater>
+                                                <ul class="pagination">
+                                                    <li class="page-item">
+                                                        <asp:LinkButton ID="btnPreviousUsersForStudents" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousUsersForStudents_OnClick" runat="server">
                                                                                 <i class="fa fa-angle-left"></i>
                                                                                 <span class="sr-only">Previous</span>
-                                                    </asp:LinkButton>
-                                                </li>
-                                                <li class="page-item">
-                                                    <asp:LinkButton ID="btnNextsUsersForStudents" CssClass="page-link" CausesValidation="false" OnClick="btnNextsUsersForStudents_OnClick" runat="server">
+                                                        </asp:LinkButton>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <asp:LinkButton ID="btnNextsUsersForStudents" CssClass="page-link" CausesValidation="false" OnClick="btnNextsUsersForStudents_OnClick" runat="server">
                                                                                 <i class="fa fa-angle-right"></i>
                                                                                 <span class="sr-only">Next</span>
-                                                    </asp:LinkButton>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                                        </asp:LinkButton>
+                                                    </li>
+                                                </ul>
+                                            </div>
 
-                                        <div>
-                                            <asp:Button runat="server" ID="btnEnrollUserAsStudent" class="btn btn-outline-primary btn-sm mb-0 text-end" CausesValidation="false" OnClick="btnEnrollUserAsStudent_OnClick" CommandArgument='<%# Eval("CodUser") %>' Text="Inscrever" />
+                                            <div>
+                                                <asp:Button runat="server" ID="btnEnrollUserAsStudent" class="btn btn-outline-primary btn-sm mb-0 text-end" CausesValidation="false" OnClick="btnEnrollUserAsStudent_OnClick" CommandArgument='<%# Eval("CodUser") %>' Text="Inscrever" />
 
+                                            </div>
                                         </div>
-                                    </div>
-                                </ContentTemplate>
-                            </asp:UpdatePanel>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
                         </div>
-                    </div>
                         <div id="insertStudentsDiv" class="hidden">
                             <asp:UpdatePanel ID="updatePanelInsertStudent" runat="server">
                                 <ContentTemplate>
@@ -587,7 +588,7 @@
                                                                                 <asp:HiddenField ID="hdnCourseID" runat="server" Value='<%# Eval("CodCurso") %>' />
                                                                                 <asp:HiddenField ID="hdnCourseName" runat="server" Value='<%# Eval("Nome") %>' />
                                                                                 <div class="form-check">
-                                                                                    <asp:CheckBox runat="server" ID="chckBox" OnCheckedChanged="chkBoxMod_CheckedChanged" />
+                                                                                    <asp:CheckBox runat="server" ID="chckBox" OnCheckedChanged="chkBoxMod_OnCheckedChanged" />
                                                                                     <asp:Label runat="server" ID="lbl_order">Selecione este curso</asp:Label>
                                                                                 </div>
                                                                             </td>
@@ -629,7 +630,7 @@
                                 </ContentTemplate>
                             </asp:UpdatePanel>
                         </div>
-                </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -638,28 +639,46 @@
     <!-- Função de Javascript para Mostrar a Div de Editar após click no Button Edit de cada Student -->
     <script>
         function showInsert() {
-            var listDiv = document.getElementById('listStudentsDiv');
             var insertDiv = document.getElementById('insertStudentsDiv');
-            var listUsersDiv = document.getElementById('listUsersDiv');
+            var listDiv = document.getElementById('listStudentsDiv');
             var btnInsert = document.getElementById('<%= btnInsertStudent.ClientID %>');
+            var btnInsertTeacherFromList = document.getElementById('<%= btnInsertStudentFromList.ClientID %>')
             var btnBack = document.getElementById('<%= btnBack.ClientID %>');
-            var filterMenu = document.getElementById('filtermenu');
-
             if (insertDiv.classList.contains('hidden')) {
                 insertDiv.classList.remove('hidden');
                 listDiv.classList.add('hidden');
-                listUsersDiv.classList.add('hidden');
                 btnInsert.classList.add('hidden');
+                btnInsertTeacherFromList.classList.add('hidden');
                 btnBack.classList.remove('hidden');
-                filterMenu.classList.add('hidden');
-
             } else {
                 insertDiv.classList.add('hidden');
                 listDiv.classList.remove('hidden');
-                listUsersDiv.classList.remove('hidden');
                 btnInsert.classList.remove('hidden');
                 btnBack.classList.add('hidden');
-                filterMenu.classList.remove('hidden');
+                btnInsertTeacherFromList.classList.remove('hidden');
+            }
+        }
+    </script>
+
+    <script>
+        function showUserList() {
+            var listDiv = document.getElementById('listStudentsDiv');
+            var listUsersDiv = document.getElementById('listUsersDiv');
+            var btnInsert = document.getElementById('<%= btnInsertStudent.ClientID %>');
+            var btnInsertTeacherFromList = document.getElementById('<%= btnInsertStudentFromList.ClientID %>')
+            var btnBack = document.getElementById('<%= btnBackFromListUsers.ClientID %>');
+            if (listUsersDiv.classList.contains('hidden')) {
+                listUsersDiv.classList.remove('hidden');
+                listDiv.classList.add('hidden');
+                btnInsert.classList.add('hidden');
+                btnInsertTeacherFromList.classList.add('hidden');
+                btnBack.classList.remove('hidden');
+            } else {
+                listUsersDiv.classList.add('hidden');
+                listDiv.classList.remove('hidden');
+                btnInsert.classList.remove('hidden');
+                btnBack.classList.add('hidden');
+                btnInsertTeacherFromList.classList.remove('hidden');
             }
         }
     </script>

@@ -69,20 +69,54 @@ namespace FinalProject
                 }
             }
 
-            BindDataModules();
+            BindDataClassGroups();
+            BindDataStudents();
         }
 
-        protected void btn_previousM_Click(object sender, EventArgs e)
+        protected void btnPreviousStudents_Click(object sender, EventArgs e)
         {
             PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
             BindDataModules();
         }
 
-        protected void btn_nextM_Click(object sender, EventArgs e)
+        protected void btnNextStudents_Click(object sender, EventArgs e)
         {
             PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
             BindDataModules();
         }
+
+        private void BindDataStudents()
+        {
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.Student.LoadStudents();
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 2;
+            pagedData.CurrentPageIndex = PageNumberStudents;
+            int PageNumber = PageNumberStudents + 1;
+
+            rptStudents.DataSource = pagedData;
+            rptStudents.DataBind();
+
+            btnPreviousStudents.Enabled = !pagedData.IsFirstPage;
+            btnNextStudents.Enabled = !pagedData.IsLastPage;
+        }
+
+        private void BindDataClassGroups()
+        {
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.ClassGroup.LoadClassGroups();
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 2;
+            pagedData.CurrentPageIndex = PageNumberClassGroups;
+            int PageNumber = PageNumberClassGroups + 1;
+
+            rptClasses.DataSource = pagedData;
+            rptClasses.DataBind();
+
+            btnPreviousClasses.Enabled = !pagedData.IsFirstPage;
+            btnNextClasses.Enabled = !pagedData.IsLastPage;
+        }
+
 
         private void BindDataModules()
         {
@@ -91,19 +125,22 @@ namespace FinalProject
             pagedData.AllowPaging = true;
             pagedData.PageSize = 8;
             pagedData.CurrentPageIndex = PageNumberModules;
-            ; // Adjust with the respective pagination helper instance
 
-            rpt_Modules.DataSource = pagedData;
-            rpt_Modules.DataBind();
-
-            rpt_Teachers.DataSource = pagedData;
-            rpt_Teachers.DataBind();
-
-            btn_previousM.Enabled = !pagedData.IsFirstPage; // Adjust with the respective btn_previous control for Users Repeater
-            btn_nextM.Enabled = !pagedData.IsLastPage; // Adjust with the respective btn_next control for Users Repeater
         }
 
-        public int PageNumberModules
+        private int PageNumberStudents
+        {
+            get
+            {
+                if (ViewState["PageNumberStudents"] != null)
+                    return Convert.ToInt32(ViewState["PageNumberStudents"]);
+                else
+                    return 0;
+            }
+            set => ViewState["PageNumberStudents"] = value;
+        }
+
+        private int PageNumberModules
         {
             get
             {
@@ -115,8 +152,18 @@ namespace FinalProject
             set => ViewState["PageNumberModules"] = value;
         }
 
-        protected void rpt_Classes_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        private int PageNumberClassGroups
         {
+            get
+            {
+                if (ViewState["PageNumberClassGroups"] != null)
+                    return Convert.ToInt32(ViewState["PageNumberClassGroups"]);
+                else
+                    return 0;
+            }
+            set => ViewState["PageNumberClassGroups"] = value;
         }
+
+
     }
 }

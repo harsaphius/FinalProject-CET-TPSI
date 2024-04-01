@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
+using System.Web;
 
 namespace FinalProject.Classes
 {
@@ -93,38 +95,44 @@ namespace FinalProject.Classes
         {
             List<Course> Courses = new List<Course>();
 
-            string query = "SELECT * FROM curso ";
-
-            if (conditions != null && conditions.Count > 0)
+            string query = "SELECT * FROM curso WHERE isActive=1";
+            if (conditions != null)
             {
-                query += " WHERE";
-
                 bool isFirstCondition = true;
 
-                if (!string.IsNullOrEmpty(conditions[0]))
+                for (int i = 0; i < conditions.Count; i++)
                 {
-                    query += " nomeCurso LIKE '%" + conditions[0] + "%'";
-                    isFirstCondition = false;
-                }
-                if (!string.IsNullOrEmpty(conditions[1]))
-                {
-                    if (!isFirstCondition)
-                        query += " AND";
-                    query += " codArea =" + conditions[1];
-                    isFirstCondition = false;
-                }
-                if (!string.IsNullOrEmpty(conditions[2]))
-                {
-                    if (!isFirstCondition)
-                        query += " AND";
-                    query += " codTipoCurso =" + conditions[2];
-                    isFirstCondition = false;
-                }
-                if (!string.IsNullOrEmpty(conditions[3]))
-                {
-                    if (!isFirstCondition)
-                        query += " AND";
-                    query += " auditRow =" + conditions[3];
+                    if (!string.IsNullOrEmpty(conditions[i]))
+                    {
+                        if (isFirstCondition)
+                        {
+                            query += " WHERE ";
+                            isFirstCondition = false;
+                        }
+                        else
+                        {
+                            query += " AND ";
+                        }
+
+                        switch (i)
+                        {
+                            case 0:
+                                query += "nomeCurso LIKE '%" + conditions[i] + "%'";
+                                break;
+                            case 1:
+                                query += "codArea =" + conditions[i];
+                                break;
+                            case 2:
+                                query += "codTipoCurso =" + conditions[i];
+                                break;
+                            case 3:
+                                query += "auditRow = '" + conditions[i] + "'";
+                                break;
+                            default:
+                                // Handle additional conditions if needed
+                                break;
+                        }
+                    }
                 }
             }
 
@@ -185,7 +193,17 @@ namespace FinalProject.Classes
             {
                 Module module = new Module();
                 module.CodModulo = Convert.ToInt32(dr["codModulos"]);
-                module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
+                if (module.SVG != null){
+                    module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
+                }
+                else
+                {
+                    string relativeImagePath = "~/assets/img/small-logos/default.svg";
+                    string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                    byte[] imageData = File.ReadAllBytes(absoluteImagePath);
+
+                    module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String(imageData);
+                }
                 module.UFCD = (dr["CodUFCD"].ToString());
                 module.Nome = dr["NomeModulos"].ToString();
 
