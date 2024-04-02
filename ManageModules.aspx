@@ -4,7 +4,6 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid">
-
         <div class="row" style="margin-top: 15px">
             <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
                 <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Novo Módulo" ID="btn_insertModule" OnClientClick="showInsert(); return false;" />

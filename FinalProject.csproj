@@ -205,6 +205,7 @@
     <Content Include="ManageModules.aspx" />
     <Content Include="ManageStudents.aspx" />
     <Content Include="ManageTeachers.aspx" />
+    <Content Include="ManageUsers.aspx" />
     <Content Include="ModuleDetails.aspx" />
     <Content Include="obj\Debug\FinalProject.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\FinalProject.dll" />
@@ -427,6 +428,13 @@
     </Compile>
     <Compile Include="ManageTeachers.aspx.designer.cs">
       <DependentUpon>ManageTeachers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ManageUsers.aspx.cs">
+      <DependentUpon>ManageUsers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageUsers.aspx.designer.cs">
+      <DependentUpon>ManageUsers.aspx</DependentUpon>
     </Compile>
     <Compile Include="ModuleDetails.aspx.cs">
       <DependentUpon>ModuleDetails.aspx</DependentUpon>

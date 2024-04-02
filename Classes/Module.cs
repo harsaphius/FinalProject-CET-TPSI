@@ -202,7 +202,7 @@ namespace FinalProject.Classes
                 informacao.UFCD = dr.GetString(3);
                 informacao.Descricao = dr.GetString(4);
                 informacao.Creditos = dr.GetDecimal(5);
-                if(informacao.SVG != null)
+                if (informacao.SVG != null)
                     informacao.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
                 else
                 {

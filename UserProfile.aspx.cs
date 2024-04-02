@@ -67,6 +67,8 @@ namespace FinalProject
                             document.getElementById('managestudents').classList.remove('hidden');
                             document.getElementById('manageteachers').classList.remove('hidden');
                             document.getElementById('manageclassrooms').classList.remove('hidden');
+                            document.getElementById('manageusers').classList.remove('hidden');
+
                             ";
 
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);

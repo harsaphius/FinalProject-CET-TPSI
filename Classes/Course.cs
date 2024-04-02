@@ -193,7 +193,8 @@ namespace FinalProject.Classes
             {
                 Module module = new Module();
                 module.CodModulo = Convert.ToInt32(dr["codModulos"]);
-                if (module.SVG != null){
+                if (module.SVG != null)
+                {
                     module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
                 }
                 else

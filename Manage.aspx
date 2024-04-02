@@ -4,4 +4,5 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div>Gestão de Funcionalidades da Secretaria</div>
+    <asp:LinkButton runat="server" CssClass="btn btn-primary" Text="Gerir Utilizadores" ID="btnManageUsers" href="./ManageUsers.aspx"/>
 </asp:Content>

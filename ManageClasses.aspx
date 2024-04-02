@@ -178,8 +178,8 @@
                                     </Triggers>
                                 </asp:UpdatePanel>
                             </div>
-                            <div id="insertClassesDiv" class="">
-                                <asp:UpdatePanel runat="server">
+                            <div id="insertClassesDiv" class="hidden">
+                                <asp:UpdatePanel ID="updatePanelInsertClassGroup" runat="server">
                                     <ContentTemplate>
                                         <div style="padding: 5px;" id="alert" class="hidden" role="alert">
                                             <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
@@ -187,7 +187,7 @@
                                         <div class="page-header min-vh-30">
                                             <div class="container">
                                                 <div class="row ">
-                                                    <div class="col-xl-8 col-lg-7 col-md-6">
+                                                    <div class="col-xl-10 col-lg-9 col-md-8">
                                                         <div class="card card-plain">
                                                             <!-- Inserção de Nova Turma -->
                                                             <div class="card-header pb-0 text-left bg-transparent">
@@ -197,7 +197,7 @@
                                                                 <div role="form">
                                                                     <label>Designação do Curso</label>
                                                                     <div class="mb-2">
-                                                                        <asp:DropDownList ID="ddlCurso" CssClass="form-control" runat="server" DataSourceID="SQLDSCurso" DataTextField="nomeCurso" DataValueField="codCurso"></asp:DropDownList>
+                                                                        <asp:DropDownList ID="ddlCurso" OnSelectedIndexChanged="ddlCurso_OnSelectedIndexChanged" AutoPostBack="True" CssClass="form-control" runat="server" DataSourceID="SQLDSCurso" DataTextField="nomeCurso" DataValueField="codCurso"></asp:DropDownList>
                                                                         <asp:SqlDataSource ID="SQLDSCurso" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM curso"></asp:SqlDataSource>
                                                                     </div>
                                                                     <label>Nr.º da Turma</label>
@@ -216,7 +216,7 @@
 
                                                             <div class="row">
                                                                 <div class="col-md-6">
-                                                                    <asp:Repeater ID="rptStudents" runat="server">
+                                                                    <asp:Repeater ID="rptStudents" runat="server" OnItemDataBound="rptStudents_OnItemDataBound">
                                                                         <HeaderTemplate>
                                                                             <div class="card-body px-0 pt-0 pb-2">
                                                                                 <div class="table-responsive p-0">
@@ -248,6 +248,15 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </td>
+                                                                                <td id="ForMyCkbEdit" class="text-xs font-weight-bold">
+                                                                                    <div class="stats">
+                                                                                        <asp:HiddenField ID="hdnStudentForClassGroupID" runat="server" Value='<%# Eval("CodFormando") %>' />
+                                                                                        <asp:HiddenField ID="hdnStudentForClassGroupName" runat="server" Value='<%# Eval("Nome") %>' />
+                                                                                        <div class="form-check">
+                                                                                            <asp:CheckBox runat="server" AutoPostBack="True" ID="chkBoxStudentForClassGroup" OnCheckedChanged="chkBoxStudentForClassGroup_OnCheckedChanged" EnableViewState="true" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
                                                                             </tr>
                                                                         </ItemTemplate>
                                                                         <FooterTemplate>
@@ -273,19 +282,41 @@
                                                                             </asp:LinkButton>
                                                                         </li>
                                                                     </ul>
+                                                                    <div id="listBoxStudentsForCourse" runat="server" class="hidden">
+                                                                        <br />
+                                                                        Listagem de Formandos:<br />
+                                                                        <asp:ListBox ID="listBoxStudents" class="list-group" runat="server"></asp:ListBox>
+                                                                    </div>
                                                                 </div>
-                                                          <%--  </div>
+                                                                <%--  </div>
                                                             <div class="row">--%>
                                                                 <div class="col-md-6">
+                                                                    <br />
+                                                                    Módulos:
                                                                     <div class="dropdown">
-                                                                        <asp:DropDownList ID="ddlModulesOfCourse" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSModulesForCourse" DataTextField="nomeModulos" DataValueField="codModulo"> </asp:DropDownList>
-                                                                        <asp:SqlDataSource ID="SQLDSModulesForCourse" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM moduloCurso AS MC INNER JOIN curso AS C ON MC.codCurso=C.codCurso INNER JOIN modulo AS M ON MC.codModulo = M.codModulos"></asp:SqlDataSource>
-                                                                    </div>   
-                                                                    
+                                                                        <asp:DropDownList ID="ddlModulesOfCourse" OnSelectedIndexChanged="ddlModulesOfCourse_OnSelectedIndexChanged" AutoPostBack="True" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataTextField="nomeModulos" DataValueField="codModulo"></asp:DropDownList>
+                                                                        <asp:SqlDataSource ID="SQLDSModulesForCourse" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>"></asp:SqlDataSource>
+                                                                    </div>
+                                                                    Formadores:
                                                                     <div class="dropdown">
-                                                                        <asp:DropDownList ID="ddlTeacherForModules" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTeachersForModules" DataTextField="nomeModulos" DataValueField="codModulo"></asp:DropDownList>
-                                                                        <asp:SqlDataSource ID="SQLDSTeachersForModules" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT DISTINCT * FROM moduloFormador AS MT INNER JOIN formador AS T ON MT.codFormador=T.codFormador INNER JOIN inscricao AS I ON T.codInscricao=I.codInscricao INNER JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador INNER JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador INNER JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador"></asp:SqlDataSource>
-                                                                    </div>   
+                                                                        <asp:DropDownList ID="ddlTeacherForModules" AutoPostBack="True" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataTextField="nome" DataValueField="codFormador"></asp:DropDownList>
+                                                                        <asp:SqlDataSource ID="SQLDSTeachersForModules" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>"></asp:SqlDataSource>
+                                                                    </div>
+                                                                    <div class="text-center">
+                                                                            <div class="col-md-8">
+                                                                                <asp:Button ID="btnAddTeacherModuleClassGroup" runat="server" Text="Adicionar Módulo|Formador" CausesValidation="False" OnClick="btnAddTeacherModuleClassGroup_OnClick" class="btn bg-gradient-info w-100 mt-4 mb-0" />
+                                                                            </div>
+                                                                    </div>
+                                                                    <div id="listBoxTeachersModules" class="hidden" runat="server">
+                                                                        <br />
+                                                                        Listagem de Formadores por Módulos:
+                                                                        <br />
+                                                                        <asp:ListBox ID="listBoxTeachersForModules" class="list-group" runat="server"></asp:ListBox>
+                                                                        
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                                        <asp:Button ID="btnRemoveTeacherModuleClassGroup" runat="server" Text="Remover Módulo|Formador" CausesValidation="False" OnClick="btnRemoveTeacherModuleClassGroup_OnClick" class="btn bg-gradient-info w-100 mt-4 mb-0" />
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
@@ -293,22 +324,31 @@
                                                                 <asp:Button ID="btnInsertClass" runat="server" Text="Inserir" class="btn bg-gradient-info w-100 mt-4 mb-0" />
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n12">
-                                                        <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
+
                                                     </div>
                                                 </div>
                                     </ContentTemplate>
+                                    <Triggers>
+                                        <asp:AsyncPostBackTrigger ControlID="btnNextStudents"/>
+                                        <asp:AsyncPostBackTrigger ControlID="btnPreviousStudents"/>
+                                        <asp:AsyncPostBackTrigger ControlID="btnAddTeacherModuleClassGroup" />
+                                        <asp:AsyncPostBackTrigger ControlID="ddlCurso" />
+                                        <asp:AsyncPostBackTrigger ControlID="ddlModulesOfCourse" />
+                                        <asp:AsyncPostBackTrigger ControlID="ddlTeacherForModules" />
+                                    </Triggers>
                                 </asp:UpdatePanel>
+                                <div class="col-md-2">
+                                    <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n12">
+                                        <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <!-- Função de Javascript para Mostrar a Div de Inserir após click no Button Inserir Módulo -->

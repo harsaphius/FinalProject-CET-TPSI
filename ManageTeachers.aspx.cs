@@ -1,8 +1,8 @@
-﻿using System;
+﻿using FinalProject.Classes;
+using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using FinalProject.Classes;
 
 namespace FinalProject
 {
@@ -64,6 +64,7 @@ namespace FinalProject
                             document.getElementById('managestudents').classList.remove('hidden');
                             document.getElementById('manageteachers').classList.remove('hidden');
                             document.getElementById('manageclassrooms').classList.remove('hidden');
+                            document.getElementById('manageusers').classList.remove('hidden');
                             ";
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
@@ -216,7 +217,7 @@ namespace FinalProject
             PagedDataSource pagedData = new PagedDataSource();
             pagedData.DataSource = Classes.User.LoadUsers(condition);
             pagedData.AllowPaging = true;
-            pagedData.PageSize = 3;
+            pagedData.PageSize = 1;
             pagedData.CurrentPageIndex = PageNumberUsers;
             int PageNumber = PageNumberUsers + 1;
 

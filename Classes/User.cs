@@ -39,6 +39,7 @@ namespace FinalProject.Classes
         public int CodGrauAcademico { get; set; }
         public int CodSituacaoProf { get; set; }
         public string LifeMotto { get; set; }
+        public List<int> UserProfiles { get; set; }
 
         /// <summary>
         /// Função para determinar se o Login é permitido
@@ -163,6 +164,7 @@ namespace FinalProject.Classes
                     ? 1
                     : Convert.ToInt32(dr["codSituacaoProfissional"]));
                 informacao.LifeMotto = dr["lifemotto"] == DBNull.Value ? " " : dr["lifemotto"].ToString();
+
             }
 
             myConn.Close();
@@ -226,6 +228,7 @@ namespace FinalProject.Classes
                 informacao.CodUser = Convert.ToInt32(dr["codUtilizador"]);
                 informacao.Username = dr["utilizador"].ToString();
                 informacao.Email = dr["email"].ToString();
+                informacao.Ativo = Convert.ToBoolean(dr["ativo"]);
                 informacao.Nome = dr["nome"] == DBNull.Value ? " " : dr["nome"].ToString();
                 informacao.CodTipoDoc = (int)(dr["codTipoDoc"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codTipoDoc"]));
                 informacao.DocIdent = dr["docIdent"] == DBNull.Value ? " " : dr["docIdent"].ToString();
@@ -266,6 +269,8 @@ namespace FinalProject.Classes
                     ? 1
                     : Convert.ToInt32(dr["codSituacaoProfissional"]));
                 informacao.LifeMotto = dr["lifemotto"] == DBNull.Value ? " " : dr["lifemotto"].ToString();
+                informacao.UserProfiles = DetermineUserProfile(informacao.CodUser);
+
 
                 Users.Add(informacao);
             }

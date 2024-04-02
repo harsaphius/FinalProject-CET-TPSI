@@ -58,17 +58,13 @@ namespace FinalProject
                     script = @"
                             document.getElementById('management').classList.remove('hidden');
                             document.getElementById('managecourses').classList.remove('hidden');
-                            document.getElementById('managecourses').classList.add('nav-item');
                             document.getElementById('manageclasses').classList.remove('hidden');
-                            document.getElementById('manageclasses').classList.add('nav-item');
                             document.getElementById('managemodules').classList.remove('hidden');
-                            document.getElementById('managemodules').classList.add('nav-item');
                             document.getElementById('managestudents').classList.remove('hidden');
-                            document.getElementById('managestudents').classList.add('nav-item');
                             document.getElementById('manageteachers').classList.remove('hidden');
-                            document.getElementById('manageteachers').classList.add('nav-item');
                             document.getElementById('manageclassrooms').classList.remove('hidden');
-                            document.getElementById('manageclassrooms').classList.add('nav-item');
+                            document.getElementById('manageusers').classList.remove('hidden');
+
                             ";
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -53,7 +54,8 @@ namespace FinalProject
 
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
+                if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" ||
+                    Session["CodUtilizador"].ToString() == "1")
                 {
                     script = @"
                             document.getElementById('management').classList.remove('hidden');
@@ -63,26 +65,54 @@ namespace FinalProject
                             document.getElementById('managestudents').classList.remove('hidden');
                             document.getElementById('manageteachers').classList.remove('hidden');
                             document.getElementById('manageclassrooms').classList.remove('hidden');
+                            document.getElementById('manageusers').classList.remove('hidden');
                             ";
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
             }
 
-            BindDataClassGroups();
-            BindDataStudents();
+
+            if (!IsPostBack)
+            {
+                BindDataClassGroups();
+                BindDataStudents();
+                BindDdlModules("1");
+            }
+
+            if (listBoxTeachersForModules.Items.Count != 0)
+                listBoxTeachersModules.Attributes.Remove("class");
+            if (listBoxStudents.Items.Count != 0)
+                listBoxStudentsForCourse.Attributes.Remove("class");
+
+        }
+
+        protected void rptStudents_OnItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                CheckBox chkBoxStudentForClassGroup = (CheckBox)e.Item.FindControl("chkBoxStudentForClassGroup");
+
+                AsyncPostBackTrigger trigger = new AsyncPostBackTrigger();
+                trigger.ControlID = chkBoxStudentForClassGroup.UniqueID;
+                trigger.EventName = "CheckedChanged";
+
+                updatePanelInsertClassGroup.Triggers.Add(trigger);
+                chkBoxStudentForClassGroup.CheckedChanged += chkBoxStudentForClassGroup_OnCheckedChanged;
+
+            }
         }
 
         protected void btnPreviousStudents_Click(object sender, EventArgs e)
         {
-            PageNumberModules -= 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataModules();
+            PageNumberStudents -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataStudents();
         }
 
         protected void btnNextStudents_Click(object sender, EventArgs e)
         {
-            PageNumberModules += 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataModules();
+            PageNumberStudents += 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataStudents();
         }
 
         private void BindDataStudents()
@@ -90,7 +120,7 @@ namespace FinalProject
             PagedDataSource pagedData = new PagedDataSource();
             pagedData.DataSource = Classes.Student.LoadStudents();
             pagedData.AllowPaging = true;
-            pagedData.PageSize = 2;
+            pagedData.PageSize = 1;
             pagedData.CurrentPageIndex = PageNumberStudents;
             int PageNumber = PageNumberStudents + 1;
 
@@ -165,5 +195,127 @@ namespace FinalProject
         }
 
 
+        protected void ddlCurso_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedCourseID = ddlCurso.SelectedValue;
+
+            BindDdlModules(selectedCourseID);
+        }
+
+
+        private void BindDdlModules(string selectCourseID)
+        {
+            ddlTeacherForModules.ClearSelection();
+            SQLDSModulesForCourse.SelectCommand =
+                $"SELECT * FROM moduloCurso AS MC INNER JOIN curso AS C ON MC.codCurso=C.codCurso INNER JOIN modulo AS M ON MC.codModulo = M.codModulos WHERE MC.codCurso={selectCourseID}";
+            ddlModulesOfCourse.DataSource = SQLDSModulesForCourse;
+            ddlModulesOfCourse.DataTextField = "nomeModulos";
+            ddlModulesOfCourse.DataValueField = "codModulo";
+            ddlModulesOfCourse.DataBind();
+        }
+
+        private void BindDdlTeacherForModules(string selectedModuleID)
+        {
+            SQLDSTeachersForModules.SelectCommand =
+                $"SELECT * FROM moduloFormador AS MT INNER JOIN formador AS T ON MT.codFormador=T.codFormador INNER JOIN inscricao AS I ON T.codInscricao=I.codInscricao INNER JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador INNER JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador INNER JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador WHERE MT.codModulo={selectedModuleID}";
+            ddlTeacherForModules.DataSource = SQLDSTeachersForModules;
+            ddlTeacherForModules.DataTextField = "nome";
+            ddlTeacherForModules.DataValueField = "codFormador";
+            ddlTeacherForModules.DataBind();
+        }
+
+        protected void ddlModulesOfCourse_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedModuleID = ddlModulesOfCourse.SelectedValue;
+            ddlTeacherForModules.ClearSelection();
+
+            BindDdlTeacherForModules(selectedModuleID);
+        }
+
+        protected void chkBoxStudentForClassGroup_OnCheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
+            HiddenField hdnStudentForClassGroupID = (HiddenField)item.FindControl("hdnStudentForClassGroupID");
+            HiddenField hdnStudentForClassGroupName = (HiddenField)item.FindControl("hdnStudentForClassGroupName");
+
+            if (hdnStudentForClassGroupID != null && hdnStudentForClassGroupName != null)
+            {
+                int hdnStudentID = Convert.ToInt32(hdnStudentForClassGroupID.Value);
+                Dictionary<int, bool> checkboxStates = (Dictionary<int, bool>)ViewState["CheckboxStatesInsert"] ??
+                                                       new Dictionary<int, bool>();
+                ListItem newItem = new ListItem(hdnStudentForClassGroupName.Value, hdnStudentForClassGroupID.Value);
+
+                if (checkBox.Checked)
+                {
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItemsInsert"] ?? new List<int>();
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNamesInsert"] ?? new List<string>();
+                    selectedItems.Add(Convert.ToInt32(hdnStudentForClassGroupID.Value));
+                    itemsNames.Add(hdnStudentForClassGroupName.Value);
+                    listBoxStudentsForCourse.Attributes.Remove("class");
+
+                    listBoxStudents.Items.Add(newItem);
+                    checkboxStates[hdnStudentID] = true;
+                    ViewState["SelectedItemsInsert"] = selectedItems;
+                    ViewState["SelectedItemsNamesInsert"] = itemsNames;
+
+                }
+                else
+                {
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItemsInsert"];
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNamesInsert"];
+                    if (selectedItems != null)
+                    {
+                        selectedItems.Remove(Convert.ToInt32(hdnStudentForClassGroupID.Value));
+                        itemsNames.Remove(hdnStudentForClassGroupName.Value);
+                        listBoxStudents.Items.Remove(newItem);
+
+                        checkboxStates[hdnStudentID] = false;
+
+                        ViewState["SelectedItemsInsert"] = selectedItems;
+                        ViewState["SelectedItemsNamesInsert"] = itemsNames;
+                    }
+                }
+
+                ViewState["CheckboxStatesInsert"] = checkboxStates;
+            }
+        }
+
+
+        protected void btnAddTeacherModuleClassGroup_OnClick(object sender, EventArgs e)
+        {
+            if (ddlTeacherForModules.SelectedItem != null && ddlModulesOfCourse.SelectedItem != null)
+            {
+                listBoxTeachersModules.Attributes.Remove("class");
+                listBoxTeachersForModules.CssClass = "";
+
+                string moduleName = ddlModulesOfCourse.SelectedItem.Text;
+                string teacherName = ddlTeacherForModules.SelectedItem.Text;
+
+                string combinedName = moduleName + " | " + teacherName;
+
+                ListItem newItem = new ListItem(combinedName);
+                listBoxTeachersForModules.Items.Add(newItem);
+
+            }
+            else
+            {
+                lbl_message.Text = "Não pode adicionar módulos sem o respetivo formador!";
+            }
+
+
+        }
+
+        protected void btnRemoveTeacherModuleClassGroup_OnClick(object sender, EventArgs e)
+        {
+            if (listBoxTeachersForModules.SelectedItem != null)
+            {
+                listBoxTeachersForModules.Items.Remove(listBoxTeachersForModules.SelectedItem);
+            }
+            else
+            {
+                lbl_message.Text = "Seleccione na lista o item a remover!";
+            }
+        }
     }
 }

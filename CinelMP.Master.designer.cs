@@ -132,6 +132,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.LinkButton lbtn_manageClassrooms;
 
         /// <summary>
+        /// lbtn_manageUsers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtn_manageUsers;
+
+        /// <summary>
         /// lbtn_signout control.
         /// </summary>
         /// <remarks>
