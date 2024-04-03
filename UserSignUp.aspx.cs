@@ -48,13 +48,7 @@ namespace FinalProject
                             {
                                 Session["ActivatedUser"] = "Conta ativada com sucesso!";
 
-                                script = @"
-                                        document.getElementById('alert').classList.remove('hidden');
-                                        document.getElementById('alert').classList.add('alert');
-                                        document.getElementById('alert').classList.add('alert-primary');
-                                        ";
-
-                                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                                lbl_message.CssClass = "alert alert-primary text-white text-center";
 
                                 Classes.EmailControl.SendEmailActivation(profile.Email, Username);
 
@@ -62,13 +56,7 @@ namespace FinalProject
                             }
                             else if (AnswUserExists == -1 && AnswAccountActive == -1)
                             {
-                                script = @"
-                                        document.getElementById('alert').classList.remove('hidden');
-                                        document.getElementById('alert').classList.add('alert');
-                                        document.getElementById('alert').classList.add('alert-primary');
-                                        ";
-
-                                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                                lbl_message.CssClass = "alert alert-primary text-white text-center";
 
                                 lblUserFromGoogle.Text = "Este utilizador não está associado a nenhuma conta! Registe-se.";
                             }
@@ -117,13 +105,7 @@ namespace FinalProject
 
                 if (Security.IsValidEmail(tb_email.Text) == false)
                 {
-                    string script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
-
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                    lbl_message.CssClass = "alert alert-primary text-white text-center";
 
                     lbl_message.Text = "Introduza um e-mail válido!";
                 }
@@ -131,26 +113,14 @@ namespace FinalProject
                 {
                     foreach (var failure in failures)
                     {
-                        string script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
-
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                        lbl_message.CssClass = "alert alert-primary text-white text-center";
 
                         lbl_message.Text += failure + "\n";
                     }
                 }
                 else if (tb_pw.Text != tb_pwR.Text)
                 {
-                    string script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
-
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                    lbl_message.CssClass = "alert alert-primary text-white text-center";
 
                     lbl_message.Text = "A palavra-passe e a sua repetição não correspondem.";
                 }
@@ -173,13 +143,7 @@ namespace FinalProject
 
                     if (UserRegister == 1)
                     {
-                        string script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
-
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                        lbl_message.CssClass = "alert alert-primary text-white text-center";
 
                         EmailControl.SendEmailActivation(tb_email.Text, tb_username.Text);
 
@@ -187,13 +151,7 @@ namespace FinalProject
                     }
                     else
                     {
-                        string script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
-
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                        lbl_message.CssClass = "alert alert-primary text-white text-center";
 
                         lbl_message.Text = $"Utilizador já registado! Se não se lembra da sua password recupere a sua conta <a href='{ConfigurationManager.AppSettings["SiteURL"]}/UserLogin.aspx'> link </a>!";
                     }

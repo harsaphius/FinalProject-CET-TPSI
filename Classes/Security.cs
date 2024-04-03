@@ -132,7 +132,7 @@ namespace FinalProject.Classes
         /// <returns></returns>
         public static bool IsValidUsername(string username)
         {
-            string usernamePattern = @"^[a-zA-Z0-9_-]{3,16}$";
+            string usernamePattern = @"^[a-zA-Z0-9_-]{3,30}$";
             return Regex.IsMatch(username, usernamePattern);
         }
 

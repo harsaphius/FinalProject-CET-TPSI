@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FinalProject.Classes;
+using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using FinalProject.Classes;
 
 namespace FinalProject
 {
@@ -78,28 +77,28 @@ namespace FinalProject
 
                     BindDataUsers();
 
-                    
+
                 }
             }
         }
 
-                //Função de Databinding
-                private void BindDataUsers()
-                {
+        //Função de Databinding
+        private void BindDataUsers()
+        {
 
-                    PagedDataSource pagedData = new PagedDataSource();
-                    pagedData.DataSource = Classes.User.LoadUsers();
-                    pagedData.AllowPaging = true;
-                    pagedData.PageSize = 8;
-                    pagedData.CurrentPageIndex = PageNumberUsers;
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.User.LoadUsers();
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 8;
+            pagedData.CurrentPageIndex = PageNumberUsers;
 
 
-                    rptUsers.DataSource = pagedData;
-                    rptUsers.DataBind();
+            rptUsers.DataSource = pagedData;
+            rptUsers.DataBind();
 
-                    btnPreviousUser.Enabled = !pagedData.IsFirstPage;
-                    btnNextUser.Enabled = !pagedData.IsLastPage;
-                }
+            btnPreviousUser.Enabled = !pagedData.IsFirstPage;
+            btnNextUser.Enabled = !pagedData.IsLastPage;
+        }
 
 
         //Função de Paginação
@@ -127,7 +126,7 @@ namespace FinalProject
                 CheckBox ckbFormador = (CheckBox)e.Item.FindControl("ckbFormador");
                 CheckBox ckbFuncionario = (CheckBox)e.Item.FindControl("ckbFuncionario");
 
-                
+
                 ckbAtivo.Checked = user.Ativo;
                 ckbFormando.Checked = user.UserProfiles.Contains(2);
                 ckbFormador.Checked = user.UserProfiles.Contains(3);

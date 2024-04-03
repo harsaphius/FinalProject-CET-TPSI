@@ -1,6 +1,7 @@
 ﻿using FinalProject.Classes;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -207,7 +208,15 @@ namespace FinalProject
                 if (parts.Length == 2)
                 {
                     string beforeAt = parts[0];
-                    user.Username = beforeAt;
+
+                    string cleanUsername = Regex.Replace(beforeAt, @"[^a-zA-Z0-9]", "");
+
+                    if (cleanUsername.Length > 30)
+                    {
+                        cleanUsername = cleanUsername.Substring(0, 30);
+                    }
+
+                    user.Username = cleanUsername;
                 }
 
                 user.Email = tbEmail.Text;

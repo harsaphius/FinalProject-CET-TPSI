@@ -276,6 +276,33 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.DropDownList ddlQNQEditCourse;
 
         /// <summary>
+        /// lblCursoModulo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCursoModulo;
+
+        /// <summary>
+        /// lbtnSearchModule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtnSearchModule;
+
+        /// <summary>
+        /// tbSearchModule control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbSearchModule;
+
+        /// <summary>
         /// rptEditModulesCourse control.
         /// </summary>
         /// <remarks>

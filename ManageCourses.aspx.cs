@@ -159,14 +159,11 @@ namespace FinalProject
             {
                 CheckBox chkBoxEditModulesCourse = (CheckBox)e.Item.FindControl("chkBoxEditModulesCourse");
 
-                // Create an AsyncPostBackTrigger for the CheckBox control
                 AsyncPostBackTrigger trigger = new AsyncPostBackTrigger();
                 trigger.ControlID = chkBoxEditModulesCourse.UniqueID;
                 trigger.EventName = "CheckedChanged";
 
-                // Add the trigger to the UpdatePanel's triggers collection
                 updatePanelInsertCourses.Triggers.Add(trigger);
-                // Attach an event handler for the CheckedChanged event
                 chkBoxEditModulesCourse.CheckedChanged += chkBoxEditModulesCourse_CheckedChanged;
 
             }
@@ -268,10 +265,10 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnInsertCourse_Click(object sender, EventArgs e)
         {
-            List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
+            List<int> selectedItemsInsert = (List<int>)ViewState["SelectedItemsInsert"];
             Course courseData = new Course();
 
-            if (selectedItems != null && selectedItems.Count > 0)
+            if (selectedItemsInsert != null && selectedItemsInsert.Count > 0)
             {
                 courseData.Nome = tbCourseName.Text;
                 courseData.CodTipoCurso = Convert.ToInt32(ddlTipoCurso.SelectedValue);
@@ -286,7 +283,7 @@ namespace FinalProject
                     courseData.CodQNQ = Convert.ToInt32(codQNQ);
                 }
 
-                int CourseRegisted = Classes.Course.InsertCourse(courseData, selectedItems);
+                int CourseRegisted = Classes.Course.InsertCourse(courseData, selectedItemsInsert);
 
                 if (CourseRegisted == 1)
                 {
@@ -300,7 +297,7 @@ namespace FinalProject
 
                     lbl_message.Text = "Curso registado com sucesso!";
 
-                    ViewState["SelectedItems"] = null;
+                    ViewState["SelectedItemsInsert"] = null;
                 }
                 else
                 {

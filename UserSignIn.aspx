@@ -5,9 +5,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <main class="main-content mt-0">
         <section>
-            <div style="padding: 5px;" id="alert" class="hidden" role="alert">
-                <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
-            </div>
+            <asp:Label runat="server" ID="lbl_message" style="display:flex; align-content:center; padding: 5px;" CssClass="text-white" class="hidden" role="alert"></asp:Label>
+
             <div class="page-header min-vh-50" id="Login">
                 <div class="container">
                     <div class="row ">
@@ -151,7 +150,7 @@
             }
         }
     </script>
-    
+
     <!--Javascript para mostrar a div de Recover Password -->
     <script>
         function showRecoverPassword(event) {

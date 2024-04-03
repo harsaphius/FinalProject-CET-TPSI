@@ -88,25 +88,25 @@ namespace FinalProject
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                LinkButton lbtEditEditCourse = (LinkButton)e.Item.FindControl("lbtEditModules");
-                LinkButton lbtCancelEditCourse = (LinkButton)e.Item.FindControl("lbtCancelModules");
-                LinkButton lbtDeleteEditCourse = (LinkButton)e.Item.FindControl("lbtDeleteModules");
-                LinkButton lbtConfirmEditCourse = (LinkButton)e.Item.FindControl("lbtConfirmModules");
+                LinkButton lbtEditModules = (LinkButton)e.Item.FindControl("lbtEditModules");
+                LinkButton lbtCancelModules = (LinkButton)e.Item.FindControl("lbtCancelModules");
+                LinkButton lbtDeleteModules = (LinkButton)e.Item.FindControl("lbtDeleteModules");
+                LinkButton lbtConfirmModules = (LinkButton)e.Item.FindControl("lbtConfirmModules");
 
                 AsyncPostBackTrigger triggerEdit = new AsyncPostBackTrigger();
-                triggerEdit.ControlID = lbtEditEditCourse.UniqueID;
+                triggerEdit.ControlID = lbtEditModules.UniqueID;
                 triggerEdit.EventName = "Click";
 
                 AsyncPostBackTrigger triggerCancel = new AsyncPostBackTrigger();
-                triggerCancel.ControlID = lbtCancelEditCourse.UniqueID;
+                triggerCancel.ControlID = lbtCancelModules.UniqueID;
                 triggerCancel.EventName = "Click";
 
                 AsyncPostBackTrigger triggerDelete = new AsyncPostBackTrigger();
-                triggerDelete.ControlID = lbtDeleteEditCourse.UniqueID;
+                triggerDelete.ControlID = lbtDeleteModules.UniqueID;
                 triggerDelete.EventName = "Click";
 
                 AsyncPostBackTrigger triggerConfirm = new AsyncPostBackTrigger();
-                triggerConfirm.ControlID = lbtConfirmEditCourse.UniqueID;
+                triggerConfirm.ControlID = lbtConfirmModules.UniqueID;
                 triggerConfirm.EventName = "Click";
 
                 updatePanelListModules.Triggers.Add(triggerEdit);
@@ -147,7 +147,7 @@ namespace FinalProject
             TextBox tbUFCD = (TextBox)item.FindControl("tbUFCD");
             Label lblUFCD = (Label)item.FindControl("lblUFCD");
 
-            TextBox tbDuracao = (TextBox)item.FindControl("tbDuracao");
+            DropDownList ddlDuracao = (DropDownList)item.FindControl("ddlDuracaoEdit");
             Label lblDuracao = (Label)item.FindControl("lblDuracao");
 
             TextBox tbDescricao = (TextBox)item.FindControl("tbDescricao");
@@ -156,10 +156,10 @@ namespace FinalProject
             TextBox tbCreditos = (TextBox)item.FindControl("tbCreditos");
             Label lblCreditos = (Label)item.FindControl("lblCreditos");
 
-            LinkButton lbt_edit = (LinkButton)item.FindControl("lbtEditModules");
-            LinkButton lbt_cancel = (LinkButton)item.FindControl("lbtCancelModules");
-            LinkButton lbt_delete = (LinkButton)item.FindControl("lbtDeleteModules");
-            LinkButton lbt_confirm = (LinkButton)item.FindControl("lbtConfirmModules");
+            LinkButton lbtEditModules = (LinkButton)item.FindControl("lbtEditModules");
+            LinkButton lbtCancelModules = (LinkButton)item.FindControl("lbtCancelModules");
+            LinkButton lbtDeleteModules = (LinkButton)item.FindControl("lbtDeleteModules");
+            LinkButton lbtConfirmModules = (LinkButton)item.FindControl("lbtConfirmModules");
 
             HiddenField hdnModuleID = (HiddenField)item.FindControl("hdnModuleID");
             string ModuleID = hdnModuleID.Value;
@@ -174,9 +174,12 @@ namespace FinalProject
                 lblUFCD.Visible = !lblUFCD.Visible;
                 tbUFCD.Text = lblUFCD.Text;
 
-                tbDuracao.Visible = !tbDuracao.Visible;
+                ddlDuracao.Visible = !ddlDuracao.Visible;
                 lblDuracao.Visible = !lblDuracao.Visible;
-                tbDuracao.Text = lblDuracao.Text;
+                if (ddlDuracao.Items.FindByValue(lblDuracao.Text) != null)
+                {
+                    ddlDuracao.SelectedValue = lblDuracao.Text;
+                }
 
                 tbDescricao.Visible = !tbDescricao.Visible;
                 lblDescricao.Visible = !lblDescricao.Visible;
@@ -186,11 +189,11 @@ namespace FinalProject
                 lblCreditos.Visible = !lblCreditos.Visible;
                 tbCreditos.Text = lblCreditos.Text;
 
-                lbt_cancel.Visible = true;
-                lbt_confirm.Visible = true;
+                lbtCancelModules.Visible = true;
+                lbtConfirmModules.Visible = true;
 
-                lbt_edit.Visible = false;
-                lbt_delete.Visible = false;
+                lbtEditModules.Visible = false;
+                lbtDeleteModules.Visible = false;
             }
 
             if (e.CommandName == "Confirm")
@@ -203,7 +206,7 @@ namespace FinalProject
                     module.Nome = tbNome.Text;
                     module.UFCD = tbUFCD.Text;
                     module.Descricao = tbDescricao.Text;
-                    module.Duracao = Convert.ToInt32(tbDuracao.Text);
+                    module.Duracao = Convert.ToInt32(ddlDuracao.SelectedValue);
                     module.Creditos = Convert.ToDecimal(tbCreditos.Text);
 
                     int AnswModuleUpdate = Classes.Module.UpdateModule(module);
@@ -218,9 +221,9 @@ namespace FinalProject
                         lblUFCD.Visible = !lblUFCD.Visible;
                         lblUFCD.Text = tbUFCD.Text;
 
-                        tbDuracao.Visible = !tbDuracao.Visible;
+                        ddlDuracao.Visible = !ddlDuracao.Visible;
                         lblDuracao.Visible = !lblDuracao.Visible;
-                        lblDuracao.Text = tbDuracao.Text;
+                        lblDuracao.Text = ddlDuracao.Text;
 
                         tbDescricao.Visible = !tbDescricao.Visible;
                         lblDescricao.Visible = !lblDescricao.Visible;
@@ -230,15 +233,21 @@ namespace FinalProject
                         lblCreditos.Visible = !lblCreditos.Visible;
                         lblCreditos.Text = tbCreditos.Text;
 
-                        lbt_cancel.Visible = false;
-                        lbt_confirm.Visible = false;
+                        lbtCancelModules.Visible = false;
+                        lbtConfirmModules.Visible = false;
 
-                        lbt_edit.Visible = true;
-                        lbt_delete.Visible = true;
+                        lbtEditModules.Visible = true;
+                        lbtDeleteModules.Visible = true;
 
                         BindDataModules();
-                        lbl_message.Text = "Módulo atualizado com sucesso";
+
+                        lblMessageEdit.Visible = true;
+                        lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                        lblMessageEdit.Text = "Módulo atualizado com sucesso";
+                        timerMessageEdit.Enabled = true;
+
                     }
+
                     if (AnswModuleUpdate == 2)
                     {
                         tbNome.Visible = !tbNome.Visible;
@@ -249,7 +258,7 @@ namespace FinalProject
                         lblUFCD.Visible = !lblUFCD.Visible;
                         lblUFCD.Text = lblUFCD.Text;
 
-                        tbDuracao.Visible = !tbDuracao.Visible;
+                        ddlDuracao.Visible = !ddlDuracao.Visible;
                         lblDuracao.Visible = !lblDuracao.Visible;
                         lblDuracao.Text = lblDuracao.Text;
 
@@ -261,20 +270,63 @@ namespace FinalProject
                         lblCreditos.Visible = !lblCreditos.Visible;
                         lblCreditos.Text = lblCreditos.Text;
 
-                        lbt_cancel.Visible = false;
-                        lbt_confirm.Visible = false;
+                        lbtCancelModules.Visible = false;
+                        lbtConfirmModules.Visible = false;
 
-                        lbt_edit.Visible = true;
-                        lbt_delete.Visible = true;
+                        lbtEditModules.Visible = true;
+                        lbtDeleteModules.Visible = true;
 
                         BindDataModules();
 
-                        lbl_message.Text = "Módulo não pode ser totalmente atualizado por já se encontrar inserido num curso. Apenas foram atualizados o nome e a descrição. Insira um novo módulo.";
+                        lblMessageEdit.Visible = true;
+                        lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                        lblMessageEdit.Text = "Módulo não pode ser totalmente atualizado por já se encontrar inserido num curso. Apenas foram atualizados o nome e a descrição. Insira um novo módulo.";
+                        timerMessageEdit.Enabled = true;
+                    }
+
+                    if (AnswModuleUpdate == 0)
+                    {
+                        tbNome.Visible = !tbNome.Visible;
+                        lblNome.Visible = !lblNome.Visible;
+                        lblNome.Text = lblNome.Text;
+
+                        tbUFCD.Visible = !tbUFCD.Visible;
+                        lblUFCD.Visible = !lblUFCD.Visible;
+                        lblUFCD.Text = lblUFCD.Text;
+
+                        ddlDuracao.Visible = !ddlDuracao.Visible;
+                        lblDuracao.Visible = !lblDuracao.Visible;
+                        lblDuracao.Text = lblDuracao.Text;
+
+                        tbDescricao.Visible = !tbDescricao.Visible;
+                        lblDescricao.Visible = !lblDescricao.Visible;
+                        lblDescricao.Text = lblDescricao.Text;
+
+                        tbCreditos.Visible = !tbCreditos.Visible;
+                        lblCreditos.Visible = !lblCreditos.Visible;
+                        lblCreditos.Text = lblCreditos.Text;
+
+                        lbtCancelModules.Visible = false;
+                        lbtConfirmModules.Visible = false;
+
+                        lbtEditModules.Visible = true;
+                        lbtDeleteModules.Visible = true;
+
+                        BindDataModules();
+
+                        lblMessageEdit.Visible = true;
+                        lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                        lblMessageEdit.Text = "Módulo num curso!";
+                        timerMessageEdit.Enabled = true;
+
                     }
                 }
                 else
                 {
-                    lbl_message.Text = "Os créditos deverão ser um decimal.";
+                    lblMessageEdit.Visible = true;
+                    lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                    lblMessageEdit.Text = "Os créditos deverão ser um decimal.";
+                    timerMessageEdit.Enabled = true;
                 }
             }
 
@@ -285,11 +337,18 @@ namespace FinalProject
                 if (AnswModuleDeleted == 1)
                 {
                     BindDataModules();
-                    lbl_message.Text = "Módulo apagado com sucesso!";
+
+                    lblMessageEdit.Visible = true;
+                    lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                    lblMessageEdit.Text = "Módulo apagado com sucesso!";
+                    timerMessageEdit.Enabled = true;
                 }
                 else
                 {
-                    lbl_message.Text = "Módulo não pode ser eliminado por fazer parte do programa de um curso!";
+                    lblMessageEdit.Visible = true;
+                    lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                    lblMessageEdit.Text = "Módulo não pode ser eliminado por fazer parte do programa de um curso!";
+                    timerMessageEdit.Enabled = true;
                 }
 
             }
@@ -304,7 +363,7 @@ namespace FinalProject
                 lblUFCD.Visible = !lblUFCD.Visible;
                 lblUFCD.Text = lblUFCD.Text;
 
-                tbDuracao.Visible = !tbDuracao.Visible;
+                ddlDuracao.Visible = !ddlDuracao.Visible;
                 lblDuracao.Visible = !lblDuracao.Visible;
                 lblDuracao.Text = lblDuracao.Text;
 
@@ -316,11 +375,11 @@ namespace FinalProject
                 lblCreditos.Visible = !lblCreditos.Visible;
                 lblCreditos.Text = lblCreditos.Text;
 
-                lbt_cancel.Visible = false;
-                lbt_confirm.Visible = false;
+                lbtCancelModules.Visible = false;
+                lbtConfirmModules.Visible = false;
 
-                lbt_edit.Visible = true;
-                lbt_delete.Visible = true;
+                lbtEditModules.Visible = true;
+                lbtDeleteModules.Visible = true;
 
             }
         }
@@ -353,7 +412,7 @@ namespace FinalProject
             }
 
             moduleData.Nome = tbModuleName.Text;
-            moduleData.Duracao = Convert.ToInt32(tbDuration.Text);
+            moduleData.Duracao = Convert.ToInt32(ddlDuracao.SelectedValue);
             moduleData.UFCD = tbUFCD.Text;
             moduleData.Descricao = tbDescricao.Text;
             moduleData.Creditos = Convert.ToDecimal(tbCredits.Text);
@@ -362,27 +421,24 @@ namespace FinalProject
 
             if (ModuleRegisted == 1)
             {
-                string script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
 
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                lblMessageInsert.Visible = true;
+                lblMessageInsert.CssClass = "alert alert-primary text-white text-center";
+                lblMessageInsert.Text = "Módulo registado com sucesso!";
+                timerMessageInsert.Enabled = true;
 
-                lbl_message.Text = "Módulo registado com sucesso!";
+                CleanTextBoxes();
+
             }
             else
             {
-                string script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
+                lblMessageInsert.Visible = true;
+                lblMessageInsert.CssClass = "alert alert-primary text-white text-center";
+                lblMessageInsert.Text = "Módulo já registado!";
+                timerMessageInsert.Enabled = true;
 
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                CleanTextBoxes();
 
-                lbl_message.Text = "Módulo já registado!";
             }
         }
 
@@ -485,8 +541,29 @@ namespace FinalProject
             ddlOrder.SelectedIndex = 0;
 
             BindDataModules();
-
         }
 
+
+        private void CleanTextBoxes()
+        {
+            tbModuleName.Text = "";
+            ddlDuracao.SelectedIndex = 0;
+            tbUFCD.Text = "";
+            tbDescricao.Text = "";
+            tbCredits.Text = "";
+        }
+
+
+        protected void timerMessageInsert_OnTick(object sender, EventArgs e)
+        {
+            lblMessageInsert.Visible = false;
+            timerMessageInsert.Enabled = false;
+        }
+
+        protected void timerMessageEdit_OnTick(object sender, EventArgs e)
+        {
+            lblMessageEdit.Visible = false;
+            timerMessageEdit.Enabled = false;
+        }
     }
 }

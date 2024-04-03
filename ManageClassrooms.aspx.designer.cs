@@ -114,6 +114,24 @@ namespace FinalProject
         protected global::System.Web.UI.UpdatePanel updatePanelListClassrooms;
 
         /// <summary>
+        /// lblMessageEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessageEdit;
+
+        /// <summary>
+        /// timerMessageEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessageEdit;
+
+        /// <summary>
         /// rpt_Classrooms control.
         /// </summary>
         /// <remarks>
@@ -238,5 +256,23 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnInsertClassroom;
+
+        /// <summary>
+        /// lblMessageInsert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessageInsert;
+
+        /// <summary>
+        /// timerMessageInsert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessageInsert;
     }
 }

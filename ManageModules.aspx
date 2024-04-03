@@ -21,8 +21,10 @@
                             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                                 <span>Designação:</span>
                                 <div class="input-group mb-4">
-                                    <asp:LinkButton runat="server" ID="lbtSearchFilters" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
-                                    <asp:TextBox runat="server" ID="tbSearchFilters" CssClass="form-control" placeholder="Type here..."></asp:TextBox>
+                                    <asp:LinkButton runat="server" ID="lbtSearchFilters" class="input-group-text text-body" CausesValidation="False" AutoPostBack="True" OnClick="btnApplyFilters_OnClick">
+                                        <i class="fas fa-search" aria-hidden="true"></i>
+                                    </asp:LinkButton>
+                                    <asp:TextBox runat="server" ID="tbSearchFilters" CssClass="form-control" placeholder="Escreve aqui..." CausesValidation="False" AutoPostBack="False"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
@@ -56,6 +58,8 @@
                         </div>
                     </ContentTemplate>
                     <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="lbtSearchFilters" />
+                        <asp:AsyncPostBackTrigger ControlID="tbSearchFilters" />
                         <asp:AsyncPostBackTrigger ControlID="btnApplyFilters" />
                         <asp:AsyncPostBackTrigger ControlID="btnClearFilters" />
                     </Triggers>
@@ -69,6 +73,10 @@
                         <div id="listModulesDiv">
                             <asp:UpdatePanel ID="updatePanelListModules" runat="server">
                                 <ContentTemplate>
+                                    <div class="container row justify-content-center">
+                                        <asp:Label runat="server" ID="lblMessageEdit" Style="display:flex; justify-content: center; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
+                                        <asp:Timer ID="timerMessageEdit" runat="server" Interval="3000" OnTick="timerMessageEdit_OnTick"></asp:Timer>
+                                    </div>
                                     <div class="card-header pb-0">
                                         <h6>Módulos</h6>
                                     </div>
@@ -101,13 +109,9 @@
                                         </HeaderTemplate>
                                         <ItemTemplate>
                                             <tr>
-                                                <td id="cellNome">
+                                                <td>
                                                     <asp:HiddenField runat="server" ID="hdnModuleID" Value='<%# Eval("CodModulo") %>' />
                                                     <div class="d-flex px-1">
-                                                        <%-- <a runat="server" href="javascript:;">--%>
-                                                        <%--   <asp:FileUpload ID="fileUpload" runat="server" Visible="false" onchange="uploadFile(this)" /> <%--onclick="triggerFileUpload('<%= fileUpload.ClientID %>')"
-                                                                    </a>--%>
-
                                                         <asp:Image ID="imgUpload" CssClass="avatar avatar-sm rounded-circle me-3" runat="server" ImageUrl='<%# Eval("SVG") %>' />
 
                                                         <p class="text-sm">
@@ -117,7 +121,7 @@
                                                     </div>
                                                     </div>
                                                 </td>
-                                                <td id="cellUFCD" style="width: 5%;">
+                                                <td>
                                                     <p class="text-sm">
                                                         <asp:TextBox ID="tbUFCD" CssClass="form-control" runat="server" Text='<%# Bind("UFCD") %>' Visible="false"></asp:TextBox>
                                                         <asp:Label ID="lblUFCD" runat="server" Text='<%# Eval("UFCD") %>' Visible="true"></asp:Label>
@@ -125,11 +129,14 @@
                                                 </td>
                                                 <td>
                                                     <p class="text-sm">
-                                                        <asp:TextBox ID="tbDuracao" CssClass="form-control" runat="server" Text='<%# Bind("Duracao") %>' Visible="false"></asp:TextBox>
+                                                        <asp:DropDownList ID="ddlDuracaoEdit" runat="server" CssClass="form-control" Visible="false">
+                                                            <asp:ListItem Value="25">25 horas</asp:ListItem>
+                                                            <asp:ListItem Value="50">50 Horas</asp:ListItem>
+                                                        </asp:DropDownList>
                                                         <asp:Label ID="lblDuracao" class="text-sm" runat="server" Text='<%# Eval("Duracao") %>' Style="width: 100%;" Visible="true"></asp:Label>
                                                     </p>
                                                 </td>
-                                                <td id="cellDescricao">
+                                                <td>
                                                     <p class="text-xs">
                                                         <asp:TextBox ID="tbDescricao" CssClass="form-control" runat="server" Text='<%# Bind("Descricao") %>' Visible="false"></asp:TextBox>
                                                         <asp:Label ID="lblDescricao" class="text-xs" runat="server" Text='<%# Eval("Descricao") %>' Visible="true"></asp:Label>
@@ -170,19 +177,8 @@
                                                              </div>
                                         </FooterTemplate>
                                     </asp:Repeater>
-                                    <%-- <script type="text/javascript">
-                                            function triggerFileUpload(clientId) {
-                                                // Get the FileUpload control
-                                                var fileUpload = document.getElementById(clientId);
-                                                // Trigger a click event on the FileUpload control
-                                                fileUpload.click();
-                                            }
-                                            function uploadFile(input) {
-                                                // Handle file upload logic here
-                                                // For example, you can access the uploaded file using input.files[0]
-                                            }
-                                        </script>--%>
-                                    <!--Paginação -->
+
+                                    <!--Paginação List Modules -->
                                     <ul class="pagination">
                                         <li class="page-item">
                                             <asp:LinkButton ID="btnPreviousModule" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousModule_Click" runat="server">
@@ -198,8 +194,12 @@
                                             </asp:LinkButton>
                                         </li>
                                     </ul>
+                                    
+
+                                    <!-- AsyncPostBackTrigger For Lbtn Gerados no C# -->
                                 </ContentTemplate>
                                 <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="timerMessageEdit" />
                                     <asp:AsyncPostBackTrigger ControlID="btnPreviousModule" />
                                     <asp:AsyncPostBackTrigger ControlID="btnNextModule" />
                                 </Triggers>
@@ -208,12 +208,10 @@
                         <div id="insertModulesDiv" class="hidden">
                             <asp:UpdatePanel runat="server" ID="updatePanelInsertModules">
                                 <ContentTemplate>
-                                    <div style="padding: 5px;" id="alert" class="hidden" role="alert">
-                                        <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
-                                    </div>
                                     <div class="page-header min-vh-50">
                                         <div class="container-fluid">
                                             <div class="row ">
+
                                                 <div class="col-xl-6 col-lg-5 col-md-6 flex-column">
                                                     <div class="card card-plain">
                                                         <div class="card-header pb-0 text-left bg-transparent">
@@ -227,9 +225,11 @@
                                                                     <asp:TextBox ID="tbModuleName" CssClass="form-control" placeholder="Nome do Módulo" runat="server"></asp:TextBox>
                                                                 </div>
                                                                 <label>Duração</label>
-                                                                <asp:RequiredFieldValidator ID="rfvDuration" runat="server" ErrorMessage="Duração obrigatória" Text="*" ControlToValidate="tbDuration" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                                 <div class="mb-3">
-                                                                    <asp:TextBox ID="tbDuration" CssClass="form-control" placeholder="Duração" runat="server"></asp:TextBox>
+                                                                    <asp:DropDownList ID="ddlDuracao" runat="server" CssClass="form-control">
+                                                                        <asp:ListItem Value="25">25 horas</asp:ListItem>
+                                                                        <asp:ListItem Value="50">50 Horas</asp:ListItem>
+                                                                    </asp:DropDownList>
                                                                 </div>
                                                                 <label>Código da UFCD</label>
                                                                 <asp:RequiredFieldValidator ID="rvfUFCD" runat="server" ErrorMessage="Código da UFCD obrigatório" Text="*" ControlToValidate="tbUFCD" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
@@ -253,6 +253,11 @@
                                                                 <div class="text-center">
                                                                     <asp:Button ID="btnInsertModule" runat="server" Text="Inserir" OnClick="btnInsertModule_Click" class="btn bg-gradient-info w-100 mt-4 mb-0" />
                                                                 </div>
+                                                                <div>
+                                                                    <br />
+                                                                    <asp:Label runat="server" ID="lblMessageInsert" Style="display: flex; align-content: center; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
+                                                                    <asp:Timer ID="timerMessageInsert" runat="server" Interval="3000" OnTick="timerMessageInsert_OnTick"></asp:Timer>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -267,7 +272,7 @@
                                     </div>
                                 </ContentTemplate>
                                 <Triggers>
-                                    <asp:PostBackTrigger ControlID="btnInsertModule" />
+                                    <asp:AsyncPostBackTrigger ControlID="btnInsertModule" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>

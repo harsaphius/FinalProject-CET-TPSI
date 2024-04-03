@@ -49,7 +49,6 @@ namespace FinalProject
 
         protected void btn_signin_Click(object sender, EventArgs e)
         {
-            string script;
 
             if (Classes.Security.IsValidUsername(tb_username.Text) == true || Classes.Security.IsValidEmail(tb_username.Text) == true)
             {
@@ -72,13 +71,7 @@ namespace FinalProject
                 {
                     Session["ActivatedUser"] = "Conta ativada com sucesso!";
 
-                    script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
-
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                    lbl_message.CssClass = "alert alert-primary text-white text-center";
 
                     (int UserCode, string Username) = Classes.User.DetermineUtilizador(tbEmailRecover.Text);
 
@@ -88,38 +81,21 @@ namespace FinalProject
                 }
                 else if (isLoginAllowed[0] == -1 && isLoginAllowed[1] == -1)
                 {
-                    script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
-
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                    lbl_message.CssClass = "alert alert-primary text-white text-center";
 
                     lbl_message.Text = "Este utilizador não está associado a nenhuma conta! Registe-se.";
                 }
                 else
                 {
-                    script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
-
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                    lbl_message.CssClass = "alert alert-primary text-white text-center";
 
                     lbl_message.Text = "O seu utilizador ou palavra-passe estão errados! Tente novamente ou recupere a password!";
                 }
             }
             else
             {
-                script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
+                lbl_message.CssClass = "alert alert-primary text-white text-center";
 
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
                 lbl_message.Text = "Introduz um e-mail ou nome de utilizador válido!";
             }
         }
@@ -128,13 +104,7 @@ namespace FinalProject
         {
             if (Security.IsValidEmail(tbEmailRecover.Text) == false)
             {
-                string script = @"
-                            document.getElementById('modalAlert').classList.remove('hidden');
-                            document.getElementById('modalAlert').classList.add('alert');
-                            document.getElementById('modalAlert').classList.add('alert-primary');
-                            ";
-
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                lbl_message.CssClass = "alert alert-primary text-white text-center";
 
                 lbl_message.Text = "Introduza um e-mail válido!";
             }
@@ -158,6 +128,8 @@ namespace FinalProject
                 }
                 else //Caso o e-mail não esteja associado a nenhuma conta
                 {
+                    lbl_message.CssClass = "alert alert-primary text-white text-center";
+
                     lbl_message.Text = "Este e-mail não está associado a nenhuma conta! Registe-se.";
                 }
             }

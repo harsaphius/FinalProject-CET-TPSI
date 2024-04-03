@@ -14,6 +14,7 @@ namespace FinalProject.Classes
         public int CodModulo { get; set; }
         public string Nome { get; set; }
         public int Duracao { get; set; }
+        public DateTime DataCriacao { get; set; }
         public string UFCD { get; set; }
         public string Descricao { get; set; }
         public decimal Creditos { get; set; }
@@ -34,10 +35,10 @@ namespace FinalProject.Classes
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@NameModule", module.Nome);
             myCommand.Parameters.AddWithValue("@Duration", module.Duracao);
+            myCommand.Parameters.AddWithValue("@CreationDate", DateTime.Now);
             myCommand.Parameters.AddWithValue("@UFCD", module.UFCD);
             myCommand.Parameters.AddWithValue("@Description", module.Descricao);
             myCommand.Parameters.AddWithValue("@Credits", module.Creditos);
-
             if (module.SVG != null)
             {
                 myCommand.Parameters.Add("@SVG", SqlDbType.VarBinary, -1).Value = module.SVG;

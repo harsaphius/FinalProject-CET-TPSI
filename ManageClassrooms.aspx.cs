@@ -70,95 +70,113 @@ namespace FinalProject
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
 
-                BindDataClassrooms();
+                if (!IsPostBack)
+                {
+                    BindDataClassrooms();
+                }
+
+
             }
         }
 
         //Função de ItemDataBound do Repeater
         protected void rpt_Classrooms_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                LinkButton lbtEditClassroom = (LinkButton)e.Item.FindControl("lbtEditClassroom");
+                LinkButton lbtCancelClassroom = (LinkButton)e.Item.FindControl("lbtCancelClassroom");
+                LinkButton lbtDeleteClassroom = (LinkButton)e.Item.FindControl("lbtDeleteClassroom");
+                LinkButton lbtConfirmClassroom = (LinkButton)e.Item.FindControl("lbtConfirmClassroom");
+
+                AsyncPostBackTrigger triggerEdit = new AsyncPostBackTrigger();
+                triggerEdit.ControlID = lbtEditClassroom.UniqueID;
+                triggerEdit.EventName = "Click";
+
+                AsyncPostBackTrigger triggerCancel = new AsyncPostBackTrigger();
+                triggerCancel.ControlID = lbtCancelClassroom.UniqueID;
+                triggerCancel.EventName = "Click";
+
+                AsyncPostBackTrigger triggerDelete = new AsyncPostBackTrigger();
+                triggerDelete.ControlID = lbtDeleteClassroom.UniqueID;
+                triggerDelete.EventName = "Click";
+
+                AsyncPostBackTrigger triggerConfirm = new AsyncPostBackTrigger();
+                triggerConfirm.ControlID = lbtConfirmClassroom.UniqueID;
+                triggerConfirm.EventName = "Click";
+
+                updatePanelListClassrooms.Triggers.Add(triggerEdit);
+                updatePanelListClassrooms.Triggers.Add(triggerCancel);
+                updatePanelListClassrooms.Triggers.Add(triggerDelete);
+                updatePanelListClassrooms.Triggers.Add(triggerConfirm);
+            }
         }
 
 
         //Função de ItemCommand do Repeater
         protected void rpt_Classrooms_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            RepeaterItem item = rpt_Classrooms.Items[e.Item.ItemIndex];
+
+            TextBox tbNrSala = (TextBox)item.FindControl("tbNrSalaEdit");
+            Label lblNrSala = (Label)item.FindControl("lblNrSala");
+
+            DropDownList ddlTipoSalaEdit = (DropDownList)item.FindControl("ddlTipoSalaEdit");
+            Label lblTipoSala = (Label)item.FindControl("lblTipoSala");
+
+            DropDownList ddlLocalSalaEdit = (DropDownList)item.FindControl("ddlLocalSalaEdit");
+            Label lblLocalSala = (Label)item.FindControl("lblLocalSala");
+
+            LinkButton lbtEditClassroom = (LinkButton)item.FindControl("lbtEditClassroom");
+            LinkButton lbtCancelClassroom = (LinkButton)item.FindControl("lbtCancelClassroom");
+            LinkButton lbtDeleteClassroom = (LinkButton)item.FindControl("lbtDeleteClassroom");
+            LinkButton lbtConfirmClassroom = (LinkButton)item.FindControl("lbtConfirmClassroom");
+
+            HiddenField hdnClassroomID = (HiddenField)item.FindControl("hdnClassroomID");
+            string ClassroomID = hdnClassroomID.Value;
+
             if (e.CommandName == "Edit")
             {
-                RepeaterItem item = rpt_Classrooms.Items[e.Item.ItemIndex];
-
-                TextBox tbNrSala = (TextBox)item.FindControl("tbNrSala");
-                Label lblNrSala = (Label)item.FindControl("lblNrSala");
-
-                DropDownList ddlTipoSala = (DropDownList)item.FindControl("ddlTipoSala");
-                Label lblTipoSala = (Label)item.FindControl("lblTipoSala");
-
-                DropDownList ddlLocalSala = (DropDownList)item.FindControl("ddlLocalSala");
-                Label lblLocalSala = (Label)item.FindControl("lblLocalSala");
-
                 tbNrSala.Visible = !tbNrSala.Visible;
                 lblNrSala.Visible = !lblNrSala.Visible;
 
-                ddlTipoSala.Visible = !ddlTipoSala.Visible;
+                ddlTipoSalaEdit.Visible = !ddlTipoSalaEdit.Visible;
                 lblTipoSala.Visible = !lblTipoSala.Visible;
-                ListItem selectedTipoSalaItem = ddlTipoSala.Items.FindByText(lblTipoSala.Text);
 
+                ListItem selectedTipoSalaItem = ddlTipoSalaEdit.Items.FindByText(lblTipoSala.Text);
                 if (selectedTipoSalaItem != null)
                 {
-                    ddlTipoSala.ClearSelection();
+                    ddlTipoSalaEdit.ClearSelection();
                     selectedTipoSalaItem.Selected = true;
                 }
 
-                ddlLocalSala.Visible = !ddlLocalSala.Visible;
+                ddlLocalSalaEdit.Visible = !ddlLocalSalaEdit.Visible;
                 lblLocalSala.Visible = !lblLocalSala.Visible;
-                ListItem selectedLocalSalaItem = ddlLocalSala.Items.FindByText(lblLocalSala.Text);
+                ListItem selectedLocalSalaItem = ddlLocalSalaEdit.Items.FindByText(lblLocalSala.Text);
 
                 if (selectedLocalSalaItem != null)
                 {
-                    ddlLocalSala.ClearSelection();
+                    ddlLocalSalaEdit.ClearSelection();
                     selectedLocalSalaItem.Selected = true;
                 }
 
-                LinkButton lbt_edit = (LinkButton)item.FindControl("lbt_edit");
-                LinkButton lbt_cancel = (LinkButton)item.FindControl("lbt_cancel");
-                LinkButton lbt_delete = (LinkButton)item.FindControl("lbt_delete");
-                LinkButton lbt_confirm = (LinkButton)item.FindControl("lbt_confirm");
+                lbtCancelClassroom.Visible = true;
+                lbtConfirmClassroom.Visible = true;
 
-                lbt_cancel.Visible = true;
-                lbt_confirm.Visible = true;
-
-                lbt_edit.Visible = false;
-                lbt_delete.Visible = false;
+                lbtEditClassroom.Visible = false;
+                lbtDeleteClassroom.Visible = false;
             }
+
             if (e.CommandName == "Confirm")
             {
-                RepeaterItem item = rpt_Classrooms.Items[e.Item.ItemIndex];
-
-                HiddenField hdnClassroomID = (HiddenField)item.FindControl("hdnClassroomID");
-                string ClassroomID = hdnClassroomID.Value;
-
-                TextBox tbNrSala = (TextBox)item.FindControl("tbNrSala");
-                DropDownList ddlTipoSala = (DropDownList)item.FindControl("ddlTipoSala");
-                DropDownList ddlLocalSala = (DropDownList)item.FindControl("ddlLocalSala");
-
-                Label lblNrSala = (Label)item.FindControl("lblNrSala");
-                Label lblTipoSala = (Label)item.FindControl("lblTipoSala");
-                Label lblLocalSala = (Label)item.FindControl("lblLocalSala");
-
-
-                LinkButton lbt_edit = (LinkButton)item.FindControl("lbt_edit");
-                LinkButton lbt_cancel = (LinkButton)item.FindControl("lbt_cancel");
-                LinkButton lbt_delete = (LinkButton)item.FindControl("lbt_delete");
-                LinkButton lbt_confirm = (LinkButton)item.FindControl("lbt_confirm");
-
                 if (!string.IsNullOrEmpty(tbNrSala.Text))
                 {
                     Classroom classroom = new Classroom();
 
                     classroom.CodSala = Convert.ToInt32(ClassroomID);
                     classroom.NrSala = tbNrSala.Text;
-                    classroom.CodTipoSala = Convert.ToInt32(ddlTipoSala.SelectedValue);
-                    classroom.CodLocalSala = Convert.ToInt32(ddlLocalSala.SelectedValue);
+                    classroom.CodTipoSala = Convert.ToInt32(ddlTipoSalaEdit.SelectedValue);
+                    classroom.CodLocalSala = Convert.ToInt32(ddlLocalSalaEdit.SelectedValue);
 
                     int AnswClassroomUpdated = Classes.Classroom.UpdateClassroom(classroom);
 
@@ -166,25 +184,51 @@ namespace FinalProject
                     {
                         tbNrSala.Visible = !tbNrSala.Visible;
                         lblNrSala.Visible = !lblNrSala.Visible;
-                        lblNrSala.Text = tbNrSala.Text;
+                        lblNrSala.Text = lblNrSala.Text;
 
-                        ddlLocalSala.Visible = !ddlLocalSala.Visible;
+                        ddlLocalSalaEdit.Visible = !ddlLocalSalaEdit.Visible;
                         lblLocalSala.Visible = !lblLocalSala.Visible;
-                        lblLocalSala.Text = ddlLocalSala.Text;
+                        lblLocalSala.Text = lblLocalSala.Text;
 
-                        ddlTipoSala.Visible = !ddlTipoSala.Visible;
+                        ddlTipoSalaEdit.Visible = !ddlTipoSalaEdit.Visible;
                         lblTipoSala.Visible = !lblTipoSala.Visible;
-                        lblTipoSala.Text = ddlTipoSala.Text;
+                        lblTipoSala.Text = lblTipoSala.Text;
 
-                        // Show "Cancel" and "Confirm" buttons
-                        lbt_cancel.Visible = false;
-                        lbt_confirm.Visible = false;
+                        lbtCancelClassroom.Visible = false;
+                        lbtConfirmClassroom.Visible = false;
 
-                        // Hide "Edit" and "Delete" buttons
-                        lbt_edit.Visible = true;
-                        lbt_delete.Visible = true;
+                        lbtEditClassroom.Visible = true;
+                        lbtDeleteClassroom.Visible = true;
 
-                        lbl_message.Text = "Sala atualizada com sucesso";
+                        lblMessageEdit.Visible = true;
+                        lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                        lblMessageEdit.Text = "Sala atualizada com sucesso";
+                        timerMessageEdit.Enabled = true;
+                    }
+                    else if (AnswClassroomUpdated == 0)
+                    {
+                        tbNrSala.Visible = !tbNrSala.Visible;
+                        lblNrSala.Visible = !lblNrSala.Visible;
+                        lblNrSala.Text = lblNrSala.Text;
+
+                        ddlLocalSalaEdit.Visible = !ddlLocalSalaEdit.Visible;
+                        lblLocalSala.Visible = !lblLocalSala.Visible;
+                        lblLocalSala.Text = lblLocalSala.Text;
+
+                        ddlTipoSalaEdit.Visible = !ddlTipoSalaEdit.Visible;
+                        lblTipoSala.Visible = !lblTipoSala.Visible;
+                        lblTipoSala.Text = lblTipoSala.Text;
+
+                        lbtCancelClassroom.Visible = false;
+                        lbtConfirmClassroom.Visible = false;
+
+                        lbtEditClassroom.Visible = true;
+                        lbtDeleteClassroom.Visible = true;
+
+                        lblMessageEdit.Visible = true;
+                        lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                        lblMessageEdit.Text = "Sala não pode ser atualizada por já se encontrar a ser utilizada. Insira uma nova sala.";
+                        timerMessageEdit.Enabled = true;
                     }
                     else if (AnswClassroomUpdated == -2)
                     {
@@ -192,45 +236,48 @@ namespace FinalProject
                         lblNrSala.Visible = !lblNrSala.Visible;
                         lblNrSala.Text = lblNrSala.Text;
 
-                        ddlLocalSala.Visible = !ddlLocalSala.Visible;
+                        ddlLocalSalaEdit.Visible = !ddlLocalSalaEdit.Visible;
                         lblLocalSala.Visible = !lblLocalSala.Visible;
                         lblLocalSala.Text = lblLocalSala.Text;
 
-                        ddlTipoSala.Visible = !ddlTipoSala.Visible;
+                        ddlTipoSalaEdit.Visible = !ddlTipoSalaEdit.Visible;
                         lblTipoSala.Visible = !lblTipoSala.Visible;
                         lblTipoSala.Text = lblTipoSala.Text;
 
-                        // Show "Cancel" and "Confirm" buttons
-                        lbt_cancel.Visible = false;
-                        lbt_confirm.Visible = false;
+                        lbtCancelClassroom.Visible = false;
+                        lbtConfirmClassroom.Visible = false;
 
-                        // Hide "Edit" and "Delete" buttons
-                        lbt_edit.Visible = true;
-                        lbt_delete.Visible = true;
+                        lbtEditClassroom.Visible = true;
+                        lbtDeleteClassroom.Visible = true;
 
-                        lbl_message.Text = "Sala não pode ser atualizada por já se encontrar a ser utilizada. Insira uma nova sala.";
+                        lblMessageEdit.Visible = true;
+                        lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                        lblMessageEdit.Text = "Sala não pode ser atualizada por já existir uma sala com estas características!";
+                        timerMessageEdit.Enabled = true;
                     }
                 }
             }
 
             if (e.CommandName == "Delete")
             {
-                RepeaterItem item = rpt_Classrooms.Items[e.Item.ItemIndex];
-
-                HiddenField hdnClassroomID = (HiddenField)item.FindControl("hdnClassroomID");
-                string ClassroomID = hdnClassroomID.Value;
-
                 int AnswClassroomDeleted = Classes.Classroom.DeleteClassroom(Convert.ToInt32(ClassroomID));
 
                 if (AnswClassroomDeleted == 1)
                 {
                     BindDataClassrooms();
-                    lbl_message.Text = "Sala apagada com sucesso!";
+
+                    lblMessageEdit.Visible = true;
+                    lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                    lblMessageEdit.Text = "Sala apagada com sucesso!";
+                    timerMessageEdit.Enabled = true;
 
                 }
                 else
                 {
-                    lbl_message.Text = "Sala não pode ser eliminada por fazer parte de um horário!";
+                    lblMessageEdit.Visible = true;
+                    lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                    lblMessageEdit.Text = "Sala não pode ser eliminada por fazer parte de um horário!";
+                    timerMessageEdit.Enabled = true;
                 }
 
 
@@ -251,7 +298,17 @@ namespace FinalProject
 
             if (AnswClassroomRegisted == 1)
             {
+                lblMessageInsert.Visible = true;
+                lblMessageInsert.CssClass = "alert alert-primary text-white text-center";
                 lbl_message.Text = "Sala inserida com sucesso!";
+                timerMessageInsert.Enabled = true;
+            }
+            else
+            {
+                lblMessageInsert.Visible = true;
+                lblMessageInsert.CssClass = "alert alert-primary text-white text-center";
+                lbl_message.Text = "Sala já existe!";
+                timerMessageInsert.Enabled = true;
             }
 
         }
@@ -299,5 +356,16 @@ namespace FinalProject
             BindDataClassrooms();
         }
 
+        protected void timerMessageEdit_OnTick(object sender, EventArgs e)
+        {
+            lblMessageEdit.Visible = false;
+            timerMessageEdit.Enabled = false;
+        }
+
+        protected void timerMessageInsert_OnTick(object sender, EventArgs e)
+        {
+            lblMessageInsert.Visible = false;
+            timerMessageInsert.Enabled = false;
+        }
     }
 }

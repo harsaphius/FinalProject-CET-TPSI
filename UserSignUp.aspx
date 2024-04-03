@@ -141,7 +141,8 @@
                                     </div>
                                     <div style="padding: 5px;" id="alert" class="hidden" role="alert">
                                         <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
-                                        <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
+                                        <asp:Label runat="server" ID="lbl_message" style="display:flex; align-content:center; padding: 5px;" CssClass="text-white" class="hidden" role="alert"></asp:Label>
+
                                     </div>
                                     <asp:Button ID="btn_signup" OnClick="btn_signup_Click" runat="server" CssClass="btn bg-gradient-dark w-100 my-4 mb-2" Text="Sign Up" />
                                     <p class="text-sm mt-3 mb-0">Já tem uma conta? <a href="./UserSignIn.aspx" class="text-dark font-weight-bolder">Login</a></p>

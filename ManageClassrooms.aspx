@@ -64,6 +64,10 @@
                         <div id="listClassroomsDiv">
                             <asp:UpdatePanel ID="updatePanelListClassrooms" runat="server">
                                 <ContentTemplate>
+                                    <div class="container row justify-content-center">
+                                        <asp:Label runat="server" ID="lblMessageEdit" Style="display: flex; justify-content: center; width: 70%; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
+                                        <asp:Timer ID="timerMessageEdit" runat="server" Interval="3000" OnTick="timerMessageEdit_OnTick"></asp:Timer>
+                                    </div>
                                     <div class="card-header pb-0">
                                         <h6>Salas</h6>
                                     </div>
@@ -89,7 +93,7 @@
                                                     <asp:HiddenField runat="server" ID="hdnClassroomID" Value='<%# Eval("CodSala") %>' />
                                                     <div class="d-flex px-2">
                                                         <div class="my-auto">
-                                                            <asp:TextBox ID="tbNrSala" CssClass="form-control" runat="server" Text='<%# Bind("NrSala") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
+                                                            <asp:TextBox ID="tbNrSalaEdit" CssClass="form-control" runat="server" Text='<%# Bind("NrSala") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
                                                             <p class="mb-0 text-sm text-center">
                                                                 <asp:Label ID="lblNrSala" runat="server" Text='<%# Eval("NrSala") %>' Visible="true"></asp:Label>
                                                             </p>
@@ -97,30 +101,30 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <asp:DropDownList ID="ddlTipoSala" runat="server" DataSourceID="SQLDSTipoSala" DataTextField="tipoSala" DataValueField="codTipoSala" Visible="false"></asp:DropDownList>
+                                                    <asp:DropDownList ID="ddlTipoSalaEdit" runat="server" DataSourceID="SQLDSTipoSala" DataTextField="tipoSala" DataValueField="codTipoSala" Visible="false"></asp:DropDownList>
                                                     <p class="text-sm mb-0">
                                                         <asp:Label ID="lblTipoSala" runat="server" Text='<%# Eval("TipoSala") %>' Visible="true" Style="width: 100%;"></asp:Label>
                                                     </p>
                                                 </td>
                                                 <td>
-                                                    <asp:DropDownList ID="ddlLocalSala" runat="server" DataSourceID="SQLDSLocalSala" DataTextField="localSala" DataValueField="codLocalSala" Visible="false"></asp:DropDownList>
+                                                    <asp:DropDownList ID="ddlLocalSalaEdit" runat="server" DataSourceID="SQLDSLocalSala" DataTextField="localSala" DataValueField="codLocalSala" Visible="false"></asp:DropDownList>
                                                     <p class="text-sm mb-0">
                                                         <asp:Label ID="lblLocalSala" class="text-xs" runat="server" Text='<%# Eval("LocalSala") %>' Style="width: 100%;" Visible="true"></asp:Label>
                                                     </p>
                                                 </td>
                                                 <td class="align-middle font-weight-bold text-center">
-                                                    <asp:LinkButton runat="server" ID="lbt_edit" CausesValidation="false" CommandName="Edit" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
+                                                    <asp:LinkButton runat="server" ID="lbtEditClassroom" CausesValidation="false" CommandName="Edit" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
                                                         Text="Edit" class="text-secondary font-weight-bold text-xs">
                                                     </asp:LinkButton>
-                                                    <asp:LinkButton runat="server" ID="lbt_cancel" CausesValidation="false" CommandName="Cancel" Visible="false" CommandArgument='<%# Container.ItemIndex %>'
+                                                    <asp:LinkButton runat="server" ID="lbtCancelClassroom" CausesValidation="false" CommandName="Cancel" Visible="false" CommandArgument='<%# Container.ItemIndex %>'
                                                         Text="Cancel" class="text-secondary font-weight-bold text-xs">
                                                     </asp:LinkButton>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <asp:LinkButton runat="server" ID="lbt_delete" CausesValidation="false" CommandName="Delete" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
+                                                    <asp:LinkButton runat="server" ID="lbtDeleteClassroom" CausesValidation="false" CommandName="Delete" Visible="true" CommandArgument='<%# Container.ItemIndex %>'
                                                         Text="Delete" class="text-secondary font-weight-bold text-xs">
                                                     </asp:LinkButton>
-                                                    <asp:LinkButton runat="server" ID="lbt_confirm" CausesValidation="false" CommandName="Confirm" Visible="false" AutoPostBack="true" CommandArgument='<%# Container.ItemIndex %>'
+                                                    <asp:LinkButton runat="server" ID="lbtConfirmClassroom" CausesValidation="false" CommandName="Confirm" Visible="false" CommandArgument='<%# Container.ItemIndex %>'
                                                         Text="Confirm" class="text-secondary font-weight-bold text-xs">
                                                     </asp:LinkButton>
                                                 </td>
@@ -151,6 +155,7 @@
                                     </ul>
                                 </ContentTemplate>
                                 <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="timerMessageEdit" />
                                     <asp:AsyncPostBackTrigger ControlID="btnPreviousClassroom" />
                                     <asp:AsyncPostBackTrigger ControlID="btnNextClassroom" />
                                 </Triggers>
@@ -192,6 +197,11 @@
                                                                 </div>
                                                                 <div class="text-center">
                                                                     <asp:Button ID="btnInsertClassroom" runat="server" OnClick="btnInsertClassroom_OnClick" Text="Inserir" class="btn bg-gradient-info w-100 mt-4 mb-0" />
+                                                                </div>
+                                                                <div>
+                                                                    <br />
+                                                                    <asp:Label runat="server" ID="lblMessageInsert" Style="display: flex; align-content: center; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
+                                                                    <asp:Timer ID="timerMessageInsert" runat="server" Interval="3000" OnTick="timerMessageInsert_OnTick"></asp:Timer>
                                                                 </div>
                                                             </div>
                                                         </div>

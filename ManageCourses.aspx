@@ -47,7 +47,7 @@
                                 <span>Data de Início: </span>
                                 <div class="input-group mb-4">
                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                    <asp:TextBox runat="server" ID="tbDataInicioFilters" class="form-control datepicker"  placeholder="Please select date" TextMode="Date"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="tbDataInicioFilters" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
                                 </div>
                             </div>
 
@@ -61,15 +61,15 @@
                             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                                 <br />
                                 <div class="input-group mb-4">
-                                    <asp:Button runat="server" ID="btnApplyFilters" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" AutoPostBack="True" OnClick="btnApplyFilters_OnClick"/>
+                                    <asp:Button runat="server" ID="btnApplyFilters" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" AutoPostBack="True" OnClick="btnApplyFilters_OnClick" />
                                     <span>&nbsp; &nbsp;</span>
-                                    <asp:Button runat="server" ID="btnClearFilters" CssClass="btn btn-outline-primary mb-0" Text="Limpar" OnClick="btnClearFilters_OnClick"/>
+                                    <asp:Button runat="server" ID="btnClearFilters" CssClass="btn btn-outline-primary mb-0" Text="Limpar" OnClick="btnClearFilters_OnClick" />
                                 </div>
                             </div>
                         </div>
                     </ContentTemplate>
                     <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnApplyFilters"/>
+                        <asp:AsyncPostBackTrigger ControlID="btnApplyFilters" />
                         <asp:AsyncPostBackTrigger ControlID="btnClearFilters" />
                     </Triggers>
                 </asp:UpdatePanel>
@@ -220,20 +220,20 @@
                                                                     </div>
                                                                 </div>
                                                                 <br />
+                                                                <div class="row px-2" style="padding: 10px;">
+                                                                    <!-- Editar Módulos de um Curso - Seleção dos Módulos -->
+                                                                    <small class="text-uppercase font-weight-bold"></small>
+                                                                    <p>Edite os módulos pertencentes a este curso</p>
+                                                                    <asp:Label runat="server" ID="lblCursoModulo"></asp:Label>
+                                                                    <div class="input-group mb-4">
+                                                                        <asp:LinkButton runat="server" ID="lbtnSearchModule" class="input-group-text text-body" CausesValidation="false" AutoPostBack="True">
+                                                                            <i class="fas fa-search" aria-hidden="true"></i>
+                                                                        </asp:LinkButton>
+                                                                        <asp:TextBox runat="server" ID="tbSearchModule" CssClass="form-control" placeholder="Type here..." CausesValidation="false" AutoPostBack="True"></asp:TextBox>
+                                                                    </div>
+                                                                </div>
                                                                 <asp:Repeater ID="rptEditModulesCourse" runat="server" OnItemDataBound="rptEditModulesCourse_OnItemDataBound" EnableViewState="True">
                                                                     <HeaderTemplate>
-                                                                        <div class="row px-2" style="padding: 10px;">
-                                                                            <!-- Editar Módulos de um Curso - Seleção dos Módulos -->
-                                                                            <small class="text-uppercase font-weight-bold"></small>
-                                                                            <p>Edite os módulos pertencentes a este curso</p>
-                                                                            <asp:Label runat="server" ID="lbl_CursoModulo"></asp:Label>
-                                                                            <div class="input-group mb-4">
-                                                                                <asp:LinkButton runat="server" ID="lbtn_search" class="input-group-text text-body">
-                                                                                <i class="fas fa-search" aria-hidden="true"></i>
-                                                                                </asp:LinkButton>
-                                                                                <asp:TextBox runat="server" ID="tb_search" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
-                                                                            </div>
-                                                                        </div>
                                                                         <div class="table-responsive">
                                                                             <table class="table align-items-center justify-content-center mb-0">
                                                                                 <thead>
@@ -266,7 +266,7 @@
                                                                                     <asp:HiddenField ID="hdnEditCourseModuleID" runat="server" Value='<%# Eval("CodModulo") %>' />
                                                                                     <asp:HiddenField ID="hdnEditCourseModuleName" runat="server" Value='<%# Eval("Nome") %>' />
                                                                                     <div class="form-check">
-                                                                                        <asp:CheckBox runat="server" ID="chkBoxEditModulesCourse" OnCheckedChanged="chkBoxEditModulesCourse_CheckedChanged" AutoPostBack="true" EnableViewState="true"/>
+                                                                                        <asp:CheckBox runat="server" ID="chkBoxEditModulesCourse" OnCheckedChanged="chkBoxEditModulesCourse_CheckedChanged" AutoPostBack="true" EnableViewState="true" />
                                                                                         <asp:Label runat="server" ID="lblOrderEditModulesCourse">Seleccione este módulo</asp:Label>
                                                                                     </div>
                                                                                 </div>
@@ -302,7 +302,7 @@
                                                                 <!-- Fim da Paginação dos Módulos -->
                                                                 <div class="row px-4" style="padding: 10px;">
                                                                     <small class="text-uppercase font-weight-bold">Módulos seleccionados:</small>
-                                                                    <asp:Label runat="server" ID="lblOrderOfModulesEditSelected">  </asp:Label>
+                                                                    <asp:Label runat="server" ID="lblOrderOfModulesEditSelected"> </asp:Label>
                                                                 </div>
                                                                 <asp:Button runat="server" CssClass="btn btn-primary" Text="Editar Curso" ID="btnEditCourse" ValidationGroup="EditForm" CausesValidation="true" AutoPostBack="true" OnClick="btnEditCourse_OnClick" />
 
@@ -315,6 +315,8 @@
                                 </ContentTemplate>
                                 <Triggers>
                                     <asp:PostBackTrigger ControlID="btnEditCourse" />
+                                    <asp:AsyncPostBackTrigger ControlID="lbtnSearchModule"/>
+                                    <asp:AsyncPostBackTrigger ControlID="tbSearchModule"/>
                                     <asp:AsyncPostBackTrigger ControlID="btnPreviousEditModulesCourses" EventName="Click" />
                                     <asp:AsyncPostBackTrigger ControlID="btnNextEditModulesCourses" EventName="Click" />
                                 </Triggers>
@@ -666,21 +668,21 @@
             }
         }
     </script>
-<script>
-         document.addEventListener('DOMContentLoaded', function () {
-             flatpickr('#<%= tbDataInicioFilters.ClientID %>', {
-                dateFormat: 'd-m-Y',
-                theme: 'light',
-                maxDate: new Date()
-            });
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            flatpickr('#<%= tbDataInicioFilters.ClientID %>', {
+                 dateFormat: 'd-m-Y',
+                 theme: 'light',
+                 maxDate: new Date()
+             });
 
-            flatpickr('#<%= tbDataFimFilters.ClientID %>', {
-                dateFormat: 'd-m-Y',
-                theme: 'light',
-                minDate: new Date()
-            });
-        });
-</script>
+             flatpickr('#<%= tbDataFimFilters.ClientID %>', {
+                 dateFormat: 'd-m-Y',
+                 theme: 'light',
+                 minDate: new Date()
+             });
+         });
+    </script>
     <!-- Javascript para ativar/desativar a div dos filtros -->
     <script>
         function toggleFilters() {

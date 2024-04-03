@@ -18,6 +18,9 @@ namespace FinalProject.Classes
         public string TipoCurso { get; set; }
         public string Area { get; set; }
         public string CodRef { get; set; }
+        public DateTime DataCriacao { get; set; }
+        public int Duracao { get; set; }
+        public int DuracaoEstagio { get; set; }
         public int CodQNQ { get; set; }
         public List<Module> Modules { get; set; }
 
@@ -37,6 +40,17 @@ namespace FinalProject.Classes
             myCommand.Parameters.AddWithValue("@CodArea", Course.CodArea);
             myCommand.Parameters.AddWithValue("@CodRef", Course.CodRef);
             myCommand.Parameters.AddWithValue("@CodQNQ", Course.CodQNQ);
+            myCommand.Parameters.AddWithValue("@CreationDate", DateTime.Now);
+            myCommand.Parameters.AddWithValue("@Duration", Course.Duracao);
+            if (Course.DuracaoEstagio != null)
+            {
+                myCommand.Parameters.AddWithValue("@Internship", Course.DuracaoEstagio);
+            }
+            //else
+            //{
+            //    myCommand.Parameters.AddWithValue("@Internship", DBNull.Value);
+            //}
+
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             SqlParameter CourseRegister = new SqlParameter();

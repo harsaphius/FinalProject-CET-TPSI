@@ -105,6 +105,24 @@ namespace FinalProject
         protected global::System.Web.UI.UpdatePanel updatePanelListModules;
 
         /// <summary>
+        /// lblMessageEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessageEdit;
+
+        /// <summary>
+        /// timerMessageEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessageEdit;
+
+        /// <summary>
         /// rptModules control.
         /// </summary>
         /// <remarks>
@@ -141,15 +159,6 @@ namespace FinalProject
         protected global::System.Web.UI.UpdatePanel updatePanelInsertModules;
 
         /// <summary>
-        /// lbl_message control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_message;
-
-        /// <summary>
         /// rfvModuleName control.
         /// </summary>
         /// <remarks>
@@ -168,22 +177,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tbModuleName;
 
         /// <summary>
-        /// rfvDuration control.
+        /// ddlDuracao control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDuration;
-
-        /// <summary>
-        /// tbDuration control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbDuration;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDuracao;
 
         /// <summary>
         /// rvfUFCD control.
@@ -256,5 +256,23 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnInsertModule;
+
+        /// <summary>
+        /// lblMessageInsert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessageInsert;
+
+        /// <summary>
+        /// timerMessageInsert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessageInsert;
     }
 }

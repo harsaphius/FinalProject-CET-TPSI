@@ -12,6 +12,7 @@ namespace FinalProject.Classes
         public string NrSala { get; set; }
         public int CodTipoSala { get; set; }
         public int CodLocalSala { get; set; }
+        public DateTime DataCriacao { get; set; }
         public string TipoSala { get; set; }
         public string LocalSala { get; set; }
 
@@ -90,6 +91,7 @@ namespace FinalProject.Classes
             myCommand.Parameters.AddWithValue("@NrSala", Classroom.NrSala);
             myCommand.Parameters.AddWithValue("@CodTipoSala", Classroom.CodTipoSala);
             myCommand.Parameters.AddWithValue("@CodLocalSala", Classroom.CodLocalSala);
+            myCommand.Parameters.AddWithValue("@CreationDate", DateTime.Now);
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             SqlParameter ClassroomRegister = new SqlParameter();
