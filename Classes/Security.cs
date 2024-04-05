@@ -137,6 +137,29 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
+        /// Função para avaliar se é data
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsValidDate(string input)
+        {
+            DateTime dateValue;
+            return DateTime.TryParse(input, out dateValue);
+        }
+
+        /// <summary>
+        /// Função para avaliar se é decimal
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsValidDecimal(string value)
+        {
+            bool isValidDecimal = value.All(c => char.IsDigit(c) || c == '.' || c == ',');
+
+            return isValidDecimal;
+        }
+
+        /// <summary>
         /// Função para avaliação da força da password
         /// </summary>
         /// <param name="password"></param>
@@ -280,26 +303,6 @@ namespace FinalProject.Classes
             else return isSup = true;
         }
 
-        /// <summary>
-        /// Função para avaliar se a TextBox está vazia
-        /// </summary>
-        /// <param name="textBox"></param>
-        /// <returns></returns>
-        public static bool IsTextBoxEmpty(TextBox textBox)
-        {
-            return string.IsNullOrWhiteSpace(textBox.Text);
-        }
 
-        /// <summary>
-        /// Função para avaliar se é decimal
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool IsValidDecimal(string value)
-        {
-            bool isValidDecimal = value.All(c => char.IsDigit(c) || c == '.' || c == ',');
-
-            return isValidDecimal;
-        }
     }
 }

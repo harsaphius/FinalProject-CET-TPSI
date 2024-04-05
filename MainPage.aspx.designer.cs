@@ -15,12 +15,48 @@ namespace FinalProject
     {
 
         /// <summary>
-        /// rpt_maincourses control.
+        /// updatePanelMainPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpt_maincourses;
+        protected global::System.Web.UI.UpdatePanel updatePanelMainPanel;
+
+        /// <summary>
+        /// btnPreviousMainPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnPreviousMainPage;
+
+        /// <summary>
+        /// rptMainPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptMainPanel;
+
+        /// <summary>
+        /// btnNextMainPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnNextMainPage;
+
+        /// <summary>
+        /// lblPageNumberListCourses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPageNumberListCourses;
     }
 }

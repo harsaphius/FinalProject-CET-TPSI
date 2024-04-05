@@ -15,40 +15,40 @@ namespace FinalProject
     {
 
         /// <summary>
-        /// UpdatePanel1 control.
+        /// updatePanelFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.UpdatePanel updatePanelFilters;
 
         /// <summary>
-        /// lbtn_search control.
+        /// lbtnSearchFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtn_search;
+        protected global::System.Web.UI.WebControls.LinkButton lbtnSearchFilters;
 
         /// <summary>
-        /// tb_search control.
+        /// tbSearchFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_search;
+        protected global::System.Web.UI.WebControls.TextBox tbSearchFilters;
 
         /// <summary>
-        /// ddl_area control.
+        /// ddlAreaCursoFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddl_area;
+        protected global::System.Web.UI.WebControls.DropDownList ddlAreaCursoFilters;
 
         /// <summary>
         /// SQLDSArea control.
@@ -60,13 +60,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSArea;
 
         /// <summary>
-        /// ddl_tipo control.
+        /// ddlTipoCursoFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddl_tipo;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTipoCursoFilters;
 
         /// <summary>
         /// SQLDSTipo control.
@@ -78,57 +78,84 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSTipo;
 
         /// <summary>
-        /// tb_dataInicio control.
+        /// tbDataInicioFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_dataInicio;
+        protected global::System.Web.UI.WebControls.TextBox tbDataInicioFilters;
 
         /// <summary>
-        /// tb_dataFim control.
+        /// tbDataFimFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_dataFim;
+        protected global::System.Web.UI.WebControls.TextBox tbDataFimFilters;
 
         /// <summary>
-        /// btn_clear control.
+        /// btnApplyFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_clear;
+        protected global::System.Web.UI.WebControls.Button btnApplyFilters;
 
         /// <summary>
-        /// rpt_maincourses control.
+        /// btnClearFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpt_maincourses;
+        protected global::System.Web.UI.WebControls.Button btnClearFilters;
 
         /// <summary>
-        /// btn_previousEM control.
+        /// updatePanelMainCourses control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_previousEM;
+        protected global::System.Web.UI.UpdatePanel updatePanelMainCourses;
 
         /// <summary>
-        /// btn_nextEM control.
+        /// btnPreviousMainCourses control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btn_nextEM;
+        protected global::System.Web.UI.WebControls.LinkButton btnPreviousMainCourses;
+
+        /// <summary>
+        /// rptMainCourses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptMainCourses;
+
+        /// <summary>
+        /// btnNextMainCourses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnNextMainCourses;
+
+        /// <summary>
+        /// lblPageNumberListCourses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPageNumberListCourses;
     }
 }

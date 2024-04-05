@@ -77,8 +77,10 @@ namespace FinalProject
                 }
             }
 
-            rpt_maincourses.DataSource = Classes.Course.LoadCourses();
-            rpt_maincourses.DataBind();
+            if (!IsPostBack)
+            {
+                BindDataCourses();
+            }
         }
 
         protected void btn_details_Click(object sender, EventArgs e)
@@ -112,6 +114,48 @@ namespace FinalProject
             {
                 Response.Redirect("UserCourses.aspx");
             }
+        }
+
+        private void BindDataCourses(List<string> conditions = null)
+        {
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.Course.LoadCourses(conditions);
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 3;
+            pagedData.CurrentPageIndex = PageNumberCourses;
+            int PageNumber = PageNumberCourses + 1;
+            lblPageNumberListCourses.Text = (PageNumber).ToString();
+
+            rptMainPanel.DataSource = pagedData;
+            rptMainPanel.DataBind();
+
+            btnPreviousMainPage.Enabled = !pagedData.IsFirstPage;
+            btnNextMainPage.Enabled = !pagedData.IsLastPage;
+
+        }
+
+        private int PageNumberCourses
+        {
+            get
+            {
+                if (ViewState["PageNumberCourses"] != null)
+                    return Convert.ToInt32(ViewState["PageNumberCourses"]);
+                else
+                    return 0;
+            }
+            set => ViewState["PageNumberCourses"] = value;
+        }
+
+        protected void btnNextMainPage_OnClick(object sender, EventArgs e)
+        {
+            PageNumberCourses += 1;
+            BindDataCourses();
+        }
+
+        protected void btnPreviousMainPage_OnClick(object sender, EventArgs e)
+        {
+            PageNumberCourses -= 1;
+            BindDataCourses();
         }
     }
 }

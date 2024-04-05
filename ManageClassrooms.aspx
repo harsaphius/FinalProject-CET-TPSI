@@ -77,12 +77,19 @@
                                                 <div class="table-responsive p-0">
                                                     <table class="table align-items-center mb-0">
                                                         <thead>
+                                                            <colgroup>
+                                                                <col style="width: 10%;" />
+                                                                <col style="width: 15%;" />
+                                                                <col style="width: 20%;" />
+                                                                <col style="width: 10%;" />
+                                                                <col style="width: 10%;" />
+                                                            </colgroup>
                                                             <tr>
-                                                                <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nr.º da Sala</th>
-                                                                <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tipo de Sala</th>
-                                                                <th class="col-sm-4 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Local da Sala</th>
-                                                                <th class="col-sm-2"></th>
-                                                                <th class="col-sm-2"></th>
+                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nr.º da Sala</th>
+                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tipo de Sala</th>
+                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Local da Sala</th>
+                                                                <th></th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -101,13 +108,13 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <asp:DropDownList ID="ddlTipoSalaEdit" runat="server" DataSourceID="SQLDSTipoSala" DataTextField="tipoSala" DataValueField="codTipoSala" Visible="false"></asp:DropDownList>
+                                                    <asp:DropDownList ID="ddlTipoSalaEdit" CssClass="form-control" runat="server" DataSourceID="SQLDSTipoSala" DataTextField="tipoSala" DataValueField="codTipoSala" Visible="false"></asp:DropDownList>
                                                     <p class="text-sm mb-0">
                                                         <asp:Label ID="lblTipoSala" runat="server" Text='<%# Eval("TipoSala") %>' Visible="true" Style="width: 100%;"></asp:Label>
                                                     </p>
                                                 </td>
                                                 <td>
-                                                    <asp:DropDownList ID="ddlLocalSalaEdit" runat="server" DataSourceID="SQLDSLocalSala" DataTextField="localSala" DataValueField="codLocalSala" Visible="false"></asp:DropDownList>
+                                                    <asp:DropDownList ID="ddlLocalSalaEdit" CssClass="form-control" runat="server" DataSourceID="SQLDSLocalSala" DataTextField="localSala" DataValueField="codLocalSala" Visible="false"></asp:DropDownList>
                                                     <p class="text-sm mb-0">
                                                         <asp:Label ID="lblLocalSala" class="text-xs" runat="server" Text='<%# Eval("LocalSala") %>' Style="width: 100%;" Visible="true"></asp:Label>
                                                     </p>
@@ -138,21 +145,26 @@
                                         </FooterTemplate>
                                     </asp:Repeater>
                                     <!--Paginação -->
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <asp:LinkButton ID="btnPreviousClassroom" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousClassroom_OnClick" runat="server">
+                                    <div class="col-12">
+                                        <ul class="pagination justify-content-center" style="padding: 2px;">
+                                            <li class="page-item">
+                                                <asp:LinkButton ID="btnPreviousClassroom" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousClassroom_OnClick" runat="server">
                                                     <i class="fa fa-angle-left"></i>
                                                     <span class="sr-only">Previous</span>
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li></li>
-                                        <li class="page-item">
-                                            <asp:LinkButton ID="btnNextClassroom" CssClass="page-link" OnClick="btnNextClassroom_OnClick" CausesValidation="false" runat="server">
+                                                </asp:LinkButton>
+                                            </li>
+                                            <li class="page-item active">
+                                                <span class="page-link">
+                                                    <asp:Label runat="server" CssClass="text-white" ID="lblPageNumberClassrooms"></asp:Label></span>
+                                            </li>
+                                            <li class="page-item">
+                                                <asp:LinkButton ID="btnNextClassroom" CssClass="page-link" OnClick="btnNextClassroom_OnClick" CausesValidation="false" runat="server">
                                                     <i class="fa fa-angle-right"></i>
                                                     <span class="sr-only">Next</span>
-                                            </asp:LinkButton>
-                                        </li>
-                                    </ul>
+                                                </asp:LinkButton>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </ContentTemplate>
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="timerMessageEdit" />

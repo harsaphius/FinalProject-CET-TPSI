@@ -90,12 +90,19 @@
                                                         <div class="table-responsive p-0">
                                                             <table class="table align-items-center mb-0">
                                                                 <thead>
+                                                                <colgroup>
+                                                                    <col style="width: 10%;" />
+                                                                    <col style="width: 10%;" />
+                                                                    <col style="width: 40%;" />
+                                                                    <col style="width: 10%;" />
+                                                                    <col style="width: 10%;" />
+                                                                </colgroup>
                                                                     <tr>
-                                                                        <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nr.º da Turma</th>
-                                                                        <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">N.º do Curso</th>
-                                                                        <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome da Turma</th>
-                                                                        <th class="col-sm-2"></th>
-                                                                        <th class="col-sm-2"></th>
+                                                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nr.º da Turma</th>
+                                                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">N.º do Curso</th>
+                                                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome da Turma</th>
+                                                                        <th></th>
+                                                                        <th></th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -155,21 +162,26 @@
                                                 </div>
                                                 </FooterTemplate>
                                             </asp:Repeater>
-                                            <ul class="pagination">
-                                                <li class="page-item">
-                                                    <asp:LinkButton ID="btnPreviousClasses" CssClass="page-link" CausesValidation="false" runat="server">
+                                            <div class="col-12">
+                                                <ul class="pagination justify-content-center" style="padding: 2px;">
+                                                    <li class="page-item">
+                                                        <asp:LinkButton ID="btnPreviousClasses" CssClass="page-link" CausesValidation="false" runat="server">
                                                     <i class="fa fa-angle-left"></i>
                                                     <span class="sr-only">Previous</span>
-                                                    </asp:LinkButton>
-                                                </li>
-                                                <li></li>
-                                                <li class="page-item">
-                                                    <asp:LinkButton ID="btnNextClasses" CssClass="page-link" CausesValidation="false" runat="server">
+                                                        </asp:LinkButton>
+                                                    </li>
+                                                    <li class="page-item active">
+                                                        <span class="page-link">
+                                                            <asp:Label runat="server" CssClass="text-white" ID="lblPageNumberClasses"></asp:Label></span>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <asp:LinkButton ID="btnNextClasses" CssClass="page-link" CausesValidation="false" runat="server">
                                                     <i class="fa fa-angle-right"></i>
                                                     <span class="sr-only">Next</span>
-                                                    </asp:LinkButton>
-                                                </li>
-                                            </ul>
+                                                        </asp:LinkButton>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </ContentTemplate>
                                     <Triggers>
@@ -267,21 +279,26 @@
                                       
                                                                         </FooterTemplate>
                                                                     </asp:Repeater>
-                                                                    <ul class="pagination">
-                                                                        <li class="page-item">
-                                                                            <asp:LinkButton ID="btnPreviousStudents" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousStudents_Click" runat="server">
+                                                                    <div class="col-12">
+                                                                        <ul class="pagination justify-content-center" style="padding: 2px;">
+                                                                            <li class="page-item">
+                                                                                <asp:LinkButton ID="btnPreviousStudents" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousStudents_Click" runat="server">
                                                                     <i class="fa fa-angle-left"></i>
                                                                     <span class="sr-only">Previous</span>
-                                                                            </asp:LinkButton>
-                                                                        </li>
-                                                                        <li></li>
-                                                                        <li class="page-item">
-                                                                            <asp:LinkButton ID="btnNextStudents" CssClass="page-link" CausesValidation="false" OnClick="btnNextStudents_Click" runat="server">
+                                                                                </asp:LinkButton>
+                                                                            </li>
+                                                                            <li class="page-item active">
+                                                                                <span class="page-link">
+                                                                                    <asp:Label runat="server" CssClass="text-white" ID="lblPageNumberStudents"></asp:Label></span>
+                                                                            </li>
+                                                                            <li class="page-item">
+                                                                                <asp:LinkButton ID="btnNextStudents" CssClass="page-link" CausesValidation="false" OnClick="btnNextStudents_Click" runat="server">
                                                                     <i class="fa fa-angle-right"></i>
                                                                     <span class="sr-only">Next</span>
-                                                                            </asp:LinkButton>
-                                                                        </li>
-                                                                    </ul>
+                                                                                </asp:LinkButton>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
                                                                     <div id="listBoxStudentsForCourse" runat="server" class="hidden">
                                                                         <br />
                                                                         Listagem de Formandos:<br />
@@ -294,25 +311,25 @@
                                                                     <br />
                                                                     Módulos:
                                                                     <div class="dropdown">
-                                                                        <asp:DropDownList ID="ddlModulesOfCourse" OnSelectedIndexChanged="ddlModulesOfCourse_OnSelectedIndexChanged" AutoPostBack="True" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataTextField="nomeModulos" DataValueField="codModulo"></asp:DropDownList>
+                                                                        <asp:DropDownList ID="ddlModulesOfCourse" AppendDataBoundItems="True" OnSelectedIndexChanged="ddlModulesOfCourse_OnSelectedIndexChanged" AutoPostBack="True" class="form-control" runat="server" DataTextField="nomeModulos" DataValueField="codModulo"></asp:DropDownList>
                                                                         <asp:SqlDataSource ID="SQLDSModulesForCourse" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>"></asp:SqlDataSource>
                                                                     </div>
                                                                     Formadores:
                                                                     <div class="dropdown">
-                                                                        <asp:DropDownList ID="ddlTeacherForModules" AutoPostBack="True" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataTextField="nome" DataValueField="codFormador"></asp:DropDownList>
+                                                                        <asp:DropDownList ID="ddlTeacherForModules" AutoPostBack="True" class="form-control" runat="server" DataTextField="nome" DataValueField="codFormador"></asp:DropDownList>
                                                                         <asp:SqlDataSource ID="SQLDSTeachersForModules" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>"></asp:SqlDataSource>
                                                                     </div>
                                                                     <div class="text-center">
-                                                                            <div class="col-md-8">
-                                                                                <asp:Button ID="btnAddTeacherModuleClassGroup" runat="server" Text="Adicionar Módulo|Formador" CausesValidation="False" OnClick="btnAddTeacherModuleClassGroup_OnClick" class="btn bg-gradient-info w-100 mt-4 mb-0" />
-                                                                            </div>
+                                                                        <div class="col-md-8">
+                                                                            <asp:Button ID="btnAddTeacherModuleClassGroup" runat="server" Text="Adicionar Módulo|Formador" CausesValidation="False" OnClick="btnAddTeacherModuleClassGroup_OnClick" class="btn bg-gradient-info w-100 mt-4 mb-0" />
+                                                                        </div>
                                                                     </div>
                                                                     <div id="listBoxTeachersModules" class="hidden" runat="server">
                                                                         <br />
                                                                         Listagem de Formadores por Módulos:
                                                                         <br />
                                                                         <asp:ListBox ID="listBoxTeachersForModules" class="list-group" runat="server"></asp:ListBox>
-                                                                        
+
                                                                     </div>
                                                                     <div class="col-md-8">
                                                                         <asp:Button ID="btnRemoveTeacherModuleClassGroup" runat="server" Text="Remover Módulo|Formador" CausesValidation="False" OnClick="btnRemoveTeacherModuleClassGroup_OnClick" class="btn bg-gradient-info w-100 mt-4 mb-0" />
@@ -329,8 +346,8 @@
                                                 </div>
                                     </ContentTemplate>
                                     <Triggers>
-                                        <asp:AsyncPostBackTrigger ControlID="btnNextStudents"/>
-                                        <asp:AsyncPostBackTrigger ControlID="btnPreviousStudents"/>
+                                        <asp:AsyncPostBackTrigger ControlID="btnNextStudents" />
+                                        <asp:AsyncPostBackTrigger ControlID="btnPreviousStudents" />
                                         <asp:AsyncPostBackTrigger ControlID="btnAddTeacherModuleClassGroup" />
                                         <asp:AsyncPostBackTrigger ControlID="ddlCurso" />
                                         <asp:AsyncPostBackTrigger ControlID="ddlModulesOfCourse" />

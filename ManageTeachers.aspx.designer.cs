@@ -195,6 +195,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.LinkButton btnPreviousListTeachers;
 
         /// <summary>
+        /// lblPageNumberListTeachers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPageNumberListTeachers;
+
+        /// <summary>
         /// btnNextListTeachers control.
         /// </summary>
         /// <remarks>
@@ -229,6 +238,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnPreviousUsersForTeachers;
+
+        /// <summary>
+        /// lblPageNumberUsersForTeachers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPageNumberUsersForTeachers;
 
         /// <summary>
         /// btnNextsUsersForTeachers control.
@@ -868,6 +886,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnPreviousListModulesForTeachers;
+
+        /// <summary>
+        /// lblPageNumberListModulesForTeachers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPageNumberListModulesForTeachers;
 
         /// <summary>
         /// btnNextListModulesForTeachers control.

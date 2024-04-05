@@ -74,7 +74,7 @@
                             <asp:UpdatePanel ID="updatePanelListModules" runat="server">
                                 <ContentTemplate>
                                     <div class="container row justify-content-center">
-                                        <asp:Label runat="server" ID="lblMessageEdit" Style="display:flex; justify-content: center; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
+                                        <asp:Label runat="server" ID="lblMessageEdit" Style="display: flex; justify-content: center; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
                                         <asp:Timer ID="timerMessageEdit" runat="server" Interval="3000" OnTick="timerMessageEdit_OnTick"></asp:Timer>
                                     </div>
                                     <div class="card-header pb-0">
@@ -177,24 +177,27 @@
                                                              </div>
                                         </FooterTemplate>
                                     </asp:Repeater>
-
                                     <!--Paginação List Modules -->
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <asp:LinkButton ID="btnPreviousModule" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousModule_Click" runat="server">
+                                    <div class="col-12">
+                                        <ul class="pagination justify-content-center" style="padding: 2px;">
+                                            <li class="page-item">
+                                                <asp:LinkButton ID="btnPreviousModule" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousModule_Click" runat="server">
                                                         <i class="fa fa-angle-left"></i>
                                                         <span class="sr-only">Previous</span>
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li></li>
-                                        <li class="page-item">
-                                            <asp:LinkButton ID="btnNextModule" CssClass="page-link" CausesValidation="false" OnClick="btnNextModule_Click" runat="server">
+                                                </asp:LinkButton>
+                                            </li>
+                                            <li class="page-item active">
+                                                <span class="page-link">
+                                                    <asp:Label runat="server" CssClass="text-white" ID="lblPageNumberModules"></asp:Label></span>
+                                            </li>
+                                            <li class="page-item">
+                                                <asp:LinkButton ID="btnNextModule" CssClass="page-link" CausesValidation="false" OnClick="btnNextModule_Click" runat="server">
                                                         <i class="fa fa-angle-right"></i>
                                                         <span class="sr-only">Next</span>
-                                            </asp:LinkButton>
-                                        </li>
-                                    </ul>
-                                    
+                                                </asp:LinkButton>
+                                            </li>
+                                        </ul>
+                                    </div>
 
                                     <!-- AsyncPostBackTrigger For Lbtn Gerados no C# -->
                                 </ContentTemplate>

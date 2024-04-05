@@ -100,12 +100,19 @@
                                                 <div class="table-responsive p-0">
                                                     <table class="table align-items-center mb-0">
                                                         <thead>
+                                                            <colgroup>
+                                                                <col style="width: 5%;" />
+                                                                <col style="width: 25%;" />
+                                                                <col style="width: 25%;" />
+                                                                <col style="width: 5%;" />
+                                                                <col style="width: 5%;" />
+                                                            </colgroup>
                                                             <tr>
-                                                                <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nr.º de Formador</th>
-                                                                <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
-                                                                <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Módulos</th>
-                                                                <th class="col-sm-2"></th>
-                                                                <th class="col-sm-2"></th>
+                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nr.º de Formador</th>
+                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
+                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Módulos</th>
+                                                                <th></th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -153,21 +160,26 @@
                                     </asp:Repeater>
 
                                     <!--Paginação -->
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <asp:LinkButton ID="btnPreviousListTeachers" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousListTeachers_OnClick" runat="server">
+                                    <div class="col-12">
+                                        <ul class="pagination justify-content-center" style="padding: 2px;">
+                                            <li class="page-item">
+                                                <asp:LinkButton ID="btnPreviousListTeachers" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousListTeachers_OnClick" runat="server">
                                                     <i class="fa fa-angle-left"></i>
                                                     <span class="sr-only">Previous</span>
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li></li>
-                                        <li class="page-item">
-                                            <asp:LinkButton ID="btnNextListTeachers" CssClass="page-link" CausesValidation="false" OnClick="btnNextListTeachers_OnClick" runat="server">
+                                                </asp:LinkButton>
+                                            </li>
+                                            <li class="page-item active">
+                                                <span class="page-link">
+                                                    <asp:Label runat="server" CssClass="text-white" ID="lblPageNumberListTeachers"></asp:Label></span>
+                                            </li>
+                                            <li class="page-item">
+                                                <asp:LinkButton ID="btnNextListTeachers" CssClass="page-link" CausesValidation="false" OnClick="btnNextListTeachers_OnClick" runat="server">
                                                     <i class="fa fa-angle-right"></i>
                                                     <span class="sr-only">Next</span>
-                                            </asp:LinkButton>
-                                        </li>
-                                    </ul>
+                                                </asp:LinkButton>
+                                            </li>
+                                        </ul>
+                                    </div>
                                     </div>
                                 </ContentTemplate>
                             </asp:UpdatePanel>
@@ -189,6 +201,13 @@
                                                             <div class="table-responsive p-0">
                                                                 <table class="table align-items-center mb-0">
                                                                     <thead>
+                                                                        <colgroup>
+                                                                            <col style="width: 5%;" />
+                                                                            <col style="width: 25%;" />
+                                                                            <col style="width: 25%;" />
+                                                                            <col style="width: 5%;" />
+                                                                            <col style="width: 5%;" />
+                                                                        </colgroup>
                                                                         <tr>
                                                                             <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Utilizador n.º </th>
                                                                             <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
@@ -238,20 +257,26 @@
                                                     </div>
                                                     </FooterTemplate>
                                                 </asp:Repeater>
-                                                <ul class="pagination">
-                                                    <li class="page-item">
-                                                        <asp:LinkButton ID="btnPreviousUsersForTeachers" CssClass="page-link" OnClick="btnPreviousUsersForTeachers_OnClick" CausesValidation="false" runat="server">
+                                                <div class="col-12">
+                                                    <ul class="pagination justify-content-center" style="padding: 2px;">
+                                                        <li class="page-item">
+                                                            <asp:LinkButton ID="btnPreviousUsersForTeachers" CssClass="page-link" OnClick="btnPreviousUsersForTeachers_OnClick" CausesValidation="false" runat="server">
                                                                                 <i class="fa fa-angle-left"></i>
                                                                                 <span class="sr-only">Previous</span>
-                                                        </asp:LinkButton>
-                                                    </li>
-                                                    <li class="page-item">
-                                                        <asp:LinkButton ID="btnNextsUsersForTeachers" CssClass="page-link" OnClick="btnNextUsersForTeachers_OnClick" CausesValidation="false" runat="server">
+                                                            </asp:LinkButton>
+                                                        </li>
+                                                        <li class="page-item active">
+                                                            <span class="page-link">
+                                                                <asp:Label runat="server" CssClass="text-white" ID="lblPageNumberUsersForTeachers"></asp:Label></span>
+                                                        </li>
+                                                        <li class="page-item">
+                                                            <asp:LinkButton ID="btnNextsUsersForTeachers" CssClass="page-link" OnClick="btnNextUsersForTeachers_OnClick" CausesValidation="false" runat="server">
                                                                                 <i class="fa fa-angle-right"></i>
                                                                                 <span class="sr-only">Next</span>
-                                                        </asp:LinkButton>
-                                                    </li>
-                                                </ul>
+                                                            </asp:LinkButton>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
 
                                             <div>
@@ -555,6 +580,13 @@
                                                                             <div class="table-responsive p-0">
                                                                                 <table class="table align-items-center mb-0">
                                                                                     <thead>
+                                                                                        <colgroup>
+                                                                                            <col style="width: 20%;" />
+                                                                                            <col style="width: 25%;" />
+                                                                                            <col style="width: 25%;" />
+                                                                                            <col style="width: 20%;" />
+                                                                                            <col style="width: 5%;" />
+                                                                                        </colgroup>
                                                                                         <tr>
                                                                                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Curso</th>
                                                                                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
@@ -602,20 +634,26 @@
                                                     </div>
                                                                     </FooterTemplate>
                                                                 </asp:Repeater>
-                                                                <ul class="pagination">
-                                                                    <li class="page-item">
-                                                                        <asp:LinkButton ID="btnPreviousListModulesForTeachers" CssClass="page-link" OnClick="btnPreviousListModulesForTeachers_OnClick" CausesValidation="false" runat="server">
+                                                                <div class="col-12">
+                                                                    <ul class="pagination justify-content-center" style="padding: 2px;">
+                                                                        <li class="page-item">
+                                                                            <asp:LinkButton ID="btnPreviousListModulesForTeachers" CssClass="page-link" OnClick="btnPreviousListModulesForTeachers_OnClick" CausesValidation="false" runat="server">
                                                                                 <i class="fa fa-angle-left"></i>
                                                                                 <span class="sr-only">Previous</span>
-                                                                        </asp:LinkButton>
-                                                                    </li>
-                                                                    <li class="page-item">
-                                                                        <asp:LinkButton ID="btnNextListModulesForTeachers" CssClass="page-link" OnClick="btnNextListModulesForTeachers_OnClick" CausesValidation="false" runat="server">
+                                                                            </asp:LinkButton>
+                                                                        </li>
+                                                                        <li class="page-item active">
+                                                                            <span class="page-link">
+                                                                                <asp:Label runat="server" CssClass="text-white" ID="lblPageNumberListModulesForTeachers"></asp:Label></span>
+                                                                        </li>
+                                                                        <li class="page-item">
+                                                                            <asp:LinkButton ID="btnNextListModulesForTeachers" CssClass="page-link" OnClick="btnNextListModulesForTeachers_OnClick" CausesValidation="false" runat="server">
                                                                                 <i class="fa fa-angle-right"></i>
                                                                                 <span class="sr-only">Next</span>
-                                                                        </asp:LinkButton>
-                                                                    </li>
-                                                                </ul>
+                                                                            </asp:LinkButton>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
                                                             </div>
 
                                                             <div>

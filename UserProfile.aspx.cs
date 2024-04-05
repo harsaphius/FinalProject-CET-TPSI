@@ -292,6 +292,7 @@ namespace FinalProject
             }
         }
 
+
         [WebMethod]
         public static string UploadImage(HttpPostedFile file)
         {

@@ -168,28 +168,33 @@
                                         </ItemTemplate>
                                         <FooterTemplate>
                                             </tbody>
-                                                                    </table>
-                        </div>
-                    </div>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </FooterTemplate>
                                     </asp:Repeater>
 
                                     <!--Paginação -->
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <asp:LinkButton ID="btnPreviousUser" CssClass="page-link" CausesValidation="false" runat="server">
-                                <i class="fa fa-angle-left"></i>
-                                <span class="sr-only">Previous</span>
-                                            </asp:LinkButton>
-                                        </li>
-                                        <li></li>
-                                        <li class="page-item">
-                                            <asp:LinkButton ID="btnNextUser" CssClass="page-link" CausesValidation="false" runat="server">
-                                <i class="fa fa-angle-right"></i>
-                                <span class="sr-only">Next</span>
-                                            </asp:LinkButton>
-                                        </li>
-                                    </ul>
+                                    <div class="col-12">
+                                        <ul class="pagination justify-content-center" style="padding: 2px;">
+                                            <li class="page-item">
+                                                <asp:LinkButton ID="btnPreviousUser" CssClass="page-link" CausesValidation="false" runat="server">
+                                                    <i class="fa fa-angle-left"></i>
+                                                    <span class="sr-only">Previous</span>
+                                                </asp:LinkButton>
+                                            </li>
+                                            <li class="page-item active">
+                                                <span class="page-link">
+                                                    <asp:Label runat="server" CssClass="text-white" ID="lblPageNumberUsers"></asp:Label></span>
+                                            </li>
+                                            <li class="page-item">
+                                                <asp:LinkButton ID="btnNextUser" CssClass="page-link" CausesValidation="false" runat="server">
+                                                    <i class="fa fa-angle-right"></i>
+                                                    <span class="sr-only">Next</span>
+                                                </asp:LinkButton>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </ContentTemplate>
                                 <Triggers>
                                     <asp:AsyncPostBackTrigger ControlID="btnPreviousUser" />
@@ -270,7 +275,7 @@
                                     </div>
 
                                     <div class="text-center">
-                                      
+
                                         <div style="padding: 5px;" id="alert" class="hidden" role="alert">
                                             <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
                                             <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
@@ -286,8 +291,8 @@
             </div>
         </div>
     </div>
-<!-- Função de Javascript para Mostrar a Div de Inserir após click no Button Inserir Módulo -->
-<script>
+    <!-- Função de Javascript para Mostrar a Div de Inserir após click no Button Inserir Módulo -->
+    <script>
         function showInsert() {
             var insertDiv = document.getElementById('insertUserDiv');
             var listDiv = document.getElementById('listUsersDiv');

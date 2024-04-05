@@ -22,6 +22,7 @@ namespace FinalProject.Classes
         public byte[] SVGBytes { get; set; }
         public bool IsChecked { get; set; }
 
+
         /// <summary>
         /// Função para inserir um módulo novo
         /// </summary>
@@ -154,39 +155,8 @@ namespace FinalProject.Classes
         public static List<Module> LoadModules(int CodCurso)
         {
             List<Module> Modules = new List<Module>();
-            List<string> conditions = new List<string>();
 
-            string query = $"SELECT * FROM modulo AS M INNER JOIN moduloCurso AS MC ON M.codModulo=MC.codModulo WHERE codCurso={CodCurso}";
-
-            //// Decisões para colocar ou não os filtros dentro da string query
-            //if (!string.IsNullOrEmpty(search_string))
-            //{
-            //    conditions.Add($"moeda.nome LIKE '%{search_string}%'");
-            //}
-            //if (grade != 0)
-            //{
-            //    conditions.Add($"moeda_estado.cod_estado = {grade}");
-            //}
-            //if (coin_type != 0)
-            //{
-            //    conditions.Add($"moeda.cod_tipo = {coin_type}");
-            //}
-            //if (status == 0)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //else if (status == 1)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //if (conditions.Count > 0)
-            //{
-            //    query += " WHERE " + string.Join(" AND ", conditions);
-            //}
-            //if (!string.IsNullOrEmpty(sort_order))
-            //{
-            //    query += " ORDER BY moeda_estado.valor_atual " + sort_order;
-            //}
+            string query = $"SELECT * FROM modulo AS M INNER JOIN moduloCurso AS MC ON M.codModulos=MC.codModulo WHERE codCurso={CodCurso}";
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -203,7 +173,7 @@ namespace FinalProject.Classes
                 informacao.UFCD = dr.GetString(3);
                 informacao.Descricao = dr.GetString(4);
                 informacao.Creditos = dr.GetDecimal(5);
-                if (informacao.SVG != null)
+                if (!dr.IsDBNull(dr.GetOrdinal("svg")))
                     informacao.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
                 else
                 {
@@ -214,10 +184,66 @@ namespace FinalProject.Classes
                     informacao.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String(imageData);
                 }
 
+                informacao.IsChecked = CheckIfModuleIsInCourse(CodCurso, informacao.CodModulo);
+
                 Modules.Add(informacao);
             }
             myConn.Close();
+
             return Modules;
+        }
+
+        public static bool CheckIfModuleIsInCourse(int CodCurso, int moduleID)
+        {
+            Course completeCourse = Classes.Course.CompleteCourse(CodCurso);
+
+            foreach (Module module in completeCourse.Modules)
+            {
+                if (module.CodModulo == moduleID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static int CalculateTotalCourseDuration(List<int> moduleIDs)
+        {
+            int totalDuration = 0;
+
+            foreach (int moduleID in moduleIDs)
+            {
+                totalDuration += GetUFCDDurationByModuleID(moduleID);
+            }
+
+            return totalDuration;
+        }
+
+        public static int GetUFCDDurationByModuleID(int moduleID)
+        {
+            int duration = 0;
+
+            string connectionString = ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT duracao FROM modulo WHERE codModulos = @ModuleID";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ModuleID", moduleID);
+
+                    connection.Open();
+
+                    object result = command.ExecuteScalar();
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        duration = Convert.ToInt32(result);
+                    }
+                }
+            }
+            return duration;
         }
 
         /// <summary>

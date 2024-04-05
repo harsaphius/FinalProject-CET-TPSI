@@ -14,8 +14,8 @@
             <div class="row gx-4">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        <asp:FileUpload runat="server" ID="fuProfileImage" CssClass="hidden" />
-                        <a href="#" id="UploadLink">
+                        <asp:FileUpload runat="server" ID="fuProfileImage"  CssClass="hidden" />
+                        <a href="#" id="UploadLink" type="file">
                             <asp:Image ID="foto" runat="server" alt="profile_image" class="w-100 border-radius-lg shadow-sm"></asp:Image>
                             <asp:Button ID="btnUpload" Text="Upload" runat="server" CssClass="hidden" />
                         </a>

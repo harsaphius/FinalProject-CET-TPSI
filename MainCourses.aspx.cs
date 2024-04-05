@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
 namespace FinalProject
@@ -7,27 +8,25 @@ namespace FinalProject
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            rpt_maincourses.DataSource = Classes.Course.LoadCourses();
-            rpt_maincourses.DataBind();
-
             if (!IsPostBack)
             {
+                BindDataCourses();
             }
         }
 
-        protected void btn_clear_Click(object sender, EventArgs e)
+        protected void btnClearFilters_OnClick(object sender, EventArgs e)
         {
-            tb_search.Text = "";
-            ddl_area.SelectedIndex = 0;
-            ddl_tipo.SelectedIndex = 0;
-            tb_dataInicio.Text = "";
-            tb_dataFim.Text = "";
+            tbSearchFilters.Text = "";
+            ddlAreaCursoFilters.SelectedIndex = 0;
+            ddlTipoCursoFilters.SelectedIndex = 0;
+            tbDataInicioFilters.Text = "";
+            tbDataFimFilters.Text = "";
         }
 
-        protected void btn_details_Click(object sender, EventArgs e)
+        protected void btnDetails_Click(object sender, EventArgs e)
         {
-            Button btn_details = (Button)sender;
-            HiddenField hdnCourseID = (HiddenField)btn_details.NamingContainer.FindControl("hdnCourseID");
+            Button btnDetails = (Button)sender;
+            HiddenField hdnCourseID = (HiddenField)btnDetails.NamingContainer.FindControl("hdnCourseID");
             string codCurso = hdnCourseID.Value;
 
             Session["CodCurso"] = codCurso;
@@ -36,7 +35,7 @@ namespace FinalProject
             Response.Redirect("CourseDetails.aspx?id=" + codCurso);
         }
 
-        protected void btn_enroll_Click(object sender, EventArgs e)
+        protected void btnEnroll_Click(object sender, EventArgs e)
         {
             Session["Enrollment"] = "Yes";
             Button btn_enroll = (Button)sender;
@@ -54,6 +53,56 @@ namespace FinalProject
             {
                 Response.Redirect("UserCourses.aspx");
             }
+        }
+
+        protected void btnApplyFilters_OnClick(object sender, EventArgs e)
+        {
+
+        }
+
+        //Função de Databinding
+        private void BindDataCourses(List<string> conditions = null)
+        {
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.Course.LoadCourses(conditions);
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 6;
+            pagedData.CurrentPageIndex = PageNumberCourses;
+            int PageNumber = PageNumberCourses + 1;
+            lblPageNumberListCourses.Text = PageNumber.ToString();
+
+            rptMainCourses.DataSource = pagedData;
+            rptMainCourses.DataBind();
+
+            btnPreviousMainCourses.Enabled = !pagedData.IsFirstPage;
+            btnNextMainCourses.Enabled = !pagedData.IsLastPage;
+
+        }
+
+        //Função de Paginação
+        private int PageNumberCourses
+        {
+            get
+            {
+                if (ViewState["PageNumberCourses"] != null)
+                    return Convert.ToInt32(ViewState["PageNumberCourses"]);
+                else
+                    return 0;
+            }
+            set => ViewState["PageNumberCourses"] = value;
+        }
+
+        //Funções para os botões de paginação
+        protected void btnNextMainCourses_OnClick(object sender, EventArgs e)
+        {
+            PageNumberCourses += 1;
+            BindDataCourses();
+        }
+
+        protected void btnPreviousMainCourses_OnClick(object sender, EventArgs e)
+        {
+            PageNumberCourses -= 1;
+            BindDataCourses();
         }
     }
 }

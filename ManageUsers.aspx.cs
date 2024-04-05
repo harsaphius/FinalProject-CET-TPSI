@@ -91,7 +91,8 @@ namespace FinalProject
             pagedData.AllowPaging = true;
             pagedData.PageSize = 8;
             pagedData.CurrentPageIndex = PageNumberUsers;
-
+            int PageNumber = PageNumberUsers + 1;
+            lblPageNumberUsers.Text = PageNumber.ToString();
 
             rptUsers.DataSource = pagedData;
             rptUsers.DataBind();

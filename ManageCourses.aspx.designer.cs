@@ -15,31 +15,31 @@ namespace FinalProject
     {
 
         /// <summary>
-        /// btn_insertCourse control.
+        /// btnInsertCourseMain control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_insertCourse;
+        protected global::System.Web.UI.WebControls.Button btnInsertCourseMain;
 
         /// <summary>
-        /// btn_back control.
+        /// btnBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_back;
+        protected global::System.Web.UI.WebControls.Button btnBack;
 
         /// <summary>
-        /// btn_backEditModules control.
+        /// btnBackEditModules control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_backEditModules;
+        protected global::System.Web.UI.WebControls.Button btnBackEditModules;
 
         /// <summary>
         /// updatePanelFilters control.
@@ -150,6 +150,24 @@ namespace FinalProject
         protected global::System.Web.UI.UpdatePanel updatePanelListCourses;
 
         /// <summary>
+        /// lblMessageListCourses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessageListCourses;
+
+        /// <summary>
+        /// timerMessageListCourses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessageListCourses;
+
+        /// <summary>
         /// rptListCourses control.
         /// </summary>
         /// <remarks>
@@ -193,15 +211,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel updatePanelEditModulesCourses;
-
-        /// <summary>
-        /// lblMessageForEdit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMessageForEdit;
 
         /// <summary>
         /// editModulesCourseTextBoxes control.
@@ -276,31 +285,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.DropDownList ddlQNQEditCourse;
 
         /// <summary>
-        /// lblCursoModulo control.
+        /// lblDuracaoCursoEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCursoModulo;
+        protected global::System.Web.UI.WebControls.Label lblDuracaoCursoEdit;
 
         /// <summary>
-        /// lbtnSearchModule control.
+        /// tbDuracaoEstagioEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtnSearchModule;
-
-        /// <summary>
-        /// tbSearchModule control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbSearchModule;
+        protected global::System.Web.UI.WebControls.TextBox tbDuracaoEstagioEdit;
 
         /// <summary>
         /// rptEditModulesCourse control.
@@ -357,6 +357,24 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btnEditCourse;
 
         /// <summary>
+        /// lblMessageEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessageEdit;
+
+        /// <summary>
+        /// timerMessageEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessageEdit;
+
+        /// <summary>
         /// hfInsertCoursesVisible control.
         /// </summary>
         /// <remarks>
@@ -373,15 +391,6 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel updatePanelInsertCourses;
-
-        /// <summary>
-        /// lbl_message control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_message;
 
         /// <summary>
         /// rfvCourseName control.
@@ -483,6 +492,24 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSQNQ;
 
         /// <summary>
+        /// lblDuracaoCurso control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblDuracaoCurso;
+
+        /// <summary>
+        /// tbDuracaoEstagio control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbDuracaoEstagio;
+
+        /// <summary>
         /// rptInsertCourses control.
         /// </summary>
         /// <remarks>
@@ -535,5 +562,23 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnInsertCourse;
+
+        /// <summary>
+        /// lblMessageInsert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessageInsert;
+
+        /// <summary>
+        /// timerMessageInsert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessageInsert;
     }
 }

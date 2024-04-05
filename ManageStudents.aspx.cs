@@ -82,12 +82,10 @@ namespace FinalProject
                     BindDataUsers();
                 }
 
-
             }
         }
 
         //Funções de ItemDataBound dos Repeaters
-
         protected void rptUserForStudents_OnItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -98,14 +96,12 @@ namespace FinalProject
         }
 
         //Funções de ItemCommand dos Repeaters
-
         protected void rptListStudents_OnItemCommand(object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "Edit")
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsert",
                     "showInsert();", true);
-                InitializeFlatpickrDatePickers();
 
                 (Student student, User user) = Classes.Student.LoadStudent(Convert.ToInt32(e.CommandArgument));
 
@@ -198,7 +194,7 @@ namespace FinalProject
         {
             User user = new User();
 
-            if (Security.IsValidEmail(tbEmail.Text) == true)
+            if (Security.IsValidEmail(tbEmail.Text) && Security.IsValidDate(tbDataValidade.Text) && Security.IsValidDate(tbDataNascimento.Text))
             {
                 string email = tbEmail.Text;
 
@@ -272,6 +268,8 @@ namespace FinalProject
                     Page.ClientScript.RegisterStartupScript(this.GetType(), key: "ShowPageElements", script, true);
 
                     lblMessageRegistration.Text = "Formando registado com sucesso!";
+
+                    CleanTextBoxes(this);
                 }
                 else
                 {
@@ -284,6 +282,8 @@ namespace FinalProject
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
                     lblMessageRegistration.Text = "Formando já registado!";
+                    CleanTextBoxes(this);
+
                 }
             }
             else
@@ -345,39 +345,6 @@ namespace FinalProject
 
             }
         }
-        protected void btnEnrollUserAsStudent_OnClick(object sender, EventArgs e)
-        {
-            List<int> selectedItems = (List<int>)ViewState["SelectedUsers"];
-
-            foreach (int selectedItem in selectedItems)
-            {
-                if (selectedItems != null && selectedItems.Count > 0)
-                {
-                    if (Session["CodUserClicked"] != null)
-                    {
-                        Enrollment enrollment = new Enrollment();
-
-                        enrollment.CodUtilizador = Convert.ToInt32(Session["CodUtilizadorClicked"]);
-                        enrollment.CodSituacao = 1;
-                        enrollment.CodCurso = selectedItem;
-
-                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollment(enrollment);
-
-                        if (AnswEnrollmentCode == -1 && AnswAnswEnrollmentRegister == -1)
-                        {
-                            lblMessageRegistration.Text = "Utilizador já registado nesse curso.";
-                        }
-                        else
-                        {
-                            Classes.Student.InsertStudent(Convert.ToInt32(Session["CodUtilizadorClicked"]), AnswEnrollmentCode);
-                            lblMessageRegistration.Text = "Utilizador registado com sucesso no curso!";
-                        }
-                    }
-
-                }
-
-            }
-        }
 
 
         //Funções de DataBinding
@@ -389,6 +356,7 @@ namespace FinalProject
             pagedData.PageSize = 2;
             pagedData.CurrentPageIndex = PageNumberStudents;
             int PageNumber = PageNumberStudents + 1;
+            lblPageNumberListStudents.Text = PageNumber.ToString();
 
             rptListStudents.DataSource = pagedData;
             rptListStudents.DataBind();
@@ -405,6 +373,7 @@ namespace FinalProject
             pagedData.PageSize = 5;
             pagedData.CurrentPageIndex = PageNumberCourses;
             int PageNumber = PageNumberCourses + 1;
+            lblPageNumberListCoursesForStudents.Text = PageNumber.ToString();
 
             rptListCoursesForStudents.DataSource = pagedData;
             rptListCoursesForStudents.DataBind();
@@ -424,6 +393,7 @@ namespace FinalProject
             pagedData.PageSize = 3;
             pagedData.CurrentPageIndex = PageNumberUsers;
             int PageNumber = PageNumberUsers + 1;
+            lblPageNumbersUsersForStudents.Text = PageNumber.ToString();
 
             rptUserForStudents.DataSource = pagedData;
             rptUserForStudents.DataBind();
@@ -497,7 +467,6 @@ namespace FinalProject
 
 
         //Funções de Paginação
-
         private int PageNumberCourses
         {
             get
@@ -577,31 +546,51 @@ namespace FinalProject
         }
 
 
-        //Função de Reinicialização do FlatPickr
-        private void InitializeFlatpickrDatePickers()
+        protected void btnNextPage_OnClick(object sender, EventArgs e)
         {
-            string script = @"
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                flatpickr('#" + tbDataNascimento.ClientID + @"', {
-                                    dateFormat: 'd-m-Y',
-                                    theme: 'light',
-                                    maxDate: new Date()
-                                });
+            if (!Security.IsValidDate(tbDataValidade.Text) && (!Security.IsValidDate(tbDataNascimento.Text) || !string.IsNullOrEmpty(tbDataNascimento.Text)))
+            {
+                lblMessageInsert.Visible = true;
+                lblMessageInsert.CssClass = "alert alert-primary text-white text-center";
+                lblMessageInsert.Text = "Formato de Data Inválida!";
 
-                                flatpickr('#" + tbDataValidade.ClientID + @"', {
-                                    dateFormat: 'd-m-Y',
-                                    theme: 'light',
-                                    minDate: new Date()
-                                });
-                            });
-                        </script>
-                    ";
+                timerMessageInsert.Enabled = true;
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "showNextDiv", "showNextDiv();", true);
 
-            ScriptManager.RegisterStartupScript(this, GetType(), "FlatpickrInit", script, false);
+            }
         }
 
+        protected void timerMessageInsert_OnTick(object sender, EventArgs e)
+        {
+            lblMessageInsert.Visible = false;
+            timerMessageInsert.Enabled = false;
+        }
 
+        private void CleanTextBoxes(Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                if (control is TextBox)
+                {
+                    ((TextBox)control).Text = "";
+                }
+                else if (control is DropDownList)
+                {
+                    ((DropDownList)control).SelectedIndex = 0;
+                }
+                else if (control.HasControls())
+                {
+                    CleanTextBoxes(control);
+                }
+            }
+        }
 
+        protected void btnInsertStudent_OnClick(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

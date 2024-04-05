@@ -46,10 +46,7 @@ namespace FinalProject.Classes
             {
                 myCommand.Parameters.AddWithValue("@Internship", Course.DuracaoEstagio);
             }
-            //else
-            //{
-            //    myCommand.Parameters.AddWithValue("@Internship", DBNull.Value);
-            //}
+            
 
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
@@ -110,45 +107,78 @@ namespace FinalProject.Classes
             List<Course> Courses = new List<Course>();
 
             string query = "SELECT * FROM curso WHERE isActive=1";
+
+
             if (conditions != null)
             {
-                bool isFirstCondition = true;
-
                 for (int i = 0; i < conditions.Count; i++)
                 {
                     if (!string.IsNullOrEmpty(conditions[i]))
                     {
-                        if (isFirstCondition)
-                        {
-                            query += " WHERE ";
-                            isFirstCondition = false;
-                        }
-                        else
-                        {
-                            query += " AND ";
-                        }
-
                         switch (i)
                         {
                             case 0:
-                                query += "nomeCurso LIKE '%" + conditions[i] + "%'";
+                                query += " AND nomeCurso LIKE '%" + conditions[i] + "%'";
                                 break;
                             case 1:
-                                query += "codArea =" + conditions[i];
-                                break;
-                            case 2:
-                                query += "codTipoCurso =" + conditions[i];
-                                break;
-                            case 3:
-                                query += "auditRow = '" + conditions[i] + "'";
-                                break;
-                            default:
-                                // Handle additional conditions if needed
+                                query += " AND codRef =" + conditions[i];
                                 break;
                         }
                     }
                 }
             }
+
+            //if (order != null)
+            //{
+            //    if (order.Contains("ASC"))
+            //    {
+            //        query += " ORDER BY nomeModulos ASC";
+            //    }
+            //    else if (order.Contains("DESC"))
+            //    {
+            //        query += " ORDER BY nomeModulos DESC";
+            //    }
+            //}
+
+            //if (conditions != null)
+            //{
+            //    bool isFirstCondition = true;
+
+            //    for (int i = 0; i < conditions.Count; i++)
+            //    {
+            //        if (!string.IsNullOrEmpty(conditions[i]))
+            //        {
+            //            if (isFirstCondition)
+            //            {
+            //                query += " WHERE ";
+            //                isFirstCondition = false;
+            //            }
+            //            else
+            //            {
+            //                query += " AND ";
+            //            }
+
+            //            switch (i)
+            //            {
+            //                case 0:
+            //                    query += "nomeCurso LIKE '%" + conditions[i] + "%'";
+            //                    break;
+            //                case 1:
+            //                    query += "codArea =" + conditions[i];
+            //                    break;
+            //                case 2:
+            //                    query += "codTipoCurso =" + conditions[i];
+            //                    break;
+            //                case 3:
+            //                    query += "auditRow = '" + conditions[i] + "'";
+            //                    break;
+            //                default:
+            //                    // Handle additional conditions if needed
+            //                    break;
+            //            }
+            //        }
+            //    }
+            
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -183,7 +213,7 @@ namespace FinalProject.Classes
             Course CompleteCourse = new Course();
             List<Module> ModulesCourse = new List<Module>();
 
-            string query = $"SELECT * FROM curso AS C INNER JOIN tipoCurso AS TC ON C.codTipoCurso=TC.codTipoCurso INNER JOIN area AS A ON C.codArea=A.codArea INNER JOIN moduloCurso AS MC ON C.codCurso=MC.codCurso INNER JOIN modulo AS M ON MC.codModulo=M.codModulos WHERE C.codCurso={CodCurso}";
+            string query = $"SELECT * FROM curso AS C LEFT JOIN tipoCurso AS TC ON C.codTipoCurso=TC.codTipoCurso LEFT JOIN area AS A ON C.codArea=A.codArea LEFT JOIN moduloCurso AS MC ON C.codCurso=MC.codCurso LEFT JOIN modulo AS M ON MC.codModulo=M.codModulos WHERE C.codCurso={CodCurso}";
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -203,27 +233,35 @@ namespace FinalProject.Classes
                 CompleteCourse.CodQNQ = Convert.ToInt32(dr["codQNQ"]);
             }
 
-            do
+            if (dr.HasRows)
             {
-                Module module = new Module();
-                module.CodModulo = Convert.ToInt32(dr["codModulos"]);
-                if (module.SVG != null)
+                do
                 {
-                    module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
-                }
-                else
-                {
-                    string relativeImagePath = "~/assets/img/small-logos/default.svg";
-                    string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
-                    byte[] imageData = File.ReadAllBytes(absoluteImagePath);
+                    Module module = new Module();
+                    module.CodModulo = Convert.ToInt32(dr["codModulos"]);
+                    if (module.SVG != null)
+                    {
+                        module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
+                    }
+                    else
+                    {
+                        string relativeImagePath = "~/assets/img/small-logos/default.svg";
+                        string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                        byte[] imageData = File.ReadAllBytes(absoluteImagePath);
 
-                    module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String(imageData);
-                }
-                module.UFCD = (dr["CodUFCD"].ToString());
-                module.Nome = dr["NomeModulos"].ToString();
+                        module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String(imageData);
+                    }
 
-                ModulesCourse.Add(module);
-            } while (dr.Read());
+                    module.UFCD = (dr["CodUFCD"].ToString());
+                    module.Nome = dr["NomeModulos"].ToString();
+
+                    ModulesCourse.Add(module);
+                } while (dr.Read());
+            }
+            else
+            {
+                ModulesCourse = new List<Module>();
+            }
 
             CompleteCourse.Modules = ModulesCourse;
 
@@ -249,6 +287,11 @@ namespace FinalProject.Classes
             myCommand.Parameters.AddWithValue("@CodArea", Course.CodArea);
             myCommand.Parameters.AddWithValue("@CodRef", Course.CodRef);
             myCommand.Parameters.AddWithValue("@CodQNQ", Course.CodQNQ);
+            myCommand.Parameters.AddWithValue("@Duration", Course.Duracao);
+            if (Course.DuracaoEstagio != null)
+            {
+                myCommand.Parameters.AddWithValue("@Internship", Course.DuracaoEstagio);
+            }
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             SqlParameter CourseUpdated = new SqlParameter();
@@ -269,34 +312,70 @@ namespace FinalProject.Classes
 
             myCon.Close();
 
-            //Deleting all modules already on the course
-            string query = $"DELETE FROM moduloCurso WHERE codCurso = {Course.CodCurso}";
-            SqlCommand myCommand2 = new SqlCommand(query, myCon);
-            myCon.Open();
-            myCommand2.ExecuteNonQuery();
-            myCon.Close();
-
-
-            SqlCommand myCommand3 = new SqlCommand();
-            myCommand3.CommandType = CommandType.StoredProcedure;
-            myCommand3.CommandText = "UpdateCourseModules";
-
-            myCommand3.Connection = myCon;
-
-            myCon.Open();
-
-            foreach (int moduleID in modules)
+            if (AnswCourseUpdated == 1)
             {
-                myCommand3.Parameters.Clear();
-                myCommand3.Parameters.AddWithValue("@CodCourse", Course.CodCurso);
-                myCommand3.Parameters.AddWithValue("@CodMod", moduleID);
-                myCommand3.ExecuteNonQuery();
-            }
+                //Deleting all modules already on the course
+                string query = $"DELETE FROM moduloCurso WHERE codCurso = {Course.CodCurso}";
+                SqlCommand myCommand2 = new SqlCommand(query, myCon);
+                myCon.Open();
+                myCommand2.ExecuteNonQuery();
+                myCon.Close();
 
-            myCon.Close();
+
+                SqlCommand myCommand3 = new SqlCommand();
+                myCommand3.CommandType = CommandType.StoredProcedure;
+                myCommand3.CommandText = "UpdateCourseModules";
+
+                myCommand3.Connection = myCon;
+
+                myCon.Open();
+
+                foreach (int moduleID in modules)
+                {
+                    myCommand3.Parameters.Clear();
+                    myCommand3.Parameters.AddWithValue("@CodCourse", Course.CodCurso);
+                    myCommand3.Parameters.AddWithValue("@CodMod", moduleID);
+                    myCommand3.ExecuteNonQuery();
+                }
+
+                myCon.Close();
+            }
 
             return AnswCourseUpdated;
         }
+
+        /// <summary>
+        /// Função para efetuar delete de um curso
+        /// </summary>
+        /// <param name="CodCurso"></param>
+        /// <returns></returns>
+        public static int DeleteCourse(int CodCurso)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@CourseID", CodCurso);
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
+
+            SqlParameter CourseDeleted = new SqlParameter();
+            CourseDeleted.ParameterName = "@CourseDeleted";
+            CourseDeleted.Direction = ParameterDirection.Output;
+            CourseDeleted.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(CourseDeleted);
+
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "DeleteCourse";
+
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
+            int AnswCourseDeleted = Convert.ToInt32(myCommand.Parameters["@CourseDeleted"].Value);
+
+            myCon.Close();
+
+            return AnswCourseDeleted;
+        }
+
 
     }
 }

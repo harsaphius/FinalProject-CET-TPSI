@@ -120,7 +120,7 @@ namespace FinalProject
             PagedDataSource pagedData = new PagedDataSource();
             pagedData.DataSource = Classes.Student.LoadStudents();
             pagedData.AllowPaging = true;
-            pagedData.PageSize = 1;
+            pagedData.PageSize = 2;
             pagedData.CurrentPageIndex = PageNumberStudents;
             int PageNumber = PageNumberStudents + 1;
 
@@ -294,8 +294,9 @@ namespace FinalProject
 
                 string combinedName = moduleName + " | " + teacherName;
 
-                ListItem newItem = new ListItem(combinedName);
-                listBoxTeachersForModules.Items.Add(newItem);
+                listBoxTeachersForModules.Items.Add(new ListItem(combinedName, $"{ddlModulesOfCourse.SelectedValue} | {ddlTeacherForModules.SelectedValue}"));
+
+                ddlModulesOfCourse.Items.RemoveAt(ddlModulesOfCourse.SelectedIndex);
 
             }
             else
@@ -310,7 +311,26 @@ namespace FinalProject
         {
             if (listBoxTeachersForModules.SelectedItem != null)
             {
+                string selectedText = listBoxTeachersForModules.SelectedItem.Text;
+                string selectedValue = listBoxTeachersForModules.SelectedValue;
+
+                string[] partsText = selectedText.Split('|'); // Split the selected value by space
+                string[] partsValues = selectedValue.Split('|');
+                if (partsText.Length == 2 && partsValues.Length == 2) // Ensure there are two parts
+                {
+                    string nomeModulo = partsText[0].Trim();
+                    string nomeFormador = partsText[1].Trim();
+
+                    string codModulo = partsValues[0].Trim();
+                    string codFormador = partsValues[1].Trim();
+
+
+                    ddlModulesOfCourse.Items.Add(new ListItem(nomeModulo, codModulo));
+                }
+
                 listBoxTeachersForModules.Items.Remove(listBoxTeachersForModules.SelectedItem);
+
+
             }
             else
             {

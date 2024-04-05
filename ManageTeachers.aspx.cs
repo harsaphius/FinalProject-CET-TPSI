@@ -220,6 +220,7 @@ namespace FinalProject
             pagedData.PageSize = 1;
             pagedData.CurrentPageIndex = PageNumberUsers;
             int PageNumber = PageNumberUsers + 1;
+            lblPageNumberUsersForTeachers.Text = PageNumber.ToString();
 
             rptUserForTeachers.DataSource = pagedData;
             rptUserForTeachers.DataBind();
@@ -235,7 +236,8 @@ namespace FinalProject
             pagedData.AllowPaging = true;
             pagedData.PageSize = 8;
             pagedData.CurrentPageIndex = PageNumberModules;
-
+            int PageNumber = PageNumberModules + 1;
+            lblPageNumberListModulesForTeachers.Text = PageNumber.ToString();
 
             rptListModulesForTeachers.DataSource = pagedData;
             rptListModulesForTeachers.DataBind();
@@ -251,7 +253,8 @@ namespace FinalProject
             pagedData.AllowPaging = true;
             pagedData.PageSize = 8;
             pagedData.CurrentPageIndex = PageNumberTeachers;
-
+            int PageNumber = PageNumberTeachers + 1;
+            lblPageNumberListTeachers.Text = PageNumber.ToString();
 
             rptListTeachers.DataSource = pagedData;
             rptListTeachers.DataBind();

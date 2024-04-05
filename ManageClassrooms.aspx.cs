@@ -282,8 +282,28 @@ namespace FinalProject
 
 
             }
-        }
 
+            if (e.CommandName == "Cancel")
+            {
+                tbNrSala.Visible = !tbNrSala.Visible;
+                lblNrSala.Visible = !lblNrSala.Visible;
+                lblNrSala.Text = lblNrSala.Text;
+
+                ddlLocalSalaEdit.Visible = !ddlLocalSalaEdit.Visible;
+                lblLocalSala.Visible = !lblLocalSala.Visible;
+                lblLocalSala.Text = lblLocalSala.Text;
+
+                ddlTipoSalaEdit.Visible = !ddlTipoSalaEdit.Visible;
+                lblTipoSala.Visible = !lblTipoSala.Visible;
+                lblTipoSala.Text = lblTipoSala.Text;
+
+                lbtCancelClassroom.Visible = false;
+                lbtConfirmClassroom.Visible = false;
+
+                lbtEditClassroom.Visible = true;
+                lbtDeleteClassroom.Visible = true;
+            }
+        }
 
         //Função de Inserção
         protected void btnInsertClassroom_OnClick(object sender, EventArgs e)
@@ -300,14 +320,14 @@ namespace FinalProject
             {
                 lblMessageInsert.Visible = true;
                 lblMessageInsert.CssClass = "alert alert-primary text-white text-center";
-                lbl_message.Text = "Sala inserida com sucesso!";
+                lblMessageInsert.Text = "Sala inserida com sucesso!";
                 timerMessageInsert.Enabled = true;
             }
             else
             {
                 lblMessageInsert.Visible = true;
                 lblMessageInsert.CssClass = "alert alert-primary text-white text-center";
-                lbl_message.Text = "Sala já existe!";
+                lblMessageInsert.Text = "Sala já existe!";
                 timerMessageInsert.Enabled = true;
             }
 
@@ -319,9 +339,10 @@ namespace FinalProject
             PagedDataSource pagedData = new PagedDataSource();
             pagedData.DataSource = Classes.Classroom.LoadClassrooms();
             pagedData.AllowPaging = true;
-            pagedData.PageSize = 5;
+            pagedData.PageSize = 8;
             pagedData.CurrentPageIndex = PageNumberClassrooms;
-
+            int PageNumber = PageNumberClassrooms + 1;
+            lblPageNumberClassrooms.Text = PageNumber.ToString();
 
             rpt_Classrooms.DataSource = pagedData;
             rpt_Classrooms.DataBind();

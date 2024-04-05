@@ -482,7 +482,8 @@ namespace FinalProject
             pagedData.AllowPaging = true;
             pagedData.PageSize = 8;
             pagedData.CurrentPageIndex = PageNumberModules;
-
+            int PageNumber = PageNumberModules + 1;
+            lblPageNumberModules.Text = PageNumber.ToString();
 
             rptModules.DataSource = pagedData;
             rptModules.DataBind();
@@ -543,7 +544,6 @@ namespace FinalProject
             BindDataModules();
         }
 
-
         private void CleanTextBoxes()
         {
             tbModuleName.Text = "";
@@ -552,7 +552,6 @@ namespace FinalProject
             tbDescricao.Text = "";
             tbCredits.Text = "";
         }
-
 
         protected void timerMessageInsert_OnTick(object sender, EventArgs e)
         {
