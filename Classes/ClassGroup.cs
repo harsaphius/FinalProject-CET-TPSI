@@ -19,9 +19,9 @@ namespace FinalProject.Classes
 
         public static List<ClassGroup> LoadClassGroups(List<string> conditions = null)
         {
-            List<ClassGroup> ClassGroups = new List<ClassGroup>();
+            var ClassGroups = new List<ClassGroup>();
 
-            string query = "SELECT * FROM turma";
+            var query = "SELECT * FROM turma";
 
             //// Decisões para colocar ou não os filtros dentro da string query
             //if (!string.IsNullOrEmpty(search_string))
@@ -53,15 +53,16 @@ namespace FinalProject.Classes
             //    query += " ORDER BY moeda_estado.valor_atual " + sort_order;
             //}
 
-            SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
-            SqlCommand myCommand = new SqlCommand(query, myConn);
+            var myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"]
+                .ConnectionString);
+            var myCommand = new SqlCommand(query, myConn);
             myConn.Open();
 
-            SqlDataReader dr = myCommand.ExecuteReader();
+            var dr = myCommand.ExecuteReader();
 
             while (dr.Read())
             {
-                ClassGroup informacao = new ClassGroup();
+                var informacao = new ClassGroup();
                 informacao.CodTurma = Convert.ToInt32(dr["codTurma"]);
                 informacao.CodCurso = Convert.ToInt32(dr["codCurso"]);
                 informacao.NomeTurma = dr["nomeTurma"].ToString();
@@ -70,10 +71,10 @@ namespace FinalProject.Classes
 
                 ClassGroups.Add(informacao);
             }
+
             myConn.Close();
 
             return ClassGroups;
         }
-
     }
 }

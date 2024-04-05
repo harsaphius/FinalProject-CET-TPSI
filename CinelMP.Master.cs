@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Web;
+using System.Web.UI;
 
 namespace FinalProject
 {
-    public partial class CinelMP : System.Web.UI.MasterPage
+    public partial class CinelMP : MasterPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -11,10 +12,10 @@ namespace FinalProject
             Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
             Response.Cache.SetNoStore();
 
-            SiteMapNode currentNode = SiteMap.CurrentNode;
+            var currentNode = SiteMap.CurrentNode;
             if (currentNode != null)
             {
-                string title = currentNode.Title;
+                var title = currentNode.Title;
                 siteNode.InnerText = title;
             }
         }

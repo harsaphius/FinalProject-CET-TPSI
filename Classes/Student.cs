@@ -16,20 +16,21 @@ namespace FinalProject.Classes
         public string Foto { get; set; }
 
         /// <summary>
-        /// Função para inserir um formando
+        ///     Função para inserir um formando
         /// </summary>
         /// <param name="values"></param>
         /// <param name="imageBytes"></param>
         /// <returns></returns>
         public static int InsertStudent(int StudentCode, int EnrollmentCode)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+            var myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"]
+                .ConnectionString); //Definir a conexão à base de dados
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            var myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@CodFormando", StudentCode);
             myCommand.Parameters.AddWithValue("@CodInscricao", EnrollmentCode);
 
-            SqlParameter StudentRegisted = new SqlParameter();
+            var StudentRegisted = new SqlParameter();
             StudentRegisted.ParameterName = "@StudentRegisted";
             StudentRegisted.Direction = ParameterDirection.Output;
             StudentRegisted.SqlDbType = SqlDbType.Int;
@@ -37,13 +38,15 @@ namespace FinalProject.Classes
             myCommand.Parameters.Add(StudentRegisted);
 
             myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
-            myCommand.CommandText = "StudentRegister"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+            myCommand.CommandText =
+                "StudentRegister"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
 
-            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
+            myCommand.Connection =
+                myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
             myCon.Open(); //Abrir a conexão
             myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
 
-            int AnswStudentRegisted = Convert.ToInt32(myCommand.Parameters["@StudentRegisted"].Value);
+            var AnswStudentRegisted = Convert.ToInt32(myCommand.Parameters["@StudentRegisted"].Value);
 
             myCon.Close(); //Fechar a conexão
 
@@ -51,14 +54,15 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
-        /// Função para carregar os formandos
+        ///     Função para carregar os formandos
         /// </summary>
         /// <returns></returns>
         public static List<Student> LoadStudents(List<string> conditions = null)
         {
-            List<Student> Students = new List<Student>();
+            var Students = new List<Student>();
 
-            string query = "SELECT DISTINCT F.codFormando, UD.nome, UDS.foto FROM formando AS F LEFT JOIN inscricao AS I ON F.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador";
+            var query =
+                "SELECT DISTINCT F.codFormando, UD.nome, UDS.foto FROM formando AS F LEFT JOIN inscricao AS I ON F.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador";
 
             //// Decisões para colocar ou não os filtros dentro da string query
             //if (!string.IsNullOrEmpty(search_string))
@@ -90,49 +94,55 @@ namespace FinalProject.Classes
             //    query += " ORDER BY moeda_estado.valor_atual " + sort_order;
             //}
 
-            SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
-            SqlCommand myCommand = new SqlCommand(query, myConn);
+            var myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"]
+                .ConnectionString);
+            var myCommand = new SqlCommand(query, myConn);
             myConn.Open();
 
-            SqlDataReader dr = myCommand.ExecuteReader();
+            var dr = myCommand.ExecuteReader();
 
             while (dr.Read())
             {
-                Student informacao = new Student();
+                var informacao = new Student();
                 informacao.CodFormando = Convert.ToInt32(dr["codFormando"]);
                 //informacao.CodInscricao = Convert.ToInt32(dr["codInscricao"]);
                 informacao.Nome = dr["nome"].ToString();
 
-                string relativeImagePath = "~/assets/img/default.png";
-                string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
-                byte[] imageData = File.ReadAllBytes(absoluteImagePath);
+                var relativeImagePath = "~/assets/img/default.png";
+                var absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                var imageData = File.ReadAllBytes(absoluteImagePath);
 
-                informacao.Foto = dr["foto"] == DBNull.Value ? "data:image/jpeg;base64," + Convert.ToBase64String(imageData) : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
+                informacao.Foto = dr["foto"] == DBNull.Value
+                    ? "data:image/jpeg;base64," + Convert.ToBase64String(imageData)
+                    : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
 
                 Students.Add(informacao);
             }
+
             myConn.Close();
 
             return Students;
         }
 
         /// <summary>
-        /// Função para carregar os dados de um formando
+        ///     Função para carregar os dados de um formando
         /// </summary>
         /// <param name="CodFormando"></param>
         /// <returns></returns>
         public static (Student, User) LoadStudent(int CodFormando)
         {
-            Student Student = new Student();
-            User User = new User();
+            var Student = new Student();
+            var User = new User();
 
-            string query = $"SELECT DISTINCT * FROM formando AS F LEFT JOIN inscricao AS I ON F.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador WHERE F.CodFormando={CodFormando}";
+            var query =
+                $"SELECT DISTINCT * FROM formando AS F LEFT JOIN inscricao AS I ON F.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador WHERE F.CodFormando={CodFormando}";
 
-            SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
-            SqlCommand myCommand = new SqlCommand(query, myConn);
+            var myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"]
+                .ConnectionString);
+            var myCommand = new SqlCommand(query, myConn);
             myConn.Open();
 
-            SqlDataReader dr = myCommand.ExecuteReader();
+            var dr = myCommand.ExecuteReader();
 
             if (dr.Read())
             {
@@ -171,18 +181,19 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
-        /// Função para eliminar um formando
+        ///     Função para eliminar um formando
         /// </summary>
         /// <param name="CodUtilizador"></param>
         /// <returns></returns>
         public static int DeleteStudent(int CodUtilizador)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            var myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"]
+                .ConnectionString);
+            var myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@CodUtilizador", CodUtilizador);
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
-            SqlParameter StudentDeleted = new SqlParameter();
+            var StudentDeleted = new SqlParameter();
             StudentDeleted.ParameterName = "@StudentDeleted";
             StudentDeleted.Direction = ParameterDirection.Output;
             StudentDeleted.SqlDbType = SqlDbType.Int;
@@ -195,7 +206,7 @@ namespace FinalProject.Classes
             myCommand.Connection = myCon;
             myCon.Open();
             myCommand.ExecuteNonQuery();
-            int AnswStudentDeleted = Convert.ToInt32(myCommand.Parameters["@StudentDeleted"].Value);
+            var AnswStudentDeleted = Convert.ToInt32(myCommand.Parameters["@StudentDeleted"].Value);
 
             myCon.Close();
 

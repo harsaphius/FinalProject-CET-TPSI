@@ -8,26 +8,25 @@ namespace FinalProject.Classes
         private readonly List<T> dataSource;
         private readonly int pageSize;
 
-        public int PageNumber { get; private set; }
-        public int TotalPages => (int)Math.Ceiling((double)dataSource.Count / pageSize);
-
         public PageControls(List<T> dataSource, int pageSize)
         {
             this.dataSource = dataSource;
             this.pageSize = pageSize;
-            this.PageNumber = 0; // Initialize page number
+            PageNumber = 0; // Initialize page number
         }
+
+        public int PageNumber { get; private set; }
+        public int TotalPages => (int)Math.Ceiling((double)dataSource.Count / pageSize);
 
         public List<T> GetPagedData(int pageNumber)
         {
             PageNumber = pageNumber;
-            int startIndex = (pageNumber - 1) * pageSize;
-            int count = Math.Min(pageSize, dataSource.Count - startIndex);
+            var startIndex = (pageNumber - 1) * pageSize;
+            var count = Math.Min(pageSize, dataSource.Count - startIndex);
 
             if (startIndex < dataSource.Count)
                 return dataSource.GetRange(startIndex, count);
-            else
-                return new List<T>();
+            return new List<T>();
         }
 
         //public string GeneratePagination(int currentPage, int totalPages)

@@ -16,29 +16,30 @@ namespace FinalProject.Classes
         public string NomeCurso { get; set; }
 
         /// <summary>
-        /// Função para inserir uma inscrição nova
+        ///     Função para inserir uma inscrição nova
         /// </summary>
         /// <param name="values"></param>
         /// <param name="imageBytes"></param>
         /// <returns></returns>
         public static (int, int) InsertEnrollment(Enrollment enrollment)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+            var myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"]
+                .ConnectionString); //Definir a conexão à base de dados
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            var myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@CodUtilizador", enrollment.CodUtilizador);
             myCommand.Parameters.AddWithValue("@CodSituacao", enrollment.CodSituacao);
             myCommand.Parameters.AddWithValue("@DataInscricao", DateTime.Now);
             myCommand.Parameters.AddWithValue("@CodCurso", enrollment.CodCurso);
 
-            SqlParameter EnrollmentRegister = new SqlParameter();
+            var EnrollmentRegister = new SqlParameter();
             EnrollmentRegister.ParameterName = "@EnrollmentRegisted";
             EnrollmentRegister.Direction = ParameterDirection.Output;
             EnrollmentRegister.SqlDbType = SqlDbType.Int;
 
             myCommand.Parameters.Add(EnrollmentRegister);
 
-            SqlParameter EnrollmentCode = new SqlParameter();
+            var EnrollmentCode = new SqlParameter();
             EnrollmentCode.ParameterName = "@EnrollmentCode";
             EnrollmentCode.Direction = ParameterDirection.Output;
             EnrollmentCode.SqlDbType = SqlDbType.Int;
@@ -46,13 +47,15 @@ namespace FinalProject.Classes
             myCommand.Parameters.Add(EnrollmentCode);
 
             myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
-            myCommand.CommandText = "EnrollmentRegister"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+            myCommand.CommandText =
+                "EnrollmentRegister"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
 
-            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
+            myCommand.Connection =
+                myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
             myCon.Open(); //Abrir a conexão
             myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
-            int AnswEnrollmentRegister = Convert.ToInt32(myCommand.Parameters["@EnrollmentRegisted"].Value);
-            int AnswEnrollmentCode = Convert.ToInt32(myCommand.Parameters["@EnrollmentCode"].Value);
+            var AnswEnrollmentRegister = Convert.ToInt32(myCommand.Parameters["@EnrollmentRegisted"].Value);
+            var AnswEnrollmentCode = Convert.ToInt32(myCommand.Parameters["@EnrollmentCode"].Value);
 
             myCon.Close(); //Fechar a conexão
 

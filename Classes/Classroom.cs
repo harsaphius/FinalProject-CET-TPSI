@@ -18,14 +18,15 @@ namespace FinalProject.Classes
 
 
         /// <summary>
-        /// Função para carregar as salas
+        ///     Função para carregar as salas
         /// </summary>
         /// <returns></returns>
         public static List<Classroom> LoadClassrooms(List<string> conditions = null)
         {
-            List<Classroom> Classrooms = new List<Classroom>();
+            var Classrooms = new List<Classroom>();
 
-            string query = "SELECT * FROM sala AS S INNER JOIN tipoSala AS TS ON S.codTipoSala=TS.codTipoSala INNER JOIN localSala AS LS ON S.codLocalSala=LS.codLocalSala WHERE isActive = 1";
+            var query =
+                "SELECT * FROM sala AS S INNER JOIN tipoSala AS TS ON S.codTipoSala=TS.codTipoSala INNER JOIN localSala AS LS ON S.codLocalSala=LS.codLocalSala WHERE isActive = 1";
 
             //// Decisões para colocar ou não os filtros dentro da string query
             //if (!string.IsNullOrEmpty(search_string))
@@ -57,15 +58,16 @@ namespace FinalProject.Classes
             //    query += " ORDER BY moeda_estado.valor_atual " + sort_order;
             //}
 
-            SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
-            SqlCommand myCommand = new SqlCommand(query, myConn);
+            var myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"]
+                .ConnectionString);
+            var myCommand = new SqlCommand(query, myConn);
             myConn.Open();
 
-            SqlDataReader dr = myCommand.ExecuteReader();
+            var dr = myCommand.ExecuteReader();
 
             while (dr.Read())
             {
-                Classroom informacao = new Classroom();
+                var informacao = new Classroom();
                 informacao.CodSala = dr.GetInt32(0);
                 informacao.NrSala = dr.GetString(1);
                 informacao.TipoSala = dr["tipoSala"].ToString();
@@ -73,28 +75,30 @@ namespace FinalProject.Classes
 
                 Classrooms.Add(informacao);
             }
+
             myConn.Close();
 
             return Classrooms;
         }
 
         /// <summary>
-        /// Função para inserir uma sala nova
+        ///     Função para inserir uma sala nova
         /// </summary>
         /// <param name="values"></param>
         /// <returns></returns>
         public static int InsertClassroom(Classroom Classroom)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            var myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"]
+                .ConnectionString);
 
-            SqlCommand myCommand = new SqlCommand();
+            var myCommand = new SqlCommand();
             myCommand.Parameters.AddWithValue("@NrSala", Classroom.NrSala);
             myCommand.Parameters.AddWithValue("@CodTipoSala", Classroom.CodTipoSala);
             myCommand.Parameters.AddWithValue("@CodLocalSala", Classroom.CodLocalSala);
             myCommand.Parameters.AddWithValue("@CreationDate", DateTime.Now);
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
-            SqlParameter ClassroomRegister = new SqlParameter();
+            var ClassroomRegister = new SqlParameter();
             ClassroomRegister.ParameterName = "@ClassroomRegisted";
             ClassroomRegister.Direction = ParameterDirection.Output;
             ClassroomRegister.SqlDbType = SqlDbType.Int;
@@ -107,7 +111,7 @@ namespace FinalProject.Classes
             myCommand.Connection = myCon;
             myCon.Open();
             myCommand.ExecuteNonQuery();
-            int AnswClassroomRegister = Convert.ToInt32(myCommand.Parameters["@ClassroomRegisted"].Value);
+            var AnswClassroomRegister = Convert.ToInt32(myCommand.Parameters["@ClassroomRegisted"].Value);
 
             myCon.Close();
 
@@ -115,22 +119,23 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
-        /// Função para update de uma sala
+        ///     Função para update de uma sala
         /// </summary>
         /// <param name="module"></param>
         /// <returns></returns>
         public static int UpdateClassroom(Classroom classroom)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            var myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"]
+                .ConnectionString);
 
-            SqlCommand myCommand = new SqlCommand();
+            var myCommand = new SqlCommand();
             myCommand.Parameters.AddWithValue("@CodSala", classroom.CodSala);
             myCommand.Parameters.AddWithValue("@NrSala", classroom.NrSala);
             myCommand.Parameters.AddWithValue("@CodTipoSala", classroom.CodTipoSala);
             myCommand.Parameters.AddWithValue("@CodLocalSala", classroom.CodLocalSala);
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
-            SqlParameter ClassroomUpdated = new SqlParameter();
+            var ClassroomUpdated = new SqlParameter();
             ClassroomUpdated.ParameterName = "@ClassroomUpdated";
             ClassroomUpdated.Direction = ParameterDirection.Output;
             ClassroomUpdated.SqlDbType = SqlDbType.Int;
@@ -143,7 +148,7 @@ namespace FinalProject.Classes
             myCommand.Connection = myCon;
             myCon.Open();
             myCommand.ExecuteNonQuery();
-            int AnswClassroomUpdated = Convert.ToInt32(myCommand.Parameters["@ClassroomUpdated"].Value);
+            var AnswClassroomUpdated = Convert.ToInt32(myCommand.Parameters["@ClassroomUpdated"].Value);
 
             myCon.Close();
 
@@ -151,18 +156,19 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
-        /// Função para efetuar delete de um módulo
+        ///     Função para efetuar delete de um módulo
         /// </summary>
         /// <param name="CodModulo"></param>
         /// <returns></returns>
         public static int DeleteClassroom(int CodSala)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            var myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"]
+                .ConnectionString);
+            var myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@ModuleID", CodSala);
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
-            SqlParameter ClassroomDeleted = new SqlParameter();
+            var ClassroomDeleted = new SqlParameter();
             ClassroomDeleted.ParameterName = "@ClassroomDeleted";
             ClassroomDeleted.Direction = ParameterDirection.Output;
             ClassroomDeleted.SqlDbType = SqlDbType.Int;
@@ -175,12 +181,11 @@ namespace FinalProject.Classes
             myCommand.Connection = myCon;
             myCon.Open();
             myCommand.ExecuteNonQuery();
-            int AnswClassroomDeleted = Convert.ToInt32(myCommand.Parameters["@ClassroomDeleted"].Value);
+            var AnswClassroomDeleted = Convert.ToInt32(myCommand.Parameters["@ClassroomDeleted"].Value);
 
             myCon.Close();
 
             return AnswClassroomDeleted;
         }
-
     }
 }

@@ -5,33 +5,33 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
 
 namespace FinalProject.Classes
 {
     public class Security
     {
         /// <summary>
-        /// Função de Encriptação de Dados MD5
+        ///     Função de Encriptação de Dados MD5
         /// </summary>
         /// <param name="Message"></param>
         /// <returns></returns>
         public static string EncryptString(string Message)
         {
-            string Passphrase = "Patrícia Rocha";
+            var Passphrase = "Patrícia Rocha";
             byte[] Results;
-            System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
+            var UTF8 = new UTF8Encoding();
 
             // Step 1. We hash the passphrase using MD5
             // We use the MD5 hash generator as the result is a 128 bit byte array
             // which is a valid length for the TripleDES encoder we use below
 
-            MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
-            byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(Passphrase));
+            var HashProvider = new MD5CryptoServiceProvider();
+            var TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(Passphrase));
 
             // Step 2. Create a new TripleDESCryptoServiceProvider object
-            TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
+            var TDESAlgorithm = new TripleDESCryptoServiceProvider();
 
             // Step 3. Setup the encoder
             TDESAlgorithm.Key = TDESKey;
@@ -39,12 +39,12 @@ namespace FinalProject.Classes
             TDESAlgorithm.Padding = PaddingMode.PKCS7;
 
             // Step 4. Convert the input string to a byte[]
-            byte[] DataToEncrypt = UTF8.GetBytes(Message);
+            var DataToEncrypt = UTF8.GetBytes(Message);
 
             // Step 5. Attempt to encrypt the string
             try
             {
-                ICryptoTransform Encryptor = TDESAlgorithm.CreateEncryptor();
+                var Encryptor = TDESAlgorithm.CreateEncryptor();
                 Results = Encryptor.TransformFinalBlock(DataToEncrypt, 0, DataToEncrypt.Length);
             }
             finally
@@ -56,7 +56,7 @@ namespace FinalProject.Classes
 
             // Step 6. Return the encrypted string as a base64 encoded string
 
-            string enc = Convert.ToBase64String(Results);
+            var enc = Convert.ToBase64String(Results);
             enc = enc.Replace("+", "KKK");
             enc = enc.Replace("/", "JJJ");
             enc = enc.Replace("\\", "III");
@@ -64,25 +64,25 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
-        /// Função de Desencritação de Dados MD5
+        ///     Função de Desencritação de Dados MD5
         /// </summary>
         /// <param name="Message"></param>
         /// <returns></returns>
         public static string DecryptString(string Message)
         {
-            string Passphrase = "Patrícia Rocha";
+            var Passphrase = "Patrícia Rocha";
             byte[] Results;
-            System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();
+            var UTF8 = new UTF8Encoding();
 
             // Step 1. We hash the passphrase using MD5
             // We use the MD5 hash generator as the result is a 128 bit byte array
             // which is a valid length for the TripleDES encoder we use below
 
-            MD5CryptoServiceProvider HashProvider = new MD5CryptoServiceProvider();
-            byte[] TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(Passphrase));
+            var HashProvider = new MD5CryptoServiceProvider();
+            var TDESKey = HashProvider.ComputeHash(UTF8.GetBytes(Passphrase));
 
             // Step 2. Create a new TripleDESCryptoServiceProvider object
-            TripleDESCryptoServiceProvider TDESAlgorithm = new TripleDESCryptoServiceProvider();
+            var TDESAlgorithm = new TripleDESCryptoServiceProvider();
 
             // Step 3. Setup the decoder
             TDESAlgorithm.Key = TDESKey;
@@ -95,12 +95,12 @@ namespace FinalProject.Classes
             Message = Message.Replace("JJJ", "/");
             Message = Message.Replace("III", "\\");
 
-            byte[] DataToDecrypt = Convert.FromBase64String(Message);
+            var DataToDecrypt = Convert.FromBase64String(Message);
 
             // Step 5. Attempt to decrypt the string
             try
             {
-                ICryptoTransform Decryptor = TDESAlgorithm.CreateDecryptor();
+                var Decryptor = TDESAlgorithm.CreateDecryptor();
                 Results = Decryptor.TransformFinalBlock(DataToDecrypt, 0, DataToDecrypt.Length);
             }
             finally
@@ -115,29 +115,29 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
-        /// Função para validação de e-mail
+        ///     Função para validação de e-mail
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
         public static bool IsValidEmail(string email)
         {
-            string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            var emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
             return Regex.IsMatch(email, emailPattern);
         }
 
         /// <summary>
-        /// Função para validação de username
+        ///     Função para validação de username
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
         public static bool IsValidUsername(string username)
         {
-            string usernamePattern = @"^[a-zA-Z0-9_-]{3,30}$";
+            var usernamePattern = @"^[a-zA-Z0-9_-]{3,30}$";
             return Regex.IsMatch(username, usernamePattern);
         }
 
         /// <summary>
-        /// Função para avaliar se é data
+        ///     Função para avaliar se é data
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -148,32 +148,32 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
-        /// Função para avaliar se é decimal
+        ///     Função para avaliar se é decimal
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         public static bool IsValidDecimal(string value)
         {
-            bool isValidDecimal = value.All(c => char.IsDigit(c) || c == '.' || c == ',');
+            var isValidDecimal = value.All(c => char.IsDigit(c) || c == '.' || c == ',');
 
             return isValidDecimal;
         }
 
         /// <summary>
-        /// Função para avaliação da força da password
+        ///     Função para avaliação da força da password
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
         public static (bool IsStrong, List<string> Failures) IsPasswordStrong(string password)
         {
-            Regex maiusculas = new Regex("[A-Z]");
-            Regex minusculas = new Regex("[a-z]");
-            Regex numeros = new Regex("[0-9]");
-            Regex especiais = new Regex("[^A-Za-z0-9]");
-            Regex plica = new Regex("'");
+            var maiusculas = new Regex("[A-Z]");
+            var minusculas = new Regex("[a-z]");
+            var numeros = new Regex("[0-9]");
+            var especiais = new Regex("[^A-Za-z0-9]");
+            var plica = new Regex("'");
 
-            List<string> failures = new List<string>();
-            bool strong = true;
+            var failures = new List<string>();
+            var strong = true;
 
             if (password.Length < 6)
             {
@@ -210,7 +210,7 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
-        /// Função para alterar a password
+        ///     Função para alterar a password
         /// </summary>
         /// <param name="User"></param>
         /// <param name="OldPass"></param>
@@ -218,16 +218,17 @@ namespace FinalProject.Classes
         /// <returns></returns>
         public static int ChangePassword(string Email, string OldPass, string NewPass)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+            var myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"]
+                .ConnectionString); //Definir a conexão à base de dados
 
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            var myCommand = new SqlCommand(); //Novo commando SQL
             myCommand.Parameters.AddWithValue("@Email", Email);
             myCommand.Parameters.AddWithValue("@PWAtual", EncryptString(OldPass));
             myCommand.Parameters.AddWithValue("@PWNova", EncryptString(NewPass));
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             //Variável de Output para SP verificar se o utilizador e pw estão corretos
-            SqlParameter PasswordChanged = new SqlParameter();
+            var PasswordChanged = new SqlParameter();
             PasswordChanged.ParameterName = "@PasswordChanged";
             PasswordChanged.Direction = ParameterDirection.Output;
             PasswordChanged.SqlDbType = SqlDbType.Int;
@@ -235,12 +236,14 @@ namespace FinalProject.Classes
             myCommand.Parameters.Add(PasswordChanged);
 
             myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
-            myCommand.CommandText = "ChangePassword"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+            myCommand.CommandText =
+                "ChangePassword"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
 
-            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
+            myCommand.Connection =
+                myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
             myCon.Open(); //Abrir a conexão
             myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
-            int AnswPasswordChanged = Convert.ToInt32(myCommand.Parameters["@PasswordChanged"].Value);
+            var AnswPasswordChanged = Convert.ToInt32(myCommand.Parameters["@PasswordChanged"].Value);
 
             myCon.Close(); //Fechar a conexão
 
@@ -248,27 +251,28 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
-        /// Função de recuperação da password
+        ///     Função de recuperação da password
         /// </summary>
         /// <param name="Email"></param>
         /// <param name="NovaPasse"></param>
         /// <returns></returns>
         public static (int AnswUserExists, int AnswAccountActive) RecoverPassword(string Email, string NovaPasse)
         {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
+            var myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"]
+                .ConnectionString);
 
-            SqlCommand myCommand = new SqlCommand();
+            var myCommand = new SqlCommand();
             myCommand.Parameters.AddWithValue("@Email", Email);
             myCommand.Parameters.AddWithValue("@PwNova", EncryptString(NovaPasse));
 
-            SqlParameter UserExist = new SqlParameter();
+            var UserExist = new SqlParameter();
             UserExist.ParameterName = "@UserExist";
             UserExist.Direction = ParameterDirection.Output;
             UserExist.SqlDbType = SqlDbType.Int;
 
             myCommand.Parameters.Add(UserExist);
 
-            SqlParameter AccountActive = new SqlParameter();
+            var AccountActive = new SqlParameter();
             AccountActive.ParameterName = "@AccountActive";
             AccountActive.Direction = ParameterDirection.Output;
             AccountActive.SqlDbType = SqlDbType.Int;
@@ -281,8 +285,8 @@ namespace FinalProject.Classes
             myCommand.Connection = myCon;
             myCon.Open();
             myCommand.ExecuteNonQuery();
-            int AnswUserExist = Convert.ToInt32(myCommand.Parameters["@UserExist"].Value);
-            int AnswAccountActive = Convert.ToInt32(myCommand.Parameters["@AccountActive"].Value);
+            var AnswUserExist = Convert.ToInt32(myCommand.Parameters["@UserExist"].Value);
+            var AnswAccountActive = Convert.ToInt32(myCommand.Parameters["@AccountActive"].Value);
 
             myCon.Close();
 
@@ -290,19 +294,17 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
-        /// Função para comparação de datas
+        ///     Função para comparação de datas
         /// </summary>
         /// <param name="date1"></param>
         /// <param name="date2"></param>
         /// <returns></returns>
         public static bool DataComparison(DateTime date1)
         {
-            bool isSup = true;
+            var isSup = true;
             if (date1 > DateTime.Now)
                 return isSup = false;
-            else return isSup = true;
+            return isSup = true;
         }
-
-
     }
 }

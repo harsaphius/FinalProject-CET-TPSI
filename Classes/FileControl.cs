@@ -17,64 +17,64 @@ namespace FinalProject.Classes
         public byte[] FileBytes { get; set; }
 
         /// <summary>
-        /// Função para processar o upload dos anexos
+        ///     Função para processar o upload dos anexos
         /// </summary>
         /// <param name="fileUpload"></param>
         /// <returns></returns>
         public static List<FileControl> ProcessUploadedFiles(FileUpload fileUpload)
         {
-            List<FileControl> uploadedFiles = new List<FileControl>();
+            var uploadedFiles = new List<FileControl>();
 
             if (fileUpload.HasFile)
-            {
-                foreach (HttpPostedFile uploadedFile in fileUpload.PostedFiles)
+                foreach (var uploadedFile in fileUpload.PostedFiles)
                 {
-                    FileControl fileData = new FileControl
+                    var fileData = new FileControl
                     {
                         FileName = Path.GetFileName(uploadedFile.FileName),
                         ContentType = uploadedFile.ContentType
                     };
 
-                    using (BinaryReader reader = new BinaryReader(uploadedFile.InputStream))
+                    using (var reader = new BinaryReader(uploadedFile.InputStream))
                     {
                         fileData.FileBytes = reader.ReadBytes((int)uploadedFile.InputStream.Length);
                     }
 
                     uploadedFiles.Add(fileData);
                 }
-            }
 
             return uploadedFiles;
         }
 
 
         /// <summary>
-        /// Função para carregar os ficheiros do utilizador no FileControl
+        ///     Função para carregar os ficheiros do utilizador no FileControl
         /// </summary>
         /// <param name="UserID"></param>
         /// <returns></returns>
         public static List<FileControl> GetFilesForUser(int UserID)
         {
-            List<FileControl> files = new List<FileControl>();
+            var files = new List<FileControl>();
 
-            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString))
+            using (var connection = new SqlConnection(ConfigurationManager
+                       .ConnectionStrings["projetoFinalConnectionString"].ConnectionString))
             {
                 connection.Open();
 
-                string query = $"SELECT codAnexo, nomeFicheiro, extensaoFicheiro, ficheiro FROM anexo WHERE codUtilizador = {UserID}";
-                SqlCommand command = new SqlCommand(query, connection);
+                var query =
+                    $"SELECT codAnexo, nomeFicheiro, extensaoFicheiro, ficheiro FROM anexo WHERE codUtilizador = {UserID}";
+                var command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@UserId", UserID);
 
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        FileControl file = new FileControl
+                        var file = new FileControl
                         {
                             FileID = Convert.ToInt32(reader["codAnexo"]),
                             FileName = reader["nomeFicheiro"].ToString(),
                             ContentType = reader["extensaoFicheiro"].ToString(),
-                            FileBytes = (byte[])(reader["ficheiro"])
+                            FileBytes = (byte[])reader["ficheiro"]
                         };
 
                         files.Add(file);
@@ -86,7 +86,7 @@ namespace FinalProject.Classes
         }
 
         /// <summary>
-        /// Função para processar o download do ficheiro clicado
+        ///     Função para processar o download do ficheiro clicado
         /// </summary>
         /// <param name="context"></param>
         /// <param name="fileId"></param>
@@ -94,13 +94,13 @@ namespace FinalProject.Classes
         {
             if (!string.IsNullOrEmpty(context.Session["CodUtilizador"]?.ToString()))
             {
-                int codUtilizador = Convert.ToInt32(context.Session["CodUtilizador"]);
+                var codUtilizador = Convert.ToInt32(context.Session["CodUtilizador"]);
 
-                List<FileControl> files = FileControl.GetFilesForUser(codUtilizador);
+                var files = GetFilesForUser(codUtilizador);
 
                 if (files != null && files.Count > 0)
                 {
-                    FileControl file = files.FirstOrDefault(f => f.FileID == fileId);
+                    var file = files.FirstOrDefault(f => f.FileID == fileId);
                     if (file != null && file.FileBytes != null)
                     {
                         context.Response.ContentType = file.ContentType;
@@ -108,14 +108,13 @@ namespace FinalProject.Classes
                         context.Response.BinaryWrite(file.FileBytes);
                         context.Response.Flush();
                         context.Response.End();
-                        return;
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Função para verificar se o ficheiro é uma imagem
+        ///     Função para verificar se o ficheiro é uma imagem
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
@@ -123,19 +122,20 @@ namespace FinalProject.Classes
         {
             if (file != null)
             {
-                string fileExtension = Path.GetExtension(file.FileName);
+                var fileExtension = Path.GetExtension(file.FileName);
 
                 if (!string.IsNullOrEmpty(fileExtension))
                 {
-                    string extension = fileExtension.ToLower();
+                    var extension = fileExtension.ToLower();
                     return extension == ".jpg" || extension == ".jpeg" || extension == ".png";
                 }
             }
+
             return false;
         }
 
         /// <summary>
-        /// Função para processar o ficheiro da fotografia
+        ///     Função para processar o ficheiro da fotografia
         /// </summary>
         /// <param name="photoFile"></param>
         /// <returns></returns>
@@ -144,7 +144,7 @@ namespace FinalProject.Classes
             if (photoFile != null && IsImageFile(photoFile))
             {
                 byte[] fileBytes;
-                using (BinaryReader reader = new BinaryReader(photoFile.InputStream))
+                using (var reader = new BinaryReader(photoFile.InputStream))
                 {
                     fileBytes = reader.ReadBytes(photoFile.ContentLength);
                 }
@@ -154,6 +154,5 @@ namespace FinalProject.Classes
 
             return null;
         }
-
     }
 }
