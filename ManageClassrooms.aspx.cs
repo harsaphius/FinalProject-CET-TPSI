@@ -1,5 +1,6 @@
 ﻿using FinalProject.Classes;
 using System;
+using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -72,6 +73,9 @@ namespace FinalProject
 
                 if (!IsPostBack)
                 {
+                    ddlTipoSalaFilters.Items.Insert(0, new ListItem("Todas", "0"));
+                    ddlLocalSalaFilters.Items.Insert(0, new ListItem("Todas", "0"));
+                    ddlOrderFilters.Items.Insert(0, new ListItem("None", "0"));
                     BindDataClassrooms();
                 }
 
@@ -336,8 +340,15 @@ namespace FinalProject
         //Função de Databinding
         private void BindDataClassrooms()
         {
+            List<string> conditions = new List<string>();
+            string order = "";
+            conditions.Add(string.IsNullOrEmpty(tbSearchFilters.Text) ? "" : tbSearchFilters.Text);
+            conditions.Add(ddlTipoSalaFilters.SelectedValue == "0" ? "" : ddlTipoSalaFilters.SelectedValue);
+            conditions.Add(ddlLocalSalaFilters.SelectedValue == "0" ? "" : ddlLocalSalaFilters.SelectedValue);
+            order = ddlOrderFilters.SelectedValue == "0" ? null : ddlOrderFilters.SelectedValue;
+
             PagedDataSource pagedData = new PagedDataSource();
-            pagedData.DataSource = Classes.Classroom.LoadClassrooms();
+            pagedData.DataSource = Classes.Classroom.LoadClassrooms(conditions, order);
             pagedData.AllowPaging = true;
             pagedData.PageSize = 8;
             pagedData.CurrentPageIndex = PageNumberClassrooms;
@@ -387,6 +398,31 @@ namespace FinalProject
         {
             lblMessageInsert.Visible = false;
             timerMessageInsert.Enabled = false;
+        }
+
+        /// <summary>
+        /// Função Click do Botão de Aplicar os Filtros
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnApplyFilters_OnClick(object sender, EventArgs e)
+        {
+            BindDataClassrooms();
+        }
+
+        /// <summary>
+        /// Função Click do Botão de Limpar os filtros
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnClearFilters_OnClick(object sender, EventArgs e)
+        {
+            tbSearchFilters.Text = "";
+            ddlTipoSalaFilters.SelectedIndex = 0;
+            ddlLocalSalaFilters.SelectedIndex = 0;
+            ddlOrderFilters.SelectedIndex = 0;
+
+            BindDataClassrooms();
         }
     }
 }

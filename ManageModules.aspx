@@ -37,11 +37,9 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-md-4 col-sm-4 mb-xl-0 mb-0">
-                                <span>
-                                    <br />
-                                </span>
+                                <span>Ordenação:</span>
                                 <div class="input-group mb-0 text-end">
-                                    <asp:DropDownList runat="server" ID="ddlOrder" class="btn bg-gradient-secundary dropdown-toggle">
+                                    <asp:DropDownList runat="server" ID="ddlOrderFilters" class="btn bg-gradient-secundary dropdown-toggle">
                                         <asp:ListItem Value="ASC">A-Z</asp:ListItem>
                                         <asp:ListItem Value="DESC">Z-A</asp:ListItem>
                                     </asp:DropDownList>

@@ -76,7 +76,7 @@ namespace FinalProject
                 if (!IsPostBack)
                 {
                     ddlNrHoras.Items.Insert(0, new ListItem("Todas", "0"));
-                    ddlOrder.Items.Insert(0, new ListItem("None", "0"));
+                    ddlOrderFilters.Items.Insert(0, new ListItem("None", "0"));
                     BindDataModules();
                 }
             }
@@ -468,14 +468,7 @@ namespace FinalProject
             }
 
 
-            if (ddlOrder.SelectedValue == "0")
-            {
-                order = null;
-            }
-            else
-            {
-                order = ddlOrder.SelectedValue;
-            }
+            order = ddlOrderFilters.SelectedValue == "0" ? null : ddlOrderFilters.SelectedValue;
 
             PagedDataSource pagedData = new PagedDataSource();
             pagedData.DataSource = Classes.Module.LoadModules(conditions, order);
@@ -539,7 +532,7 @@ namespace FinalProject
         {
             tbSearchFilters.Text = "";
             ddlNrHoras.SelectedIndex = 0;
-            ddlOrder.SelectedIndex = 0;
+            ddlOrderFilters.SelectedIndex = 0;
 
             BindDataModules();
         }

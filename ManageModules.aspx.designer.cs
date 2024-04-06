@@ -69,13 +69,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.DropDownList ddlNrHoras;
 
         /// <summary>
-        /// ddlOrder control.
+        /// ddlOrderFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlOrder;
+        protected global::System.Web.UI.WebControls.DropDownList ddlOrderFilters;
 
         /// <summary>
         /// btnApplyFilters control.

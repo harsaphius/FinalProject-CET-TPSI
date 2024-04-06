@@ -11,5 +11,6 @@ namespace FinalProject.Classes
         public int AvailabilityID { get; set; }
 
 
+
     }
 }

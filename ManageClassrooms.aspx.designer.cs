@@ -51,22 +51,22 @@ namespace FinalProject
         protected global::System.Web.UI.UpdatePanel updatePanelFilters;
 
         /// <summary>
-        /// lbtSearch control.
+        /// lbtSearchFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtSearch;
+        protected global::System.Web.UI.WebControls.LinkButton lbtSearchFilters;
 
         /// <summary>
-        /// tbSearch control.
+        /// tbSearchFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbSearch;
+        protected global::System.Web.UI.WebControls.TextBox tbSearchFilters;
 
         /// <summary>
         /// ddlTipoSalaFilters control.
@@ -85,6 +85,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlLocalSalaFilters;
+
+        /// <summary>
+        /// ddlOrderFilters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlOrderFilters;
 
         /// <summary>
         /// btnApplyFilters control.

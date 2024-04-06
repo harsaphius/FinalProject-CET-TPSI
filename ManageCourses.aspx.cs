@@ -73,6 +73,10 @@ namespace FinalProject
 
                 if (!IsPostBack)
                 {
+                    ddlAreaCursoFilters.Items.Insert(0, new ListItem("Todas", "0"));
+                    ddlTipoCursoFilters.Items.Insert(0, new ListItem("Todas", "0"));
+                    ddlOrderFilters.Items.Insert(0, new ListItem("None", "0"));
+
                     //Inicializar ViewStates
                     if (ViewState["SelectedItemsEdit"] == null)
                         ViewState["SelectedItemsEdit"] = new List<int>();
@@ -102,6 +106,7 @@ namespace FinalProject
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
                     string modulesViewState = serializer.Serialize(Classes.Module.LoadModules());
                     ViewState["modulesViewState"] = modulesViewState;
+
 
                 }
 
@@ -202,7 +207,7 @@ namespace FinalProject
 
                 //Atualização da Label com os Módulos do Curso Seleccionado
                 List<string> itemsNames = (List<string>)ViewState["SelectedItemsNamesEdit"];
-                if(itemsNames != null)
+                if (itemsNames != null)
                     lblOrderOfModulesEditSelected.Text = string.Join(" | ", itemsNames);
 
                 TextBox tbCourseNameEditCourse =
@@ -390,10 +395,18 @@ namespace FinalProject
         /// <summary>
         /// Função para DataBind dos Cursos
         /// </summary>
-        private void BindDataCourses(List<string> conditions = null)
+        private void BindDataCourses()
         {
+            List<string> conditions = new List<string>();
+            string order = "";
+            conditions.Add(string.IsNullOrEmpty(tbSearchFilters.Text) ? "" : tbSearchFilters.Text);
+            conditions.Add(ddlAreaCursoFilters.SelectedValue == "0" ? "" : ddlAreaCursoFilters.SelectedValue);
+            conditions.Add(ddlTipoCursoFilters.SelectedValue == "0" ? "" : ddlTipoCursoFilters.SelectedValue);
+            order = ddlOrderFilters.SelectedValue == "0" ? null : ddlOrderFilters.SelectedValue;
+
+
             PagedDataSource pagedData = new PagedDataSource();
-            pagedData.DataSource = Classes.Course.LoadCourses(conditions);
+            pagedData.DataSource = Classes.Course.LoadCourses(conditions, order);
             pagedData.AllowPaging = true;
             pagedData.PageSize = 2;
             pagedData.CurrentPageIndex = PageNumberCourses;
@@ -883,14 +896,7 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnApplyFilters_OnClick(object sender, EventArgs e)
         {
-            List<string> conditions = new List<string>();
-            conditions.Add(tbSearchFilters.Text);
-            conditions.Add(ddlAreaCursoFilters.SelectedValue);
-            conditions.Add(ddlTipoCursoFilters.SelectedValue);
-            conditions.Add(tbDataInicioFilters.Text);
-            conditions.Add(tbDataFimFilters.Text);
-
-            BindDataCourses(conditions);
+            BindDataCourses();
         }
 
         /// <summary>
@@ -905,6 +911,7 @@ namespace FinalProject
             ddlTipoCursoFilters.SelectedIndex = 0;
             tbDataInicioFilters.Text = "";
             tbDataFimFilters.Text = "";
+            ddlOrderFilters.SelectedIndex = 0;
 
             BindDataCourses();
 

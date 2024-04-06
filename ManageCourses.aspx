@@ -26,24 +26,24 @@
                                 <span>Designação:</span>
                                 <div class="input-group mb-4">
                                     <asp:LinkButton runat="server" ID="lbtnSearchFilters" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
-                                    <asp:TextBox runat="server" ID="tbSearchFilters" CssClass="form-control" placeholder="Type here..."></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="tbSearchFilters" CssClass="form-control" placeholder="Type here..." AutoPostBack="False"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                                 <span>Área:</span>
                                 <div class="dropdown">
-                                    <asp:DropDownList ID="ddlAreaCursoFilters" runat="server" class="btn bg-gradient-secundary dropdown-toggle" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlAreaCursoFilters" AutoPostBack="False" runat="server" class="btn bg-gradient-secundary dropdown-toggle" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea" AppendDataBoundItems="True"></asp:DropDownList>
                                     <asp:SqlDataSource ID="SQLDSArea" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [area]"></asp:SqlDataSource>
                                 </div>
                             </div>
                             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                                 <span>Tipo:</span>
                                 <div class="dropdown">
-                                    <asp:DropDownList ID="ddlTipoCursoFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlTipoCursoFilters" AutoPostBack="False" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso" AppendDataBoundItems="True"></asp:DropDownList>
                                     <asp:SqlDataSource ID="SQLDSTipo" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
                                 </div>
                             </div>
-                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                            <div class="col-xl-3 col-sm-3 mb-xl-0 mb-4">
                                 <span>Data de Início: </span>
                                 <div class="input-group mb-4">
                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
@@ -51,14 +51,25 @@
                                 </div>
                             </div>
 
-                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                            <div class="col-xl-3 col-sm-3 mb-xl-0 mb-4">
                                 <span>Data de Fim: </span>
                                 <div class="input-group mb-4">
                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                     <asp:TextBox runat="server" ID="tbDataFimFilters" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
                                 </div>
                             </div>
-                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-4 mb-xl-0 mb-0">
+                                <span>
+                                    Ordenação:
+                                </span>
+                                <div class="input-group mb-0 text-end">
+                                    <asp:DropDownList runat="server" ID="ddlOrderFilters" class="btn bg-gradient-secundary dropdown-toggle">
+                                        <asp:ListItem Value="ASC">A-Z</asp:ListItem>
+                                        <asp:ListItem Value="DESC">Z-A</asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-sm-4 mb-xl-0 mb-4">
                                 <br />
                                 <div class="input-group mb-4">
                                     <asp:Button runat="server" ID="btnApplyFilters" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" AutoPostBack="True" OnClick="btnApplyFilters_OnClick" />

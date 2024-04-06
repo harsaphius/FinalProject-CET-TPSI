@@ -46,7 +46,7 @@ namespace FinalProject.Classes
             {
                 myCommand.Parameters.AddWithValue("@Internship", Course.DuracaoEstagio);
             }
-            
+
 
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
@@ -102,12 +102,11 @@ namespace FinalProject.Classes
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public static List<Course> LoadCourses(List<string> conditions = null)
+        public static List<Course> LoadCourses(List<string> conditions = null, string order = null)
         {
             List<Course> Courses = new List<Course>();
 
             string query = "SELECT * FROM curso WHERE isActive=1";
-
 
             if (conditions != null)
             {
@@ -118,67 +117,24 @@ namespace FinalProject.Classes
                         switch (i)
                         {
                             case 0:
-                                query += " AND nomeCurso LIKE '%" + conditions[i] + "%'";
+                                query += " AND nomeCurso LIKE '%" + conditions[i] + "%' OR codRef LIKE '%" +
+                                         conditions[i] + "%' OR codQNQ LIKE '%" + conditions[i] + "%'"; ;
                                 break;
                             case 1:
-                                query += " AND codRef =" + conditions[i];
+                                query += (conditions[i] == "0") ? "" : " AND codArea =" + conditions[i];
+                                break;
+                            case 2:
+                                query += (conditions[i] == "0") ? "" : " AND codTipoCurso =" + conditions[i];
                                 break;
                         }
                     }
                 }
             }
 
-            //if (order != null)
-            //{
-            //    if (order.Contains("ASC"))
-            //    {
-            //        query += " ORDER BY nomeModulos ASC";
-            //    }
-            //    else if (order.Contains("DESC"))
-            //    {
-            //        query += " ORDER BY nomeModulos DESC";
-            //    }
-            //}
-
-            //if (conditions != null)
-            //{
-            //    bool isFirstCondition = true;
-
-            //    for (int i = 0; i < conditions.Count; i++)
-            //    {
-            //        if (!string.IsNullOrEmpty(conditions[i]))
-            //        {
-            //            if (isFirstCondition)
-            //            {
-            //                query += " WHERE ";
-            //                isFirstCondition = false;
-            //            }
-            //            else
-            //            {
-            //                query += " AND ";
-            //            }
-
-            //            switch (i)
-            //            {
-            //                case 0:
-            //                    query += "nomeCurso LIKE '%" + conditions[i] + "%'";
-            //                    break;
-            //                case 1:
-            //                    query += "codArea =" + conditions[i];
-            //                    break;
-            //                case 2:
-            //                    query += "codTipoCurso =" + conditions[i];
-            //                    break;
-            //                case 3:
-            //                    query += "auditRow = '" + conditions[i] + "'";
-            //                    break;
-            //                default:
-            //                    // Handle additional conditions if needed
-            //                    break;
-            //            }
-            //        }
-            //    }
-            
+            if (order != null)
+            {
+                query += order.Contains("ASC") ? " ORDER BY nomeCurso ASC" : order.Contains("DESC") ? " ORDER BY nomeCurso DESC" : "";
+            }
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -312,6 +268,7 @@ namespace FinalProject.Classes
 
             myCon.Close();
 
+            //If update is allowed
             if (AnswCourseUpdated == 1)
             {
                 //Deleting all modules already on the course
@@ -321,13 +278,11 @@ namespace FinalProject.Classes
                 myCommand2.ExecuteNonQuery();
                 myCon.Close();
 
-
+                //Update table CourseModules
                 SqlCommand myCommand3 = new SqlCommand();
                 myCommand3.CommandType = CommandType.StoredProcedure;
                 myCommand3.CommandText = "UpdateCourseModules";
-
                 myCommand3.Connection = myCon;
-
                 myCon.Open();
 
                 foreach (int moduleID in modules)

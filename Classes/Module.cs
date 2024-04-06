@@ -102,14 +102,7 @@ namespace FinalProject.Classes
 
             if (order != null)
             {
-                if (order.Contains("ASC"))
-                {
-                    query += " ORDER BY nomeModulos ASC";
-                }
-                else if (order.Contains("DESC"))
-                {
-                    query += " ORDER BY nomeModulos DESC";
-                }
+                query += order.Contains("ASC") ? " ORDER BY nomeModulos ASC" : order.Contains("DESC") ? " ORDER BY nomeModulos DESC" : "";
             }
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);

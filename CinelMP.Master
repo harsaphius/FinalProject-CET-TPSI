@@ -360,6 +360,7 @@
         <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
             <!-- Navbar -->
             <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+                <!-- SiteMap -->
                 <div class="container-fluid py-1 px-3">
                     <nav aria-label="breadcrumb">
                         <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="true" />
@@ -392,13 +393,13 @@
                             </li>
 
                             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-                                <a href="javascript:void(0);" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                                <asp:LinkButton href="javascript:void(0);" class="nav-link text-body p-0" CausesValidation="False" id="iconNavbarSidenav">
                                     <div class="sidenav-toggler-inner">
                                         <i class="sidenav-toggler-line"></i>
                                         <i class="sidenav-toggler-line"></i>
                                         <i class="sidenav-toggler-line"></i>
                                     </div>
-                                </a>
+                                </asp:LinkButton>
                             </li>
                             <li class="nav-item px-3 d-flex align-items-center">
                                 <a href="javascript:;" class="nav-link text-body p-0">

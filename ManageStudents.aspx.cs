@@ -590,7 +590,7 @@ namespace FinalProject
 
         protected void btnInsertStudent_OnClick(object sender, EventArgs e)
         {
-            
+
         }
     }
 }

@@ -21,41 +21,38 @@ namespace FinalProject.Classes
         /// Função para carregar as salas
         /// </summary>
         /// <returns></returns>
-        public static List<Classroom> LoadClassrooms(List<string> conditions = null)
+        public static List<Classroom> LoadClassrooms(List<string> conditions = null, string order = null)
         {
             List<Classroom> Classrooms = new List<Classroom>();
 
             string query = "SELECT * FROM sala AS S INNER JOIN tipoSala AS TS ON S.codTipoSala=TS.codTipoSala INNER JOIN localSala AS LS ON S.codLocalSala=LS.codLocalSala WHERE isActive = 1";
 
-            //// Decisões para colocar ou não os filtros dentro da string query
-            //if (!string.IsNullOrEmpty(search_string))
-            //{
-            //    conditions.Add($"moeda.nome LIKE '%{search_string}%'");
-            //}
-            //if (grade != 0)
-            //{
-            //    conditions.Add($"moeda_estado.cod_estado = {grade}");
-            //}
-            //if (coin_type != 0)
-            //{
-            //    conditions.Add($"moeda.cod_tipo = {coin_type}");
-            //}
-            //if (status == 0)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //else if (status == 1)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //if (conditions.Count > 0)
-            //{
-            //    query += " WHERE " + string.Join(" AND ", conditions);
-            //}
-            //if (!string.IsNullOrEmpty(sort_order))
-            //{
-            //    query += " ORDER BY moeda_estado.valor_atual " + sort_order;
-            //}
+            if (conditions != null)
+            {
+                for (int i = 0; i < conditions.Count; i++)
+                {
+                    if (!string.IsNullOrEmpty(conditions[i]))
+                    {
+                        switch (i)
+                        {
+                            case 0:
+                                query += " AND S.nrSala LIKE '%" + conditions[i] + "%'"; ;
+                                break;
+                            case 1:
+                                query += (conditions[i] == "0") ? "" : " AND S.codTipoSala =" + conditions[i];
+                                break;
+                            case 2:
+                                query += (conditions[i] == "0") ? "" : " AND S.codLocalSala =" + conditions[i];
+                                break;
+                        }
+                    }
+                }
+            }
+
+            if (order != null)
+            {
+                query += order.Contains("ASC") ? " ORDER BY S.nrSala ASC" : order.Contains("DESC") ? " ORDER BY S.nrSala DESC" : "";
+            }
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);

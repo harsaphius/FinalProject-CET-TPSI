@@ -6,7 +6,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
 
 namespace FinalProject.Classes
 {

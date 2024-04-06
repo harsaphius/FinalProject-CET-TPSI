@@ -16,36 +16,45 @@
                     <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
                 </a>
             </div>
-            <div id="filters" class="col-md-12 col-md-6 hidden" style="padding-left: 30px;">
+            <div id="filters" class="col-xl-12 col-lg-6 col-md-6 col-sm-6 hidden" style="padding-left: 30px;">
                 <asp:UpdatePanel ID="updatePanelFilters" runat="server">
                     <ContentTemplate>
                         <div class="row">
-                            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-4">
                                 <span>Designação:</span>
-                                <div class="input-group mb-4">
-                                    <asp:LinkButton runat="server" ID="lbtSearch" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
-                                    <asp:TextBox runat="server" ID="tbSearch" CssClass="form-control" placeholder="Type here..." AutoPostBack="True"></asp:TextBox>
+                                <div class="input-group">
+                                    <asp:LinkButton runat="server" ID="lbtSearchFilters" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
+                                    <asp:TextBox runat="server" ID="tbSearchFilters" CssClass="form-control" CausesValidation="False" placeholder="Type here..." AutoPostBack="False"></asp:TextBox>
                                 </div>
                             </div>
-                            <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+                            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-4">
                                 <span>Tipo de Sala: </span>
-                                <div class="input-group mb-4">
-                                    <asp:DropDownList ID="ddlTipoSalaFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipoSala" DataTextField="tipoSala" DataValueField="codTipoSala"></asp:DropDownList>
+                                <div class="input-group">
+                                    <asp:DropDownList ID="ddlTipoSalaFilters" class="dropdown-toggle btn bg-gradient-secundary" AutoPostBack="False" runat="server" DataSourceID="SQLDSTipoSala" DataTextField="tipoSala" DataValueField="codTipoSala" AppendDataBoundItems="True"></asp:DropDownList>
                                 </div>
                             </div>
 
-                            <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+                            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-4">
                                 <span>Local da Sala: </span>
-                                <div class="input-group mb-4">
-                                    <asp:DropDownList ID="ddlLocalSalaFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSLocalSala" DataTextField="localSala" DataValueField="codLocalSala"></asp:DropDownList>
+                                <div class="input-group">
+                                    <asp:DropDownList ID="ddlLocalSalaFilters" class="dropdown-toggle btn bg-gradient-secundary" AutoPostBack="False" runat="server" DataSourceID="SQLDSLocalSala" DataTextField="localSala" DataValueField="codLocalSala" AppendDataBoundItems="True"></asp:DropDownList>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                            <div class="col-xl-2 col-lg-4 col-md-4 col-sm-4">
+                                <span>Ordenação:</span>
+                                <div class="input-group text-end">
+                                    <asp:DropDownList runat="server" ID="ddlOrderFilters" class="btn bg-gradient-secundary dropdown-toggle">
+                                        <asp:ListItem Value="ASC">A-Z</asp:ListItem>
+                                        <asp:ListItem Value="DESC">Z-A</asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-4">
                                 <br />
-                                <div class="input-group mb-4">
-                                    <asp:Button runat="server" ID="btnApplyFilters" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" />
+                                <div class="input-group">
+                                    <asp:Button runat="server" ID="btnApplyFilters" CausesValidation="False" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" AutoPostBack="True" OnClick="btnApplyFilters_OnClick" />
                                     <span>&nbsp; &nbsp;</span>
-                                    <asp:Button runat="server" ID="btnClearFilters" CssClass="btn btn-outline-primary mb-0" Text="Limpar" />
+                                    <asp:Button runat="server" ID="btnClearFilters" CausesValidation="False" CssClass="btn btn-outline-primary mb-0" Text="Limpar" OnClick="btnClearFilters_OnClick" />
                                 </div>
                             </div>
                         </div>
