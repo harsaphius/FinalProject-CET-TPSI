@@ -1,9 +1,7 @@
 ﻿using FinalProject.Classes;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Web;
-using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -80,6 +78,8 @@ namespace FinalProject
 
                         (int Codutilizador, string Username) = Classes.User.DetermineUtilizador(user);
 
+                        Session["Username"] = Username;
+
                         if (profileuser != null)
                         {
                             //Carregar informação para as labels da página inicial do profile
@@ -120,6 +120,10 @@ namespace FinalProject
                             {
                                 lblSubmittedFiles.Text = "Ainda não foram submetidos ficheiros!";
                             }
+                            else
+                            {
+                                LoadSubmittedFiles();
+                            }
                         }
                     }
                 }
@@ -131,7 +135,7 @@ namespace FinalProject
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void btnSubmit_Click(object sender, EventArgs e)
+        protected void btnSubmit_OnClick(object sender, EventArgs e)
         {
             User user = new User();
             List<FileControl> uploadedFiles = FileControl.ProcessUploadedFiles(fuAnexo);
@@ -170,8 +174,28 @@ namespace FinalProject
 
             int CompleteUser = Classes.User.CompleteRegisterUser(user, uploadedFiles);
 
-            if (CompleteUser == 0) lbl_message.Text = "Perfil atualizado com sucesso.";
-            else lbl_message.Text = "Erro na atualização de perfil.";
+            if (CompleteUser == 0)
+            {
+                lblMessage.Text = "Perfil atualizado com sucesso.";
+
+                User profileuser = Classes.User.LoadUser(Session["Username"].ToString());
+
+                if (profileuser != null)
+                {
+                    profileSinapse.Visible = true;
+                    registration.Visible = false;
+
+                    //Carregar informação para as labels da página inicial do profile
+                    profilename.Text = profileuser.Username;
+                    profileemail.Text = profileuser.Email;
+                    infoname.Text = profileuser.Nome;
+                    infocell.Text = profileuser.Phone;
+                    infoemail.Text = profileuser.Email;
+                    lbLifeMotto.Text = profileuser.LifeMotto;
+                    foto.ImageUrl = profileuser.Foto;
+                }
+            }
+            else lblMessage.Text = "Erro na atualização de perfil.";
         }
 
         /// <summary>
@@ -187,28 +211,14 @@ namespace FinalProject
             {
                 foreach (var failure in failures)
                 {
-                    string script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
-
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
-
-                    lbl_message.Text += failure + "\n";
+                    lblMessage.Visible = true;
+                    lblMessage.Text += failure + "\n";
                 }
             }
             else if (tbPwNew.Text != tbPwNewRep.Text)
             {
-                string script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
-
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
-
-                lbl_message.Text = "A palavra-passe e a sua repetição não correspondem.";
+                lblMessage.Visible = true;
+                lblMessage.Text = "A palavra-passe e a sua repetição não correspondem.";
             }
             else
             {
@@ -216,15 +226,8 @@ namespace FinalProject
 
                 if (ChangePass == 1)
                 {
-                    string script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
-
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
-
-                    lbl_message.Text = "Palavra-passe alterada com sucesso!";
+                    lblMessage.Visible = true;
+                    lblMessage.Text = "Palavra-passe alterada com sucesso!";
 
                     Session.Clear();
                     Session.Abandon();
@@ -232,15 +235,8 @@ namespace FinalProject
                 }
                 else
                 {
-                    string script = @"
-                            document.getElementById('alert').classList.remove('hidden');
-                            document.getElementById('alert').classList.add('alert');
-                            document.getElementById('alert').classList.add('alert-primary');
-                            ";
-
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
-
-                    lbl_message.Text = "Palavra-passe atual incorreta!";
+                    lblMessage.Visible = true;
+                    lblMessage.Text = "Palavra-passe atual incorreta!";
                 }
             }
         }
@@ -282,46 +278,59 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void fileRepeater_OnItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            if (e.CommandName == "Download")
-            {
-                int fileId;
-                if (int.TryParse(e.CommandArgument.ToString(), out fileId))
-                {
-                    Classes.FileControl.ProcessRequest(HttpContext.Current, fileId);
-                }
-            }
+            //if (e.CommandName == "Download")
+            //{
+            //    int fileId;
+            //    if (int.TryParse(e.CommandArgument.ToString(), out fileId))
+            //    {
+            //        Classes.FileControl.ProcessRequest(HttpContext.Current, fileId);
+            //    }
+            //}
+        }
+
+        protected void btnBackMainPage_OnClick(object sender, EventArgs e)
+        {
+            registerCompletionpage1.Visible = false;
+            profileSinapse.Visible = true;
+        }
+
+        protected void btnNextPage_OnClick(object sender, EventArgs e)
+        {
+            registerCompletionpage1.Visible = false;
+            registerCompletionpage2.Visible = true;
+        }
+
+        protected void btnBackToPage1_OnClick(object sender, EventArgs e)
+        {
+            registerCompletionpage2.Visible = false;
+            registerCompletionpage1.Visible = true;
         }
 
 
-        [WebMethod]
-        public static string UploadImage(HttpPostedFile file)
+        protected void editProfile_OnClick(object sender, EventArgs e)
         {
-            if (HttpContext.Current.Session["CodUtilizador"] != null)
-            {
-                int CodUtilizador = Convert.ToInt32(HttpContext.Current.Session["CodUtilizador"]);
+            profileSinapse.Visible = false;
+            registration.Visible = true;
+            registerCompletionpage1.Visible = true;
+        }
 
-                if (file != null && file.ContentLength > 0)
-                {
-                    // Save the file to the server
-                    string fileName = Path.GetFileName(file.FileName);
-                    string filePath = HttpContext.Current.Server.MapPath("~/Uploads/" + fileName);
-                    file.SaveAs(filePath);
+        protected void lbtChangePW_OnClick(object sender, EventArgs e)
+        {
+            profileSinapse.Visible = !profileSinapse.Visible;
+            ChangePw.Visible = !ChangePw.Visible;
+        }
 
-                    // Process the uploaded file
-                    byte[] photoBytes = FileControl.ProcessPhotoFile(file);
-                    User user = new User();
-                    user.Foto = Convert.ToBase64String(photoBytes);
-                    user.CodUser = CodUtilizador;
+        protected void btnBackFromPwChange_OnClick(object sender, EventArgs e)
+        {
+            profileSinapse.Visible = true;
+            ChangePw.Visible = false;
+        }
 
-                    int AnswChangeProfilePic = Classes.User.ChangeProfilePic(user);
 
-                    if (AnswChangeProfilePic == 1)
-                    {
-                        return "success";
-                    }
-                }
-            }
-            return "failed";
+        protected void fileRepeater_OnItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+
+           
         }
     }
 }

@@ -33,13 +33,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btnBack;
 
         /// <summary>
-        /// btnBackEditModules control.
+        /// filtermenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBackEditModules;
+        protected global::System.Web.UI.WebControls.LinkButton filtermenu;
+
+        /// <summary>
+        /// filters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filters;
 
         /// <summary>
         /// updatePanelFilters control.
@@ -150,6 +159,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btnClearFilters;
 
         /// <summary>
+        /// listCoursesDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl listCoursesDiv;
+
+        /// <summary>
         /// updatePanelListCourses control.
         /// </summary>
         /// <remarks>
@@ -211,6 +229,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnNextListCourses;
+
+        /// <summary>
+        /// editModulesCourse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl editModulesCourse;
 
         /// <summary>
         /// updatePanelEditModulesCourses control.
@@ -391,6 +418,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfInsertCoursesVisible;
+
+        /// <summary>
+        /// insertCoursesDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl insertCoursesDiv;
 
         /// <summary>
         /// updatePanelInsertCourses control.

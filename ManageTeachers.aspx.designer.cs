@@ -15,13 +15,13 @@ namespace FinalProject
     {
 
         /// <summary>
-        /// btnInsertTeacher control.
+        /// btnInsertTeacherMain control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnInsertTeacher;
+        protected global::System.Web.UI.WebControls.Button btnInsertTeacherMain;
 
         /// <summary>
         /// btnInsertTeacherFromList control.
@@ -42,22 +42,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btnBack;
 
         /// <summary>
-        /// btnBackFromListUsers control.
+        /// filtermenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBackFromListUsers;
+        protected global::System.Web.UI.WebControls.LinkButton filtermenu;
 
         /// <summary>
-        /// btnBackFromModules control.
+        /// filters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBackFromModules;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filters;
 
         /// <summary>
         /// updatePanelFilters control.
@@ -168,6 +168,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label lblMessageRegistration;
 
         /// <summary>
+        /// listTeachersDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl listTeachersDiv;
+
+        /// <summary>
         /// updatePanelListTeachers control.
         /// </summary>
         /// <remarks>
@@ -211,6 +220,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnNextListTeachers;
+
+        /// <summary>
+        /// listUsersDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl listUsersDiv;
 
         /// <summary>
         /// updatePanelUsersForTeachers control.
@@ -267,6 +285,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btnEnrollUserAsTeacher;
 
         /// <summary>
+        /// insertTeachersDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl insertTeachersDiv;
+
+        /// <summary>
         /// updatePanelInsertStudent control.
         /// </summary>
         /// <remarks>
@@ -274,6 +301,24 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel updatePanelInsertStudent;
+
+        /// <summary>
+        /// registration control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl registration;
+
+        /// <summary>
+        /// registerCompletionpage1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl registerCompletionpage1;
 
         /// <summary>
         /// updatePanelInsertStudentPage1 control.
@@ -573,6 +618,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
 
         /// <summary>
+        /// registerCompletionpage2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl registerCompletionpage2;
+
+        /// <summary>
         /// updatePanelInsertStudentPage2 control.
         /// </summary>
         /// <remarks>
@@ -861,6 +915,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary2;
 
         /// <summary>
+        /// ModulesRegisterForTeacher control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ModulesRegisterForTeacher;
+
+        /// <summary>
         /// updatePanelModulesForTeachers control.
         /// </summary>
         /// <remarks>
@@ -913,5 +976,14 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnEnroll;
+
+        /// <summary>
+        /// hdnSourceDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnSourceDiv;
     }
 }

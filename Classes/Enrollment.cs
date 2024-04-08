@@ -13,15 +13,16 @@ namespace FinalProject.Classes
         public string Situacao { get; set; }
         public DateTime DataInscricao { get; set; }
         public int CodCurso { get; set; }
+        public int CodModulo { get; set; }
         public string NomeCurso { get; set; }
 
         /// <summary>
-        /// Função para inserir uma inscrição nova
+        /// Função para inserir uma inscrição nova de formando
         /// </summary>
         /// <param name="values"></param>
         /// <param name="imageBytes"></param>
         /// <returns></returns>
-        public static (int, int) InsertEnrollment(Enrollment enrollment)
+        public static (int, int) InsertEnrollmentStudent(Enrollment enrollment)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
@@ -30,6 +31,7 @@ namespace FinalProject.Classes
             myCommand.Parameters.AddWithValue("@CodSituacao", enrollment.CodSituacao);
             myCommand.Parameters.AddWithValue("@DataInscricao", DateTime.Now);
             myCommand.Parameters.AddWithValue("@CodCurso", enrollment.CodCurso);
+            myCommand.Parameters.AddWithValue("@CodModulo", DBNull.Value);
 
             SqlParameter EnrollmentRegister = new SqlParameter();
             EnrollmentRegister.ParameterName = "@EnrollmentRegisted";
@@ -58,5 +60,51 @@ namespace FinalProject.Classes
 
             return (AnswEnrollmentRegister, AnswEnrollmentCode);
         }
+
+        /// <summary>
+        /// Função para inserir uma inscrição nova de formador
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="imageBytes"></param>
+        /// <returns></returns>
+        public static (int, int) InsertEnrollmentTeacher(Enrollment enrollment)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
+
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@CodUtilizador", enrollment.CodUtilizador);
+            myCommand.Parameters.AddWithValue("@CodSituacao", enrollment.CodSituacao);
+            myCommand.Parameters.AddWithValue("@DataInscricao", DateTime.Now);
+            myCommand.Parameters.AddWithValue("@CodCurso", DBNull.Value);
+            myCommand.Parameters.AddWithValue("@CodModulo", enrollment.CodModulo);
+
+            SqlParameter EnrollmentRegister = new SqlParameter();
+            EnrollmentRegister.ParameterName = "@EnrollmentRegisted";
+            EnrollmentRegister.Direction = ParameterDirection.Output;
+            EnrollmentRegister.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(EnrollmentRegister);
+
+            SqlParameter EnrollmentCode = new SqlParameter();
+            EnrollmentCode.ParameterName = "@EnrollmentCode";
+            EnrollmentCode.Direction = ParameterDirection.Output;
+            EnrollmentCode.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(EnrollmentCode);
+
+            myCommand.CommandType = CommandType.StoredProcedure; //Diz que o command type é uma SP
+            myCommand.CommandText = "EnrollmentRegister"; //Comando SQL Insert para inserir os dados acima na respetiva tabela
+
+            myCommand.Connection = myCon; //Definição de que a conexão do meu comando é a minha conexão definida anteriormente
+            myCon.Open(); //Abrir a conexão
+            myCommand.ExecuteNonQuery(); //Executar o Comando Non Query dado que não devolve resultados - Não efetua query à BD - Apenas insere dados
+            int AnswEnrollmentRegister = Convert.ToInt32(myCommand.Parameters["@EnrollmentRegisted"].Value);
+            int AnswEnrollmentCode = Convert.ToInt32(myCommand.Parameters["@EnrollmentCode"].Value);
+
+            myCon.Close(); //Fechar a conexão
+
+            return (AnswEnrollmentRegister, AnswEnrollmentCode);
+        }
+
     }
 }

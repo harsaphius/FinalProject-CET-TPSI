@@ -74,10 +74,7 @@ namespace FinalProject
 
                 if (!IsPostBack)
                 {
-
                     BindDataUsers();
-
-
                 }
             }
         }
@@ -101,7 +98,6 @@ namespace FinalProject
             btnNextUser.Enabled = !pagedData.IsLastPage;
         }
 
-
         //Função de Paginação
         private int PageNumberUsers
         {
@@ -114,7 +110,6 @@ namespace FinalProject
             }
             set => ViewState["PageNumberUsers"] = value;
         }
-
 
         protected void rptUsers_OnItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -132,6 +127,48 @@ namespace FinalProject
                 ckbFormando.Checked = user.UserProfiles.Contains(2);
                 ckbFormador.Checked = user.UserProfiles.Contains(3);
                 ckbFuncionario.Checked = user.UserProfiles.Contains(4);
+            }
+        }
+
+        protected void filtermenu_OnClick(object sender, EventArgs e)
+        {
+            filters.Visible = !filters.Visible;
+        }
+
+        protected void btnInsertUserMain_OnClick(object sender, EventArgs e)
+        {
+            insertUserDiv.Visible = true;
+            listUsersDiv.Visible = false;
+            btnInsertUserMain.Visible = false;
+            btnBack.Visible = true;
+
+            filtermenu.Visible = false;
+            filters.Visible = false;
+
+            hdnSourceDiv.Value = "listUsersDiv";
+        }
+
+        protected void btnBack_OnClick(object sender, EventArgs e)
+        {
+            string sourceDiv = hdnSourceDiv.Value;
+
+            switch (sourceDiv)
+            {
+                case "listUsersDiv":
+                    listUsersDiv.Visible = true;
+                    insertUserDiv.Visible = false;
+                    btnInsertUserMain.Visible = true;
+                    btnBack.Visible = false;
+                    filtermenu.Visible = true;
+                    break;
+
+                case "insertTeachersDiv":
+                    listUsersDiv.Visible = false;
+                    insertUserDiv.Visible = true;
+                    btnBack.Visible = true;
+                    btnInsertUserMain.Visible = false;
+                    filtermenu.Visible = false;
+                    break;
             }
         }
     }

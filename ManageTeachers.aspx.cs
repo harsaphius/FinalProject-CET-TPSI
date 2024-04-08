@@ -54,7 +54,8 @@ namespace FinalProject
 
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
+                if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" ||
+                    Session["CodUtilizador"].ToString() == "1")
                 {
                     script = @"
                             document.getElementById('management').classList.remove('hidden');
@@ -116,10 +117,18 @@ namespace FinalProject
         //Funções de ItemCommand dos Repeaters
         protected void rptUserForTeachers_OnItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            if (e.CommandName == "EditModulesTeachers")
+            if (e.CommandName == "EditModulesUser")
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showListModules",
-                    "showListModules();", true);
+                listUsersDiv.Visible = false;
+                ModulesRegisterForTeacher.Visible = true;
+                btnInsertTeacherFromList.Visible = false;
+                btnInsertTeacherMain.Visible = false;
+                btnBack.Visible = true;
+
+                filtermenu.Visible = false;
+                filters.Visible = false;
+
+                hdnSourceDiv.Value = "listUsersDiv";
 
                 Session["CodUtilizadorClicked"] = e.CommandArgument.ToString();
             }
@@ -139,8 +148,17 @@ namespace FinalProject
         {
             if (e.CommandName == "Edit")
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsert",
-                    "showInsert();", true);
+                //Mostrar/Esconder Divs
+                insertTeachersDiv.Visible = true;
+                listTeachersDiv.Visible = false;
+                btnInsertTeacherMain.Visible = false;
+                btnInsertTeacherFromList.Visible = false;
+                btnBack.Visible = true;
+                filtermenu.Visible = false;
+                filtermenu.Visible = false;
+
+                hdnSourceDiv.Value = "listTeachersDiv";
+
                 InitializeFlatpickrDatePickers();
 
                 (Teacher student, User user) = Classes.Teacher.LoadTeacher(Convert.ToInt32(e.CommandArgument));
@@ -184,8 +202,16 @@ namespace FinalProject
 
             if (e.CommandName == "EditModulesTeachers")
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showListModules",
-                    "showListModules();", true);
+                listTeachersDiv.Visible = false;
+                ModulesRegisterForTeacher.Visible = true;
+                btnInsertTeacherFromList.Visible = false;
+                btnInsertTeacherMain.Visible = false;
+                btnBack.Visible = true;
+
+                filtermenu.Visible = false;
+                filters.Visible = false;
+
+                hdnSourceDiv.Value = "listTeachersDiv";
 
                 Session["CodUtilizadorClicked"] = e.CommandArgument.ToString();
             }
@@ -202,7 +228,8 @@ namespace FinalProject
                 }
                 else
                 {
-                    lblMessageRegistration.Text = "Formador não pode ser eliminado por fazer parte de uma turma a decorrer!";
+                    lblMessageRegistration.Text =
+                        "Formador não pode ser eliminado por fazer parte de uma turma a decorrer!";
                 }
             }
         }
@@ -302,7 +329,7 @@ namespace FinalProject
 
 
         //Funções para as CheckBoxes
-        private void chkBoxMod_OnCheckedChanged(object sender, EventArgs e)
+        protected void chkBoxMod_OnCheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkBox = (CheckBox)sender;
             RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
@@ -338,7 +365,7 @@ namespace FinalProject
             }
         }
 
-        private void chkBoxUser_OnCheckedChanged(object sender, EventArgs e)
+        protected void chkBoxUser_OnCheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkBox = (CheckBox)sender;
             RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
@@ -395,6 +422,7 @@ namespace FinalProject
             PageNumberModules -= 1;
             BindDataModules();
         }
+
         protected void btnNextListModulesForTeachers_OnClick(object sender, EventArgs e)
         {
             PageNumberModules += 1;
@@ -426,5 +454,162 @@ namespace FinalProject
             ScriptManager.RegisterStartupScript(this, GetType(), "FlatpickrInit", script, false);
         }
 
+        protected void filtermenu_OnClick(object sender, EventArgs e)
+        {
+            filters.Visible = !filters.Visible;
+        }
+
+
+        protected void btnInsertTeacherMain_OnClick(object sender, EventArgs e)
+        {
+            insertTeachersDiv.Visible = true;
+            listTeachersDiv.Visible = false;
+            btnInsertTeacherMain.Visible = false;
+            btnInsertTeacherFromList.Visible = false;
+            btnBack.Visible = true;
+
+            filtermenu.Visible = false;
+            filters.Visible = false;
+
+            hdnSourceDiv.Value = "listTeachersDiv";
+        }
+
+        protected void btnInsertTeacherFromList_OnClick(object sender, EventArgs e)
+        {
+            listUsersDiv.Visible = true;
+            listTeachersDiv.Visible = false;
+            btnInsertTeacherMain.Visible = false;
+            btnInsertTeacherFromList.Visible = false;
+            btnBack.Visible = true;
+
+            filtermenu.Visible = false;
+            filters.Visible = false;
+
+
+            hdnSourceDiv.Value = "listTeachersDiv";
+        }
+
+        protected void btnBack_OnClick(object sender, EventArgs e)
+        {
+            string sourceDiv = hdnSourceDiv.Value;
+
+            switch (sourceDiv)
+            {
+                case "listTeachersDiv":
+                    listTeachersDiv.Visible = true;
+                    listUsersDiv.Visible = false;
+                    insertTeachersDiv.Visible = false;
+                    ModulesRegisterForTeacher.Visible = false;
+                    btnInsertTeacherMain.Visible = true;
+                    btnBack.Visible = false;
+                    btnInsertTeacherFromList.Visible = true;
+                    filtermenu.Visible = true;
+                    break;
+                case "listUsersDiv":
+                    listTeachersDiv.Visible = false;
+                    listUsersDiv.Visible = true;
+                    insertTeachersDiv.Visible = false;
+                    ModulesRegisterForTeacher.Visible = false;
+                    btnBack.Visible = true;
+                    hdnSourceDiv.Value = "listTeachersDiv";
+                    break;
+                case "insertTeachersDiv":
+                    listTeachersDiv.Visible = true;
+                    listUsersDiv.Visible = false;
+                    insertTeachersDiv.Visible = false;
+                    ModulesRegisterForTeacher.Visible = false;
+                    btnInsertTeacherFromList.Visible = true;
+                    btnBack.Visible = false;
+                    btnInsertTeacherMain.Visible = true;
+                    filtermenu.Visible = true;
+                    break;
+                case "insertTeachersDivPage2":
+                    listTeachersDiv.Visible = false;
+                    listUsersDiv.Visible = false;
+                    insertTeachersDiv.Visible = true;
+                    registerCompletionpage1.Visible = false;
+                    registerCompletionpage2.Visible = true;
+                    ModulesRegisterForTeacher.Visible = false;
+                    btnBack.Visible = true;
+                    hdnSourceDiv.Value = "insertTeachersDivPage1";
+                    break;
+                case "insertStudentsDivPage1":
+                    listTeachersDiv.Visible = false;
+                    listUsersDiv.Visible = false;
+                    insertTeachersDiv.Visible = true;
+                    registerCompletionpage1.Visible = true;
+                    registerCompletionpage2.Visible = false;
+                    ModulesRegisterForTeacher.Visible = false;
+                    btnBack.Visible = true;
+                    hdnSourceDiv.Value = "listTeachersDiv";
+                    break;
+            }
+        }
+
+        protected void btnNextPage_OnClick(object sender, EventArgs e)
+        {
+            if (!Security.IsValidDate(tbDataValidade.Text) && (!Security.IsValidDate(tbDataNascimento.Text) ||
+                                                               !string.IsNullOrEmpty(tbDataNascimento.Text)))
+            {
+                //lblMessageInsert.Visible = true;
+                //lblMessageInsert.CssClass = "alert alert-primary text-white text-center";
+                //lblMessageInsert.Text = "Formato de Data Inválida!";
+
+                //timerMessageInsert.Enabled = true;
+            }
+            else
+            {
+                registerCompletionpage1.Visible = false;
+                registerCompletionpage2.Visible = true;
+
+            }
+        }
+
+        protected void btnBackPageOne_OnClick(object sender, EventArgs e)
+        {
+            registerCompletionpage1.Visible = true;
+            registerCompletionpage2.Visible = false;
+        }
+
+        protected void btnSubmit_OnClick(object sender, EventArgs e)
+        {
+            insertTeachersDiv.Visible = false;
+            ModulesRegisterForTeacher.Visible = true;
+        }
+
+        protected void btnEnroll_OnClick(object sender, EventArgs e)
+        {
+            List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
+
+            foreach (int selectedItem in selectedItems)
+            {
+                if (selectedItems != null && selectedItems.Count > 0)
+                {
+                    if (Session["CodUtilizadorClicked"] != null)
+                    {
+                        Enrollment enrollment = new Enrollment();
+
+                        enrollment.CodUtilizador = Convert.ToInt32(Session["CodUtilizadorClicked"]);
+                        enrollment.CodSituacao = 1;
+                        enrollment.CodCurso = selectedItem;
+
+                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollmentTeacher(enrollment);
+
+                        if (AnswEnrollmentCode == -1 && AnswAnswEnrollmentRegister == -1)
+                        {
+                            lblMessageRegistration.Text = "Utilizador já registado nesse módulo.";
+                        }
+                        else
+                        {
+                            Classes.Teacher.InsertTeacher(Convert.ToInt32(Session["CodUtilizadorClicked"]), AnswEnrollmentCode);
+                            lblMessageRegistration.Text = "Utilizador registado com sucesso no módulo!";
+                        }
+                    }
+
+
+                }
+
+            }
+        }
     }
 }

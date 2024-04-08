@@ -104,7 +104,7 @@ namespace FinalProject
 
                     //Serialização dos Módulos para usar as suas propriedades no BindDataModulesEdit() 
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    string modulesViewState = serializer.Serialize(Classes.Module.LoadModules());
+                    string modulesViewState = serializer.Serialize(Classes.Module.LoadModules(null, "codUFCD"));
                     ViewState["modulesViewState"] = modulesViewState;
 
 
@@ -196,6 +196,13 @@ namespace FinalProject
         {
             if (e.CommandName == "Edit")
             {
+                editModulesCourse.Visible = true;
+                listCoursesDiv.Visible = false;
+                btnInsertCourseMain.Visible = false;
+                btnBack.Visible = true;
+                filtermenu.Visible = false;
+                filtermenu.Visible = false;
+
                 Course selectedCourse = Classes.Course.CompleteCourse(Convert.ToInt32(e.CommandArgument));
 
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -369,10 +376,6 @@ namespace FinalProject
                     lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
                     lblMessageEdit.Text = "Curso atualizado com sucesso!";
                     timerMessageEdit.Enabled = true;
-
-                    ClearAllViewStates();
-                    Response.AddHeader("REFRESH", "5; URL=ManageCourses.aspx");
-
                 }
                 else
                 {
@@ -380,10 +383,6 @@ namespace FinalProject
                     lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
                     lblMessageEdit.Text = "Não foi possível atualizar o curso selecionado. Já existem turmas com este curso!";
                     timerMessageEdit.Enabled = true;
-
-                    ClearAllViewStates();
-                    Response.AddHeader("REFRESH", "5; URL=ManageCourses.aspx");
-
 
                 }
 
@@ -398,12 +397,11 @@ namespace FinalProject
         private void BindDataCourses()
         {
             List<string> conditions = new List<string>();
-            string order = "";
+
             conditions.Add(string.IsNullOrEmpty(tbSearchFilters.Text) ? "" : tbSearchFilters.Text);
             conditions.Add(ddlAreaCursoFilters.SelectedValue == "0" ? "" : ddlAreaCursoFilters.SelectedValue);
             conditions.Add(ddlTipoCursoFilters.SelectedValue == "0" ? "" : ddlTipoCursoFilters.SelectedValue);
-            order = ddlOrderFilters.SelectedValue == "0" ? null : ddlOrderFilters.SelectedValue;
-
+            string order = ddlOrderFilters.SelectedValue == "0" ? null : ddlOrderFilters.SelectedValue;
 
             PagedDataSource pagedData = new PagedDataSource();
             pagedData.DataSource = Classes.Course.LoadCourses(conditions, order);
@@ -425,8 +423,10 @@ namespace FinalProject
         /// </summary>
         private void BindDataModules()
         {
+            string order = "codUFCD";
+
             PagedDataSource pagedData = new PagedDataSource();
-            pagedData.DataSource = Classes.Module.LoadModules();
+            pagedData.DataSource = Classes.Module.LoadModules(null, order);
             pagedData.AllowPaging = true;
             pagedData.PageSize = 5;
             pagedData.CurrentPageIndex = PageNumberModules;
@@ -665,37 +665,24 @@ namespace FinalProject
         /// <summary>
         /// Função para update de ViewState ao mudar de paginação no Repeater de InsertCourse
         /// </summary>
-        private void UpdateSelectedItemsViewStateInsert()
+        private void UpdateSelectedCheckBoxesInsert()
         {
-            List<int> selectedItems = (List<int>)ViewState["SelectedItemsInsert"];
-            List<string> selectedItemsNames = (List<string>)ViewState["SelectedItemsNamesInsert"];
             Dictionary<int, bool> checkboxStates = (Dictionary<int, bool>)ViewState["CheckboxStatesInsert"];
 
             foreach (RepeaterItem item in rptInsertCourses.Items)
             {
                 CheckBox chkBoxInsertModulesCourse = (CheckBox)item.FindControl("chkBoxInsertModulesCourse");
                 HiddenField hdnInsertModuleID = (HiddenField)item.FindControl("hdnInsertModuleID");
-                HiddenField hdnInsertModuleName = (HiddenField)item.FindControl("hdnInsertModuleName");
-                //Label lblOrderInsertModules = (Label)item.FindControl("lblOrderInsertModules");
 
                 if (chkBoxInsertModulesCourse != null && hdnInsertModuleID != null)
                 {
                     if (checkboxStates.ContainsKey(Convert.ToInt32(hdnInsertModuleID.Value)))
                     {
                         chkBoxInsertModulesCourse.Checked = checkboxStates[Convert.ToInt32(hdnInsertModuleID.Value)];
-                        //lblOrderInsertModules.Text = checkboxStates[Convert.ToInt32(hdnInsertModuleID.Value)] ? "Seleccionado" : "Selecione este módulo";
-                    }
-
-                    if (chkBoxInsertModulesCourse.Checked)
-                    {
-                        selectedItems.Add(Convert.ToInt32(hdnInsertModuleID.Value));
-                        selectedItemsNames.Add(hdnInsertModuleName.Value);
                     }
                 }
             }
 
-            ViewState["SelectedItemsInsert"] = selectedItems;
-            ViewState["SelectedItemsNamesInsert"] = selectedItemsNames;
             ViewState["CheckboxStatesInsert"] = checkboxStates;
 
             UpdateSelectedLabels();
@@ -813,9 +800,8 @@ namespace FinalProject
         {
             PageNumberModules -= 1;
             BindDataModules();
-            UpdateSelectedItemsViewStateInsert();
+            UpdateSelectedCheckBoxesInsert();
             UpdateSelectedLabels();
-
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsertScript", "showInsert(); return false;", true);
         }
@@ -829,7 +815,7 @@ namespace FinalProject
         {
             PageNumberModules += 1;
             BindDataModules();
-            UpdateSelectedItemsViewStateInsert();
+            UpdateSelectedCheckBoxesInsert();
             UpdateSelectedLabels();
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsertScript", "showInsert(); return false;", true);
@@ -896,6 +882,8 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnApplyFilters_OnClick(object sender, EventArgs e)
         {
+            PageNumberCourses = 0;
+
             BindDataCourses();
         }
 
@@ -912,6 +900,8 @@ namespace FinalProject
             tbDataInicioFilters.Text = "";
             tbDataFimFilters.Text = "";
             ddlOrderFilters.SelectedIndex = 0;
+
+            PageNumberCourses = 0;
 
             BindDataCourses();
 
@@ -936,18 +926,33 @@ namespace FinalProject
 
         protected void btnBack_OnClick(object sender, EventArgs e)
         {
-            ClearAllViewStates();
-        }
-
-        protected void btnBackEditModules_OnClick(object sender, EventArgs e)
-        {
-            ClearAllViewStates();
+            listCoursesDiv.Visible = true;
+            insertCoursesDiv.Visible = false;
+            btnBack.Visible = false;
+            btnInsertCourseMain.Visible = true;
+            editModulesCourse.Visible = false;
+            filtermenu.Visible = true;
         }
 
         protected void timerMessageListCourses_OnTick(object sender, EventArgs e)
         {
             lblMessageListCourses.Visible = false;
             timerMessageListCourses.Enabled = false;
+        }
+
+        protected void filtermenu_OnClick(object sender, EventArgs e)
+        {
+            filters.Visible = !filters.Visible;
+        }
+
+        protected void btnInsertCourseMain_OnClick(object sender, EventArgs e)
+        {
+            insertCoursesDiv.Visible = true;
+            listCoursesDiv.Visible = false;
+            btnBack.Visible = true;
+            btnInsertCourseMain.Visible = false;
+            filtermenu.Visible = false;
+            filters.Visible = false;
         }
     }
 }

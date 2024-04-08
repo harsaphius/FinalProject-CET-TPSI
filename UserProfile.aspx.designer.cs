@@ -60,6 +60,51 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label profileemail;
 
         /// <summary>
+        /// lbtAvaliacoes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtAvaliacoes;
+
+        /// <summary>
+        /// lbtDisponibilidade control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtDisponibilidade;
+
+        /// <summary>
+        /// lbtChangePW control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtChangePW;
+
+        /// <summary>
+        /// profileSinapse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl profileSinapse;
+
+        /// <summary>
+        /// editProfile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton editProfile;
+
+        /// <summary>
         /// infoname control.
         /// </summary>
         /// <remarks>
@@ -114,13 +159,31 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Repeater fileRepeater;
 
         /// <summary>
-        /// UpdatePanel1 control.
+        /// registration control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl registration;
+
+        /// <summary>
+        /// registerCompletionpage1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl registerCompletionpage1;
+
+        /// <summary>
+        /// updatePanelRegistrationPage1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updatePanelRegistrationPage1;
 
         /// <summary>
         /// lblNome control.
@@ -420,13 +483,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
 
         /// <summary>
-        /// UpdatePanel2 control.
+        /// registerCompletionpage2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl registerCompletionpage2;
+
+        /// <summary>
+        /// updatePanelRegistrationPage2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updatePanelRegistrationPage2;
 
         /// <summary>
         /// lblCodEstadoCivil control.
@@ -726,13 +798,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary2;
 
         /// <summary>
-        /// lbl_message control.
+        /// ChangePw control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_message;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ChangePw;
 
         /// <summary>
         /// rfvpwa control.
@@ -814,5 +886,23 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label1;
+
+        /// <summary>
+        /// lblMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessage;
+
+        /// <summary>
+        /// timerMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessage;
     }
 }

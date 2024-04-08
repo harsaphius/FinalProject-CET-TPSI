@@ -15,31 +15,40 @@ namespace FinalProject
     {
 
         /// <summary>
-        /// btn_insertClassroom control.
+        /// btnInsertClassroomMain control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_insertClassroom;
+        protected global::System.Web.UI.WebControls.Button btnInsertClassroomMain;
 
         /// <summary>
-        /// btn_back control.
+        /// btnBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_back;
+        protected global::System.Web.UI.WebControls.Button btnBack;
 
         /// <summary>
-        /// btn_backEditClassroom control.
+        /// filtermenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_backEditClassroom;
+        protected global::System.Web.UI.WebControls.LinkButton filtermenu;
+
+        /// <summary>
+        /// filters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filters;
 
         /// <summary>
         /// updatePanelFilters control.
@@ -114,6 +123,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btnClearFilters;
 
         /// <summary>
+        /// listClassroomsDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl listClassroomsDiv;
+
+        /// <summary>
         /// updatePanelListClassrooms control.
         /// </summary>
         /// <remarks>
@@ -175,6 +193,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnNextClassroom;
+
+        /// <summary>
+        /// insertClassroomsDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl insertClassroomsDiv;
 
         /// <summary>
         /// updatePanelInsertClassrooms control.

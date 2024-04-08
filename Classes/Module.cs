@@ -40,9 +40,9 @@ namespace FinalProject.Classes
             myCommand.Parameters.AddWithValue("@UFCD", module.UFCD);
             myCommand.Parameters.AddWithValue("@Description", module.Descricao);
             myCommand.Parameters.AddWithValue("@Credits", module.Creditos);
-            if (module.SVG != null)
+            if (module.SVGBytes != null)
             {
-                myCommand.Parameters.Add("@SVG", SqlDbType.VarBinary, -1).Value = module.SVG;
+                myCommand.Parameters.Add("@SVG", SqlDbType.VarBinary, -1).Value = module.SVGBytes;
             }
             else
             {
@@ -102,7 +102,7 @@ namespace FinalProject.Classes
 
             if (order != null)
             {
-                query += order.Contains("ASC") ? " ORDER BY nomeModulos ASC" : order.Contains("DESC") ? " ORDER BY nomeModulos DESC" : "";
+                query += order.Contains("ASC") ? " ORDER BY nomeModulos ASC" : order.Contains("DESC") ? " ORDER BY nomeModulos DESC" : order.Contains("codUFCD") ? " ORDER BY codUFCD ASC " : "";
             }
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
@@ -149,7 +149,7 @@ namespace FinalProject.Classes
         {
             List<Module> Modules = new List<Module>();
 
-            string query = $"SELECT * FROM modulo AS M INNER JOIN moduloCurso AS MC ON M.codModulos=MC.codModulo WHERE codCurso={CodCurso}";
+            string query = $"SELECT * FROM modulo AS M INNER JOIN moduloCurso AS MC ON M.codModulos=MC.codModulo WHERE codCurso={CodCurso} ORDER BY M.codUFCD ASC";
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);

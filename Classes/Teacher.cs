@@ -26,7 +26,7 @@ namespace FinalProject.Classes
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString); //Definir a conexão à base de dados
 
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
-            myCommand.Parameters.AddWithValue("@CodFormando", TeacherCode);
+            myCommand.Parameters.AddWithValue("@CodFormador", TeacherCode);
             myCommand.Parameters.AddWithValue("@CodInscricao", EnrollmentCode);
 
             SqlParameter TeacherRegisted = new SqlParameter();

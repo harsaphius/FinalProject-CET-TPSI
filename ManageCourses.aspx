@@ -6,19 +6,20 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+<asp:UpdatePanel runat="server">
+<ContentTemplate> 
     <div class="container-fluid">
         <div class="row" style="margin-top: 15px">
             <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
-                <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Novo Curso" ID="btnInsertCourseMain" OnClientClick="showInsert(); return false;" />
-                <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btnBack" OnClientClick="showInsert(); return false;" OnClick="btnBack_OnClick" />
-                <asp:Button runat="server" CssClass="btn btn-primary hidden" Text="Voltar" ID="btnBackEditModules" OnClientClick="showEditModules(); return false;" OnClick="btnBackEditModules_OnClick" />
+                <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Novo Curso" Visible="True" ID="btnInsertCourseMain" OnClick="btnInsertCourseMain_OnClick"/>
+                <asp:Button runat="server" CssClass="btn btn-primary" Visible="False" Text="Voltar" ID="btnBack" OnClick="btnBack_OnClick" />
             </div>
-            <div id="filtermenu" class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
-                <a href="javascript:;" onclick="toggleFilters()">
-                    <i class="fas fa-filter text-primary text-lg" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter" aria-hidden="true">Filtros</i>
-                </a>
+            <div class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
+                <asp:LinkButton ID="filtermenu" Visible="True" OnClick="filtermenu_OnClick" runat="server">
+                    <i class="fas fa-filter text-primary text-lg" title="Filter" aria-hidden="true">Filtros</i>
+                </asp:LinkButton>
             </div>
-            <div id="filters" class="col-md-12 col-md-6 hidden" style="padding-left: 30px;">
+            <div id="filters" class="col-md-12 col-md-6" visible="false" runat="server" style="padding-left: 30px;">
                 <asp:UpdatePanel ID="updatePanelFilters" runat="server">
                     <ContentTemplate>
                         <div class="row">
@@ -59,8 +60,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-md-4 col-sm-4 mb-xl-0 mb-0">
-                                <span>
-                                    Ordenação:
+                                <span>Ordenação:
                                 </span>
                                 <div class="input-group mb-0 text-end">
                                     <asp:DropDownList runat="server" ID="ddlOrderFilters" class="btn bg-gradient-secundary dropdown-toggle">
@@ -90,7 +90,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card mb-4">
-                        <div id="listCoursesDiv">
+                        <div id="listCoursesDiv" runat="server">
                             <asp:UpdatePanel ID="updatePanelListCourses" runat="server">
                                 <ContentTemplate>
                                     <div class="container row justify-content-center">
@@ -112,6 +112,7 @@
                                                                 <col style="width: 40%;" />
                                                                 <col style="width: 12%;" />
                                                                 <col style="width: 12%;" />
+                                                                <col style="width: 12%;" />
                                                                 <col style="width: 10%;" />
                                                                 <col style="width: 10%;" />
                                                             </colgroup>
@@ -120,6 +121,7 @@
                                                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
                                                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Referencial</th>
                                                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Código QNQ</th>
+                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Duração</th>
                                                                 <th></th>
                                                                 <th></th>
                                                             </tr>
@@ -138,18 +140,18 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <asp:TextBox ID="tbListCoursesNomeCurso" CssClass="form-control" runat="server" Text='<%# Bind("Nome") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
                                                     <p class="text-sm font-weight-bold mb-0">
                                                         <asp:Label runat="server" ID="lblListCoursesNomeCurso"><%# Eval("Nome") %></asp:Label>
                                                     </p>
                                                 </td>
                                                 <td class="text-xs font-weight-bold">
-                                                    <asp:TextBox ID="tbListCoursesCodRef" CssClass="form-control" runat="server" Text='<%# Bind("CodRef") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
                                                     <asp:Label ID="lblListCoursesCodRef" runat="server">  <%# Eval("CodRef") %></asp:Label>
                                                 </td>
                                                 <td class="text-xs font-weight-bold">
-                                                    <asp:TextBox ID="tbListCoursesCodQNQ" CssClass="form-control" runat="server" Text='<%# Bind("CodQNQ") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
                                                     <asp:Label ID="lblListCoursesCodQNQ" runat="server"> Nível <%# Eval("CodQNQ") %></asp:Label>
+                                                </td>
+                                                <td class="text-xs font-weight-bold">
+                                                    <asp:Label ID="lblListCoursesDuracao" runat="server"> <%# Eval("Duracao") %></asp:Label>
                                                 </td>
                                                 <td class="align-middle font-weight-bold text-center">
                                                     <asp:LinkButton runat="server" ID="lbtEditEditCourse" CausesValidation="false" CommandName="Edit" Visible="true" CommandArgument='<%# Eval("CodCurso") %>'
@@ -200,7 +202,7 @@
                                 </Triggers>
                             </asp:UpdatePanel>
                         </div>
-                        <div id="editModulesCourse" class="hidden">
+                        <div id="editModulesCourse" runat="server" Visible="false">
                             <asp:UpdatePanel ID="updatePanelEditModulesCourses" runat="server">
                                 <ContentTemplate>
                                     <div class="page-header min-vh-30">
@@ -272,7 +274,7 @@
                                                                     </HeaderTemplate>
                                                                     <ItemTemplate>
                                                                         <tr>
-                                                                            <td>
+                                                                            <td style="width: auto; white-space: normal; padding: 2px;">
                                                                                 <div class="d-flex px-2">
                                                                                     <div>
                                                                                         <img src="<%# Eval("SVG") %>" class="avatar avatar-sm rounded-circle me-3">
@@ -282,10 +284,10 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </td>
-                                                                            <td>
+                                                                            <td style="width: auto; white-space: normal; padding: 2px;">
                                                                                 <p class="text-sm font-weight-bold mb-0"><%# Eval("UFCD") %></p>
                                                                             </td>
-                                                                            <td id="ForMyCkbEdit" class="text-xs font-weight-bold">
+                                                                            <td id="ForMyCkbEdit" class="text-xs font-weight-bold" style="width: auto; white-space: normal; padding: 2px;">
                                                                                 <asp:HiddenField ID="hdnEditCourseModuleID" runat="server" Value='<%# Eval("CodModulo") %>' />
                                                                                 <asp:HiddenField ID="hdnEditCourseModuleName" runat="server" Value='<%# Eval("Nome") %>' />
                                                                                 <div class="form-check">
@@ -362,7 +364,7 @@
                 </div>
                 <!-- Inserção de Cursos -->
                 <asp:HiddenField ID="hfInsertCoursesVisible" runat="server" Value="false" />
-                <div id="insertCoursesDiv" class="hidden">
+                <div id="insertCoursesDiv" runat="server" visible="false">
                     <asp:UpdatePanel runat="server" ID="updatePanelInsertCourses">
                         <ContentTemplate>
                             <div class="page-header min-vh-30">
@@ -444,7 +446,7 @@
                                                             </HeaderTemplate>
                                                             <ItemTemplate>
                                                                 <tr>
-                                                                    <td>
+                                                                    <td style="width: auto; white-space: normal; padding: 2px;">
                                                                         <div class="d-flex px-2">
                                                                             <div>
                                                                                 <img src="<%# Eval("SVG") %>" class="avatar avatar-sm rounded-circle me-3">
@@ -454,10 +456,10 @@
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="width: auto; white-space: normal; padding: 2px;">
                                                                         <p class="text-sm font-weight-bold mb-0"><%# Eval("UFCD") %></p>
                                                                     </td>
-                                                                    <td id="ForMyCkb" class="text-xs font-weight-bold">
+                                                                    <td id="ForMyCkb" class="text-xs font-weight-bold" style="width: auto; white-space: normal; padding: 2px;">
                                                                         <div class="stats">
                                                                             <asp:HiddenField ID="hdnInsertModuleID" runat="server" Value='<%# Eval("CodModulo") %>' />
                                                                             <asp:HiddenField ID="hdnInsertModuleName" runat="server" Value='<%# Eval("Nome") %>' />
@@ -540,213 +542,10 @@
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-    <script>
-        $(function () {
-            $(".draggable-item").draggable({
-                revert: "invalid",
-                cursor: "move",
-                helper: "clone",
-                zIndex: 100
-            });
-
-            $(".draggable-item").droppable({
-                tolerance: "pointer",
-                drop: function (event, ui) {
-                    var draggedItem = ui.draggable;
-                    var droppedOnItem = $(this);
-
-                    // If dragged onto itself, do nothing
-                    if (draggedItem.is(droppedOnItem)) {
-                        return;
-                    }
-
-                    // Get the index of dragged and dropped items
-                    var draggedIndex = draggedItem.index();
-                    var droppedIndex = droppedOnItem.index();
-
-                    // Calculate the direction of movement
-                    var moveUp = draggedIndex > droppedIndex;
-
-                    // Move the dragged item accordingly
-                    if (moveUp) {
-                        draggedItem.insertBefore(droppedOnItem);
-                    } else {
-                        draggedItem.insertAfter(droppedOnItem);
-                    }
-
-                    // Send AJAX request to update the order on the server
-                    $.ajax({
-                        type: "POST",
-                        url: "YourPage.aspx/UpdateOrder",
-                        data: JSON.stringify({ draggedItemId: draggedItem.attr("id"), droppedOnItemId: droppedOnItem.attr("id") }),
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (response) {
-                            // Handle success
-                        },
-                        error: function (xhr, textStatus, errorThrown) {
-                            // Handle error
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-
-    <!-- Função de Javascript para Mostrar a Div de Inserir após click no Button Inserir Módulo -->
-    <script>
-        function showInsert() {
-            var insertDiv = document.getElementById('insertCoursesDiv');
-            var listDiv = document.getElementById('listCoursesDiv');
-            var btnInsert = document.getElementById('<%= btnInsertCourseMain.ClientID %>');
-            var btnBack = document.getElementById('<%= btnBack.ClientID %>');
-            var filterMenu = document.getElementById('filtermenu');
-
-            if (insertDiv.classList.contains('hidden')) {
-                insertDiv.classList.remove('hidden');
-                listDiv.classList.add('hidden');
-                btnInsert.classList.add('hidden');
-                btnBack.classList.remove('hidden');
-                filterMenu.classList.add('hidden');
-
-            } else {
-                insertDiv.classList.add('hidden');
-                listDiv.classList.remove('hidden');
-                btnInsert.classList.remove('hidden');
-                btnBack.classList.add('hidden');
-                filterMenu.classList.remove('hidden');
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "/ManageCourses.aspx/btn_back_OnClick()"
-            });
-
-        }
-    </script>
-
-    <!-- Função de Javascript para Mostrar a Div de Inserir após click no Button Inserir Curso -->
-    <script>
-        function showEditModules() {
-            var editModulesDiv = document.getElementById('editModulesCourse');
-            var listDiv = document.getElementById('listCoursesDiv');
-            var btnInsert = document.getElementById('<%= btnInsertCourseMain.ClientID %>');
-            var btnBack = document.getElementById('<%= btnBackEditModules.ClientID %>');
-            var filterMenu = document.getElementById('filtermenu');
-
-            if (editModulesDiv.classList.contains('hidden')) {
-                editModulesDiv.classList.remove('hidden');
-                listDiv.classList.add('hidden');
-                btnInsert.classList.add('hidden');
-                btnBack.classList.remove('hidden');
-                filterMenu.classList.add('hidden');
-
-            } else {
-                editModulesDiv.classList.add('hidden');
-                listDiv.classList.remove('hidden');
-                btnInsert.classList.remove('hidden');
-                btnBack.classList.add('hidden');
-                filterMenu.classList.remove('hidden');
-            }
-        }
-    </script>
-
-    <!-- Funções da Javascript para Atualizar o URL, as Divs consoante o click e atualizar o breadcrumb -->
-    <script>
-        function handleLinkButtonClick(action) {
-            var url, title;
-            switch (action) {
-                case 'List':
-                    url = '../ManageCourses.aspx?List';
-                    document.getElementById('listCoursesDiv').classList.remove('hidden');
-                    document.getElementById('insertCoursesDiv').classList.add('hidden');
-                    title = "Listar Cursos";
-                    break;
-                case 'Edit':
-                    url = '../ManageCourses.aspx?Edit';
-                    document.getElementById('listCoursesDiv').classList.add('hidden');
-                    document.getElementById('insertCoursesDiv').classList.add('hidden');
-                    title = "Editar Cursos";
-                    break;
-                case 'Insert':
-                    url = '../ManageCourses.aspx?Insert';
-                    document.getElementById('insertCoursesDiv').classList.remove('hidden');
-                    document.getElementById('listCoursesDiv').classList.add('hidden');
-                    title = "Inserir Cursos";
-                    break;
-                default:
-                    // Default URL or action if not recognized
-                    url = '../ManageCourses.aspx';
-                    title = "Gestão de Cursos";
-                    break;
-            }
-
-            //// Update URL
-            window.history.replaceState(null, null, url);
-
-            updateBreadcrumb(title, action);
-
-            // Return false to prevent default postback behavior
-            return false;
-        }
-
-        function updateBreadcrumb(title, action) {
-            var breadcrumbContainer = document.getElementById('<%= Master.FindControl("SiteMapPath1").ClientID %>');
-            var siteNode = document.getElementById('<%= Master.FindControl("siteNode").ClientID %>')
-            if (breadcrumbContainer) {
-                breadcrumbContainer.innerHTML = '';
-                siteNode.innerHTML = '';
-
-                var breadcrumbItems = [];
-                breadcrumbItems.push('<a href="/">Home</a>');
-                breadcrumbItems.push('<a href="../Manage.aspx">Gestão</a>');
-                breadcrumbItems.push('<a href="../ManageCourses.aspx">Gestão de Cursos</a>');
-
-                if (action === 'List') {
-                    breadcrumbContainer.innerHTML = breadcrumbItems.join('>');
-                    breadcrumbContainer.innerHTML += '>' + title;
-                    siteNode.innerHTML = title;
-                }
-                if (action === 'Edit') {
-                    breadcrumbContainer.innerHTML = breadcrumbItems.join(' > ');
-                    breadcrumbContainer.innerHTML += '>' + title;
-                    siteNode.innerHTML = title;
-                }
-                if (action === 'Insert') {
-                    breadcrumbContainer.innerHTML = breadcrumbItems.join(' > ');
-                    breadcrumbContainer.innerHTML += '>' + title;
-                    siteNode.innerHTML = title;
-                }
-            }
-        }
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            flatpickr('#<%= tbDataInicioFilters.ClientID %>', {
-                dateFormat: 'd-m-Y',
-                theme: 'light',
-                maxDate: new Date()
-            });
-
-            flatpickr('#<%= tbDataFimFilters.ClientID %>', {
-                dateFormat: 'd-m-Y',
-                theme: 'light',
-                minDate: new Date()
-            });
-        });
-    </script>
-    <!-- Javascript para ativar/desativar a div dos filtros -->
-    <script>
-        function toggleFilters() {
-            var filtersDiv = document.getElementById('filters');
-            if (filtersDiv.classList.contains('hidden')) {
-                filtersDiv.classList.remove('hidden');
-            } else {
-                filtersDiv.classList.add('hidden');
-            }
-        }
-    </script>
+</ContentTemplate>
+<Triggers>
+    <asp:AsyncPostBackTrigger ControlID="btnInsertCourseMain" />
+    <asp:AsyncPostBackTrigger ControlID="btnBack" />
+</Triggers>
+</asp:UpdatePanel>
 </asp:Content>

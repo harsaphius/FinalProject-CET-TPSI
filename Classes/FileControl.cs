@@ -106,7 +106,6 @@ namespace FinalProject.Classes
                         context.Response.ContentType = file.ContentType;
                         context.Response.AddHeader("Content-Disposition", $"attachment; filename={file.FileName}");
                         context.Response.BinaryWrite(file.FileBytes);
-                        context.Response.Flush();
                         context.Response.End();
                         return;
                     }

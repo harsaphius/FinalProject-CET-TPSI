@@ -15,13 +15,13 @@ namespace FinalProject
     {
 
         /// <summary>
-        /// btnInsertUser control.
+        /// btnInsertUserMain control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnInsertUser;
+        protected global::System.Web.UI.WebControls.Button btnInsertUserMain;
 
         /// <summary>
         /// btnBack control.
@@ -31,6 +31,24 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnBack;
+
+        /// <summary>
+        /// filtermenu control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton filtermenu;
+
+        /// <summary>
+        /// filters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filters;
 
         /// <summary>
         /// updatePanelFilters control.
@@ -96,13 +114,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btnClearFilters;
 
         /// <summary>
-        /// updatePanelListUsers control.
+        /// listUsersDiv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updatePanelListUsers;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl listUsersDiv;
 
         /// <summary>
         /// rptUsers control.
@@ -139,6 +157,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnNextUser;
+
+        /// <summary>
+        /// insertUserDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl insertUserDiv;
 
         /// <summary>
         /// rfvPerfil control.
@@ -373,5 +400,14 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSignup;
+
+        /// <summary>
+        /// hdnSourceDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnSourceDiv;
     }
 }

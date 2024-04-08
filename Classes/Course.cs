@@ -76,23 +76,26 @@ namespace FinalProject.Classes
 
             myCon.Close();
 
-            SqlCommand myCommand2 = new SqlCommand();
-            myCommand2.CommandType = CommandType.StoredProcedure;
-            myCommand2.CommandText = "CourseModulesRegister";
-
-            myCommand2.Connection = myCon;
-
-            myCon.Open();
-
-            foreach (int moduleID in modules)
+            if (AnswCourseRegister == 1)
             {
-                myCommand2.Parameters.Clear();
-                myCommand2.Parameters.AddWithValue("@CodCourse", AnswCourseNumber);
-                myCommand2.Parameters.AddWithValue("@CodMod", moduleID);
-                myCommand2.ExecuteNonQuery();
-            }
+                SqlCommand myCommand2 = new SqlCommand();
+                myCommand2.CommandType = CommandType.StoredProcedure;
+                myCommand2.CommandText = "CourseModulesRegister";
 
-            myCon.Close();
+                myCommand2.Connection = myCon;
+
+                myCon.Open();
+
+                foreach (int moduleID in modules)
+                {
+                    myCommand2.Parameters.Clear();
+                    myCommand2.Parameters.AddWithValue("@CodCourse", AnswCourseNumber);
+                    myCommand2.Parameters.AddWithValue("@CodMod", moduleID);
+                    myCommand2.ExecuteNonQuery();
+                }
+
+                myCon.Close();
+            }
 
             return AnswCourseRegister;
         }
@@ -150,6 +153,8 @@ namespace FinalProject.Classes
                 informacao.CodTipoCurso = Convert.ToInt32(dr["codArea"]);
                 informacao.CodRef = dr["codRef"].ToString();
                 informacao.CodQNQ = Convert.ToInt32(dr["codQNQ"]);
+                informacao.Duracao = Convert.ToInt32(dr["duracao"]);
+                informacao.DuracaoEstagio = Convert.ToInt32(dr["duracaoEstagio"]);
 
                 Courses.Add(informacao);
             }
@@ -187,6 +192,8 @@ namespace FinalProject.Classes
                 CompleteCourse.TipoCurso = dr["nomeTipoLongo"].ToString();
                 CompleteCourse.CodRef = dr["codRef"].ToString();
                 CompleteCourse.CodQNQ = Convert.ToInt32(dr["codQNQ"]);
+                CompleteCourse.Duracao = Convert.ToInt32(dr["duracao"]);
+                CompleteCourse.DuracaoEstagio = Convert.ToInt32(dr["duracaoEstagio"]);
             }
 
             if (dr.HasRows)

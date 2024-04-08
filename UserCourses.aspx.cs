@@ -31,7 +31,7 @@ namespace FinalProject
                         enrollment.CodSituacao = 1;
                         enrollment.CodCurso = CodCurso;
 
-                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollment(enrollment);
+                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollmentStudent(enrollment);
 
                         if (AnswEnrollmentCode == -1 && AnswAnswEnrollmentRegister == -1)
                         {

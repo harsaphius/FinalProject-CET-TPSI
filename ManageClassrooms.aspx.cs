@@ -407,6 +407,7 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnApplyFilters_OnClick(object sender, EventArgs e)
         {
+            PageNumberClassrooms = 0;
             BindDataClassrooms();
         }
 
@@ -421,8 +422,35 @@ namespace FinalProject
             ddlTipoSalaFilters.SelectedIndex = 0;
             ddlLocalSalaFilters.SelectedIndex = 0;
             ddlOrderFilters.SelectedIndex = 0;
+            PageNumberClassrooms = 0;
 
             BindDataClassrooms();
+        }
+
+        protected void btnInsertClassroomMain_OnClick(object sender, EventArgs e)
+        {
+            insertClassroomsDiv.Visible = true;
+            listClassroomsDiv.Visible = false;
+            btnBack.Visible = true;
+            btnInsertClassroomMain.Visible = false;
+            filtermenu.Visible = false;
+            filters.Visible = false;
+
+        }
+
+        protected void btnBack_OnClick(object sender, EventArgs e)
+        {
+            listClassroomsDiv.Visible = true;
+            insertClassroomsDiv.Visible = false;
+            btnBack.Visible = false;
+            btnInsertClassroomMain.Visible = true;
+            filtermenu.Visible = true;
+        }
+
+
+        protected void filtermenu_OnClick(object sender, EventArgs e)
+        {
+            filters.Visible = !filters.Visible;
         }
     }
 }

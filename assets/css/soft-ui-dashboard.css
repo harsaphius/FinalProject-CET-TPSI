@@ -54,6 +54,10 @@ body {
     background-color: #fff;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-user-select: none; /* Disable selection for Chrome, Safari, and Opera */
+    -moz-user-select: none; /* Disable selection for Firefox */
+    -ms-user-select: none; /* Disable selection for Internet Explorer/Edge */
+    user-select: none;
 }
 
 hr {

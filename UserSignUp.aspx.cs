@@ -17,7 +17,6 @@ namespace FinalProject
             {
                 if (!string.IsNullOrEmpty(Request.QueryString["code"]))
                 {
-                    string script;
 
                     if (Session["Google"] != null)
                     {

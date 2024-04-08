@@ -100,8 +100,15 @@ namespace FinalProject
         {
             if (e.CommandName == "Edit")
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showInsert",
-                    "showInsert();", true);
+                insertStudentsDiv.Visible = true;
+                listStudentsDiv.Visible = false;
+                btnInsertStudentMain.Visible = false;
+                btnInsertStudentFromList.Visible = false;
+                btnBack.Visible = true;
+                filtermenu.Visible = false;
+                filtermenu.Visible = false;
+
+                hdnSourceDiv.Value = "listStudentsDiv";
 
                 (Student student, User user) = Classes.Student.LoadStudent(Convert.ToInt32(e.CommandArgument));
 
@@ -144,8 +151,16 @@ namespace FinalProject
 
             if (e.CommandName == "EditCoursesStudents")
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showListCourses",
-                    "showListCourses();", true);
+                listStudentsDiv.Visible = false;
+                CourseRegisterForStudent.Visible = true;
+                btnInsertStudentFromList.Visible = false;
+                btnInsertStudentMain.Visible = false;
+                btnBack.Visible = true;
+
+                filtermenu.Visible = false;
+                filters.Visible = false;
+
+                hdnSourceDiv.Value = "listStudentsDiv";
 
                 Session["CodUtilizadorClicked"] = e.CommandArgument.ToString();
             }
@@ -172,10 +187,18 @@ namespace FinalProject
         {
             if (e.CommandName == "EditCoursesStudents")
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showListCourses",
-                    "showListCourses();", true);
+                listUsersDiv.Visible = false;
+                CourseRegisterForStudent.Visible = true;
+                btnInsertStudentFromList.Visible = false;
+                btnInsertStudentMain.Visible = false;
+                btnBack.Visible = true;
 
-                Session["CodUserClicked"] = e.CommandArgument.ToString();
+                filtermenu.Visible = false;
+                filters.Visible = false;
+
+                hdnSourceDiv.Value = "listUsersDiv";
+
+                Session["CodUtilizadorClicked"] = e.CommandArgument.ToString();
             }
         }
 
@@ -328,7 +351,7 @@ namespace FinalProject
                         enrollment.CodSituacao = 1;
                         enrollment.CodCurso = selectedItem;
 
-                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollment(enrollment);
+                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollmentStudent(enrollment);
 
                         if (AnswEnrollmentCode == -1 && AnswAnswEnrollmentRegister == -1)
                         {
@@ -340,6 +363,7 @@ namespace FinalProject
                             lblMessageRegistration.Text = "Utilizador registado com sucesso no curso!";
                         }
                     }
+
 
                 }
 
@@ -521,16 +545,12 @@ namespace FinalProject
         {
             PageNumberCourses -= 1;
             BindDataCourses();
-
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "showListCourses", "showListCourses(); return false;", true);
         }
 
         protected void btnNextListCoursesForStudents_Click(object sender, EventArgs e)
         {
             PageNumberCourses += 1;
             BindDataCourses();
-
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "showListCourses", "showListCourses(); return false;", true);
         }
 
         protected void btnPreviousUsersForStudents_OnClick(object sender, EventArgs e)
@@ -558,7 +578,8 @@ namespace FinalProject
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showNextDiv", "showNextDiv();", true);
+                registerCompletionpage1.Visible = false;
+                registerCompletionpage2.Visible = true;
 
             }
         }
@@ -588,9 +609,108 @@ namespace FinalProject
             }
         }
 
-        protected void btnInsertStudent_OnClick(object sender, EventArgs e)
+        protected void btnInsertStudentMain_OnClick(object sender, EventArgs e)
         {
+            insertStudentsDiv.Visible = true;
+            listStudentsDiv.Visible = false;
+            btnInsertStudentFromList.Visible = false;
+            btnInsertStudentMain.Visible = false;
+            btnBack.Visible = true;
 
+            filtermenu.Visible = false;
+            filters.Visible = false;
+
+            hdnSourceDiv.Value = "insertStudentsDiv";
+
+        }
+
+        protected void btnBack_OnClick(object sender, EventArgs e)
+        {
+            string sourceDiv = hdnSourceDiv.Value;
+
+            switch (sourceDiv)
+            {
+                case "listStudentsDiv":
+                    listStudentsDiv.Visible = true;
+                    listUsersDiv.Visible = false;
+                    insertStudentsDiv.Visible = false;
+                    CourseRegisterForStudent.Visible = false;
+                    btnInsertStudentFromList.Visible = true;
+                    btnBack.Visible = false;
+                    btnInsertStudentMain.Visible = true;
+                    filtermenu.Visible = true;
+                    break;
+                case "listUsersDiv":
+                    listStudentsDiv.Visible = false;
+                    listUsersDiv.Visible = true;
+                    insertStudentsDiv.Visible = false;
+                    CourseRegisterForStudent.Visible = false;
+                    btnBack.Visible = true;
+                    hdnSourceDiv.Value = "listStudentsDiv";
+                    break;
+                case "insertStudentsDiv":
+                    listStudentsDiv.Visible = true;
+                    listUsersDiv.Visible = false;
+                    insertStudentsDiv.Visible = false;
+                    CourseRegisterForStudent.Visible = false;
+                    btnInsertStudentFromList.Visible = true;
+                    btnBack.Visible = false;
+                    btnInsertStudentMain.Visible = true;
+                    filtermenu.Visible = true;
+                    break;
+                case "insertStudentsDivPage2":
+                    listStudentsDiv.Visible = false;
+                    listUsersDiv.Visible = false;
+                    insertStudentsDiv.Visible = true;
+                    registerCompletionpage1.Visible = false;
+                    registerCompletionpage2.Visible = true;
+                    CourseRegisterForStudent.Visible = false;
+                    btnBack.Visible = true;
+                    hdnSourceDiv.Value = "insertStudentsDivPage1";
+                    break;
+                case "insertStudentsDivPage1":
+                    listStudentsDiv.Visible = false;
+                    listUsersDiv.Visible = false;
+                    insertStudentsDiv.Visible = true;
+                    registerCompletionpage1.Visible = true;
+                    registerCompletionpage2.Visible = false;
+                    CourseRegisterForStudent.Visible = false;
+                    btnBack.Visible = true;
+                    hdnSourceDiv.Value = "listStudentsDiv";
+                    break;
+
+            }
+
+
+        }
+
+        protected void filtermenu_OnClick(object sender, EventArgs e)
+        {
+            filters.Visible = !filters.Visible;
+        }
+
+        protected void btnInsertStudentFromList_OnClick(object sender, EventArgs e)
+        {
+            listUsersDiv.Visible = true;
+            listStudentsDiv.Visible = false;
+            btnInsertStudentFromList.Visible = false;
+            btnInsertStudentMain.Visible = false;
+            btnBack.Visible = true;
+
+            filtermenu.Visible = false;
+            filters.Visible = false;
+        }
+
+        protected void btnBackPageOne_OnClick(object sender, EventArgs e)
+        {
+            registerCompletionpage1.Visible = true;
+            registerCompletionpage2.Visible = false;
+        }
+
+        protected void btnSubmit_OnClick(object sender, EventArgs e)
+        {
+            insertStudentsDiv.Visible = false;
+            CourseRegisterForStudent.Visible = true;
         }
     }
 }

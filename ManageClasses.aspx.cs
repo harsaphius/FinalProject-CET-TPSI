@@ -103,17 +103,6 @@ namespace FinalProject
             }
         }
 
-        protected void btnPreviousStudents_Click(object sender, EventArgs e)
-        {
-            PageNumberStudents -= 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataStudents();
-        }
-
-        protected void btnNextStudents_Click(object sender, EventArgs e)
-        {
-            PageNumberStudents += 1; // Adjust with the respective PageNumber property for Users Repeater
-            BindDataStudents();
-        }
 
         private void BindDataStudents()
         {
@@ -123,6 +112,7 @@ namespace FinalProject
             pagedData.PageSize = 2;
             pagedData.CurrentPageIndex = PageNumberStudents;
             int PageNumber = PageNumberStudents + 1;
+            lblPageNumbersStudents.Text = PageNumber.ToString();
 
             rptStudents.DataSource = pagedData;
             rptStudents.DataBind();
@@ -139,6 +129,7 @@ namespace FinalProject
             pagedData.PageSize = 2;
             pagedData.CurrentPageIndex = PageNumberClassGroups;
             int PageNumber = PageNumberClassGroups + 1;
+            lblPageNumberClassGroups.Text = PageNumber.ToString();
 
             rptClasses.DataSource = pagedData;
             rptClasses.DataBind();
@@ -198,14 +189,16 @@ namespace FinalProject
         protected void ddlCurso_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedCourseID = ddlCurso.SelectedValue;
-
+            ddlModulesOfCourse.ClearSelection();
             BindDdlModules(selectedCourseID);
         }
 
 
         private void BindDdlModules(string selectCourseID)
         {
+
             ddlTeacherForModules.ClearSelection();
+
             SQLDSModulesForCourse.SelectCommand =
                 $"SELECT * FROM moduloCurso AS MC INNER JOIN curso AS C ON MC.codCurso=C.codCurso INNER JOIN modulo AS M ON MC.codModulo = M.codModulos WHERE MC.codCurso={selectCourseID}";
             ddlModulesOfCourse.DataSource = SQLDSModulesForCourse;
@@ -281,7 +274,6 @@ namespace FinalProject
             }
         }
 
-
         protected void btnAddTeacherModuleClassGroup_OnClick(object sender, EventArgs e)
         {
             if (ddlTeacherForModules.SelectedItem != null && ddlModulesOfCourse.SelectedItem != null)
@@ -337,5 +329,57 @@ namespace FinalProject
                 lbl_message.Text = "Seleccione na lista o item a remover!";
             }
         }
+
+
+        protected void btnPreviousClasses_OnClick(object sender, EventArgs e)
+        {
+            PageNumberClassGroups -= 1;
+            BindDataClassGroups();
+        }
+
+        protected void btnNextClasses_OnClick(object sender, EventArgs e)
+        {
+            PageNumberClassGroups += 1;
+            BindDataClassGroups();
+        }
+
+        protected void btnPreviousStudents_Click(object sender, EventArgs e)
+        {
+            PageNumberStudents -= 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataStudents();
+        }
+
+        protected void btnNextStudents_Click(object sender, EventArgs e)
+        {
+            PageNumberStudents += 1; // Adjust with the respective PageNumber property for Users Repeater
+            BindDataStudents();
+        }
+
+
+        protected void btnInsertClassMain_OnClick(object sender, EventArgs e)
+        {
+            insertClassesDiv.Visible = true;
+            listClassesDiv.Visible = false;
+            btnBack.Visible = true;
+            btnInsertClassMain.Visible = false;
+            filtermenu.Visible = false;
+            filters.Visible = false;
+        }
+
+        protected void btnBack_OnClick(object sender, EventArgs e)
+        {
+            listClassesDiv.Visible = true;
+            insertClassesDiv.Visible = false;
+            btnBack.Visible = false;
+            btnInsertClassMain.Visible = true;
+            filtermenu.Visible = true;
+        }
+
+        protected void filtermenu_OnClick(object sender, EventArgs e)
+        {
+            filters.Visible = !filters.Visible;
+        }
     }
+
+
 }

@@ -15,22 +15,40 @@ namespace FinalProject
     {
 
         /// <summary>
-        /// btn_insertModule control.
+        /// btnInsertModuleMain control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_insertModule;
+        protected global::System.Web.UI.WebControls.Button btnInsertModuleMain;
 
         /// <summary>
-        /// btn_back control.
+        /// btnBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_back;
+        protected global::System.Web.UI.WebControls.Button btnBack;
+
+        /// <summary>
+        /// filtermenu control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton filtermenu;
+
+        /// <summary>
+        /// filters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filters;
 
         /// <summary>
         /// updatePanelFilters control.
@@ -96,6 +114,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btnClearFilters;
 
         /// <summary>
+        /// listModulesDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl listModulesDiv;
+
+        /// <summary>
         /// updatePanelListModules control.
         /// </summary>
         /// <remarks>
@@ -157,6 +184,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnNextModule;
+
+        /// <summary>
+        /// insertModulesDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl insertModulesDiv;
 
         /// <summary>
         /// updatePanelInsertModules control.
@@ -231,15 +267,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rvfCredits;
 
         /// <summary>
-        /// revCredits control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator revCredits;
-
-        /// <summary>
         /// tbCredits control.
         /// </summary>
         /// <remarks>
@@ -249,13 +276,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tbCredits;
 
         /// <summary>
-        /// fuSvgUFCD control.
+        /// fuSvgUFCDInsert control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload fuSvgUFCD;
+        protected global::System.Web.UI.WebControls.FileUpload fuSvgUFCDInsert;
 
         /// <summary>
         /// btnInsertModule control.
@@ -265,6 +292,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnInsertModule;
+
+        /// <summary>
+        /// ValidationSummary1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
 
         /// <summary>
         /// lblMessageInsert control.

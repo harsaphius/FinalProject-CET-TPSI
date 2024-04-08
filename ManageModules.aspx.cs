@@ -92,6 +92,9 @@ namespace FinalProject
                 LinkButton lbtCancelModules = (LinkButton)e.Item.FindControl("lbtCancelModules");
                 LinkButton lbtDeleteModules = (LinkButton)e.Item.FindControl("lbtDeleteModules");
                 LinkButton lbtConfirmModules = (LinkButton)e.Item.FindControl("lbtConfirmModules");
+                //LinkButton btnFuImgFileUpload = (LinkButton)e.Item.FindControl("btnFuImgFileUpload");
+
+                //btnFuImgFileUpload.CommandArgument = e.Item.ItemIndex.ToString();
 
                 AsyncPostBackTrigger triggerEdit = new AsyncPostBackTrigger();
                 triggerEdit.ControlID = lbtEditModules.UniqueID;
@@ -115,25 +118,25 @@ namespace FinalProject
                 updatePanelListModules.Triggers.Add(triggerConfirm);
             }
 
-            FileUpload fileUpload = e.Item.FindControl("fileUpload") as FileUpload;
-            if (fileUpload != null)
-            {
-                fileUpload.ID = "fileUpload_" + e.Item.ItemIndex.ToString();
+            //FileUpload fileUpload = e.Item.FindControl("fileUpload") as FileUpload;
+            //if (fileUpload != null)
+            //{
+            //    fileUpload.ID = "fileUpload_" + e.Item.ItemIndex.ToString();
 
-                if (fileUpload.HasFile)
-                {
-                    string fileName = Path.GetFileName(fileUpload.FileName);
+            //    if (fileUpload.HasFile)
+            //    {
+            //        string fileName = Path.GetFileName(fileUpload.FileName);
 
-                    string filePath = Server.MapPath("~/Uploads/" + fileName);
-                    fileUpload.SaveAs(filePath);
+            //        string filePath = Server.MapPath("~/Uploads/" + fileName);
+            //        fileUpload.SaveAs(filePath);
 
-                    Response.Write("File uploaded successfully!");
-                }
-                else
-                {
-                    Response.Write("Please select a file to upload.");
-                }
-            }
+            //        Response.Write("File uploaded successfully!");
+            //    }
+            //    else
+            //    {
+            //        Response.Write("Please select a file to upload.");
+            //    }
+            //}
         }
 
         //Função de ItemCommand do Repeater
@@ -151,7 +154,7 @@ namespace FinalProject
             Label lblDuracao = (Label)item.FindControl("lblDuracao");
 
             TextBox tbDescricao = (TextBox)item.FindControl("tbDescricao");
-            Label lblDescricao = (Label)item.FindControl("lblDescricao");
+            Literal ltDescricao = (Literal)item.FindControl("ltDescricao");
 
             TextBox tbCreditos = (TextBox)item.FindControl("tbCreditos");
             Label lblCreditos = (Label)item.FindControl("lblCreditos");
@@ -182,8 +185,8 @@ namespace FinalProject
                 }
 
                 tbDescricao.Visible = !tbDescricao.Visible;
-                lblDescricao.Visible = !lblDescricao.Visible;
-                tbDescricao.Text = lblDescricao.Text;
+                ltDescricao.Visible = !ltDescricao.Visible;
+                tbDescricao.Text = ltDescricao.Text;
 
                 tbCreditos.Visible = !tbCreditos.Visible;
                 lblCreditos.Visible = !lblCreditos.Visible;
@@ -226,8 +229,8 @@ namespace FinalProject
                         lblDuracao.Text = ddlDuracao.Text;
 
                         tbDescricao.Visible = !tbDescricao.Visible;
-                        lblDescricao.Visible = !lblDescricao.Visible;
-                        lblDescricao.Text = tbDescricao.Text;
+                        ltDescricao.Visible = !ltDescricao.Visible;
+                        ltDescricao.Text = tbDescricao.Text;
 
                         tbCreditos.Visible = !tbCreditos.Visible;
                         lblCreditos.Visible = !lblCreditos.Visible;
@@ -263,8 +266,8 @@ namespace FinalProject
                         lblDuracao.Text = lblDuracao.Text;
 
                         tbDescricao.Visible = !tbDescricao.Visible;
-                        lblDescricao.Visible = !lblDescricao.Visible;
-                        lblDescricao.Text = lblDescricao.Text;
+                        ltDescricao.Visible = !ltDescricao.Visible;
+                        ltDescricao.Text = ltDescricao.Text;
 
                         tbCreditos.Visible = !tbCreditos.Visible;
                         lblCreditos.Visible = !lblCreditos.Visible;
@@ -280,7 +283,8 @@ namespace FinalProject
 
                         lblMessageEdit.Visible = true;
                         lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
-                        lblMessageEdit.Text = "Módulo não pode ser totalmente atualizado por já se encontrar inserido num curso. Apenas foram atualizados o nome e a descrição. Insira um novo módulo.";
+                        lblMessageEdit.Text =
+                            "Módulo não pode ser totalmente atualizado por já se encontrar inserido num curso. Apenas foram atualizados o nome e a descrição. Insira um novo módulo.";
                         timerMessageEdit.Enabled = true;
                     }
 
@@ -299,8 +303,8 @@ namespace FinalProject
                         lblDuracao.Text = lblDuracao.Text;
 
                         tbDescricao.Visible = !tbDescricao.Visible;
-                        lblDescricao.Visible = !lblDescricao.Visible;
-                        lblDescricao.Text = lblDescricao.Text;
+                        ltDescricao.Visible = !ltDescricao.Visible;
+                        ltDescricao.Text = ltDescricao.Text;
 
                         tbCreditos.Visible = !tbCreditos.Visible;
                         lblCreditos.Visible = !lblCreditos.Visible;
@@ -368,8 +372,8 @@ namespace FinalProject
                 lblDuracao.Text = lblDuracao.Text;
 
                 tbDescricao.Visible = !tbDescricao.Visible;
-                lblDescricao.Visible = !lblDescricao.Visible;
-                lblDescricao.Text = lblDescricao.Text;
+                ltDescricao.Visible = !ltDescricao.Visible;
+                ltDescricao.Text = ltDescricao.Text;
 
                 tbCreditos.Visible = !tbCreditos.Visible;
                 lblCreditos.Visible = !lblCreditos.Visible;
@@ -382,63 +386,88 @@ namespace FinalProject
                 lbtDeleteModules.Visible = true;
 
             }
+
+            //if (e.CommandName == "Upload")
+            //{
+
+            //    int itemIndex = Convert.ToInt32(e.CommandArgument);
+            //    RepeaterItem repeaterItem = rptModules.Items[itemIndex];
+            //    FileUpload fuImgFileUpload = (FileUpload)repeaterItem.FindControl("fuImgFileUpload");
+
+            //    // Handle file upload logic here
+            //    if (fuImgFileUpload.HasFile)
+            //    {
+            //        // Upload the file
+            //    }
+            //}
         }
 
         //Função de Inserção
         protected void btnInsertModule_Click(object sender, EventArgs e)
         {
             Module moduleData = new Module();
+            FileUpload fileupload = (FileUpload)updatePanelInsertModules.FindControl("fuSvgUFCDInsert");
 
-            //Imagem identificativa do módulo - Funcionalidade passível de ser desenvolvida pelos designers
-            if (fuSvgUFCD.HasFile)
+            if (Security.IsValidDecimal(tbCredits.Text))
             {
-                using (BinaryReader reader = new BinaryReader(fuSvgUFCD.PostedFile.InputStream))
+                //Imagem identificativa do módulo - Funcionalidade passível de ser desenvolvida pelos designers
+                if (fileupload.PostedFile != null && fileupload.HasFile)
                 {
-                    moduleData.SVGBytes = reader.ReadBytes(fuSvgUFCD.PostedFile.ContentLength);
+                    using (BinaryReader reader = new BinaryReader(fileupload.PostedFile.InputStream))
+                    {
+                        moduleData.SVGBytes = reader.ReadBytes(fileupload.PostedFile.ContentLength);
+                    }
+                }
+                else
+                {
+                    byte[] imageBytes;
+                    string imagePath = "~/assets/img/small-logos/default.svg";
+                    string physicalPath = Server.MapPath(imagePath);
+
+                    using (FileStream fileStream = new FileStream(physicalPath, FileMode.Open, FileAccess.Read))
+                    {
+                        imageBytes = new byte[fileStream.Length];
+                        fileStream.Read(imageBytes, 0, (int)fileStream.Length);
+                        moduleData.SVGBytes = imageBytes;
+                    }
+                }
+
+                moduleData.Nome = tbModuleName.Text;
+                moduleData.Duracao = Convert.ToInt32(ddlDuracao.SelectedValue);
+                moduleData.UFCD = tbUFCD.Text;
+                moduleData.Descricao = tbDescricao.Text;
+                moduleData.Creditos = Convert.ToDecimal(tbCredits.Text);
+
+                int ModuleRegisted = Classes.Module.InsertModule(moduleData);
+
+                if (ModuleRegisted == 1)
+                {
+
+                    lblMessageEdit.Visible = true;
+                    lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                    lblMessageEdit.Text = "Módulo registado com sucesso!";
+                    timerMessageEdit.Enabled = true;
+
+                    CleanTextBoxes();
+
+                }
+                else
+                {
+                    lblMessageEdit.Visible = true;
+                    lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                    lblMessageEdit.Text = "Módulo já registado!";
+                    timerMessageEdit.Enabled = true;
+
+                    CleanTextBoxes();
+
                 }
             }
             else
             {
-                byte[] imageBytes;
-                string imagePath = "~/assets/img/small-logos/default.svg";
-                string physicalPath = Server.MapPath(imagePath);
-
-                using (FileStream fileStream = new FileStream(physicalPath, FileMode.Open, FileAccess.Read))
-                {
-                    imageBytes = new byte[fileStream.Length];
-                    fileStream.Read(imageBytes, 0, (int)fileStream.Length);
-                    moduleData.SVGBytes = imageBytes;
-                }
-            }
-
-            moduleData.Nome = tbModuleName.Text;
-            moduleData.Duracao = Convert.ToInt32(ddlDuracao.SelectedValue);
-            moduleData.UFCD = tbUFCD.Text;
-            moduleData.Descricao = tbDescricao.Text;
-            moduleData.Creditos = Convert.ToDecimal(tbCredits.Text);
-
-            int ModuleRegisted = Classes.Module.InsertModule(moduleData);
-
-            if (ModuleRegisted == 1)
-            {
-
                 lblMessageInsert.Visible = true;
                 lblMessageInsert.CssClass = "alert alert-primary text-white text-center";
-                lblMessageInsert.Text = "Módulo registado com sucesso!";
+                lblMessageInsert.Text = "Créditos deverão ser decimais!";
                 timerMessageInsert.Enabled = true;
-
-                CleanTextBoxes();
-
-            }
-            else
-            {
-                lblMessageInsert.Visible = true;
-                lblMessageInsert.CssClass = "alert alert-primary text-white text-center";
-                lblMessageInsert.Text = "Módulo já registado!";
-                timerMessageInsert.Enabled = true;
-
-                CleanTextBoxes();
-
             }
         }
 
@@ -520,6 +549,8 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnApplyFilters_OnClick(object sender, EventArgs e)
         {
+            PageNumberModules = 0;
+
             BindDataModules();
         }
 
@@ -533,6 +564,7 @@ namespace FinalProject
             tbSearchFilters.Text = "";
             ddlNrHoras.SelectedIndex = 0;
             ddlOrderFilters.SelectedIndex = 0;
+            PageNumberModules = 0;
 
             BindDataModules();
         }
@@ -548,14 +580,78 @@ namespace FinalProject
 
         protected void timerMessageInsert_OnTick(object sender, EventArgs e)
         {
-            lblMessageInsert.Visible = false;
-            timerMessageInsert.Enabled = false;
+            lblMessageEdit.Visible = false;
+            timerMessageEdit.Enabled = false;
         }
 
         protected void timerMessageEdit_OnTick(object sender, EventArgs e)
         {
             lblMessageEdit.Visible = false;
             timerMessageEdit.Enabled = false;
+        }
+
+
+        protected void btnInsertModuleMain_OnClick(object sender, EventArgs e)
+        {
+            insertModulesDiv.Visible = true;
+            listModulesDiv.Visible = false;
+            btnBack.Visible = true;
+            btnInsertModuleMain.Visible = false;
+            filtermenu.Visible = false;
+            filters.Visible = false;
+
+        }
+
+        protected void btnBack_OnClick(object sender, EventArgs e)
+        {
+            listModulesDiv.Visible = true;
+            insertModulesDiv.Visible = false;
+            btnBack.Visible = false;
+            btnInsertModuleMain.Visible = true;
+            filtermenu.Visible = true;
+        }
+
+
+        protected void filtermenu_OnClick(object sender, EventArgs e)
+        {
+            filters.Visible = !filters.Visible;
+        }
+        protected void imgUpload_Click(object sender, ImageClickEventArgs e)
+        {
+            RepeaterItem item = (sender as Control).NamingContainer as RepeaterItem;
+
+            // Find the Panel containing the FileUpload and Button controls
+            Panel pnlFileUpload = item.FindControl("pnlFileUpload") as Panel;
+
+            // Show the Panel containing the FileUpload and Button controls
+            pnlFileUpload.Visible = true;
+        }
+
+        protected void btnUpdateImage_Click(object sender, EventArgs e)
+        {
+            RepeaterItem item = (sender as Control).NamingContainer as RepeaterItem;
+
+            // Find the FileUpload control within the RepeaterItem
+            FileUpload fuUpload = item.FindControl("fuUpload") as FileUpload;
+
+            // Check if a file is uploaded
+            if (fuUpload.HasFile)
+            {
+                // Handle file upload logic here
+                // For example, save the file to a specific location
+                string fileName = Path.GetFileName(fuUpload.FileName);
+                string filePath = Server.MapPath("~/Images/") + fileName;
+                fuUpload.SaveAs(filePath);
+
+                // Optionally, you can update the ImageUrl of the Image control
+                // imgUpload.ImageUrl = "~/Images/" + fileName;
+            }
+
+            // Hide the Panel containing the FileUpload and Button controls
+            Panel pnlFileUpload = item.FindControl("pnlFileUpload") as Panel;
+            pnlFileUpload.Visible = false;
+
+
         }
     }
 }

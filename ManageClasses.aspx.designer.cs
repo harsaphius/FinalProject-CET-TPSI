@@ -15,31 +15,49 @@ namespace FinalProject
     {
 
         /// <summary>
-        /// btn_insertModule control.
+        /// btnInsertClassMain control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_insertModule;
+        protected global::System.Web.UI.WebControls.Button btnInsertClassMain;
 
         /// <summary>
-        /// btn_back control.
+        /// btnBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_back;
+        protected global::System.Web.UI.WebControls.Button btnBack;
 
         /// <summary>
-        /// UpdatePanel4 control.
+        /// filtermenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel4;
+        protected global::System.Web.UI.WebControls.LinkButton filtermenu;
+
+        /// <summary>
+        /// filters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filters;
+
+        /// <summary>
+        /// updatePanelFilters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updatePanelFilters;
 
         /// <summary>
         /// lbtn_search control.
@@ -123,6 +141,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btn_clear;
 
         /// <summary>
+        /// listClassesDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl listClassesDiv;
+
+        /// <summary>
         /// updatePanelListClasses control.
         /// </summary>
         /// <remarks>
@@ -150,13 +177,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.LinkButton btnPreviousClasses;
 
         /// <summary>
-        /// lblPageNumberClasses control.
+        /// lblPageNumberClassGroups control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPageNumberClasses;
+        protected global::System.Web.UI.WebControls.Label lblPageNumberClassGroups;
 
         /// <summary>
         /// btnNextClasses control.
@@ -166,6 +193,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnNextClasses;
+
+        /// <summary>
+        /// insertClassesDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl insertClassesDiv;
 
         /// <summary>
         /// updatePanelInsertClassGroup control.
@@ -276,13 +312,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.LinkButton btnPreviousStudents;
 
         /// <summary>
-        /// lblPageNumberStudents control.
+        /// lblPageNumbersStudents control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPageNumberStudents;
+        protected global::System.Web.UI.WebControls.Label lblPageNumbersStudents;
 
         /// <summary>
         /// btnNextStudents control.

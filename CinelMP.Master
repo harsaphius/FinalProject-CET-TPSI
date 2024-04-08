@@ -17,12 +17,14 @@
     <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.3.0/font-awesome.min.css" />
+    <%--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.3.0/font-awesome.min.css" />--%>
     <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="https://cdn.weglot.com/weglot.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         Weglot.initialize({
             api_key: 'wg_1ae256b87448551b21819a5962a372278'
@@ -34,7 +36,7 @@
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" enctype="multipart/form-data">
         <asp:ScriptManager ID="ScriptManager1" EnablePageMethods="true" runat="server"></asp:ScriptManager>
         <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-0 " id="sidenav-main">
             <div class="sidenav-header">
@@ -360,14 +362,15 @@
         <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
             <!-- Navbar -->
             <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
-                <!-- SiteMap -->
                 <div class="container-fluid py-1 px-3">
+                    <!-- SiteMap Breadcrumb-->
                     <nav aria-label="breadcrumb">
                         <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" ShowStartingNode="true" />
                         <asp:SiteMapPath ID="SiteMapPath1" runat="server" PathSeparator=">" RenderCurrentNodeAsLink="false">
                         </asp:SiteMapPath>
                         <h6 id="siteNode" runat="server" class="font-weight-bolder mb-0"></h6>
                     </nav>
+                    <!-- SiteMap Breadcrumb-->
                     <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                         <div class="ms-md-auto pe-md-3 d-flex align-items-center">
                             <div class="input-group mb-3">
@@ -393,13 +396,13 @@
                             </li>
 
                             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-                                <asp:LinkButton href="javascript:void(0);" class="nav-link text-body p-0" CausesValidation="False" id="iconNavbarSidenav">
+                                <a href="javascript:void(0);" class="nav-link text-body p-0" ID="iconNavbarSidenav">
                                     <div class="sidenav-toggler-inner">
                                         <i class="sidenav-toggler-line"></i>
                                         <i class="sidenav-toggler-line"></i>
                                         <i class="sidenav-toggler-line"></i>
                                     </div>
-                                </asp:LinkButton>
+                                </a>
                             </li>
                             <li class="nav-item px-3 d-flex align-items-center">
                                 <a href="javascript:;" class="nav-link text-body p-0">
@@ -487,8 +490,8 @@
         </main>
     </form>
     <!--   Core JS Files   -->
-    <%--    <script src="../assets/js/core/popperjs"></script>--%>
-    <%--    <script src="../assets/js/core/bootstrap.js"></script>--%>
+    <script src="../assets/js/core/popper.min.js"></script>
+    <script src="../assets/js/core/bootstrap.min.js"></script>
     <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="../assets/js/plugins/chartjs.min.js"></script>
@@ -788,7 +791,7 @@
         });
     </script>
 
-    <!--Javascript do Sidenav -->
+    <%--  <!--Javascript do Sidenav -->
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -797,7 +800,7 @@
             }
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
-    </script>
+    </script>--%>
 
     <!-- Javascript Para mostrar as divs e colocar os items ativos -->
     <script type="text/javascript">
@@ -814,23 +817,6 @@
                 $(this).addClass('active');
             });
         });
-
-        //function handlePageLoad() {
-        //    var url = window.location.href;
-        //    var keyword = "";
-
-        //    if (url.indexOf('?List') !== -1) {
-        //        keyword = "list";
-        //    } else if (url.indexOf('?Insert') !== -1) {
-        //        keyword = "insert";
-        //    } else if (url.indexOf('?Edit') !== -1) {
-        //        keyword = "edit";
-        //    }
-
-        //    // Show/hide divs based on the extracted keyword
-        //    $('.pageDiv').hide(); // Hide all divs first
-        //    $('div[id*="' + keyword + '"]').show(); // Show divs containing the keyword
-        //}
     </script>
 
     <!-- Github buttons -->
