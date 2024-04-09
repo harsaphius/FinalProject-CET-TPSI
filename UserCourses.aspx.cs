@@ -72,7 +72,7 @@ namespace FinalProject
                         linkButton.Click += FormandoPerfil_Click;
                         panelContainer.Controls.Add(linkButton);
                     }
-                    if (profileCode == 3)
+                    else if (profileCode == 3)
                     {
                         LinkButton linkButton = new LinkButton();
 

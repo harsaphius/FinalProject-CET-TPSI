@@ -173,7 +173,6 @@ namespace FinalProject
                 {
                     BindDataStudents();
                     lblMessageRegistration.Text = "Formando apagado com sucesso!";
-
                 }
                 else
                 {

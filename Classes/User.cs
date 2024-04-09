@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Text;
 using System.Web;
 
 namespace FinalProject.Classes
@@ -660,6 +661,66 @@ namespace FinalProject.Classes
             myCon.Close();
 
             return AnswUserRegisterComplete;
+        }
+
+        public static int UpdateUsernameEmailAndProfiles(int UserCode, string Username, string Email, List<int> UserProfiles)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@UserCode", UserCode);
+            myCommand.Parameters.AddWithValue("@Username", Username);
+            myCommand.Parameters.AddWithValue("@Email", Email);
+            myCommand.Parameters.AddWithValue("Ativo", UserProfiles[0]);
+            myCommand.Parameters.AddWithValue("@CodFormando", UserProfiles[1] == 0 ? "0" : "2");
+            myCommand.Parameters.AddWithValue("@CodFormador", UserProfiles[2] == 0 ? "0" : "3");
+            myCommand.Parameters.AddWithValue("@CodFuncionario", UserProfiles[3] == 0 ? "0" : "4");
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
+
+            SqlParameter UserUpdated = new SqlParameter();
+            UserUpdated.ParameterName = "@UserUpdated";
+            UserUpdated.Direction = ParameterDirection.Output;
+            UserUpdated.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(UserUpdated);
+
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "UpdateUserProfiles";
+
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
+            int AnswUserUpdated = Convert.ToInt32(myCommand.Parameters["@UserUpdated"].Value);
+
+            myCon.Close();
+
+            return AnswUserUpdated;
+        }
+
+        public static int DeleteUser(int UserCode)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@UserCode", UserCode);
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
+
+            SqlParameter UserDeleted = new SqlParameter();
+            UserDeleted.ParameterName = "@UserDeleted";
+            UserDeleted.Direction = ParameterDirection.Output;
+            UserDeleted.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(UserDeleted);
+
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "DeleteUser";
+
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
+            int AnswUserDeleted = Convert.ToInt32(myCommand.Parameters["@UserDeleted"].Value);
+
+            myCon.Close();
+
+            return AnswUserDeleted;
         }
     }
 }

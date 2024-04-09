@@ -1,5 +1,6 @@
 ﻿using FinalProject.Classes;
 using System;
+using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -122,11 +123,21 @@ namespace FinalProject
                 CheckBox ckbFormador = (CheckBox)e.Item.FindControl("ckbFormador");
                 CheckBox ckbFuncionario = (CheckBox)e.Item.FindControl("ckbFuncionario");
 
+                LinkButton lbtEdit = (LinkButton)e.Item.FindControl("lbtEdit");
+                if (lbtEdit != null)
+                {
+                    lbtEdit.CommandArgument = user.CodUser.ToString();
+                }
 
                 ckbAtivo.Checked = user.Ativo;
                 ckbFormando.Checked = user.UserProfiles.Contains(2);
                 ckbFormador.Checked = user.UserProfiles.Contains(3);
                 ckbFuncionario.Checked = user.UserProfiles.Contains(4);
+
+                ckbAtivo.Enabled = false;
+                ckbFormando.Enabled = false;
+                ckbFuncionario.Enabled = false;
+                ckbFormador.Enabled = false;
             }
         }
 
@@ -170,6 +181,126 @@ namespace FinalProject
                     filtermenu.Visible = false;
                     break;
             }
+        }
+
+        protected void rptUsers_OnItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            RepeaterItem item = rptUsers.Items[e.Item.ItemIndex];
+
+            TextBox tbUsername = (TextBox)item.FindControl("tbUsername");
+            Label lblUsername = (Label)item.FindControl("lblUsername");
+
+            TextBox tbEmail = (TextBox)item.FindControl("tbEmail");
+            Label lblEmail = (Label)item.FindControl("lblEmail");
+
+            CheckBox ckbAtivo = (CheckBox)e.Item.FindControl("ckbAtivo");
+            CheckBox ckbFormando = (CheckBox)e.Item.FindControl("ckbFormando");
+            CheckBox ckbFormador = (CheckBox)e.Item.FindControl("ckbFormador");
+            CheckBox ckbFuncionario = (CheckBox)e.Item.FindControl("ckbFuncionario");
+
+            LinkButton lbtEditUser = (LinkButton)item.FindControl("lbtEditUser");
+            LinkButton lbtCancelUser = (LinkButton)item.FindControl("lbtCancelUser");
+            LinkButton lbtDeleteUser = (LinkButton)item.FindControl("lbtDeleteUser");
+            LinkButton lbtConfirmUser = (LinkButton)item.FindControl("lbtConfirmUser");
+
+            HiddenField hdCodUser = (HiddenField)item.FindControl("hdCodUser");
+            string CodUser = hdCodUser.Value;
+
+            if (e.CommandName == "Edit")
+            {
+                tbUsername.Visible = !tbUsername.Visible;
+                lblUsername.Visible = !lblUsername.Visible;
+                tbUsername.Text = lblUsername.Text;
+
+                tbEmail.Visible = !tbEmail.Visible;
+                lblEmail.Visible = !lblEmail.Visible;
+                tbEmail.Text = lblEmail.Text;
+
+                ckbAtivo.Enabled = true;
+                ckbFormando.Enabled = true;
+                ckbFuncionario.Enabled = true;
+                ckbFormador.Enabled = true;
+
+                lbtCancelUser.Visible = true;
+                lbtConfirmUser.Visible = true;
+
+                lbtEditUser.Visible = false;
+                lbtDeleteUser.Visible = false;
+            }
+
+            if (e.CommandName == "Confirm")
+            {
+
+                List<int> userProfiles = new List<int>();
+
+                userProfiles.Add((Convert.ToInt32(ckbAtivo.Checked ? "1" : "0")));
+                userProfiles.Add((Convert.ToInt32(ckbFormando.Checked ? "1" : "0")));
+                userProfiles.Add((Convert.ToInt32(ckbFormador.Checked ? "1" : "0")));
+                userProfiles.Add((Convert.ToInt32(ckbFuncionario.Checked ? "1" : "0")));
+
+                int AnswUserUpdated =
+                    Classes.User.UpdateUsernameEmailAndProfiles(Convert.ToInt32(CodUser),tbUsername.Text, tbEmail.Text, userProfiles);
+
+                if (AnswUserUpdated == 1)
+                {
+                    BindDataUsers();
+
+                    lblMessageEdit.Visible = true;
+                    lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                    lblMessageEdit.Text = "Utilizador atualizado com sucesso";
+                    timerMessageEdit.Enabled = true;
+                }
+                else
+                {
+
+                }
+            }
+            if (e.CommandName == "Delete")
+            {
+                int AnswUserDeleted = Classes.User.DeleteUser(Convert.ToInt32(CodUser));
+
+                if (AnswUserDeleted == 1)
+                {
+                    BindDataUsers();
+
+                    lblMessageEdit.Visible = true;
+                    lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                    lblMessageEdit.Text = "Utilizador eliminado com sucesso!";
+                    timerMessageEdit.Enabled = true;
+                }
+                else
+                {
+                    lblMessageEdit.Visible = true;
+                    lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                    lblMessageEdit.Text = "Utilizador não pode ser eliminado por estar inserido numa turma!";
+                    timerMessageEdit.Enabled = true;
+                }
+
+            }
+
+            if (e.CommandName == "Cancel")
+            {
+                tbUsername.Visible = !tbUsername.Visible;
+                lblUsername.Visible = !lblUsername.Visible;
+                lblUsername.Text = lblUsername.Text;
+
+                tbEmail.Visible = !tbEmail.Visible;
+                lblEmail.Visible = !lblEmail.Visible;
+                lblEmail.Text = lblEmail.Text;
+
+                ckbAtivo.Enabled = false;
+                ckbFormando.Enabled = false;
+                ckbFuncionario.Enabled = false;
+                ckbFormador.Enabled = false;
+
+                lbtCancelUser.Visible = false;
+                lbtConfirmUser.Visible = false;
+
+                lbtEditUser.Visible = true;
+                lbtDeleteUser.Visible = true;
+
+            }
+
         }
     }
 }

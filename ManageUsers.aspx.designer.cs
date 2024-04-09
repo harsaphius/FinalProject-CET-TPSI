@@ -123,6 +123,24 @@ namespace FinalProject
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl listUsersDiv;
 
         /// <summary>
+        /// lblMessageEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessageEdit;
+
+        /// <summary>
+        /// timerMessageEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessageEdit;
+
+        /// <summary>
         /// rptUsers control.
         /// </summary>
         /// <remarks>

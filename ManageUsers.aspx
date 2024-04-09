@@ -71,10 +71,14 @@
                                 <div id="listUsersDiv" runat="server">
                                     <asp:UpdatePanel runat="server">
                                         <ContentTemplate>
+                                            <div class="container row justify-content-center">
+                                                <asp:Label runat="server" ID="lblMessageEdit" Style="display: flex; justify-content: center; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
+                                                <asp:Timer ID="timerMessageEdit" runat="server" Interval="3000" Enabled="False"></asp:Timer>
+                                            </div>
                                             <div class="card-header pb-0">
                                                 <h6>Utilizadores</h6>
                                             </div>
-                                            <asp:Repeater ID="rptUsers" runat="server" OnItemDataBound="rptUsers_OnItemDataBound">
+                                            <asp:Repeater ID="rptUsers" runat="server" OnItemDataBound="rptUsers_OnItemDataBound" OnItemCommand="rptUsers_OnItemCommand">
                                                 <HeaderTemplate>
                                                     <div class="card-body px-0 pt-0 pb-2">
                                                         <div class="table-responsive p-0">
@@ -107,6 +111,7 @@
                                                     <tr>
                                                         <td>
                                                             <p class="text-sm align-center">
+                                                                <asp:HiddenField runat="server" ID="hdCodUser" Value='<%# Eval("CodUser") %>'/>
                                                                 <asp:Label runat="server" ID="lblCodUtilizador" Text='<%# Eval("CodUser") %>' Visible="True" />
                                                             </p>
                                                         </td>

@@ -47,6 +47,46 @@ namespace FinalProject.Classes
             return uploadedFiles;
         }
 
+        /// <summary>
+        /// Função para processar o ficheiro da fotografia
+        /// </summary>
+        /// <param name="photoFile"></param>
+        /// <returns></returns>
+        public static byte[] ProcessPhotoFile(HttpPostedFile photoFile)
+        {
+            if (photoFile != null && IsImageFile(photoFile))
+            {
+                byte[] fileBytes;
+                using (BinaryReader reader = new BinaryReader(photoFile.InputStream))
+                {
+                    fileBytes = reader.ReadBytes(photoFile.ContentLength);
+                }
+
+                return fileBytes;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Função para validar que o PostedFile é .jpg, .jpeg ou .png
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        private static bool IsImageFile(HttpPostedFile file)
+        {
+            if (file != null)
+            {
+                string fileExtension = Path.GetExtension(file.FileName);
+
+                if (!string.IsNullOrEmpty(fileExtension))
+                {
+                    string extension = fileExtension.ToLower();
+                    return extension == ".jpg" || extension == ".jpeg" || extension == ".png";
+                }
+            }
+            return false;
+        }
 
         /// <summary>
         /// Função para carregar os ficheiros do utilizador no FileControl
@@ -113,46 +153,6 @@ namespace FinalProject.Classes
             }
         }
 
-        /// <summary>
-        /// Função para verificar se o ficheiro é uma imagem
-        /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
-        private static bool IsImageFile(HttpPostedFile file)
-        {
-            if (file != null)
-            {
-                string fileExtension = Path.GetExtension(file.FileName);
-
-                if (!string.IsNullOrEmpty(fileExtension))
-                {
-                    string extension = fileExtension.ToLower();
-                    return extension == ".jpg" || extension == ".jpeg" || extension == ".png";
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Função para processar o ficheiro da fotografia
-        /// </summary>
-        /// <param name="photoFile"></param>
-        /// <returns></returns>
-        public static byte[] ProcessPhotoFile(HttpPostedFile photoFile)
-        {
-            if (photoFile != null && IsImageFile(photoFile))
-            {
-                byte[] fileBytes;
-                using (BinaryReader reader = new BinaryReader(photoFile.InputStream))
-                {
-                    fileBytes = reader.ReadBytes(photoFile.ContentLength);
-                }
-
-                return fileBytes;
-            }
-
-            return null;
-        }
 
     }
 }

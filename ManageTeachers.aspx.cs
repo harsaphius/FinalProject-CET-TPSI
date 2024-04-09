@@ -239,7 +239,7 @@ namespace FinalProject
         private void BindDataUsers()
         {
             string condition =
-                " LEFT JOIN inscricao AS I ON U.codUtilizador=I.codUtilizador WHERE I.codUtilizador IS NULL AND U.ativo = 1";
+                " LEFT JOIN utilizadorPerfil AS UP ON U.codUtilizador=UP.codUtilizador LEFT JOIN inscricao AS I ON U.codUtilizador=I.codUtilizador WHERE UP.codPerfil=3 AND U.ativo = 1";
 
             PagedDataSource pagedData = new PagedDataSource();
             pagedData.DataSource = Classes.User.LoadUsers(condition);

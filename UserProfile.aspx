@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Perfil" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="UserProfile.aspx.cs" Inherits="FinalProject.UserProfile" %>
+﻿<%@ Page Title="Perfil" Language="C#"  EnableEventValidation="false" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="UserProfile.aspx.cs" Inherits="FinalProject.UserProfile" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -453,8 +453,7 @@
             </div>
             
             <asp:Label runat="server" ID="lblMessage" Style="display: flex; align-content: center; padding: 5px;" Visible="False" role="alert"></asp:Label>
-            <asp:Timer ID="timerMessage" runat="server" Interval="3000" Enabled="False"></asp:Timer>
-
+            <asp:Timer ID="timerMessage" runat="server" Interval="3000" OnTick="timerMessage_OnTick" Enabled="False"></asp:Timer>
 
         </ContentTemplate>
         <Triggers>

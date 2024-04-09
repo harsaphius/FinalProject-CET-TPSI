@@ -75,9 +75,7 @@ namespace FinalProject
                     if (!Page.IsPostBack)
                     {
                         User profileuser = Classes.User.LoadUser(user);
-
-                        (int Codutilizador, string Username) = Classes.User.DetermineUtilizador(user);
-
+                        (int CodUtilizador, string Username) = Classes.User.DetermineUtilizador(user);
                         Session["Username"] = Username;
 
                         if (profileuser != null)
@@ -123,6 +121,20 @@ namespace FinalProject
                             else
                             {
                                 LoadSubmittedFiles();
+                            }
+                        }
+
+                        List<int> UserProfiles = Classes.User.DetermineUserProfile(Convert.ToInt32(userCode));
+
+                        foreach (int profile in UserProfiles)
+                        {
+                            if (profile == 2)
+                            {
+                                lbtAvaliacoes.Visible = true;
+                            }
+                            else if (profile == 3)
+                            {
+                                lbtDisponibilidade.Visible = true;
                             }
                         }
                     }
@@ -176,7 +188,9 @@ namespace FinalProject
 
             if (CompleteUser == 0)
             {
+                lblMessage.CssClass = "alert alert-primary text-white text-center";
                 lblMessage.Text = "Perfil atualizado com sucesso.";
+                timerMessage.Enabled = true;
 
                 User profileuser = Classes.User.LoadUser(Session["Username"].ToString());
 
@@ -195,7 +209,13 @@ namespace FinalProject
                     foto.ImageUrl = profileuser.Foto;
                 }
             }
-            else lblMessage.Text = "Erro na atualização de perfil.";
+            else
+            {
+                lblMessage.CssClass = "alert alert-primary text-white text-center";
+                lblMessage.Text = "Erro na atualização de perfil.";
+                timerMessage.Enabled = true;
+
+            }
         }
 
         /// <summary>
@@ -211,14 +231,20 @@ namespace FinalProject
             {
                 foreach (var failure in failures)
                 {
+                    lblMessage.CssClass = "alert alert-primary text-white text-center";
                     lblMessage.Visible = true;
                     lblMessage.Text += failure + "\n";
+                    timerMessage.Enabled = true;
+
                 }
             }
             else if (tbPwNew.Text != tbPwNewRep.Text)
             {
+                lblMessage.CssClass = "alert alert-primary text-white text-center";
                 lblMessage.Visible = true;
                 lblMessage.Text = "A palavra-passe e a sua repetição não correspondem.";
+                timerMessage.Enabled = true;
+
             }
             else
             {
@@ -226,8 +252,11 @@ namespace FinalProject
 
                 if (ChangePass == 1)
                 {
+                    lblMessage.CssClass = "alert alert-primary text-white text-center";
                     lblMessage.Visible = true;
                     lblMessage.Text = "Palavra-passe alterada com sucesso!";
+                    timerMessage.Enabled = true;
+
 
                     Session.Clear();
                     Session.Abandon();
@@ -235,8 +264,11 @@ namespace FinalProject
                 }
                 else
                 {
+                    lblMessage.CssClass = "alert alert-primary text-white text-center";
                     lblMessage.Visible = true;
                     lblMessage.Text = "Palavra-passe atual incorreta!";
+                    timerMessage.Enabled = true;
+
                 }
             }
         }
@@ -278,14 +310,14 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void fileRepeater_OnItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            //if (e.CommandName == "Download")
-            //{
-            //    int fileId;
-            //    if (int.TryParse(e.CommandArgument.ToString(), out fileId))
-            //    {
-            //        Classes.FileControl.ProcessRequest(HttpContext.Current, fileId);
-            //    }
-            //}
+            if (e.CommandName == "Download")
+            {
+                int fileId;
+                if (int.TryParse(e.CommandArgument.ToString(), out fileId))
+                {
+                    Classes.FileControl.ProcessRequest(HttpContext.Current, fileId);
+                }
+            }
         }
 
         protected void btnBackMainPage_OnClick(object sender, EventArgs e)
@@ -327,10 +359,18 @@ namespace FinalProject
         }
 
 
+
+
         protected void fileRepeater_OnItemDataBound(object sender, RepeaterItemEventArgs e)
         {
 
-           
+
+        }
+
+        protected void timerMessage_OnTick(object sender, EventArgs e)
+        {
+            lblMessage.Visible = false;
+            timerMessage.Enabled = false;
         }
     }
 }
