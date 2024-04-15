@@ -51,6 +51,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label profilename;
 
         /// <summary>
+        /// lbtEditUsername control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtEditUsername;
+
+        /// <summary>
         /// profileemail control.
         /// </summary>
         /// <remarks>
@@ -157,6 +166,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater fileRepeater;
+
+        /// <summary>
+        /// btnExport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnExport;
 
         /// <summary>
         /// registration control.

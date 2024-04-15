@@ -227,8 +227,8 @@
                                             <div class="page-header min-vh-50">
                                                 <div class="container-fluid">
                                                     <div class="row ">
-                                                        <div class="col-xl-6 col-lg-5 col-md-6 flex-column">
-                                                            <div class="card card-plain">
+                                                        <div class="col-xl-7 col-lg-7 col-md-6 flex-column">
+                                                            <div class="card card-plain" style="max-width: 100%;">
                                                                 <div class="card-header pb-0 text-left bg-transparent">
                                                                     <h5 class="font-weight-bolder text-info text-gradient">Inserção de novo módulo:</h5>
                                                                 </div>
@@ -277,8 +277,8 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
+                                                            <div class="col-md-3">
+                                                                <div class="oblique position-absolute top-0 h-100 d-md-block me-n10" style="max-width: 100%;">
                                                                     <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
                                                                 </div>
                                                             </div>

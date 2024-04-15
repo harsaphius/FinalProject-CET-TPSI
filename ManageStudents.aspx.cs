@@ -61,15 +61,16 @@ namespace FinalProject
                 if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
                 {
                     script = @"
-                                document.getElementById('management').classList.remove('hidden');
-                                document.getElementById('managecourses').classList.remove('hidden');
-                                document.getElementById('manageclasses').classList.remove('hidden');
-                                document.getElementById('managemodules').classList.remove('hidden');
-                                document.getElementById('managestudents').classList.remove('hidden');
-                                document.getElementById('manageteachers').classList.remove('hidden');
-                                document.getElementById('manageclassrooms').classList.remove('hidden');
-                                document.getElementById('manageusers').classList.remove('hidden');
-
+                            document.getElementById('management').classList.remove('hidden');
+                            document.getElementById('managecourses').classList.remove('hidden');
+                            document.getElementById('manageclasses').classList.remove('hidden');
+                            document.getElementById('managemodules').classList.remove('hidden');
+                            document.getElementById('managestudents').classList.remove('hidden');
+                            document.getElementById('manageteachers').classList.remove('hidden');
+                            document.getElementById('manageclassrooms').classList.remove('hidden');
+                            document.getElementById('manageusers').classList.remove('hidden');
+                            document.getElementById('statistics').classList.remove('hidden');
+                            document.getElementById('manageschedules').classList.remove('hidden');
                             ";
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
@@ -376,7 +377,7 @@ namespace FinalProject
             PagedDataSource pagedData = new PagedDataSource();
             pagedData.DataSource = Classes.Student.LoadStudents();
             pagedData.AllowPaging = true;
-            pagedData.PageSize = 2;
+            pagedData.PageSize = 5;
             pagedData.CurrentPageIndex = PageNumberStudents;
             int PageNumber = PageNumberStudents + 1;
             lblPageNumberListStudents.Text = PageNumber.ToString();
@@ -408,12 +409,12 @@ namespace FinalProject
         private void BindDataUsers()
         {
             string condition =
-                " LEFT JOIN inscricao AS I ON U.codUtilizador=I.codUtilizador WHERE I.codUtilizador IS NULL AND U.ativo = 1";
+                " LEFT JOIN utilizadorPerfil AS UP ON U.codUtilizador=UP.codUtilizador LEFT JOIN inscricao AS I ON U.codUtilizador=I.codUtilizador WHERE UP.codPerfil != 2 AND U.ativo = 1 AND U.codUtilizador NOT IN (SELECT codFormando FROM formando)";
 
             PagedDataSource pagedData = new PagedDataSource();
             pagedData.DataSource = Classes.User.LoadUsers(condition);
             pagedData.AllowPaging = true;
-            pagedData.PageSize = 3;
+            pagedData.PageSize = 5;
             pagedData.CurrentPageIndex = PageNumberUsers;
             int PageNumber = PageNumberUsers + 1;
             lblPageNumbersUsersForStudents.Text = PageNumber.ToString();
@@ -698,6 +699,8 @@ namespace FinalProject
 
             filtermenu.Visible = false;
             filters.Visible = false;
+
+            hdnSourceDiv.Value = "insertStudentsDiv";
         }
 
         protected void btnBackPageOne_OnClick(object sender, EventArgs e)

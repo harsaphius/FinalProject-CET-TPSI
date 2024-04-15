@@ -60,49 +60,31 @@ namespace FinalProject
         protected global::System.Web.UI.UpdatePanel updatePanelFilters;
 
         /// <summary>
-        /// lbtn_search control.
+        /// lbtnSearchFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtn_search;
+        protected global::System.Web.UI.WebControls.LinkButton lbtnSearchFilters;
 
         /// <summary>
-        /// tb_search control.
+        /// tbSearchFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_search;
+        protected global::System.Web.UI.WebControls.TextBox tbSearchFilters;
 
         /// <summary>
-        /// ddl_area control.
+        /// ddlTipoCursoFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddl_area;
-
-        /// <summary>
-        /// SQLDSArea control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSArea;
-
-        /// <summary>
-        /// ddl_tipo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddl_tipo;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTipoCursoFilters;
 
         /// <summary>
         /// SQLDSTipo control.
@@ -114,31 +96,49 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSTipo;
 
         /// <summary>
-        /// tb_dataInicio control.
+        /// tbDataInicioFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_dataInicio;
+        protected global::System.Web.UI.WebControls.TextBox tbDataInicioFilters;
 
         /// <summary>
-        /// tb_dataFim control.
+        /// tbDataFimFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tb_dataFim;
+        protected global::System.Web.UI.WebControls.TextBox tbDataFimFilters;
 
         /// <summary>
-        /// btn_clear control.
+        /// ddlOrderFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btn_clear;
+        protected global::System.Web.UI.WebControls.DropDownList ddlOrderFilters;
+
+        /// <summary>
+        /// btnApplyFilters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnApplyFilters;
+
+        /// <summary>
+        /// btnClearFilters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnClearFilters;
 
         /// <summary>
         /// listClassesDiv control.
@@ -240,22 +240,49 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSCurso;
 
         /// <summary>
-        /// rfvTipoCurso control.
+        /// lblTurma control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTipoCurso;
+        protected global::System.Web.UI.WebControls.Label lblTurma;
 
         /// <summary>
-        /// tbTurma control.
+        /// ddlRegime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbTurma;
+        protected global::System.Web.UI.WebControls.DropDownList ddlRegime;
+
+        /// <summary>
+        /// SQLDSRegime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSRegime;
+
+        /// <summary>
+        /// ddlHorarioTurma control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlHorarioTurma;
+
+        /// <summary>
+        /// SQLDSHorarioTurma control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSHorarioTurma;
 
         /// <summary>
         /// rfvDataInicio control.
@@ -276,22 +303,13 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tbDataInicio;
 
         /// <summary>
-        /// rfvDataFim control.
+        /// lblDataFim control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDataFim;
-
-        /// <summary>
-        /// tbDataFim control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbDataFim;
+        protected global::System.Web.UI.WebControls.Label lblDataFim;
 
         /// <summary>
         /// rptStudents control.
@@ -427,5 +445,104 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnInsertClass;
+
+        /// <summary>
+        /// detailClassesDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl detailClassesDiv;
+
+        /// <summary>
+        /// updatePanelDetalheTurma control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updatePanelDetalheTurma;
+
+        /// <summary>
+        /// lblNomeTurma control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNomeTurma;
+
+        /// <summary>
+        /// lblNrTurma control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNrTurma;
+
+        /// <summary>
+        /// lblNomeCurso control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNomeCurso;
+
+        /// <summary>
+        /// lblRegime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblRegime;
+
+        /// <summary>
+        /// lblHorario control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblHorario;
+
+        /// <summary>
+        /// lblDataInicioDetail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblDataInicioDetail;
+
+        /// <summary>
+        /// lblDataFimDetail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblDataFimDetail;
+
+        /// <summary>
+        /// rptStudentsDetail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptStudentsDetail;
+
+        /// <summary>
+        /// rptTeachersDetail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptTeachersDetail;
     }
 }

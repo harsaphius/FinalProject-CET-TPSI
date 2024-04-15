@@ -66,6 +66,8 @@ namespace FinalProject
                             document.getElementById('manageteachers').classList.remove('hidden');
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             document.getElementById('manageusers').classList.remove('hidden');
+                            document.getElementById('statistics').classList.remove('hidden');
+                            document.getElementById('manageschedules').classList.remove('hidden');
                             ";
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
@@ -239,12 +241,12 @@ namespace FinalProject
         private void BindDataUsers()
         {
             string condition =
-                " LEFT JOIN utilizadorPerfil AS UP ON U.codUtilizador=UP.codUtilizador LEFT JOIN inscricao AS I ON U.codUtilizador=I.codUtilizador WHERE UP.codPerfil=3 AND U.ativo = 1";
+                " LEFT JOIN utilizadorPerfil AS UP ON U.codUtilizador=UP.codUtilizador LEFT JOIN inscricao AS I ON U.codUtilizador=I.codUtilizador WHERE UP.codPerfil != 3 AND U.ativo = 1 AND U.codUtilizador NOT IN (SELECT codFormador FROM formador)";
 
             PagedDataSource pagedData = new PagedDataSource();
             pagedData.DataSource = Classes.User.LoadUsers(condition);
             pagedData.AllowPaging = true;
-            pagedData.PageSize = 1;
+            pagedData.PageSize = 5;
             pagedData.CurrentPageIndex = PageNumberUsers;
             int PageNumber = PageNumberUsers + 1;
             lblPageNumberUsersForTeachers.Text = PageNumber.ToString();
@@ -459,7 +461,6 @@ namespace FinalProject
             filters.Visible = !filters.Visible;
         }
 
-
         protected void btnInsertTeacherMain_OnClick(object sender, EventArgs e)
         {
             insertTeachersDiv.Visible = true;
@@ -484,7 +485,6 @@ namespace FinalProject
 
             filtermenu.Visible = false;
             filters.Visible = false;
-
 
             hdnSourceDiv.Value = "listTeachersDiv";
         }
@@ -597,12 +597,12 @@ namespace FinalProject
 
                         if (AnswEnrollmentCode == -1 && AnswAnswEnrollmentRegister == -1)
                         {
-                            lblMessageRegistration.Text = "Utilizador já registado nesse módulo.";
+                            lblMessageRegistration.Text = "Formador já registado nesse módulo.";
                         }
                         else
                         {
                             Classes.Teacher.InsertTeacher(Convert.ToInt32(Session["CodUtilizadorClicked"]), AnswEnrollmentCode);
-                            lblMessageRegistration.Text = "Utilizador registado com sucesso no módulo!";
+                            lblMessageRegistration.Text = "Formador registado com sucesso no módulo!";
                         }
                     }
 

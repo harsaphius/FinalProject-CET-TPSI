@@ -188,8 +188,8 @@
                                             <div style="padding: 5px;" id="alert" role="alert">
                                                 <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
                                             </div>
-                                            <div class="page-header min-vh-30">
-                                                <div class="container">
+                                            <div class="page-header min-vh-80">
+                                                <div class="container min-vh-80">
                                                     <div class="row ">
                                                         <div class="col-xl-8 col-lg-7 col-md-6">
                                                             <div class="card card-plain">

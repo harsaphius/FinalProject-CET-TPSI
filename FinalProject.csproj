@@ -49,6 +49,15 @@
     <Reference Include="ASPSnippets.GoogleAPI">
       <HintPath>..\ColecaoNumismatica\bin\ASPSnippets.GoogleAPI.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>..\ColecaoNumismatica\bin\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.pdfa">
+      <HintPath>..\ColecaoNumismatica\bin\itextsharp.pdfa.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp.xtra">
+      <HintPath>..\ColecaoNumismatica\bin\itextsharp.xtra.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -898,6 +907,7 @@
     <Content Include="ManageCourses.aspx" />
     <Content Include="MainCourses.aspx" />
     <Content Include="ManageModules.aspx" />
+    <Content Include="ManageSchedules.aspx" />
     <Content Include="ManageStudents.aspx" />
     <Content Include="ManageTeachers.aspx" />
     <Content Include="ManageUsers.aspx" />
@@ -964,7 +974,9 @@
     <Content Include="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Xml.XPath.XDocument.dll" />
     <Content Include="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\vbc.exe" />
     <Content Include="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\VBCSCompiler.exe" />
+    <Content Include="Scheduler.asmx" />
     <Content Include="StatisticalPage.aspx" />
+    <Content Include="TeacherAvailability.aspx" />
     <Content Include="UserCourses.aspx" />
     <Content Include="ErrorPage404.aspx" />
     <Content Include="ErrorPageGeneral.aspx" />
@@ -1046,6 +1058,7 @@
     <Content Include="assets\js\ckeditor\README.md" />
     <Content Include="assets\js\ckeditor\samples\plugins\htmlwriter\assets\outputforflash\outputforflash.fla" />
     <Content Include="assets\js\ckeditor\skins\moono\readme.md" />
+    <Content Include="PDFS\Template\CinelPersonalFile.pdf" />
     <None Include="web.sitemap" />
   </ItemGroup>
   <ItemGroup>
@@ -1073,7 +1086,6 @@
     <Compile Include="Classes\FileControl.cs" />
     <Compile Include="Classes\GoogleProfile.cs" />
     <Compile Include="Classes\Module.cs" />
-    <Compile Include="Classes\PageControls.cs" />
     <Compile Include="Classes\Schedule.cs" />
     <Compile Include="Classes\Security.cs" />
     <Compile Include="Classes\Student.cs" />
@@ -1086,7 +1098,6 @@
     <Compile Include="CourseDetails.aspx.designer.cs">
       <DependentUpon>CourseDetails.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Events.cs" />
     <Compile Include="Manage.aspx.cs">
       <DependentUpon>Manage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1129,6 +1140,13 @@
     <Compile Include="ManageModules.aspx.designer.cs">
       <DependentUpon>ManageModules.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ManageSchedules.aspx.cs">
+      <DependentUpon>ManageSchedules.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageSchedules.aspx.designer.cs">
+      <DependentUpon>ManageSchedules.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ManageStudents.aspx.cs">
       <DependentUpon>ManageStudents.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1158,12 +1176,23 @@
       <DependentUpon>ModuleDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
+    <Compile Include="Scheduler.asmx.cs">
+      <DependentUpon>Scheduler.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="StatisticalPage.aspx.cs">
       <DependentUpon>StatisticalPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="StatisticalPage.aspx.designer.cs">
       <DependentUpon>StatisticalPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherAvailability.aspx.cs">
+      <DependentUpon>TeacherAvailability.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TeacherAvailability.aspx.designer.cs">
+      <DependentUpon>TeacherAvailability.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserCourses.aspx.cs">
       <DependentUpon>UserCourses.aspx</DependentUpon>
@@ -1449,6 +1478,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="obj\Debug\TempPE\" />
+    <Folder Include="PDFS\Gerados\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

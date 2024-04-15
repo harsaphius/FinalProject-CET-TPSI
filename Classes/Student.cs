@@ -12,6 +12,8 @@ namespace FinalProject.Classes
     {
         public int CodFormando { get; set; }
         public int CodInscricao { get; set; }
+        public int CodTurma { get; set; }
+        public string CodSituacao { get; set; }
         public string Nome { get; set; }
         public string Foto { get; set; }
 
@@ -54,41 +56,21 @@ namespace FinalProject.Classes
         /// Função para carregar os formandos
         /// </summary>
         /// <returns></returns>
-        public static List<Student> LoadStudents(List<string> conditions = null)
+        public static List<Student> LoadStudents(List<string> conditions = null, string CodCourse = null, string querySub = null)
         {
             List<Student> Students = new List<Student>();
 
             string query = "SELECT DISTINCT F.codFormando, UD.nome, UDS.foto FROM formando AS F LEFT JOIN inscricao AS I ON F.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador";
 
-            //// Decisões para colocar ou não os filtros dentro da string query
-            //if (!string.IsNullOrEmpty(search_string))
-            //{
-            //    conditions.Add($"moeda.nome LIKE '%{search_string}%'");
-            //}
-            //if (grade != 0)
-            //{
-            //    conditions.Add($"moeda_estado.cod_estado = {grade}");
-            //}
-            //if (coin_type != 0)
-            //{
-            //    conditions.Add($"moeda.cod_tipo = {coin_type}");
-            //}
-            //if (status == 0)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //else if (status == 1)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //if (conditions.Count > 0)
-            //{
-            //    query += " WHERE " + string.Join(" AND ", conditions);
-            //}
-            //if (!string.IsNullOrEmpty(sort_order))
-            //{
-            //    query += " ORDER BY moeda_estado.valor_atual " + sort_order;
-            //}
+            if (!String.IsNullOrEmpty(CodCourse))
+            {
+                query += $" WHERE I.codCurso={CodCourse}";
+            }
+
+            if (querySub != null)
+            {
+                query = querySub;
+            }
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -102,6 +84,7 @@ namespace FinalProject.Classes
                 informacao.CodFormando = Convert.ToInt32(dr["codFormando"]);
                 //informacao.CodInscricao = Convert.ToInt32(dr["codInscricao"]);
                 informacao.Nome = dr["nome"].ToString();
+                if (querySub != null) informacao.CodTurma = Convert.ToInt32(dr["codTurma"]);
 
                 string relativeImagePath = "~/assets/img/default.png";
                 string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);

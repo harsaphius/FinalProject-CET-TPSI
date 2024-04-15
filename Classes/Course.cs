@@ -47,7 +47,6 @@ namespace FinalProject.Classes
                 myCommand.Parameters.AddWithValue("@Internship", Course.DuracaoEstagio);
             }
 
-
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             SqlParameter CourseRegister = new SqlParameter();
@@ -86,12 +85,15 @@ namespace FinalProject.Classes
 
                 myCon.Open();
 
+                int cont = 1;
                 foreach (int moduleID in modules)
                 {
                     myCommand2.Parameters.Clear();
                     myCommand2.Parameters.AddWithValue("@CodCourse", AnswCourseNumber);
                     myCommand2.Parameters.AddWithValue("@CodMod", moduleID);
+                    myCommand2.Parameters.AddWithValue("@Order", cont);
                     myCommand2.ExecuteNonQuery();
+                    cont++;
                 }
 
                 myCon.Close();
@@ -292,12 +294,15 @@ namespace FinalProject.Classes
                 myCommand3.Connection = myCon;
                 myCon.Open();
 
+                int cont = 1;
                 foreach (int moduleID in modules)
                 {
                     myCommand3.Parameters.Clear();
                     myCommand3.Parameters.AddWithValue("@CodCourse", Course.CodCurso);
                     myCommand3.Parameters.AddWithValue("@CodMod", moduleID);
+                    myCommand3.Parameters.AddWithValue("@Order", cont);
                     myCommand3.ExecuteNonQuery();
+                    cont++;
                 }
 
                 myCon.Close();
@@ -338,6 +343,63 @@ namespace FinalProject.Classes
             return AnswCourseDeleted;
         }
 
+        public static int GetTotalHoursCourse(int CodCurso)
+        {
+            int duration;
 
+            string connectionString = ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT duracao FROM curso WHERE codCurso = @CodCurso";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@CodCurso", CodCurso);
+
+                    connection.Open();
+
+                    object duracao = command.ExecuteScalar();
+
+                    if (duracao != DBNull.Value)
+                    {
+                        duration = Convert.ToInt32(duracao);
+                    }
+                    else
+                    {
+                        duration = -1;
+                    }
+
+
+                    connection.Close();
+
+                }
+            }
+
+            return duration;
+        }
+
+        public static string GetCourseTypeNameFromDDL(string CodCourse)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString;
+            string courseTypeName = null;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string sql = "SELECT nomeTipoCurto FROM tipoCurso AS TP INNER JOIN curso AS C ON TP.codTipoCurso=C.codTipoCurso WHERE codCurso = @CodCourse";
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@CodCourse", CodCourse);
+
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    courseTypeName = reader["nomeTipoCurto"].ToString();
+                }
+            }
+
+            return courseTypeName;
+        }
     }
 }

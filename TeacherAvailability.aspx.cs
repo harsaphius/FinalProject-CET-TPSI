@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace FinalProject
 {
-    public partial class Manage : System.Web.UI.Page
+    public partial class TeacherAvailability : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -53,7 +52,8 @@ namespace FinalProject
 
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
+                if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" ||
+                    Session["CodUtilizador"].ToString() == "1")
                 {
                     script = @"
                             document.getElementById('management').classList.remove('hidden');
@@ -72,5 +72,6 @@ namespace FinalProject
                 }
             }
         }
+
     }
 }

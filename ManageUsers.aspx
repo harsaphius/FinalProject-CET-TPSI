@@ -5,7 +5,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
-            <div class="container-fluid">
+            <div class="container">
                 <div class="row" style="margin-top: 15px">
                     <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
                         <asp:Button runat="server" CssClass="btn btn-primary" Visible="True" CausesValidation="False" Text="Inserir Novo Utilizador" ID="btnInsertUserMain" OnClick="btnInsertUserMain_OnClick" />
@@ -16,38 +16,29 @@
                         <i class="fas fa-filter text-primary text-lg" title="Filter" aria-hidden="true">Filtros</i>
                         </asp:LinkButton>
                     </div>
-                    <div id="filters" class="col-md-12 col-md-6" runat="server" visible="false" style="padding-left: 30px;">
+                    <div id="filters" class="col-lg-12 col-md-6" runat="server" visible="false" style="padding-left: 30px;">
                         <asp:UpdatePanel ID="updatePanelFilters" runat="server">
                             <ContentTemplate>
                                 <div class="row">
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                    <div class="col-xl-4 col-sm-6">
                                         <span>Designação:</span>
                                         <div class="input-group mb-4">
                                             <asp:LinkButton runat="server" ID="lbtSearchFilters" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
                                             <asp:TextBox runat="server" ID="tbSearchFilters" CssClass="form-control" placeholder="Type here..."></asp:TextBox>
                                         </div>
                                     </div>
-                                    <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
-                                        <span>Nr.º de Horas:</span>
-                                        <div class="dropdown">
-                                            <asp:DropDownList ID="ddlNrHoras" runat="server" class="btn bg-gradient-secundary dropdown-toggle">
-                                                <asp:ListItem Value="25">25 horas</asp:ListItem>
-                                                <asp:ListItem Value="50">50 Horas</asp:ListItem>
-                                            </asp:DropDownList>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-4 mb-xl-0 mb-0">
+                                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2">
                                         <span>
                                             <br />
                                         </span>
-                                        <div class="input-group mb-0 text-end">
+                                        <div class="input-group">
                                             <asp:DropDownList runat="server" ID="ddlOrder" class="btn bg-gradient-secundary dropdown-toggle">
                                                 <asp:ListItem Value="ASC">A-Z</asp:ListItem>
                                                 <asp:ListItem Value="DESC">Z-A</asp:ListItem>
                                             </asp:DropDownList>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 mb-xl-0 mb-0">
+                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                                         <br />
                                         <div class="input-group mb-0">
                                             <asp:Button runat="server" ID="btnApplyFilters" CausesValidation="False" CssClass="btn btn-outline-primary mb-0" Text="Aplicar" AutoPostBack="True" />
@@ -73,7 +64,7 @@
                                         <ContentTemplate>
                                             <div class="container row justify-content-center">
                                                 <asp:Label runat="server" ID="lblMessageEdit" Style="display: flex; justify-content: center; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
-                                                <asp:Timer ID="timerMessageEdit" runat="server" Interval="3000" Enabled="False"></asp:Timer>
+                                                <asp:Timer ID="timerMessageEdit" runat="server" Interval="3000" Enabled="False" OnTick="timerMessageEdit_OnTick"></asp:Timer>
                                             </div>
                                             <div class="card-header pb-0">
                                                 <h6>Utilizadores</h6>
@@ -111,7 +102,7 @@
                                                     <tr>
                                                         <td>
                                                             <p class="text-sm align-center">
-                                                                <asp:HiddenField runat="server" ID="hdCodUser" Value='<%# Eval("CodUser") %>'/>
+                                                                <asp:HiddenField runat="server" ID="hdCodUser" Value='<%# Eval("CodUser") %>' />
                                                                 <asp:Label runat="server" ID="lblCodUtilizador" Text='<%# Eval("CodUser") %>' Visible="True" />
                                                             </p>
                                                         </td>
@@ -187,7 +178,7 @@
                                     <div class="col-12">
                                         <ul class="pagination justify-content-center" style="padding: 2px;">
                                             <li class="page-item">
-                                                <asp:LinkButton ID="btnPreviousUser" CssClass="page-link" CausesValidation="false" runat="server">
+                                                <asp:LinkButton ID="btnPreviousUser" CssClass="page-link" CausesValidation="false" OnClick="btnPreviousUser_OnClick" runat="server">
                                                                                         <i class="fa fa-angle-left"></i>
                                                                                         <span class="sr-only">Previous</span>
                                                 </asp:LinkButton>
@@ -198,7 +189,7 @@
                                                 </span>
                                             </li>
                                             <li class="page-item">
-                                                <asp:LinkButton ID="btnNextUser" CssClass="page-link" CausesValidation="false" runat="server">
+                                                <asp:LinkButton ID="btnNextUser" CssClass="page-link" CausesValidation="false" OnClick="btnNextUser_OnClick" runat="server">
                                                                                         <i class="fa fa-angle-right"></i>
                                                                                         <span class="sr-only">Next</span>
                                                 </asp:LinkButton>
@@ -276,16 +267,19 @@
                                                     <asp:RequiredFieldValidator ID="rfvTelemovel" Text="*" ErrorMessage="Telemóvel Obrigatório" runat="server" ControlToValidate="tbTelemovel" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                                     <asp:TextBox ID="tbTelemovel" runat="server" class="form-control" placeholder="Phone Number"></asp:TextBox>
                                                 </div>
-                                            </div>
 
-                                            <div class="text-center">
+                                                <div class="text-center">
+                                                    <div style="padding: 5px;" id="alert" class="hidden" role="alert">
+                                                        <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
+                                                        <div class="container row justify-content-center">
+                                                            <asp:Label runat="server" ID="lblMessageInsert" Style="display: flex; justify-content: center; padding: 5px;" Visible="False" role="alert"></asp:Label>
+                                                            <asp:Timer ID="timerMessageInsert" runat="server" Interval="3000" Enabled="False" OnTick="timerMessageInsert_OnTick"></asp:Timer>
+                                                        </div>
+                                                    </div>
 
-                                                <div style="padding: 5px;" id="alert" class="hidden" role="alert">
-                                                    <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
-                                                    <asp:Label runat="server" ID="lbl_message" CssClass="text-white"></asp:Label>
                                                 </div>
-                                                <asp:Button ID="btnSignup" runat="server" CssClass="btn bg-gradient-dark w-100 my-4 mb-2" Text="Sign Up" />
                                             </div>
+                                            <asp:Button ID="btnSignup" OnClick="btnSignup_OnClick" runat="server" CssClass="btn bg-gradient-dark w-100 my-4 mb-2" Text="Sign Up" />
                                         </div>
                                     </div>
                                 </div>
@@ -298,7 +292,7 @@
 
         </ContentTemplate>
         <Triggers>
-            <asp:AsyncPostBackTrigger ControlID="btnInsertUserMain" />
+            <asp:PostBackTrigger ControlID="btnSignup" />
             <asp:AsyncPostBackTrigger ControlID="btnBack" />
         </Triggers>
     </asp:UpdatePanel>

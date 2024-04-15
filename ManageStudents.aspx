@@ -689,17 +689,17 @@
     <!-- Javascript para o Flatpicker -->
     <script>
         function initializeDatePickers() {
-            flatpickr('#<%= tbDataNascimento.ClientID %>', {
-                dateFormat: 'd-m-Y',
-                theme: 'light',
-                maxDate: new Date(),
-                onChange: function (selectedDates, dateStr, instance) {
-                    console.log("onClose chamada"); // Adicione este console.log para verificar se a função está sendo chamada
-                    instance.redraw();
-                }
+            flatpickr('#<%= tbDataNascimento.ClientID %>',
+                {
+                    dateFormat: 'd-m-Y',
+                    theme: 'light',
+                    maxDate: new Date(),
+                    onChange: function(selectedDates, dateStr, instance) {
+                        console.log("onClose chamada"); // Adicione este console.log para verificar se a função está sendo chamada
+                        instance.redraw();
+                    }
 
-            }
-            });
+                });
 
         flatpickr('#<%= tbDataValidade.ClientID %>', {
             dateFormat: 'd-m-Y',

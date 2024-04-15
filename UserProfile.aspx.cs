@@ -1,6 +1,9 @@
 ﻿using FinalProject.Classes;
+using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -66,9 +69,9 @@ namespace FinalProject
                             document.getElementById('manageteachers').classList.remove('hidden');
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             document.getElementById('manageusers').classList.remove('hidden');
-
+                            document.getElementById('statistics').classList.remove('hidden');
+                            document.getElementById('manageschedules').classList.remove('hidden');
                             ";
-
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                     }
 
@@ -180,6 +183,7 @@ namespace FinalProject
                 byte[] photoBytes = FileControl.ProcessPhotoFile(photoFile);
                 user.Foto = (Convert.ToBase64String(photoBytes));
             }
+
             user.CodGrauAcademico = Convert.ToInt32(ddlCodGrauAcademico.SelectedValue);
             user.CodSituacaoProf = Convert.ToInt32(ddlCodSituacaoProfissional.SelectedValue);
             user.LifeMotto = tbLifeMotto.Text;
@@ -372,5 +376,155 @@ namespace FinalProject
             lblMessage.Visible = false;
             timerMessage.Enabled = false;
         }
+
+        protected void lbtDisponibilidade_OnClick(object sender, EventArgs e)
+        {
+            Response.Redirect("TeacherAvailability.aspx");
+        }
+
+        protected void btnExport_OnClick(object sender, EventArgs e)
+        {
+            string
+                pathPDFs = ConfigurationManager
+                    .AppSettings
+                        ["PathPDFs"]; //Caminho dos PDFs colocado no WebConfig de modo a ser facilmente acessado e modificado
+
+            string pdfTemplate = pathPDFs + "Template\\CinelPersonalFile.pdf"; //Caminho final do template
+            string pathFinal = pathPDFs + $"Gerados\\Identification_{Session["User"]}";
+
+            int num = 10;
+            int pageNumber = 1;
+            List<string> pdfFiles = new List<string>();
+
+            User profileuser = Classes.User.LoadUser(Session["User"].ToString());
+            List<ClassGroup> classGroups =
+                Classes.ClassGroup.LoadClassGroups(null, null, profileuser.CodUser.ToString());
+
+            string
+                nomePDF = Classes.Security.EncryptString(num.ToString()) +
+                          ".pdf"; //Gera o nome do pdf através da encriptação da data e hora do dia em que o pdf foi criado - encriptação MD5
+
+            string novoFile = pathPDFs + nomePDF;
+
+            PdfReader pdfReader = new PdfReader(pdfTemplate); //Instancia pdfReader para ler o pdfTemplate
+            PdfStamper pdfStamper = new PdfStamper(pdfReader, new FileStream(pathFinal + ".pdf", FileMode.Create));
+            AcroFields pdfFields = pdfStamper.AcroFields; //Encontra os AcroFields no pdfStamper
+            pdfFields.SetField("tbNome",
+                profileuser.Nome); //Escreve no novoFile no campo do pdf nome o texto da tb_nome
+
+            pdfFields.SetField("tbDataNascimento", profileuser.DataNascimento.ToShortDateString());
+            string sexo = (profileuser.Sexo.ToString() == "0") ? "Feminino" : "Masculino";
+            pdfFields.SetField("tbSexo", sexo);
+            pdfFields.SetField("tbMorada",
+                profileuser.Morada + " | " + profileuser.CodPostal + " | " + profileuser.Localidade);
+            pdfFields.SetField("tbDocIdent", profileuser.TipoDoc);
+            pdfFields.SetField("tbNr", profileuser.DocIdent);
+            pdfFields.SetField("tbDataValidade", profileuser.DataValidade.ToShortDateString());
+            pdfFields.SetField("tbNIF", profileuser.NIF);
+            pdfFields.SetField("tbNrSegSocial", profileuser.NrSegSocial);
+            pdfFields.SetField("tbNacionalidade", profileuser.Nacionalidade);
+            pdfFields.SetField("tbEmail", profileuser.Email);
+            pdfFields.SetField("tbTelemovel", profileuser.Phone);
+            pdfFields.SetField("tbSituacaoProfissional", profileuser.SituacaoProf);
+            pdfFields.SetField("tbHabilitacoes", profileuser.GrauAcademico);
+            pdfFields.SetField("tbIBAN", profileuser.IBAN);
+            pdfFields.SetField("tbLifeMotto", profileuser.LifeMotto);
+            pdfFields.SetField("pageNumber", pageNumber.ToString());
+            byte[] imageData = profileuser.FotoBytes;
+
+            iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(imageData);
+
+            // Scale the image if necessary
+            image.ScaleToFit(100f, 100f); // Adjust width and height as needed
+
+            image.SetAbsolutePosition(460, 670);
+            // Add the image to the document
+            PdfContentByte pdfContentByte = pdfStamper.GetOverContent(1); // Page number to add the image to
+            pdfContentByte.AddImage(image);
+
+            pdfStamper.Close(); //Fecha o pdfStamper
+            pdfFiles.Add(novoFile);
+
+            //// Define the PDF document and memory stream
+            //Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+            //MemoryStream msReport = new MemoryStream();
+
+            //try
+            //{
+            //    using (var msReport = new MemoryStream())
+            //    {
+            //        using (var document = new Document(PageSize.A4, 50, 50, 50, 50))
+            //        {
+            //            PdfWriter writer = PdfWriter.GetInstance(document, msReport);
+            //            document.Open();
+
+            //            // Add user information
+            //            PdfPTable userInfoTable = new PdfPTable(2);
+            //            userInfoTable.AddCell("Name:");
+            //            userInfoTable.AddCell(profileuser.Nome);
+            //            userInfoTable.AddCell("Date of Birth:");
+            //            userInfoTable.AddCell(profileuser.DataNascimento.ToShortDateString());
+            //            // Add more user information cells as needed
+            //            document.Add(userInfoTable);
+
+            //            // Add module information for each class group
+            //            foreach (ClassGroup classGroup in classGroups)
+            //            {
+            //                // Add a new page for each class group
+            //                document.NewPage();
+
+            //                // Add information for the first module of the class group
+            //                foreach (Module module in classGroup.Modules)
+            //                {
+            //                    PdfPTable moduleInfoTable = new PdfPTable(2);
+            //                    moduleInfoTable.AddCell("Module Name:");
+            //                    moduleInfoTable.AddCell(module.Nome);
+            //                    moduleInfoTable.AddCell("Credits:");
+            //                    moduleInfoTable.AddCell(module.Creditos.ToString(CultureInfo.CurrentCulture));
+            //                    // Add more module information cells as needed
+            //                    document.Add(moduleInfoTable);
+            //                }
+            //            }
+            //        }
+            //        File.WriteAllBytes(pathFinal, msReport.ToArray());
+            //        Console.WriteLine("PDF file saved successfully.");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.Error.WriteLine("An error occurred while generating the PDF: " + ex.Message);
+            //}
+
+
+
+
+
+            //byte[] mergedPdf = MergePdfFilesInFolder(pathTemps);
+
+            ////Ficheiro guardado na pasta Gerados com o nome do Cliente
+            //string outputPath = Path.Combine(Server.MapPath("~"), "Pdfs\\Gerados", $"{Session["User"]}.pdf");
+            //File.WriteAllBytes(outputPath, mergedPdf);
+
+            //string[] tempPdfFiles = Directory.GetFiles(pathTemps, "*.pdf");
+            //foreach (string tempPdfFile in tempPdfFiles)
+            //{
+            //    File.Delete(tempPdfFile);
+            //}
+
+            ////Download do ficheiro para o cliente
+            //if (mergedPdf != null)
+            //{
+            //    Response.Clear();
+            //    Response.ContentType = "application/pdf";
+            //    Response.AddHeader("Content-Disposition", $"attachment; filename={Session["User"]}.pdf");
+            //    Response.BinaryWrite(mergedPdf);
+            //    Response.End();
+            //}
+        }
+
+
+
     }
+
+
 }

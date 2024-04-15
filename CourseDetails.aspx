@@ -42,7 +42,7 @@
                             <asp:Repeater runat="server" ID="rptModules">
                                 <HeaderTemplate>
                                     <div class="card-body px-0 pt-0 pb-2">
-                                        <div class="table-responsive p-2 col-md-6">
+                                        <div class="table-responsive p-2 col-md-8">
                                             <table class="table align-items-center mb-0">
                                                 <thead>
                                                     <tr>
@@ -58,7 +58,6 @@
                                             <div class="d-flex px-2">
                                                 <asp:Image ID="imgUpload" CssClass="avatar avatar-sm rounded-circle me-3" runat="server" ImageUrl='<%# Eval("SVG") %>' />
                                                 <div class="my-auto">
-                                                    <asp:TextBox ID="tbNome" CssClass="form-control" runat="server" Text='<%# Bind("Nome") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
                                                     <p class="mb-0 text-sm">
                                                         <asp:Label ID="lblNome" runat="server" Text='<%# Eval("Nome") %>' Visible="true"></asp:Label>
                                                     </p>
@@ -66,7 +65,6 @@
                                             </div>
                                         </td>
                                         <td id="cellUFCD">
-                                            <asp:TextBox ID="tbUFCD" CssClass="form-control" runat="server" Text='<%# Bind("UFCD") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
                                             <p class="text-sm mb-0">
                                                 <asp:Label ID="lblUFCD" runat="server" Text='<%# Eval("UFCD") %>' Visible="true" Style="width: 100%;"></asp:Label>
                                             </p>

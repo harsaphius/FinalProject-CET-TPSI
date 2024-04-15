@@ -8,12 +8,16 @@ using System.Web;
 
 namespace FinalProject.Classes
 {
+    [Serializable]
     public class Teacher
     {
         public int CodFormador { get; set; }
         public int CodInscricao { get; set; }
+        public int CodTurma { get; set; }
         public string Nome { get; set; }
         public string Foto { get; set; }
+        public string CodSituacao { get; set; }
+        public List<Module> Modules { get; set; }
 
         /// <summary>
         /// Função para inserir um formador
@@ -54,41 +58,22 @@ namespace FinalProject.Classes
         /// Função para carregar os formadores
         /// </summary>
         /// <returns></returns>
-        public static List<Teacher> LoadTeachers(List<string> conditions = null)
+        public static List<Teacher> LoadTeachers(List<string> conditions = null, string CodCourse = null, string querySub = null)
         {
             List<Teacher> Teachers = new List<Teacher>();
 
             string query = "SELECT DISTINCT T.codFormador, UD.nome, UDS.foto FROM formador AS T LEFT JOIN inscricao AS I ON T.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador";
 
-            //// Decisões para colocar ou não os filtros dentro da string query
-            //if (!string.IsNullOrEmpty(search_string))
-            //{
-            //    conditions.Add($"moeda.nome LIKE '%{search_string}%'");
-            //}
-            //if (grade != 0)
-            //{
-            //    conditions.Add($"moeda_estado.cod_estado = {grade}");
-            //}
-            //if (coin_type != 0)
-            //{
-            //    conditions.Add($"moeda.cod_tipo = {coin_type}");
-            //}
-            //if (status == 0)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //else if (status == 1)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //if (conditions.Count > 0)
-            //{
-            //    query += " WHERE " + string.Join(" AND ", conditions);
-            //}
-            //if (!string.IsNullOrEmpty(sort_order))
-            //{
-            //    query += " ORDER BY moeda_estado.valor_atual " + sort_order;
-            //}
+            if (CodCourse != null)
+            {
+                query += $" WHERE I.codCurso={CodCourse}";
+            }
+
+            if (querySub != null)
+            {
+                query = querySub;
+            }
+
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -100,8 +85,8 @@ namespace FinalProject.Classes
             {
                 Teacher informacao = new Teacher();
                 informacao.CodFormador = Convert.ToInt32(dr["codFormador"]);
-                //informacao.CodInscricao = Convert.ToInt32(dr["codInscricao"]);
                 informacao.Nome = dr["nome"].ToString();
+                if (querySub != null) informacao.CodTurma = Convert.ToInt32(dr["codTurma"]);
 
                 string relativeImagePath = "~/assets/img/default.png";
                 string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
@@ -200,5 +185,32 @@ namespace FinalProject.Classes
 
             return AnswTeacherDeleted;
         }
+
+        public bool TeachesModule(int CodFormador, int CodModulo)
+        {
+            bool teachesModule = false;
+
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString))
+            {
+                string query = @"SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END 
+                             FROM formador AS F
+                             JOIN moduloFormador AS MF ON F.codFormador = MF.codFormador
+                             JOIN modulo AS M ON MF.codModulo = M.codModulos
+                             WHERE F.codFormador = @CodFormador
+                             AND MF.codModulo = @CodModulo;";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@CodFormador", CodFormador);
+                    command.Parameters.AddWithValue("@CodModulo", CodModulo);
+
+                    connection.Open();
+                    teachesModule = Convert.ToBoolean(command.ExecuteScalar());
+                }
+            }
+
+            return teachesModule;
+        }
+
     }
 }

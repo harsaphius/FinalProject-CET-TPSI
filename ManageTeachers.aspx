@@ -278,11 +278,6 @@
                                                             </ul>
                                                         </div>
                                                     </div>
-
-                                                    <div>
-                                                        <asp:Button runat="server" ID="btnEnrollUserAsTeacher" class="btn btn-outline-primary btn-sm mb-0 text-end" CausesValidation="false" CommandArgument='<%# Eval("CodUser") %>' Text="Inscrever" OnClick="btnEnroll_OnClick" />
-
-                                                    </div>
                                                 </div>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>

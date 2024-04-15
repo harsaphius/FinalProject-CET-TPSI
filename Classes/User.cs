@@ -4,7 +4,6 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
-using System.Text;
 using System.Web;
 
 namespace FinalProject.Classes
@@ -21,6 +20,7 @@ namespace FinalProject.Classes
         public string Nome { get; set; }
         public string Phone { get; set; }
         public int CodTipoDoc { get; set; }
+        public string TipoDoc { get; set; }
         public string DocIdent { get; set; }
         public DateTime DataValidade { get; set; }
         public int CodPrefix { get; set; }
@@ -36,9 +36,13 @@ namespace FinalProject.Classes
         public string IBAN { get; set; }
         public string Naturalidade { get; set; }
         public int CodNacionalidade { get; set; }
+        public string Nacionalidade { get; set; }
         public string Foto { get; set; }
+        public byte[] FotoBytes { get; set; }
         public int CodGrauAcademico { get; set; }
+        public string GrauAcademico { get; set; }
         public int CodSituacaoProf { get; set; }
+        public string SituacaoProf { get; set; }
         public string LifeMotto { get; set; }
         public List<int> UserProfiles { get; set; }
 
@@ -110,7 +114,7 @@ namespace FinalProject.Classes
         public static User LoadUser(string UserC)
         {
             string query =
-                $"SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador WHERE utilizador='{UserC}' OR email='{UserC}'";
+                $"SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador INNER JOIN tipoDocIdent AS TPI ON TPI.codTipoDoc=UD.codTipoDoc INNER JOIN situacaoProfissional AS SP ON SP.codSituacaoProfissional=UDS.codSituacaoProfissional INNER JOIN grauAcademico AS GA ON GA.codGrauAcademico=UDS.codGrauAcademico INNER JOIN pais AS P ON P.codPais=UDS.codPais WHERE utilizador='{UserC}' OR email='{UserC}'";
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager
                 .ConnectionStrings["projetofinalConnectionString"].ConnectionString);
@@ -127,6 +131,7 @@ namespace FinalProject.Classes
                 informacao.Email = dr["email"].ToString();
                 informacao.Nome = dr["nome"] == DBNull.Value ? " " : dr["nome"].ToString();
                 informacao.CodTipoDoc = (int)(dr["codTipoDoc"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codTipoDoc"]));
+                informacao.TipoDoc = dr["tipoDocumentoIdent"].ToString();
                 informacao.DocIdent = dr["docIdent"] == DBNull.Value ? " " : dr["docIdent"].ToString();
                 informacao.DataValidade = (DateTime)(dr["dataValidadeDocIdent"] == DBNull.Value
                     ? DateTime.Today
@@ -150,6 +155,7 @@ namespace FinalProject.Classes
                 informacao.CodNacionalidade = (int)(dr["codNacionalidade"] == DBNull.Value
                     ? 1
                     : Convert.ToInt32(dr["codNacionalidade"]));
+                informacao.Nacionalidade = dr["nacionalidade"].ToString();
 
                 string relativeImagePath = "~/assets/img/default.png";
                 string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
@@ -158,12 +164,19 @@ namespace FinalProject.Classes
                 informacao.Foto = dr["foto"] == DBNull.Value
                     ? "data:image/jpeg;base64," + Convert.ToBase64String(imageData)
                     : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
+
+                byte[] fotoBytes = (byte[])dr["foto"];
+                informacao.FotoBytes = fotoBytes;
+
                 informacao.CodGrauAcademico = (int)(dr["codGrauAcademico"] == DBNull.Value
                     ? 1
                     : Convert.ToInt32(dr["codGrauAcademico"]));
+                informacao.GrauAcademico = dr["grauAcademico"].ToString();
                 informacao.CodSituacaoProf = (int)(dr["codSituacaoProfissional"] == DBNull.Value
                     ? 1
                     : Convert.ToInt32(dr["codSituacaoProfissional"]));
+                informacao.SituacaoProf = dr["situacaoProfissional"].ToString();
+
                 informacao.LifeMotto = dr["lifemotto"] == DBNull.Value ? " " : dr["lifemotto"].ToString();
 
             }
@@ -184,37 +197,8 @@ namespace FinalProject.Classes
 
             string query =
                 "SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador";
-            query += condition;
 
-            //// Decisões para colocar ou não os filtros dentro da string query
-            //if (!string.IsNullOrEmpty(search_string))
-            //{
-            //    conditions.Add($"moeda.nome LIKE '%{search_string}%'");
-            //}
-            //if (grade != 0)
-            //{
-            //    conditions.Add($"moeda_estado.cod_estado = {grade}");
-            //}
-            //if (coin_type != 0)
-            //{
-            //    conditions.Add($"moeda.cod_tipo = {coin_type}");
-            //}
-            //if (status == 0)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //else if (status == 1)
-            //{
-            //    conditions.Add($"moeda_estado.deleted = {status}");
-            //}
-            //if (conditions.Count > 0)
-            //{
-            //    query += " WHERE " + string.Join(" AND ", conditions);
-            //}
-            //if (!string.IsNullOrEmpty(sort_order))
-            //{
-            //    query += " ORDER BY moeda_estado.valor_atual " + sort_order;
-            //}
+            if (condition != null) query += condition;
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager
                 .ConnectionStrings["projetofinalConnectionString"].ConnectionString);
@@ -548,6 +532,66 @@ namespace FinalProject.Classes
             return UserProfiles;
         }
 
+        public static int UpdateUsernameEmailAndProfiles(int UserCode, string Username, string Email, List<int> UserProfiles)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@UserCode", UserCode);
+            myCommand.Parameters.AddWithValue("@Username", Username);
+            myCommand.Parameters.AddWithValue("@Email", Email);
+            myCommand.Parameters.AddWithValue("Ativo", UserProfiles[0]);
+            myCommand.Parameters.AddWithValue("@CodFormando", UserProfiles[1] == 0 ? "0" : "2");
+            myCommand.Parameters.AddWithValue("@CodFormador", UserProfiles[2] == 0 ? "0" : "3");
+            myCommand.Parameters.AddWithValue("@CodFuncionario", UserProfiles[3] == 0 ? "0" : "4");
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
+
+            SqlParameter UserUpdated = new SqlParameter();
+            UserUpdated.ParameterName = "@UserUpdated";
+            UserUpdated.Direction = ParameterDirection.Output;
+            UserUpdated.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(UserUpdated);
+
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "UpdateUserProfiles";
+
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
+            int AnswUserUpdated = Convert.ToInt32(myCommand.Parameters["@UserUpdated"].Value);
+
+            myCon.Close();
+
+            return AnswUserUpdated;
+        }
+
+        public static int DeleteUser(int UserCode)
+        {
+            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
+            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
+            myCommand.Parameters.AddWithValue("@UserCode", UserCode);
+            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
+
+            SqlParameter UserDeleted = new SqlParameter();
+            UserDeleted.ParameterName = "@UserDeleted";
+            UserDeleted.Direction = ParameterDirection.Output;
+            UserDeleted.SqlDbType = SqlDbType.Int;
+
+            myCommand.Parameters.Add(UserDeleted);
+
+            myCommand.CommandType = CommandType.StoredProcedure;
+            myCommand.CommandText = "DeleteUser";
+
+            myCommand.Connection = myCon;
+            myCon.Open();
+            myCommand.ExecuteNonQuery();
+            int AnswUserDeleted = Convert.ToInt32(myCommand.Parameters["@UserDeleted"].Value);
+
+            myCon.Close();
+
+            return AnswUserDeleted;
+        }
+
         public static int ChangeProfilePic(User User)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager
@@ -579,7 +623,6 @@ namespace FinalProject.Classes
 
             return AnswUserPhotoUpdated;
         }
-
         public static int UpdateUser(User User, List<FileControl> Anexos)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager
@@ -661,66 +704,6 @@ namespace FinalProject.Classes
             myCon.Close();
 
             return AnswUserRegisterComplete;
-        }
-
-        public static int UpdateUsernameEmailAndProfiles(int UserCode, string Username, string Email, List<int> UserProfiles)
-        {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
-            myCommand.Parameters.AddWithValue("@UserCode", UserCode);
-            myCommand.Parameters.AddWithValue("@Username", Username);
-            myCommand.Parameters.AddWithValue("@Email", Email);
-            myCommand.Parameters.AddWithValue("Ativo", UserProfiles[0]);
-            myCommand.Parameters.AddWithValue("@CodFormando", UserProfiles[1] == 0 ? "0" : "2");
-            myCommand.Parameters.AddWithValue("@CodFormador", UserProfiles[2] == 0 ? "0" : "3");
-            myCommand.Parameters.AddWithValue("@CodFuncionario", UserProfiles[3] == 0 ? "0" : "4");
-            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
-
-            SqlParameter UserUpdated = new SqlParameter();
-            UserUpdated.ParameterName = "@UserUpdated";
-            UserUpdated.Direction = ParameterDirection.Output;
-            UserUpdated.SqlDbType = SqlDbType.Int;
-
-            myCommand.Parameters.Add(UserUpdated);
-
-            myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.CommandText = "UpdateUserProfiles";
-
-            myCommand.Connection = myCon;
-            myCon.Open();
-            myCommand.ExecuteNonQuery();
-            int AnswUserUpdated = Convert.ToInt32(myCommand.Parameters["@UserUpdated"].Value);
-
-            myCon.Close();
-
-            return AnswUserUpdated;
-        }
-
-        public static int DeleteUser(int UserCode)
-        {
-            SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
-            SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
-            myCommand.Parameters.AddWithValue("@UserCode", UserCode);
-            myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
-
-            SqlParameter UserDeleted = new SqlParameter();
-            UserDeleted.ParameterName = "@UserDeleted";
-            UserDeleted.Direction = ParameterDirection.Output;
-            UserDeleted.SqlDbType = SqlDbType.Int;
-
-            myCommand.Parameters.Add(UserDeleted);
-
-            myCommand.CommandType = CommandType.StoredProcedure;
-            myCommand.CommandText = "DeleteUser";
-
-            myCommand.Connection = myCon;
-            myCon.Open();
-            myCommand.ExecuteNonQuery();
-            int AnswUserDeleted = Convert.ToInt32(myCommand.Parameters["@UserDeleted"].Value);
-
-            myCon.Close();
-
-            return AnswUserDeleted;
         }
     }
 }

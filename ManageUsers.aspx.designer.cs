@@ -78,15 +78,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.TextBox tbSearchFilters;
 
         /// <summary>
-        /// ddlNrHoras control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlNrHoras;
-
-        /// <summary>
         /// ddlOrder control.
         /// </summary>
         /// <remarks>
@@ -402,13 +393,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
 
         /// <summary>
-        /// lbl_message control.
+        /// lblMessageInsert control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbl_message;
+        protected global::System.Web.UI.WebControls.Label lblMessageInsert;
+
+        /// <summary>
+        /// timerMessageInsert control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessageInsert;
 
         /// <summary>
         /// btnSignup control.
