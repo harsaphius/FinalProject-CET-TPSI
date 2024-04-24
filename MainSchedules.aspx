@@ -37,7 +37,7 @@
         <asp:HiddenField ID="hdfHorario" runat="server" />
     </div>
 
-    <div class="row">
+    <%--<div class="row">
         <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
             <span>Data de Início: </span>
             <div class="input-group mb-4">
@@ -61,7 +61,8 @@
                 <asp:Button runat="server" ID="btnClearFilters" CssClass="btn btn-outline-primary mb-0" Text="Limpar" OnClick="btnClearFilters_OnClick" />
             </div>
         </div>
-    </div>
+    </div>--%>
+    <br />
     <div class="card calendar">
         <div class="card-body p-3">
             <div class="calendar" data-bs-toggle="calendar" id="calendar"></div>

@@ -422,7 +422,7 @@ namespace FinalProject
         {
             try
             {
-                //Schedule.DeleteScheduleForClassGroupAll(CodTurma);
+                Schedule.DeleteScheduleForClassGroupAll(CodTurma);
                 if (HttpContext.Current.Session != null)
                 {
                     if (HttpContext.Current.Session["Automatic"] != null)

@@ -575,7 +575,7 @@
                                 </script>
                                 ,
                                 Created by
-                                <a href="https://github.com/harsaphius" class="font-weight-bold" target="_blank">Harsaphius</a>, based on Creative Tim Resources.
+                                <a href="https://github.com/harsaphius" class="font-weight-bold" target="_blank">Harsaphius - Patrícia Rocha</a>, based on Creative Tim Free Resources.
                             </div>
                         </div>
 
@@ -624,7 +624,7 @@
     <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="../assets/js/plugins/chartjs.min.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
-    <!-- Javascript do Chartbar -->
+<%--    <!-- Javascript do Chartbar -->
     <script>
         var ctx = document.getElementById("chart-bars").getContext("2d");
 
@@ -793,7 +793,7 @@
                 },
             },
         });
-    </script>
+    </script>--%>
 
     <!--Javascript do Sidenav Scrollbar -->
     <script>

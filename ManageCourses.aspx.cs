@@ -117,7 +117,6 @@ namespace FinalProject
                     string modulesViewState = serializer.Serialize(Classes.Module.LoadModules(null, "codUFCD"));
                     ViewState["modulesViewState"] = modulesViewState;
 
-
                 }
             }
         }

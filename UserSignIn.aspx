@@ -14,7 +14,7 @@
                             <div class="card card-plain">
                                 <div class="card-header pb-0 text-left bg-transparent">
                                     <h3 class="font-weight-bolder text-info text-gradient">Bem-vindo de volta!</h3>
-                                    <p class="mb-0">Introduza o seu e-mail/nome de utilizador e a palavra-passe </p>
+                                    <p class="mb-0">Introduza o seu e-mail ou nome de utilizador e a palavra-passe! </p>
                                 </div>
                                 <div class="card-body">
                                     <div role="form">

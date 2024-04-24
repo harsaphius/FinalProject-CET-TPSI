@@ -122,7 +122,7 @@ namespace FinalProject.Classes
         public static void DeleteScheduleForClassGroup(int CodTurma)
         {
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
-            string query = $"DELETE H FROM horario AS H INNER JOIN moduloFormadorTurma AS MFC ON H.codModuloFormador=MFC.codModuloFormadorTurma INNER JOIN turma AS T ON MFC.codTurma = T.codTurma WHERE T.codTurma = @CodTurma AND T.isActive=1";
+            string query = $"DELETE H FROM horario AS H LEFT JOIN moduloFormadorTurma AS MFC ON H.codModuloFormador=MFC.codModuloFormadorTurma LEFT JOIN turma AS T ON MFC.codTurma = T.codTurma WHERE T.codTurma = @CodTurma AND T.isActive=1";
             using (SqlCommand myCommand = new SqlCommand(query, myConn))
             {
                 myCommand.Parameters.AddWithValue("@CodTurma", CodTurma);

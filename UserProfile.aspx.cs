@@ -187,6 +187,7 @@ namespace FinalProject
                                 lbtDisponibilidade.Visible = true;
                                 lbtModulos.Visible = true;
                             }
+
                         }
                     }
                 }
@@ -669,7 +670,7 @@ namespace FinalProject
             string pathFinal = pathPDFs + $"Gerados\\Identification_{Session["User"]}";
 
             int num = 10;
-            int pageNumber = 1;
+            //int pageNumber = 1;
             List<string> pdfFiles = new List<string>();
 
             User profileuser = Classes.User.LoadUser(Session["User"].ToString());
@@ -911,6 +912,11 @@ namespace FinalProject
                 // Return the merged PDF as a byte array
                 return ms.ToArray();
             }
+        }
+
+        protected void lbtEditUsername_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

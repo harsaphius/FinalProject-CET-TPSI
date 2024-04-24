@@ -114,8 +114,8 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnClearFilters_OnClick(object sender, EventArgs e)
         {
-            tbDataFimFilters.Text = "";
-            tbDataInicioFilters.Text = "";
+            //tbDataFimFilters.Text = "";
+            //tbDataInicioFilters.Text = "";
 
         }
 

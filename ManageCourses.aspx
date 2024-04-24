@@ -30,21 +30,23 @@
                                             <asp:TextBox runat="server" ID="tbSearchFilters" CssClass="form-control" placeholder="Type here..." AutoPostBack="False"></asp:TextBox>
                                         </div>
                                     </div>
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                                         <span>Área:</span>
                                         <div class="dropdown">
                                             <asp:DropDownList ID="ddlAreaCursoFilters" AutoPostBack="False" runat="server" class="btn bg-gradient-secundary dropdown-toggle" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea" AppendDataBoundItems="True"></asp:DropDownList>
                                             <asp:SqlDataSource ID="SQLDSArea" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [area]"></asp:SqlDataSource>
                                         </div>
                                     </div>
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                                         <span>Tipo:</span>
                                         <div class="dropdown">
                                             <asp:DropDownList ID="ddlTipoCursoFilters" AutoPostBack="False" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso" AppendDataBoundItems="True"></asp:DropDownList>
                                             <asp:SqlDataSource ID="SQLDSTipo" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-4 mb-xl-0 mb-0">
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-4 mb-xl-0 mb-0">
                                         <span>Ordenação:
                                         </span>
                                         <div class="input-group mb-0 text-end">
@@ -62,6 +64,7 @@
                                             <asp:Button runat="server" ID="btnClearFilters" CssClass="btn btn-outline-primary mb-0" Text="Limpar" OnClick="btnClearFilters_OnClick" />
                                         </div>
                                     </div>
+
                                 </div>
                             </ContentTemplate>
                             <Triggers>
@@ -228,7 +231,7 @@
                                                                             <div class="mb-2">
                                                                                 <asp:DropDownList ID="ddlQNQEditCourse" ValidationGroup="EditForm" CssClass="form-control" runat="server" DataSourceID="SQLDSQNQ" DataTextField="codQNQ" DataValueField="codQNQ"></asp:DropDownList>
                                                                             </div>
-                                                                            <label>Duração do Curso</label>
+                                                                            <label>Duração do Curso (não inclui estágio)</label>
                                                                             <div class="mb-2">
                                                                                 <asp:Label runat="server" ID="lblDuracaoCursoEdit" CssClass="form-control"></asp:Label>
                                                                             </div>

@@ -37,7 +37,7 @@
                     </li>
                     <div class="card mb-4 " style="margin-right: 3px;">
                         <div class="card-header pb-0 p-3">
-                            <h6 class="mb-1">Últimos Cursos</h6>
+                            <h6 class="mb-1">Próximos Cursos</h6>
                             <p class="text-sm">A iniciar em breve</p>
                         </div>
 

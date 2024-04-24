@@ -10,6 +10,9 @@ namespace FinalProject
         {
             if (!IsPostBack)
             {
+                ddlAreaCursoFilters.Items.Insert(0, new ListItem("Todas", "0"));
+                ddlTipoCursoFilters.Items.Insert(0, new ListItem("Todas", "0"));
+
                 BindDataCourses();
             }
         }
@@ -19,8 +22,12 @@ namespace FinalProject
             tbSearchFilters.Text = "";
             ddlAreaCursoFilters.SelectedIndex = 0;
             ddlTipoCursoFilters.SelectedIndex = 0;
-            tbDataInicioFilters.Text = "";
-            tbDataFimFilters.Text = "";
+            //tbDataInicioFilters.Text = "";
+            //tbDataFimFilters.Text = "";
+
+            PageNumberCourses = 0;
+
+            BindDataCourses();
         }
 
         protected void btnDetails_Click(object sender, EventArgs e)
@@ -57,16 +64,22 @@ namespace FinalProject
 
         protected void btnApplyFilters_OnClick(object sender, EventArgs e)
         {
+            PageNumberCourses = 0;
 
+            BindDataCourses();
         }
 
         //Função de Databinding
-        private void BindDataCourses(List<string> conditions = null)
+        private void BindDataCourses()
         {
-            string query = $"SELECT * FROM curso AS C INNER JOIN turma AS T ON C.codCurso=T.codCurso WHERE C.isActive = 1 AND T.isActive=1 AND dataInicio BETWEEN '{DateTime.Now.ToString("yyyy-MM-dd")}' AND '{DateTime.Now.AddDays(60).ToString("yyyy-MM-dd")}'";
+            List<string> conditions = new List<string>();
+
+            conditions.Add(string.IsNullOrEmpty(tbSearchFilters.Text) ? "" : tbSearchFilters.Text);
+            conditions.Add(ddlAreaCursoFilters.SelectedValue == "0" ? "" : ddlAreaCursoFilters.SelectedValue);
+            conditions.Add(ddlTipoCursoFilters.SelectedValue == "0" ? "" : ddlTipoCursoFilters.SelectedValue);
 
             PagedDataSource pagedData = new PagedDataSource();
-            pagedData.DataSource = Classes.Course.LoadCourses(null, null, query);
+            pagedData.DataSource = Classes.Course.LoadCourses(conditions, null);
             pagedData.AllowPaging = true;
             pagedData.PageSize = 6;
             pagedData.CurrentPageIndex = PageNumberCourses;

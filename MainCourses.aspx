@@ -26,18 +26,18 @@
                             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                                 <span>Área:</span>
                                 <div class="dropdown">
-                                    <asp:DropDownList ID="ddlAreaCursoFilters" runat="server" class="btn bg-gradient-secundary dropdown-toggle" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlAreaCursoFilters" runat="server" class="btn bg-gradient-secundary dropdown-toggle" DataSourceID="SQLDSArea" DataTextField="nomeArea" DataValueField="codArea" AppendDataBoundItems="True"></asp:DropDownList>
                                     <asp:SqlDataSource ID="SQLDSArea" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [area]"></asp:SqlDataSource>
                                 </div>
                             </div>
                             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                                 <span>Tipo:</span>
                                 <div class="dropdown">
-                                    <asp:DropDownList ID="ddlTipoCursoFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlTipoCursoFilters" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso" AppendDataBoundItems="True"></asp:DropDownList>
                                     <asp:SqlDataSource ID="SQLDSTipo" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
                                 </div>
                             </div>
-                            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                          <%--  <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                                 <span>Data de Início: </span>
                                 <div class="input-group mb-4">
                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
@@ -51,7 +51,7 @@
                                     <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                                     <asp:TextBox runat="server" ID="tbDataFimFilters" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
                                 </div>
-                            </div>
+                            </div>--%>
                             <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
                                 <br />
                                 <div class="input-group mb-4">

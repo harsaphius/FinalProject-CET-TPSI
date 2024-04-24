@@ -32,10 +32,11 @@
                                     <a href="/UserProfile.aspx">
                                         <asp:Label runat="server" ID="profilename"></asp:Label>
                                     </a>
-                                    <asp:LinkButton ID="lbtEditUsername" runat="server"> <i class="fas fa-pen text-sm" aria-hidden="true"></i></asp:LinkButton>
+                                    <asp:LinkButton ID="lbtEditUsername" runat="server" OnClick="lbtEditUsername_Click"> <i class="fas fa-pen text-sm" aria-hidden="true"></i></asp:LinkButton>
                                 </h5>
                                 <p class="mb-0 font-weight-bold text-sm">
                                     <asp:Label runat="server" ID="profileemail"></asp:Label>
+                                    <asp:Label runat="server" ID="profiles"></asp:Label>
                                 </p>
                             </div>
                         </div>
