@@ -64,11 +64,18 @@ namespace FinalProject
                             document.getElementById('managestudents').classList.remove('hidden');
                             document.getElementById('manageteachers').classList.remove('hidden');
                             document.getElementById('manageclassrooms').classList.remove('hidden');
-                            document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
                             
                             ";
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
+                    }
+                    if (profileCode == 1)
+                    {
+                        script = @"
+                            document.getElementById('manageusers').classList.remove('hidden');
+                            
+                            ";
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowUsers", script, true);
                     }
 
                     if (!IsPostBack)
@@ -80,6 +87,8 @@ namespace FinalProject
                             hdfHorario.Value = classGroup.HorarioTurma;
                             hdfInitialDate.Value = classGroup.DataInicio.ToShortDateString();
                             NrTurma.Text = classGroup.NomeTurma;
+
+                            lblDate.Text = classGroup.DataInicio.ToShortDateString();
 
                             ddlModulesForClassGroup.DataBind();
 
@@ -102,9 +111,17 @@ namespace FinalProject
 
         protected void ddlModulesForClassGroup_OnSelectedIndexChanged(object sender, EventArgs e)
         {
+            string codTurma = Session["CodTurma"].ToString();
             string selectedModuleID = ddlModulesForClassGroup.SelectedValue;
+            int moduloID = Convert.ToInt32(ddlModulesForClassGroup.SelectedItem.Value);
             int moduleDuration = Module.GetUFCDDurationByModuleID(Convert.ToInt32(selectedModuleID));
             hdfDuration.Value = moduleDuration.ToString();
+
+            (int TeacherID, string TeacherNome) = Teacher.GetTeacherByModuleAndClass(moduloID, Convert.ToInt32(codTurma));
+
+            hdfTeacher.Value = TeacherID.ToString();
+            hdfTeacherNome.Value = TeacherNome;
+            lblFormador.Text = TeacherNome;
         }
 
         protected void btnBack_Click(object sender, EventArgs e)

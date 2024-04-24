@@ -79,7 +79,7 @@ namespace FinalProject.Classes
                 // Adicione a cláusula WHERE para filtrar os resultados por usuário, se aplicável
                 if (FromUser != null)
                 {
-                    query += $" LEFT JOIN moduloCurso AS MC ON C.codCurso=MC.codCurso LEFT JOIN modulo AS M ON MC.codModulo=M.codModulos LEFT JOIN moduloFormador AS MF ON M.codModulos=MF.codModulo INNER JOIN turmaFormando AS TF ON T.codTurma=TF.codTurma WHERE codFormando = {FromUser} OR codFormador= {FromUser}";
+                    query = $"SELECT * FROM turma AS T LEFT JOIN curso AS C ON T.codCurso=C.codCurso LEFT JOIN moduloCurso AS MC ON C.codCurso=MC.codCurso LEFT JOIN modulo AS M ON MC.codModulo=M.codModulos LEFT JOIN moduloFormador AS MF ON M.codModulos=MF.codModulo INNER JOIN turmaFormando AS TF ON T.codTurma=TF.codTurma WHERE codFormando = {FromUser} OR codFormador= {FromUser}";
                 }
 
                 SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -187,8 +187,14 @@ namespace FinalProject.Classes
                 Student student = new Student();
                 student.CodFormando = Convert.ToInt32(dr["codFormando"]);
                 student.Nome = (dr["nome"].ToString());
-                student.Foto = "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
-                student.CodSituacao = dr["situacao"].ToString();
+
+                string relativeImagePath = "~/assets/img/default.png";
+                string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                byte[] imageData = File.ReadAllBytes(absoluteImagePath);
+
+                student.Foto = dr["foto"] == DBNull.Value
+                    ? "data:image/jpeg;base64," + Convert.ToBase64String(imageData)
+                    : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]); student.CodSituacao = dr["situacao"].ToString();
                 Students.Add(student);
 
             }
@@ -209,9 +215,15 @@ namespace FinalProject.Classes
                 Teacher teacher = new Teacher();
                 teacher.CodFormador = Convert.ToInt32(dr["codFormador"]);
                 teacher.Nome = (dr["nome"].ToString());
-                teacher.Foto = "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
-                teacher.CodSituacao = dr["situacao"].ToString();
 
+                string relativeImagePath = "~/assets/img/default.png";
+                string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                byte[] imageData = File.ReadAllBytes(absoluteImagePath);
+
+                teacher.Foto = dr["foto"] == DBNull.Value
+                    ? "data:image/jpeg;base64," + Convert.ToBase64String(imageData)
+                    : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
+                teacher.CodSituacao = dr["situacao"].ToString();
 
                 Teachers.Add(teacher);
             }
@@ -557,7 +569,6 @@ namespace FinalProject.Classes
 
             return nota;
         }
-
 
         public static void InserirAvaliacao(int codFormando, int codModuloFormador, int codTurma, decimal avaliacao)
         {

@@ -110,7 +110,6 @@
                                                                         <th></th>
                                                                         <th></th>
                                                                         <th></th>
-                                                                        <th></th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -150,11 +149,6 @@
                                                         <td style="width: auto; white-space: normal; padding: 2px;" class="align-middle text-center">
                                                             <asp:LinkButton runat="server" ID="lbtSchedule" CausesValidation="false" CommandName="Schedule" Visible="true" CommandArgument='<%# Eval("CodFormador") %>'
                                                                 class="text-primary font-weight-bold text-sm"> <i class="fas fa-calendar" aria-hidden="true"></i>
-                                                            </asp:LinkButton>
-                                                        </td>
-                                                         <td style="width: auto; white-space: normal; padding: 2px;" class="align-middle text-center">
-                                                            <asp:LinkButton runat="server" ID="lbtEvaluation" CausesValidation="false" CommandName="Evaluation" Visible="true" CommandArgument='<%# Eval("CodFormador") %>'
-                                                                class="text-primary font-weight-bold text-sm"> <i class="fas fa-graduation-cap" aria-hidden="true"></i>
                                                             </asp:LinkButton>
                                                         </td>
                                                     </tr>
@@ -676,4 +670,6 @@
             <asp:AsyncPostBackTrigger ControlID="btnBack" />
         </Triggers>
     </asp:UpdatePanel>
+
+
 </asp:Content>

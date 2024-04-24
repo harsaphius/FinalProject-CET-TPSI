@@ -3,13 +3,13 @@
 	<siteMapNode url="~/MainPage.aspx" title="Home" description="Home Page">
 		<siteMapNode url="~/MainCourses.aspx" title="Cursos" description="Courses" />
 		<siteMapNode url="~/UserCourses.aspx" title="Meus Cursos" description="Courses" />
-		<siteMapNode url="~/UserProfile.aspx" title="Perfil" description="User Profile" />
-		<siteMapNode url="~/TeacherEvaluations.aspx" title="Avaliações" description="Classes Details">
+		<siteMapNode url="~/UserProfile.aspx" title="Perfil" description="Profile" />
 
-		</siteMapNode>
-		<siteMapNode url="~/TeacherAvailability.aspx" title="Disponibilidades" description="Classes Details">
+		<siteMapNode url="~/TeacherEvaluations.aspx" title="Avaliações" description="Avaliações" />
+		<siteMapNode url="~/CourseDetails.aspx" title="Detalhes do Curso" description="Course Details" />
+		<siteMapNode url="~/MainSchedules.aspx" title="Horários" description="Main Schedules" />
+		<siteMapNode url="~/TeacherAvailability.aspx" title="Disponibilidades" description="Classes Details" />
 
-		</siteMapNode>
 		<siteMapNode url="~/UserSignIn.aspx" title="Login" description="User SignIn" />
 		<siteMapNode url="~/UserSignUp.aspx" title="Registar" description="User SignUp" />
 		<siteMapNode url="~/UserChangePass.aspx" title="Recuperar Password" description="User SignUp" />
@@ -21,6 +21,8 @@
 				<siteMapNode url="~/ManageCourses.aspx?Edit" title="Editar Cursos" description="Edit Courses" />
 			</siteMapNode>
 			<siteMapNode url="~/ManageClasses.aspx" title="Gestão de Turmas" description="Manage Classes">
+				<siteMapNode url="~/ClassesDetails.aspx" title="Detalhes da Turma" description="Classes Details" />
+				<siteMapNode url="~/ManageSchedules.aspx" title="Gestão de Horário da Turma" description="Manage Schedules" />
 				<siteMapNode url="~/ManageClasses.aspx?List" title="Listar Turmas" description="List Classes" />
 				<siteMapNode url="~/ManageClasses.aspx?Insert" title="Inserir Turmas" description="Insert Classes" />
 				<siteMapNode url="~/ManageClasses.aspx?Edit" title="Editar Turmas" description="Edit Classes" />
@@ -45,22 +47,15 @@
 				<siteMapNode url="~/ManageClassrooms.aspx?Insert" title="Inserir Salas" description="Insert Classrooms" />
 				<siteMapNode url="~/ManageClassrooms.aspx?Edit" title="Editar Salas" description="Edit Classrooms" />
 			</siteMapNode>
-			<siteMapNode url="~/ManageSchedules.aspx" title="Gestão de Horário da Turma" description="Manage Schedules">
-				
+			<siteMapNode url="~/ManageUsers.aspx" title="Gestão de Utilizadores" description="Manage Users">
+				<siteMapNode url="~/ManageUsers.aspx?List" title="Listar Utilizadores" description="List Users" />
+				<siteMapNode url="~/ManageUsers.aspx?Insert" title="Inserir Utilizadores" description="Insert Users" />
+				<siteMapNode url="~/ManageUsers.aspx?Edit" title="Editar Utilizadores" description="Edit Users" />
 			</siteMapNode>
 			<siteMapNode url="~/StatisticalPage.aspx" title="Estatísticas" description="Statistics">
-
 			</siteMapNode>
-			<siteMapNode url="~/CourseDetails.aspx" title="Detalhes do Curso" description="Course Details">
+		
 
-			</siteMapNode>
-			<siteMapNode url="~/ClassesDetails.aspx" title="Detalhes da Turma" description="Classes Details">
-
-			</siteMapNode>
-			
-			<siteMapNode url="~/MainSchedules.aspx" title="Horários" description="Classes Details">
-
-			</siteMapNode>
 		</siteMapNode>
 	</siteMapNode>
 </siteMap>

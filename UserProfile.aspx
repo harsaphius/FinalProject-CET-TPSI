@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Perfil" Language="C#" EnableEventValidation="false" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="UserProfile.aspx.cs" Inherits="FinalProject.UserProfile" %>
+﻿<%@ Page Title="Perfil" Language="C#" EnableViewState="True" EnableEventValidation="false" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="UserProfile.aspx.cs" Inherits="FinalProject.UserProfile" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -7,6 +7,11 @@
         <ContentTemplate>
             <!-- Header Content -->
             <div class="container-fluid">
+                <div class="container row justify-content-center">
+                    <asp:Label runat="server" ID="lblMessageEdit" Style="display: flex; justify-content: center; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
+                    <asp:Timer ID="timerMessageEdit" runat="server" Interval="3000" OnTick="timerMessageEdit_OnTick" Enabled="False"></asp:Timer>
+                </div>
+
                 <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('../assets/img/curved-images/curved0.jpg'); background-position-y: 50%;">
                     <span class="mask bg-gradient-primary opacity-6"></span>
                 </div>
@@ -34,13 +39,25 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="col-lg-5 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                        <div class="col-lg-6 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
                             <div class="nav-wrapper position-relative end-0">
                                 <ul class="nav nav-pills nav-fill p-1 bg-transparent">
+                                      <li class="nav-item">
+                                        <asp:LinkButton ID="btnExport" class="btn btn-link pe-3 ps-0 mb-0 ms-auto" Visible="True" runat="server" CausesValidation="False" AutoPostBack="True" OnClick="btnExport_OnClick">
+                                           <i class="fas fa-lock"></i>
+                                            <span class="ms-1">Exportar PDF</span>
+                                        </asp:LinkButton>
+                                    </li>
                                     <li class="nav-item">
                                         <asp:LinkButton class="btn btn-link pe-3 ps-0 mb-0 ms-auto" ID="lbtAvaliacoes" Visible="False" CausesValidation="False" OnClick="lbtAvaliacoes_OnClick" runat="server">
                                     <i class="fas fa-grade"></i>
                                     <span class="ms-1">Avaliações</span>
+                                        </asp:LinkButton>
+                                    </li>
+                                    <li class="nav-item">
+                                        <asp:LinkButton class="btn btn-link pe-3 ps-0 mb-0 ms-auto" ID="lbtModulos" Visible="False" CausesValidation="False" OnClick="lbtModulos_Click" runat="server">
+                                            <i class="fas fa-time"></i>
+                                            <span class="ms-1">Módulos</span>
                                         </asp:LinkButton>
                                     </li>
                                     <li class="nav-item">
@@ -55,12 +72,14 @@
                                             <span class="ms-1">Alterar PW</span>
                                         </asp:LinkButton>
                                     </li>
+
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <!-- Profile Div -->
             <div id="profileSinapse" runat="server" visible="True" class="container-fluid py-4">
                 <div class="row">
@@ -135,7 +154,7 @@
                             </div>
                         </div>
                     </div>
-                   <%-- <div class="col-12 col-xl-4">
+                    <%-- <div class="col-12 col-xl-4">
                         <div class="card h-100">
                             <div class="card-header pb-0 p-3">
                                 <h6 class="mb-0">Conversations</h6>
@@ -178,8 +197,6 @@
                         </div>
                     </div>--%>
                     <!-- Fim de Profile Div -->
-
-
 
                 </div>
             </div>
@@ -467,7 +484,7 @@
                                     <label>Password Atual</label>
                                     <asp:RequiredFieldValidator ID="rfvpwa" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tbPwOld" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                     <div class="mb-3">
-                                        <asp:TextBox ID="tbPwOld"  CssClass="form-control" TextMode="Password" placeholder="Password Atual" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="tbPwOld" CssClass="form-control" TextMode="Password" placeholder="Password Atual" runat="server"></asp:TextBox>
                                     </div>
                                     <label>Nova Password</label>
                                     <asp:RequiredFieldValidator ID="rfvpw" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tbPwNew" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
@@ -496,11 +513,136 @@
             <asp:Label runat="server" ID="lblMessage" Style="display: flex; align-content: center; padding: 5px;" Visible="False" role="alert"></asp:Label>
             <asp:Timer ID="timerMessage" runat="server" Interval="3000" OnTick="timerMessage_OnTick" Enabled="False"></asp:Timer>
 
+            <div id="ModulesRegisterForTeacher" runat="server" visible="False">
+                <asp:UpdatePanel ID="updatePanelModulesForTeachers" runat="server">
+                    <ContentTemplate>
+                        <div class="page-header min-vh-50">
+                            <div class="container-fluid">
+                                <div class="row ">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header pb-0 p-3">
+                                                <h6 class="mb-1">Módulos disponíveis</h6>
+                                                <p class="text-sm">Escolher os módulos para registar</p>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="card mb-4">
+                                                    <!-- Listagem de Módulos -->
+                                                    <asp:Repeater ID="rptListModulesForTeachers" runat="server">
+                                                        <HeaderTemplate>
+                                                            <div class="card-body px-0 pt-0 pb-2">
+                                                                <div class="table-responsive p-0">
+                                                                    <table class="table align-items-center mb-0">
+                                                                        <thead>
+                                                                            <colgroup>
+                                                                                <col style="width: 20%;" />
+                                                                                <col style="width: 25%;" />
+                                                                                <col style="width: 25%;" />
+                                                                                <col style="width: 20%;" />
+                                                                                <col style="width: 5%;" />
+                                                                            </colgroup>
+                                                                            <tr>
+                                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Módulo</th>
+                                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
+                                                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">UFCD</th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                        </HeaderTemplate>
+                                                        <ItemTemplate>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="d-flex px-2">
+                                                                        <div class="my-auto">
+                                                                            <h6 class="mb-0 text-sm">
+                                                                                <asp:Label runat="server" ID="lblCod"><%# Eval("CodModulo") %></asp:Label></h6>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <asp:LinkButton ID="tbNome" CssClass="form-control" runat="server" Text='<%# Bind("Nome") %>' Visible="false" Style="width: 100%;"></asp:LinkButton>
+                                                                    <p class="text-sm font-weight-bold mb-0">
+                                                                        <asp:Label runat="server" ID="lblNome"><%# Eval("Nome") %></asp:Label>
+                                                                    </p>
+                                                                </td>
+                                                                <td class="text-xs font-weight-bold">
+                                                                    <asp:TextBox ID="tbCodUFCD" CssClass="form-control" runat="server" Text='<%# Bind("UFCD") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
+                                                                    <asp:Label ID="lblCodUFCD" runat="server"> <%# Eval("UFCD") %></asp:Label>
+                                                                </td>
+                                                                <td class="text-xs font-weight-bold">
+                                                                    <div class="form-check">
+                                                                        <asp:HiddenField ID="hdnEditCourseModuleID" runat="server" Value='<%# Eval("CodModulo") %>' />
+                                                                        <asp:HiddenField ID="hdnEditCourseModuleName" runat="server" Value='<%# Eval("Nome") %>' />
+                                                                        <asp:CheckBox runat="server" Checked='<%# Convert.ToBoolean(Eval("IsChecked")) %>' ID="chckBoxModules" OnCheckedChanged="chckBoxModules_CheckedChanged" />
+                                                                        <asp:Label runat="server" ID="lblOrderEditModulesCourse">Selecione este módulo</asp:Label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </ItemTemplate>
+                                                        <FooterTemplate>
+                                                            </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                        </FooterTemplate>
+                                                    </asp:Repeater>
+                                                    <div class="col-12">
+                                                        <ul class="pagination justify-content-center" style="padding: 2px;">
+                                                            <li class="page-item">
+                                                                <asp:LinkButton ID="btnPreviousListModulesForTeachers" CssClass="page-link" OnClick="btnPreviousListModulesForTeachers_OnClick" CausesValidation="false" runat="server">
+                                                                                <i class="fa fa-angle-left"></i>
+                                                                                <span class="sr-only">Previous</span>
+                                                                </asp:LinkButton>
+                                                            </li>
+                                                            <li class="page-item active">
+                                                                <span class="page-link">
+                                                                    <asp:Label runat="server" CssClass="text-white" ID="lblPageNumberListModulesForTeachers"></asp:Label></span>
+                                                            </li>
+                                                            <li class="page-item">
+                                                                <asp:LinkButton ID="btnNextListModulesForTeachers" CssClass="page-link" OnClick="btnNextListModulesForTeachers_OnClick" CausesValidation="false" runat="server">
+                                                                                <i class="fa fa-angle-right"></i>
+                                                                                <span class="sr-only">Next</span>
+                                                                </asp:LinkButton>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <asp:Button runat="server" ID="btnEnroll" OnClick="btnEnroll_OnClick" class="btn btn-outline-primary btn-sm mb-0 text-end" CausesValidation="false" CommandName="Edit" CommandArgument='<%# Eval("CodUtilizador") %>' Text="Inscrever" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+            </div>
+
         </ContentTemplate>
         <Triggers>
             <asp:PostBackTrigger ControlID="btnSubmit" />
+            <asp:PostBackTrigger ControlID="btnExport" />
             <asp:AsyncPostBackTrigger ControlID="btnChangePW" />
         </Triggers>
     </asp:UpdatePanel>
+       <!--Função de Javascript para mostrar o calendário do flatpickr nas TextBoxes -->
+    <script>
+        flatpickr('#<%= tbDataValidade.ClientID %>', {
+            // Options
+            dateFormat: 'd-m-Y',
+            theme: 'light',
+        });
 
+      flatpickr('#<%= tbDataNascimento.ClientID %>', {
+            // Options
+            dateFormat: 'd-m-Y',
+            theme: 'light',
+
+        });
+    </script>
 </asp:Content>

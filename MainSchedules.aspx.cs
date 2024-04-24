@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.UI.WebControls;
 
 namespace FinalProject
@@ -9,7 +10,7 @@ namespace FinalProject
         {
             string script;
 
-            if (Session["Logado"] == null && Session["Logado"].ToString() == "Yes")
+            if (Session["Logado"] != null && Session["Logado"].ToString() == "Yes")
             {
                 string user = Session["User"].ToString();
 
@@ -25,7 +26,12 @@ namespace FinalProject
                     lbtncourses.PostBackUrl = "./UserCourses.aspx";
                 }
 
-                script = @"
+                string userCode = Session["CodUtilizador"].ToString();
+                List<int> UserProfile = Classes.User.DetermineUserProfile(Convert.ToInt32(userCode));
+
+                foreach (int profileCode in UserProfile)
+                {
+                    script = @"
                             document.getElementById('courses').href = './UserCourses.aspx'
                             document.getElementById('signout').classList.remove('hidden');
                             document.getElementById('signout').classList.add('nav-item');
@@ -41,16 +47,16 @@ namespace FinalProject
                             document.getElementById('navButtonSignIn').classList.remove('d-flex');
                             document.getElementById('navButtonSignIn').classList.remove('align-items-center');
                             document.getElementById('navButtonSignIn').classList.add('hidden');
-                            document.getElementById('courses').classList.remove('hidden');
                             document.getElementById('profile').classList.remove('hidden');
                             document.getElementById('usercalendar').classList.remove('hidden');
+                            document.getElementById('courses').classList.remove('hidden');
                             ";
 
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" || Session["CodUtilizador"].ToString() == "1")
-                {
-                    script = @"
+                    if (profileCode == 4 || profileCode == 1)
+                    {
+                        script = @"
                             document.getElementById('management').classList.remove('hidden');
                             document.getElementById('managecourses').classList.remove('hidden');
                             document.getElementById('manageclasses').classList.remove('hidden');
@@ -58,53 +64,60 @@ namespace FinalProject
                             document.getElementById('managestudents').classList.remove('hidden');
                             document.getElementById('manageteachers').classList.remove('hidden');
                             document.getElementById('manageclassrooms').classList.remove('hidden');
-                            document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
                             
                             ";
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
+                    }
+                    if (profileCode == 1)
+                    {
+                        script = @"
+                            document.getElementById('manageusers').classList.remove('hidden');
+                            
+                            ";
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowUsers", script, true);
+                    }
 
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
-
-                    if (ddlSelectBy.SelectedValue == "2")
-                    {
-                        ddlTeachers.Visible = false;
-                        ddlClassrooms.Visible = true;
-                        ddlClassGroup.Visible = false;
-                    }
-                    else if (ddlSelectBy.SelectedValue == "1")
-                    {
-                        ddlClassGroup.Visible = false;
-                        ddlTeachers.Visible = true;
-                        ddlClassrooms.Visible = false;
-                    }
-                    else if (ddlSelectBy.SelectedValue == "3")
-                    {
-                        ddlTeachers.Visible = false;
-                        ddlClassrooms.Visible = false;
-                        ddlClassGroup.Visible = true;
-                    }
-                    else
-                    {
-                        ddlTeachers.Visible = false;
-                        ddlClassGroup.Visible = false;
-                        ddlClassrooms.Visible = false;
-                    }
                 }
             }
-        }
-
-
-            /// <summary>
-            /// Função Click do Botão de Limpar os filtros
-            /// </summary>
-            /// <param name="sender"></param>
-            /// <param name="e"></param>
-            protected void btnClearFilters_OnClick(object sender, EventArgs e)
+            if (ddlSelectBy.SelectedValue == "2")
             {
-                tbDataFimFilters.Text = "";
-                tbDataInicioFilters.Text = "";
-
+                ddlTeachers.Visible = false;
+                ddlClassrooms.Visible = true;
+                ddlClassGroup.Visible = false;
             }
+            else if (ddlSelectBy.SelectedValue == "1")
+            {
+                ddlClassGroup.Visible = false;
+                ddlTeachers.Visible = true;
+                ddlClassrooms.Visible = false;
+            }
+            else if (ddlSelectBy.SelectedValue == "3")
+            {
+                ddlTeachers.Visible = false;
+                ddlClassrooms.Visible = false;
+                ddlClassGroup.Visible = true;
+            }
+            else
+            {
+                ddlTeachers.Visible = false;
+                ddlClassGroup.Visible = false;
+                ddlClassrooms.Visible = false;
+            }
+        }
+
+
+        /// <summary>
+        /// Função Click do Botão de Limpar os filtros
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnClearFilters_OnClick(object sender, EventArgs e)
+        {
+            tbDataFimFilters.Text = "";
+            tbDataInicioFilters.Text = "";
 
         }
+
     }
+}

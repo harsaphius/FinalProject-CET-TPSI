@@ -60,31 +60,19 @@ namespace FinalProject
                     Session["CodUtilizador"] = isLoginAllowed[2];
                     Session["Logado"] = "Yes";
 
-                    Response.Redirect("./UserProfile.aspx");
+                    Response.Redirect("UserProfile.aspx");
                 }
                 else if (isLoginAllowed[0] == 1 && isLoginAllowed[1] == 0)
                 {
                     (int UserCode, string Username) = Classes.User.DetermineUtilizador(tb_username.Text);
                     List<int> UserProfile = Classes.User.DetermineUserProfile(Convert.ToInt32(UserCode));
+                    string email = Classes.User.GetEmailFromDatabase(UserCode);
 
                     foreach (int profile in UserProfile)
                     {
-                        if (profile == 2 && profile != 3 && profile != 4)
-                        {
-                            Session["ActivatedUser"] = "Conta ativada com sucesso!";
-                            EmailControl.SendEmailActivation(tbEmailRecover.Text, Username);
-
-                            lbl_message.CssClass = "alert alert-primary text-white text-center";
-                            lbl_message.Text = $"A sua conta ainda não se encontra ativa! Procedemos ao reenvio do e-mail de ativação!!";
-                        }
-                        if (profile == 3 || profile == 4)
-                        {
-                            string email = Classes.User.GetEmailFromDatabase(UserCode);
-                            EmailControl.SendEmailWaitingValidation(email, Username);
-
-                            lbl_message.CssClass = "alert alert-primary text-white text-center";
-                            lbl_message.Text = $"A sua conta ainda aguarda validação!";
-                        }
+                        EmailControl.SendEmailWaitingValidation(email, Username);
+                        lbl_message.CssClass = "alert alert-primary text-white text-center";
+                        lbl_message.Text = $"A sua conta ainda aguarda validação!";
                     }
                 }
                 else if (isLoginAllowed[0] == -1 && isLoginAllowed[1] == -1)
@@ -136,17 +124,9 @@ namespace FinalProject
 
                     foreach (int profile in UserProfile)
                     {
-                        if (profile == 2)
-                        {
-                            EmailControl.SendEmailActivation(tbEmailRecover.Text, username);
-                            lbl_message.Text = $"A sua conta ainda não se encontra ativa! Procedemos ao reenvio do e-mail de ativação!!";
-                        }
-                        if (profile == 3 || profile == 4)
-                        {
-                            string email = Classes.User.GetEmailFromDatabase(userCode);
-                            EmailControl.SendEmailWaitingValidation(email, username);
-                            lbl_message.Text = $"A sua conta ainda aguarda validação!";
-                        }
+                        string email = Classes.User.GetEmailFromDatabase(userCode);
+                        EmailControl.SendEmailWaitingValidation(email, username);
+                        lbl_message.Text = $"A sua conta ainda aguarda validação!";
                     }
                 }
                 else //Caso o e-mail não esteja associado a nenhuma conta

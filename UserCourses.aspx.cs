@@ -35,12 +35,18 @@ namespace FinalProject
 
                         if (AnswEnrollmentCode == -1 && AnswAnswEnrollmentRegister == -1)
                         {
-                            lblEnrollment.Text = "Utilizador já registado nesse curso.";
+                            lblMessageEdit.Visible = true;
+                            lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                            lblMessageEdit.Text = "Utilizador já registado nesse curso.";
+                            timerMessageEdit.Enabled = true;
                         }
                         else
                         {
                             Classes.Student.InsertStudent(Convert.ToInt32(Session["CodUtilizador"]), AnswEnrollmentCode);
-                            lblEnrollment.Text = "Utilizador registado com sucesso no curso!";
+                            lblMessageEdit.Visible = true;
+                            lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                            lblMessageEdit.Text = "Utilizador registado com sucesso no curso!";
+                            timerMessageEdit.Enabled = true;
                         }
                     }
                 }
@@ -117,12 +123,18 @@ namespace FinalProject
                             document.getElementById('managestudents').classList.remove('hidden');
                             document.getElementById('manageteachers').classList.remove('hidden');
                             document.getElementById('manageclassrooms').classList.remove('hidden');
-                            document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
                             
                             ";
-
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
+                    }
+                    if (profileCode == 1)
+                    {
+                        script = @"
+                            document.getElementById('manageusers').classList.remove('hidden');
+                            
+                            ";
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowUsers", script, true);
                     }
                 }
             }
@@ -135,6 +147,12 @@ namespace FinalProject
 
         public void FormadorPerfil_Click(object sender, EventArgs e)
         {
+        }
+
+        protected void timerMessageEdit_OnTick(object sender, EventArgs e)
+        {
+            lblMessageEdit.Visible = false;
+            timerMessageEdit.Enabled = false;
         }
     }
 }

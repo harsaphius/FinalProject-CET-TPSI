@@ -115,7 +115,7 @@ namespace FinalProject.Classes
         public static User LoadUser(string UserC = null, string CodUser = null)
         {
             string query =
-                $"SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador INNER JOIN tipoDocIdent AS TPI ON TPI.codTipoDoc=UD.codTipoDoc INNER JOIN situacaoProfissional AS SP ON SP.codSituacaoProfissional=UDS.codSituacaoProfissional INNER JOIN grauAcademico AS GA ON GA.codGrauAcademico=UDS.codGrauAcademico INNER JOIN pais AS P ON P.codPais=UDS.codPais WHERE utilizador='{UserC}' OR email='{UserC}'";
+                $"SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador LEFT JOIN tipoDocIdent AS TPI ON TPI.codTipoDoc=UD.codTipoDoc LEFT JOIN situacaoProfissional AS SP ON SP.codSituacaoProfissional=UDS.codSituacaoProfissional LEFT JOIN grauAcademico AS GA ON GA.codGrauAcademico=UDS.codGrauAcademico LEFT JOIN pais AS P ON P.codPais=UDS.codPais WHERE utilizador='{UserC}' OR email='{UserC}'";
 
             if (CodUser != null)
             {
@@ -172,8 +172,9 @@ namespace FinalProject.Classes
                     ? "data:image/jpeg;base64," + Convert.ToBase64String(imageData)
                     : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
 
-                byte[] fotoBytes = (byte[])dr["foto"];
-                informacao.FotoBytes = fotoBytes;
+                informacao.FotoBytes = dr["foto"] == DBNull.Value
+                    ? imageData
+                    : (byte[])dr["foto"];
 
                 informacao.CodGrauAcademico = (int)(dr["codGrauAcademico"] == DBNull.Value
                     ? 1
@@ -192,7 +193,6 @@ namespace FinalProject.Classes
 
             return informacao;
         }
-
 
         /// <summary>
         /// Função para carregar todos os utilizadores
@@ -321,10 +321,89 @@ namespace FinalProject.Classes
             int AnswUserRegister = Convert.ToInt32(myCommand.Parameters["@UserRegister"].Value);
             int AnswUserCode = Convert.ToInt32(myCommand.Parameters["@UserCode"].Value);
 
-
             myCon.Close();
 
-            return (AnswUserRegister, AnswUserCode);
+            int AnswUserRegisterCont = 0;
+            int AnswUserCodeCont = 0;
+
+            if (AnswUserRegister == 3)
+            {
+                SqlCommand myCommand3 = new SqlCommand();
+                myCommand3.Parameters.AddWithValue("@CodePerfil", user.CodPerfil);
+                myCommand3.Parameters.AddWithValue("@CompleteName", user.Nome);
+                myCommand3.Parameters.AddWithValue("@User", user.Username);
+                myCommand3.Parameters.AddWithValue("@Email", user.Email);
+                myCommand3.Parameters.AddWithValue("@Pw", Classes.Security.EncryptString(user.Password));
+                myCommand3.Parameters.AddWithValue("@CodCardType", user.CodTipoDoc);
+                myCommand3.Parameters.AddWithValue("@CardNumber", user.DocIdent);
+                myCommand3.Parameters.AddWithValue("@CardDate", user.DataValidade);
+                myCommand3.Parameters.AddWithValue("@Prefix", user.CodPrefix);
+                myCommand3.Parameters.AddWithValue("@PhoneNumber", user.Phone);
+                myCommand3.Parameters.AddWithValue("@AuditRow", DateTime.Now);
+
+                SqlParameter UserRegisterCont = new SqlParameter();
+                UserRegisterCont.ParameterName = "@UserRegisterCont";
+                UserRegisterCont.Direction = ParameterDirection.Output;
+                UserRegisterCont.SqlDbType = SqlDbType.Int;
+
+                myCommand3.Parameters.Add(UserRegisterCont);
+
+                SqlParameter UserCodeCont = new SqlParameter();
+                UserCodeCont.ParameterName = "@UserCodeCont";
+                UserCodeCont.Direction = ParameterDirection.Output;
+                UserCodeCont.SqlDbType = SqlDbType.Int;
+
+                myCommand3.Parameters.Add(UserCodeCont);
+
+                myCommand3.CommandType = CommandType.StoredProcedure;
+                myCommand3.CommandText = "UserRegisterCont";
+
+                myCommand3.Connection = myCon;
+                myCon.Open();
+                myCommand3.ExecuteNonQuery();
+
+                AnswUserRegisterCont = Convert.ToInt32(myCommand3.Parameters["@UserRegisterCont"].Value);
+                AnswUserCodeCont = Convert.ToInt32(myCommand3.Parameters["@UserCodeCont"].Value);
+
+                myCon.Close();
+
+            }
+
+            SqlCommand myCommand2 = new SqlCommand();
+
+            if (AnswUserRegister == 1)
+            {
+                myCommand2.Parameters.AddWithValue("@CodePerfil", user.CodPerfil);
+                myCommand2.Parameters.AddWithValue("@UserCode", AnswUserCode);
+
+                myCommand2.CommandType = CommandType.StoredProcedure;
+                myCommand2.CommandText = "UserRegisterProfile";
+
+                myCommand2.Connection = myCon;
+                myCon.Open();
+                myCommand2.ExecuteNonQuery();
+                myCon.Close();
+            }
+            else if (AnswUserRegisterCont == 1)
+            {
+                myCommand2.Parameters.AddWithValue("@CodePerfil", user.CodPerfil);
+                myCommand2.Parameters.AddWithValue("@UserCode", AnswUserCodeCont);
+
+                myCommand2.CommandType = CommandType.StoredProcedure;
+                myCommand2.CommandText = "UserRegisterProfile";
+
+                myCommand2.Connection = myCon;
+                myCon.Open();
+                myCommand2.ExecuteNonQuery();
+                myCon.Close();
+            }
+
+            if (AnswUserRegister == 1)
+                return (AnswUserRegister, AnswUserCode);
+            else if (AnswUserRegister == 3)
+                return (AnswUserRegisterCont, AnswUserCodeCont);
+            else
+                return (AnswUserRegister, AnswUserCode);
         }
 
         /// <summary>

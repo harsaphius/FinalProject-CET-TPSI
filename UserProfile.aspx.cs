@@ -1,9 +1,13 @@
 ﻿using FinalProject.Classes;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -23,6 +27,36 @@ namespace FinalProject
             {
                 string user = Session["User"].ToString();
                 string userCode = Session["CodUtilizador"].ToString();
+                if (Session["Enrollment"] != null)
+                {
+                    if (Session["CodCursoEnrollment"] != null)
+                    {
+                        int CodCurso = Convert.ToInt32(Session["CodCursoEnrollment"].ToString());
+                        Enrollment enrollment = new Enrollment();
+                        enrollment.CodUtilizador = Convert.ToInt32(Session["CodUtilizador"].ToString());
+                        enrollment.CodSituacao = 1;
+                        enrollment.CodCurso = CodCurso;
+
+                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollmentStudent(enrollment);
+
+                        if (AnswEnrollmentCode == -1 && AnswAnswEnrollmentRegister == -1)
+                        {
+
+                            lblMessageEdit.Visible = true;
+                            lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                            lblMessageEdit.Text = "Utilizador já registado nesse curso.";
+                            timerMessageEdit.Enabled = true;
+                        }
+                        else
+                        {
+                            Classes.Student.InsertStudent(Convert.ToInt32(Session["CodUtilizador"]), AnswEnrollmentCode);
+                            lblMessageEdit.Visible = true;
+                            lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                            lblMessageEdit.Text = "Utilizador registado com sucesso no curso!";
+                            timerMessageEdit.Enabled = true;
+                        }
+                    }
+                }
 
                 Label lbluser = Master.FindControl("lbl_user") as Label;
                 if (lbluser != null)
@@ -67,11 +101,18 @@ namespace FinalProject
                             document.getElementById('managestudents').classList.remove('hidden');
                             document.getElementById('manageteachers').classList.remove('hidden');
                             document.getElementById('manageclassrooms').classList.remove('hidden');
-                            document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
                             
                             ";
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
+                    }
+                    if (profileCode == 1)
+                    {
+                        script = @"
+                            document.getElementById('manageusers').classList.remove('hidden');
+                            
+                            ";
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowUsers", script, true);
                     }
 
                     if (!Page.IsPostBack)
@@ -79,6 +120,13 @@ namespace FinalProject
                         User profileuser = Classes.User.LoadUser(user);
                         (int CodUtilizador, string Username) = Classes.User.DetermineUtilizador(user);
                         Session["Username"] = Username;
+
+                        //Inicializar ViewStates
+                        InitializeViewState();
+
+                        JavaScriptSerializer serializer = new JavaScriptSerializer();
+                        string modulesViewState = serializer.Serialize(Classes.Module.LoadModules(null, "codUFCD"));
+                        ViewState["modulesViewState"] = modulesViewState;
 
                         if (profileuser != null)
                         {
@@ -137,11 +185,24 @@ namespace FinalProject
                             {
                                 Session["CodFormador"] = Session["CodUtilizador"];
                                 lbtDisponibilidade.Visible = true;
+                                lbtModulos.Visible = true;
                             }
                         }
                     }
                 }
             }
+        }
+
+        private void InitializeViewState()
+        {
+            if (ViewState["SelectedItemsEdit"] == null)
+                ViewState["SelectedItemsEdit"] = new List<int>();
+
+            if (ViewState["CheckboxStatesEdit"] == null)
+                ViewState["CheckboxStatesEdit"] = new Dictionary<int, bool>();
+
+            if (ViewState["SelectedItemsNamesEdit"] == null)
+                ViewState["SelectedItemsNamesEdit"] = new List<string>();
         }
 
         /// <summary>
@@ -153,18 +214,19 @@ namespace FinalProject
         {
             User user = new User();
             List<FileControl> uploadedFiles = FileControl.ProcessUploadedFiles(fuAnexo);
-
-            user.Nome = tbNome.Text;
+           
+                user.Nome = tbNome.Text;
             user.Email = tbEmail.Text;
             user.CodTipoDoc = Convert.ToInt32(ddlDocumentoIdent.SelectedValue);
             user.DocIdent = tbCC.Text;
-            user.DataValidade = Convert.ToDateTime(tbDataValidade.Text);
+
+            if (Security.IsValidDate(tbDataValidade.Text)) { user.DataValidade = Convert.ToDateTime(tbDataValidade.Text); }
             user.CodPrefix = Convert.ToInt32(ddlprefixo.SelectedValue);
             user.Phone = tbTelemovel.Text;
 
             user.CodUser = Convert.ToInt32(Session["CodUtilizador"].ToString());
             user.Sexo = Convert.ToInt32(ddlSexo.SelectedValue);
-            user.DataNascimento = Convert.ToDateTime(tbDataNascimento.Text);
+            if (Security.IsValidDate(tbDataNascimento.Text)) { user.DataNascimento = Convert.ToDateTime(tbDataNascimento.Text); }
             user.NIF = tbNIF.Text;
             user.Morada = tbMorada.Text;
             user.CodPais = Convert.ToInt32(ddlCodPais.SelectedValue);
@@ -210,6 +272,8 @@ namespace FinalProject
                 {
                     profileSinapse.Visible = true;
                     registration.Visible = false;
+                    registerCompletionpage1.Visible = false;
+                    registerCompletionpage2.Visible = false;
 
                     //Carregar informação para as labels da página inicial do profile
                     profilename.Text = profileuser.Username;
@@ -335,6 +399,7 @@ namespace FinalProject
         protected void btnBackMainPage_OnClick(object sender, EventArgs e)
         {
             registerCompletionpage1.Visible = false;
+            registration.Visible = false;
             profileSinapse.Visible = true;
         }
 
@@ -368,9 +433,212 @@ namespace FinalProject
             profileSinapse.Visible = true;
             ChangePw.Visible = false;
         }
+        protected void timerMessageEdit_OnTick(object sender, EventArgs e)
+        {
+            lblMessageEdit.Visible = false;
+            timerMessageEdit.Enabled = false;
+        }
+
+        private void BindDataModules()
+        {
+            string modules = ViewState["modulesViewState"] as string;
+
+            if (!string.IsNullOrEmpty(modules))
+            {
+                // Deserialize module information
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                List<Module> allModules = serializer.Deserialize<List<Module>>(modules);
+
+                string teacherViewState = ViewState["SelectedTeacher"] as string;
+                string courseKey = "IsFirstEnteringEdit_" + teacherViewState; // Append course code to the ViewState key
+
+                bool isFirstEnteringEdit = ViewState[courseKey] == null || (bool)ViewState[courseKey];
+
+                if (isFirstEnteringEdit) // Check if it's the first time the page is being loaded
+                {
+                    if (!string.IsNullOrEmpty(teacherViewState))
+                    {
+                        JavaScriptSerializer deSerializer = new JavaScriptSerializer();
+                        Teacher selectedTeacher = deSerializer.Deserialize<Teacher>(teacherViewState);
+                        List<Module> selectedModules = selectedTeacher.Modules;
+
+                        // Update IsChecked property of each module based on whether it's selected or not
+                        Dictionary<int, bool> checkboxStatesEdit = new Dictionary<int, bool>();
+                        if (selectedModules != null && selectedModules.Any())
+                        {
+                            foreach (Module module in allModules)
+                            {
+                                module.IsChecked = selectedModules.Any(m => m.CodModulo == module.CodModulo);
+                                checkboxStatesEdit.Add(module.CodModulo, module.IsChecked);
+                            }
+                            ViewState["CheckboxStatesEdit"] = checkboxStatesEdit;
+
+                            // Update SelectedItemsEdit and SelectedItemsNamesEdit
+                            List<int> selectedItems = new List<int>();
+                            List<string> itemsNames = new List<string>();
+
+                            foreach (Module module in selectedModules)
+                            {
+                                selectedItems.Add(module.CodModulo);
+                                itemsNames.Add(module.Nome);
+                            }
+
+                            ViewState["SelectedItemsEdit"] = selectedItems;
+                            ViewState["SelectedItemsNamesEdit"] = itemsNames;
+
+                            ViewState[courseKey] = false;
+                        }
+
+                    }
+                }
+                else // Not the first time entering, retrieve module information from ViewState
+                {
+                    if (!string.IsNullOrEmpty(teacherViewState))
+                    {
+                        Dictionary<int, bool> checkboxStatesEdit = ViewState["CheckboxStatesEdit"] as Dictionary<int, bool>;
+                        List<int> selectedItems = ViewState["SelectedItemsEdit"] as List<int>;
+                        List<string> itemsNames = ViewState["SelectedItemsNamesEdit"] as List<string>;
+
+                        foreach (Module module in allModules)
+                        {
+                            if (checkboxStatesEdit.ContainsKey(module.CodModulo))
+                            {
+                                module.IsChecked = checkboxStatesEdit[module.CodModulo];
+
+                                // If the module is checked and not already in the selected items list, add it
+                                if (module.IsChecked && !selectedItems.Contains(module.CodModulo))
+                                {
+                                    selectedItems.Add(module.CodModulo);
+                                    itemsNames.Add(module.Nome);
+                                }
+                                // If the module is unchecked and already in the selected items list, remove it
+                                else if (!module.IsChecked && selectedItems.Contains(module.CodModulo))
+                                {
+                                    int indexToRemove = selectedItems.IndexOf(module.CodModulo);
+                                    selectedItems.RemoveAt(indexToRemove);
+                                    itemsNames.RemoveAt(indexToRemove);
+                                }
+                            }
+                        }
+                        ViewState["SelectedItemsEdit"] = selectedItems;
+                        ViewState["SelectedItemsNamesEdit"] = itemsNames;
+
+                    }
+                }
+
+                PagedDataSource pagedData = new PagedDataSource();
+                pagedData.DataSource = allModules;
+                pagedData.AllowPaging = true;
+                pagedData.PageSize = 8;
+                pagedData.CurrentPageIndex = PageNumberModules;
+                int PageNumber = PageNumberModules + 1;
+                lblPageNumberListModulesForTeachers.Text = PageNumber.ToString();
+
+                rptListModulesForTeachers.DataSource = pagedData;
+                rptListModulesForTeachers.DataBind();
+
+                UpdateSelectedLabels();
+
+                btnPreviousListModulesForTeachers.Enabled = !pagedData.IsFirstPage;
+                btnNextListModulesForTeachers.Enabled = !pagedData.IsLastPage;
+            }
+        }
+
+        private int PageNumberModules
+        {
+            get
+            {
+                if (ViewState["PageNumberModules"] != null)
+                    return Convert.ToInt32(ViewState["PageNumberModules"]);
+                else
+                    return 0;
+            }
+            set => ViewState["PageNumberModules"] = value;
+        }
+
+        protected void chckBoxModules_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
+            HiddenField hdnEditCourseModuleID = (HiddenField)item.FindControl("hdnEditCourseModuleID");
+            HiddenField hdnEditCourseModuleName = (HiddenField)item.FindControl("hdnEditCourseModuleName");
+            Label lblOrderEditModulesCourse = (Label)item.FindControl("lblOrderEditModulesCourse");
+
+            if (hdnEditCourseModuleID != null && hdnEditCourseModuleName != null && lblOrderEditModulesCourse != null)
+            {
+                int moduleID = Convert.ToInt32(hdnEditCourseModuleID.Value);
+                Dictionary<int, bool> checkboxStates = (Dictionary<int, bool>)ViewState["CheckboxStatesEdit"];
+
+                if (checkBox.Checked)
+                {
+                    lblOrderEditModulesCourse.Text = "Seleccionado";
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItemsEdit"];
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNamesEdit"];
+                    selectedItems.Add(Convert.ToInt32(hdnEditCourseModuleID.Value));
+                    itemsNames.Add(hdnEditCourseModuleName.Value);
+                    checkboxStates[moduleID] = true;
+
+                    ViewState["SelectedItemsEdit"] = selectedItems;
+                    ViewState["SelectedItemsNamesEdit"] = itemsNames;
+                }
+                else
+                {
+                    lblOrderEditModulesCourse.Text = "Selecione este módulo";
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItemsEdit"];
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNamesEdit"];
+                    if (selectedItems != null)
+                    {
+                        selectedItems.Remove(Convert.ToInt32(hdnEditCourseModuleID.Value));
+                        itemsNames.Remove(hdnEditCourseModuleName.Value);
+                        checkboxStates[moduleID] = false;
+
+                        ViewState["SelectedItemsEdit"] = selectedItems;
+                        ViewState["SelectedItemsNamesEdit"] = itemsNames;
+                    }
+                }
+
+                ViewState["CheckboxStatesEdit"] = checkboxStates;
+
+                UpdateSelectedLabels();
+
+            }
+        }
 
 
+        protected void btnPreviousListModulesForTeachers_OnClick(object sender, EventArgs e)
+        {
+            PageNumberModules -= 1;
+            BindDataModules();
 
+            UpdateSelectedLabels();
+
+        }
+
+        protected void btnNextListModulesForTeachers_OnClick(object sender, EventArgs e)
+        {
+            PageNumberModules += 1;
+            BindDataModules();
+
+            UpdateSelectedLabels();
+
+        }
+
+
+        private void UpdateSelectedLabels()
+        {
+            // Loop through the Repeater items to find selected items in rptEditModulesCourse
+            foreach (RepeaterItem item in rptListModulesForTeachers.Items)
+            {
+                CheckBox chkBoxEditModulesCourse = (CheckBox)item.FindControl("chckBoxModules");
+                HiddenField hdnEditCourseModuleID = (HiddenField)item.FindControl("hdnEditCourseModuleID");
+                Label lblOrderEditModulesCourse = (Label)item.FindControl("lblOrderEditModulesCourse");
+
+                if (chkBoxEditModulesCourse != null && hdnEditCourseModuleID != null && lblOrderEditModulesCourse != null)
+                {
+                    lblOrderEditModulesCourse.Text = chkBoxEditModulesCourse.Checked ? "Seleccionado" : "Selecione este módulo";
+                }
+            }
+        }
 
         protected void fileRepeater_OnItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -397,6 +665,7 @@ namespace FinalProject
                         ["PathPDFs"]; //Caminho dos PDFs colocado no WebConfig de modo a ser facilmente acessado e modificado
 
             string pdfTemplate = pathPDFs + "Template\\CinelPersonalFile.pdf"; //Caminho final do template
+
             string pathFinal = pathPDFs + $"Gerados\\Identification_{Session["User"]}";
 
             int num = 10;
@@ -414,7 +683,7 @@ namespace FinalProject
             string novoFile = pathPDFs + nomePDF;
 
             iTextSharp.text.pdf.PdfReader pdfReader = new iTextSharp.text.pdf.PdfReader(pdfTemplate); //Instancia pdfReader para ler o pdfTemplate
-            iTextSharp.text.pdf.PdfStamper pdfStamper = new iTextSharp.text.pdf.PdfStamper(pdfReader, new FileStream(pathFinal + ".pdf", FileMode.Create));
+            iTextSharp.text.pdf.PdfStamper pdfStamper = new iTextSharp.text.pdf.PdfStamper(pdfReader, new FileStream(novoFile, FileMode.Create));
             iTextSharp.text.pdf.AcroFields pdfFields = pdfStamper.AcroFields; //Encontra os AcroFields no pdfStamper
             pdfFields.SetField("tbNome",
                 profileuser.Nome); //Escreve no novoFile no campo do pdf nome o texto da tb_nome
@@ -436,7 +705,6 @@ namespace FinalProject
             pdfFields.SetField("tbHabilitacoes", profileuser.GrauAcademico);
             pdfFields.SetField("tbIBAN", profileuser.IBAN);
             pdfFields.SetField("tbLifeMotto", profileuser.LifeMotto);
-            pdfFields.SetField("pageNumber", pageNumber.ToString());
             byte[] imageData = profileuser.FotoBytes;
 
             iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(imageData);
@@ -503,35 +771,146 @@ namespace FinalProject
             //}
 
 
+            byte[] mergedPdf = MergePdfFilesInFolder(pathPDFs);
 
+            //Ficheiro guardado na pasta Gerados com o nome do Cliente
+            string outputPath = Path.Combine(Server.MapPath("~"), "Pdfs\\Gerados", $"{Session["User"]}.pdf");
+            File.WriteAllBytes(outputPath, mergedPdf);
 
-
-            //byte[] mergedPdf = MergePdfFilesInFolder(pathTemps);
-
-            ////Ficheiro guardado na pasta Gerados com o nome do Cliente
-            //string outputPath = Path.Combine(Server.MapPath("~"), "Pdfs\\Gerados", $"{Session["User"]}.pdf");
-            //File.WriteAllBytes(outputPath, mergedPdf);
-
-            //string[] tempPdfFiles = Directory.GetFiles(pathTemps, "*.pdf");
+            //string[] tempPdfFiles = Directory.GetFiles(pathPDFs, "*.pdf");
             //foreach (string tempPdfFile in tempPdfFiles)
             //{
             //    File.Delete(tempPdfFile);
             //}
 
-            ////Download do ficheiro para o cliente
-            //if (mergedPdf != null)
-            //{
-            //    Response.Clear();
-            //    Response.ContentType = "application/pdf";
-            //    Response.AddHeader("Content-Disposition", $"attachment; filename={Session["User"]}.pdf");
-            //    Response.BinaryWrite(mergedPdf);
-            //    Response.End();
-            //}
+            //Download do ficheiro para o cliente
+            if (mergedPdf != null)
+            {
+                Response.Clear();
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("Content-Disposition", $"attachment; filename={Session["User"]}.pdf");
+                Response.BinaryWrite(mergedPdf);
+                Response.End();
+            }
         }
 
         protected void lbtAvaliacoes_OnClick(object sender, EventArgs e)
         {
             Response.Redirect("TeacherEvaluations.aspx");
+        }
+
+        protected void lbtModulos_Click(object sender, EventArgs e)
+        {
+            BindDataModules();
+            ModulesRegisterForTeacher.Visible = !ModulesRegisterForTeacher.Visible;
+        }
+
+        protected void rptListModulesForTeachers_OnItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                CheckBox chckBoxModules = (CheckBox)e.Item.FindControl("chckBoxModules");
+
+                AsyncPostBackTrigger trigger = new AsyncPostBackTrigger();
+                trigger.ControlID = chckBoxModules.UniqueID;
+                trigger.EventName = "CheckedChanged";
+
+                updatePanelModulesForTeachers.Triggers.Add(trigger);
+                chckBoxModules.CheckedChanged += chckBoxModules_CheckedChanged;
+            }
+        }
+
+        protected void btnEnroll_OnClick(object sender, EventArgs e)
+        {
+            string teacherViewState = ViewState["SelectedTeacher"] as String;
+            List<int> modulesSelected = new List<int>();
+
+            if (Session["CodUtilizador"] != null)
+            {
+                if (!string.IsNullOrEmpty(teacherViewState))
+                {
+                    JavaScriptSerializer deSerializer = new JavaScriptSerializer();
+                    if (Session["FromUser"] != null && Session["FromUser"].ToString() == "true")
+                    {
+                        User selectedUser = deSerializer.Deserialize<User>(teacherViewState);
+                        Session["FromUser"] = "false";
+                    }
+                    else
+                    {
+                        Teacher selectedTeacher = deSerializer.Deserialize<Teacher>(teacherViewState);
+                    }
+                    List<int> selectedItems = ViewState["SelectedItemsEdit"] as List<int>;
+
+                    if (selectedItems != null)
+                    {
+                        Classes.Enrollment.DeleteEnrollmentTeacher(Convert.ToInt32(Session["CodUtilizador"]));
+
+                        foreach (int selected in selectedItems)
+                        {
+                            Enrollment enrollment = new Enrollment();
+                            enrollment.CodModulo = selected;
+                            enrollment.CodUtilizador = Convert.ToInt32(Session["CodUtilizador"]);
+                            enrollment.CodSituacao = 1;
+
+                            (int AnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollmentTeacher(enrollment);
+
+                            if (AnswEnrollmentCode == -1 && AnswEnrollmentRegister == -1)
+                            {
+                                lblMessage.Visible = true;
+                                lblMessage.CssClass = "alert alert-primary text-white text-center";
+                                lblMessage.Text = "Falha ao atualizar inscrições!";
+                                timerMessage.Enabled = true;
+                            }
+                            else
+                            {
+                                Classes.Teacher.InsertTeacher(Convert.ToInt32(Session["CodUtilizadorClicked"]), AnswEnrollmentCode);
+                                lblMessage.Visible = true;
+                                lblMessage.CssClass = "alert alert-primary text-white text-center";
+                                lblMessage.Text = "Inscrições atualizadas com sucesso!";
+                                timerMessage.Enabled = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Função para merge dos pdfs com template
+        /// </summary>
+        /// <param name="folderPath"></param>
+        /// <returns></returns>
+        public byte[] MergePdfFilesInFolder(string folderPath)
+        {
+            //Lista de pdf da pasta folderPath
+            string[] pdfFiles = Directory.GetFiles(folderPath, "*.pdf");
+
+            // Create a MemoryStream to hold the merged PDF
+            using (MemoryStream ms = new MemoryStream())
+            {
+                // Create a Document and PdfCopy instance
+                using (Document document = new Document())
+                using (PdfSmartCopy copy = new PdfSmartCopy(document, ms))
+                {
+                    document.Open();
+
+                    foreach (string pdfFile in pdfFiles)
+                    {
+                        // Add each PDF file to the merged PDF
+                        using (PdfReader reader = new PdfReader(pdfFile))
+                        {
+                            for (int i = 1; i <= reader.NumberOfPages; i++)
+                            {
+                                copy.AddPage(copy.GetImportedPage(reader, i));
+                            }
+                        }
+                    }
+                }
+
+                // Return the merged PDF as a byte array
+                return ms.ToArray();
+            }
         }
     }
 

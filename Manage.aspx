@@ -123,6 +123,6 @@
         <asp:LinkButton runat="server" CssClass="btn btn-primary" Text="Gerir Formandos" ID="btnManageStudents" href="./ManageStudents.aspx" />
         <asp:LinkButton runat="server" CssClass="btn btn-primary" Text="Gerir Formadores" ID="btnManageTeachers" href="./ManageTeachers.aspx" />
         <asp:LinkButton runat="server" CssClass="btn btn-primary" Text="Gerir Salas" ID="btnManageClassrooms" href="./ManageClassrooms.aspx" />
-        <asp:LinkButton runat="server" CssClass="btn btn-primary" Text="Gerir Utilizadores" ID="btnManageUsers" href="./ManageUsers.aspx" />
+        <asp:LinkButton runat="server" CssClass="btn btn-primary" Text="Gerir Utilizadores" ID="btnManageUsers" Visible="false" href="./ManageUsers.aspx" />
     </div>
 </asp:Content>

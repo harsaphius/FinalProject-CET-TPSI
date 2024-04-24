@@ -36,6 +36,31 @@ namespace FinalProject.Classes
             servidor.Send(emails); //O objeto servidor envia o mail
         }
 
+        public static void SendEmailActivationBD(string Email)
+        {
+            SmtpClient servidor = new SmtpClient();//Servidor SMTP - pass, user, porto
+            MailMessage emails = new MailMessage(); //Email
+            emails.Subject = "Ativação de Conta Cinel 2.0";
+            emails.From = new MailAddress(ConfigurationManager.AppSettings["SMTP_MailUser"]); //Sender
+            emails.To.Add(new MailAddress(Email)); //Destinatário
+
+            emails.Body = $"Ex.mo(s) Sr(s), <br /><b>Obrigado pela sua inscrição.</b><br />A sua conta está ativa, pode começar a usar!"; ;
+            emails.IsBodyHtml = true; //Reconhece a formatação do HTML, tags, p.e., links,<b>,<p>,etc. Poderemos usar plain-text IsBodyHtml= false.
+
+            servidor.Host = ConfigurationManager.AppSettings["SMTP_URL"]; //SMTP URL configurada no WebConfig
+            servidor.Port = int.Parse(ConfigurationManager.AppSettings["SMTP_Port"]); //SMTP Port configurada no WebConfig
+
+            string user = ConfigurationManager.AppSettings["SMTP_MailUser"]; //SMTP User Mail configurado no WebConfig
+            string pw = ConfigurationManager.AppSettings["SMTP_Pass"]; //SMTP Pass Mail configurado no WebConfig
+
+            servidor.Credentials = new NetworkCredential(user, pw); //Indicar as credenciais do utilizador
+
+            servidor.EnableSsl = true; //Habilitar o SSL - o SMTP Client usa o SSL para criptografar a ligação
+
+            servidor.Send(emails); //O objeto servidor envia o mail
+        }
+
+
         /// <summary>
         /// Função para envio de e-mail de recuperação
         /// </summary>

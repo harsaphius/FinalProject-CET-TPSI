@@ -15,8 +15,8 @@
             </div>
         <div class="col-md-3">
             <label class="col-form-label">Módulos:</label>
-            <asp:DropDownList ID="ddlModulesForClassGroup" CssClass="form-control" AutoPostBack="true" runat="server" DataSourceID="SQLDSModules" DataTextField="nomeModulos" DataValueField="codModulos"></asp:DropDownList>
-            <asp:SqlDataSource ID="SQLDSModules" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="select * from turma as t inner join moduloFormadorTurma as MFT on t.codTurma=MFT.codTurma inner join modulo as M on MFT.codModulo=M.codModulos WHERE t.codTurma=@CodTurma">
+            <asp:DropDownList ID="ddlModulesForClassGroup" CssClass="form-control" AutoPostBack="true" runat="server" DataSourceID="SQLDSModules" DataTextField="nomeModulos" DataValueField="codModulos" OnSelectedIndexChanged="ddlModulesForClassGroup_OnSelectedIndexChanged"></asp:DropDownList>
+            <asp:SqlDataSource ID="SQLDSModules" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="select distinct nomeModulos,codModulos from turma as t left join moduloFormadorTurma as MFT on t.codTurma=MFT.codTurma left join modulo as M on MFT.codModulo=M.codModulos WHERE t.codTurma=@CodTurma">
                 <SelectParameters>
                       <asp:SessionParameter Name="CodTurma" SessionField="CodTurma" />
                 </SelectParameters>
@@ -37,7 +37,10 @@
              <label class="col-form-label">Horas do Módulo:</label>
              <label id="lblHoursModule" class="form-control"></label>
         </div>
-        
+        <div class="col-md-2">
+             <label class="col-form-label">Data de Início:</label>
+             <asp:Label runat="server" ID="lblDate" CssClass="form-control"></asp:Label>
+        </div>
         <div class="col-md-2">
             <label class="col-form-label">Cor do Evento:</label>
             <input class="form-control" type="color" id="colorPicker" value="000000">
@@ -265,7 +268,6 @@
 
                     eventData.forEach(function (event) {
                         event.source = 'teacherAvailability';
-
                     });
 
                     addAvailabilityToSelectedSlots(eventData);
@@ -293,7 +295,6 @@
 
                     eventData.forEach(function (event) {
                         event.source = 'classroomAvailability';
-
                     });
 
                     addAvailabilityClassroomsToSelectedSlots(eventData);
@@ -351,7 +352,6 @@
                             var eventData = JSON.parse(response.d); // Extração do array baseado no ficheiro JSON
 
                             addEventsToSelectedSlots(eventData);
-                            console.log(eventData)
                             renderCalendar();
 
                             $('#messageModal .modal-body').text("Horário guardado com sucesso!");
@@ -417,6 +417,7 @@
                         hour12: false
                     },
                     firstDay: 1,
+                    initialDate: dataInicio,
                     slotMinTime: '08:00:00',
                     slotMaxTime: '23:00:00',
                     allDaySlot: true,

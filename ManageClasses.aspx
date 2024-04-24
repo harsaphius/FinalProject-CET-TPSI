@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Turmas" EnableEventValidation="false" EnableViewState="true"  Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="ManageClasses.aspx.cs" Inherits="FinalProject.ManageClasses" %>
+﻿<%@ Page Title="Turmas" EnableEventValidation="false" EnableViewState="true" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="ManageClasses.aspx.cs" Inherits="FinalProject.ManageClasses" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row" style="margin-top: 15px">
                     <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
-                        <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Nova Turma" Visible="True"  CausesValidation="False" ID="btnInsertClassMain" OnClick="btnInsertClassMain_OnClick" />
+                        <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Nova Turma" Visible="True" CausesValidation="False" ID="btnInsertClassMain" OnClick="btnInsertClassMain_OnClick" />
                         <asp:Button runat="server" CssClass="btn btn-primary" CausesValidation="False" Visible="False" Text="Voltar" ID="btnBack" OnClick="btnBack_OnClick" />
                     </div>
                     <div class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
@@ -100,7 +100,7 @@
                                                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Data de Início</th>
                                                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Data de Fim</th>
                                                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"></th>
-                                                                                 <%--   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Formadores</th>
+                                                                                    <%--   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Formadores</th>
                                                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Formandos</th>--%>
                                                                                     <th></th>
                                                                                     <th></th>
@@ -141,10 +141,11 @@
                                                                             <asp:Label runat="server" Text='<%#  String.Format("{0:d}", Eval("DataFim")) %>'></asp:Label>
                                                                         </p>
                                                                     </td>
-                                                                    <td> <asp:LinkButton CausesValidation="False" CommandArgument='<%# Eval("CodTurma") %>' class="btn-md btn-outline-primary text-sm"
-                                                                                        data-bs-toggle="tooltip" Text="Detalhes" data-bs-placement="bottom" CommandName="Details" runat="server">
+                                                                    <td>
+                                                                        <asp:LinkButton CausesValidation="False" CommandArgument='<%# Eval("CodTurma") %>' class="btn-md btn-outline-primary text-sm"
+                                                                            data-bs-toggle="tooltip" Text="Detalhes" data-bs-placement="bottom" CommandName="Details" runat="server">
                                                                                        
-                                                                                    </asp:LinkButton></td>
+                                                                        </asp:LinkButton></td>
                                                                     <!--Nota: opção desconsiderada porque não consegui ultrapassar o limite do maxJsonLength mesmo aumentando no WebConfig -->
                                                                     <%-- <td style="width: auto; white-space: normal; padding: 2px;">
                                                                         <div class="avatar-group mt-2">
@@ -390,10 +391,10 @@
                                                                             <asp:Timer ID="timerMessageInsert" runat="server" Interval="3000" OnTick="timerMessageInsert_OnTick" Enabled="false"></asp:Timer>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-3">
-                                                                        <div class="oblique position-absolute top-0 h-100 d-md-block me-n12">
-                                                                            <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
-                                                                        </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="oblique position-absolute top-0 h-100 d-md-block me-n12">
+                                                                        <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -408,14 +409,14 @@
                                                 </Triggers>
                                             </asp:UpdatePanel>
                                         </div>
-                        
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
         </ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="btnInsertClassMain" />

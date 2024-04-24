@@ -210,8 +210,7 @@
                                                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Utilizador n.º </th>
                                                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome</th>
                                                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Registar como Formando</th>
-                                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cursos</th>
-                                                                                    <th></th>
+                                                                                    
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
@@ -679,44 +678,31 @@
             <asp:AsyncPostBackTrigger ControlID="btnBack" />
         </Triggers>
     </asp:UpdatePanel>
-    <%--<!-- Javascript para o Flatpicker -->
+    <!--Função de Javascript para mostrar o calendário do flatpickr nas TextBoxes -->
     <script>
-        function initializeDatePickers() {
-            flatpickr('#<%= tbDataNascimento.ClientID %>',
-                {
-                    dateFormat: 'd-m-Y',
-                    theme: 'light',
-                    maxDate: new Date(),
-                    onChange: function (selectedDates, dateStr, instance) {
-                        console.log("onClose chamada"); // Adicione este console.log para verificar se a função está sendo chamada
-                        instance.redraw();
-                    }
-
-                });
-
-            flatpickr('#<%= tbDataValidade.ClientID %>', {
-                dateFormat: 'd-m-Y',
-                theme: 'light',
-                minDate: new Date(),
-                onChange: function (selectedDates, dateStr, instance) {
-                    // Always redraw the date picker
-                    instance.redraw();
-                }
-
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            initializeDatePickers(); // Initialize date pickers when DOM content is loaded
+        flatpickr('#<%= tbDataValidade.ClientID %>', {
+            // Options
+            dateFormat: 'd-m-Y',
+            theme: 'light',
+            minDate: new Date()
         });
-
-        document.addEventListener('change', function (event) {
-            var target = event.target;
-            if (target.matches('#<%= tbDataNascimento.ClientID %>') || target.matches('#<%= tbDataValidade.ClientID %>')) {
-                initializeDatePickers();
-            }
+        flatpickr('#<%= tbDataNascimento.ClientID %>', {
+            // Options
+            dateFormat: 'd-m-Y',
+            theme: 'light',
+            minDate: new Date()
         });
-
-    </script>--%>
-
+        flatpickr('#<%= tb_dataFim.ClientID %>', {
+            // Options
+            dateFormat: 'd-m-Y',
+            theme: 'light',
+            minDate: new Date()
+        });
+        flatpickr('#<%= tb_dataInicio.ClientID %>', {
+            // Options
+            dateFormat: 'd-m-Y',
+            theme: 'light',
+            minDate: new Date()
+        });
+    </script>
 </asp:Content>

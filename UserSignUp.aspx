@@ -6,6 +6,8 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <section class="min-vh-100 mb-8">
+        <asp:Label runat="server" ID="lbl_message" style="display:flex; align-content:center; padding: 5px;" CssClass="text-white" class="hidden" role="alert"></asp:Label>
+
         <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg" style="background-image: url('../assets/img/curved-images/curved14.jpg');">
             <span class="mask bg-gradient-dark opacity-6"></span>
             <div class="container">
@@ -24,7 +26,7 @@
                             <div style="padding: 5px;" id="alert" class="hidden" role="alert">
                                 <asp:Label runat="server" ID="lblUserFromGoogle" CssClass="text-white"></asp:Label>
                             </div>
-                            <div class="card-header text-center pt-4">
+                      <%--      <div class="card-header text-center pt-4">
                                 <h5>Registar com</h5>
                             </div>
                             <div class="row px-xl-5 px-sm-4 px-3 ">
@@ -60,7 +62,7 @@
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </div>--%>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
@@ -88,12 +90,12 @@
                                     <label>Palavra-passe</label>
                                     <asp:RequiredFieldValidator ID="rfvpw" Text="*" ErrorMessage="Palavra-passe obrigatória" runat="server" ControlToValidate="tb_pw" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                     <div class="mb-3">
-                                        <asp:TextBox ID="tb_pw" runat="server" class="form-control" placeholder="Palavra-passe"></asp:TextBox>
+                                        <asp:TextBox TextMode="Password" ID="tb_pw" runat="server" class="form-control" placeholder="Palavra-passe"></asp:TextBox>
                                     </div>
                                     <label>Repetição da Palavra-passe</label>
                                     <asp:RequiredFieldValidator ID="rfvpwr" runat="server" Text="*" ErrorMessage="Palavra-passe obrigatória" ControlToValidate="tb_pwr" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                     <div class="mb-3">
-                                        <asp:TextBox ID="tb_pwR" runat="server" class="form-control" placeholder="Repetir a Palavra-passe"></asp:TextBox>
+                                        <asp:TextBox TextMode="Password" ID="tb_pwR" runat="server" class="form-control" placeholder="Repetir a Palavra-passe"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -139,10 +141,8 @@
                                             Concordo com <a href="javascript:;" class="text-dark font-weight-bolder">Termos e Condições</a>
                                         </label>
                                     </div>
-                                    <div style="padding: 5px;" id="alert" class="hidden" role="alert">
+                                    <div style="padding: 5px;" id="alert" role="alert">
                                         <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
-                                        <asp:Label runat="server" ID="lbl_message" style="display:flex; align-content:center; padding: 5px;" CssClass="text-white" class="hidden" role="alert"></asp:Label>
-
                                     </div>
                                     <asp:Button ID="btn_signup" OnClick="btn_signup_Click" runat="server" CssClass="btn bg-gradient-dark w-100 my-4 mb-2" Text="Sign Up" />
                                     <p class="text-sm mt-3 mb-0">Já tem uma conta? <a href="./UserSignIn.aspx" class="text-dark font-weight-bolder">Login</a></p>

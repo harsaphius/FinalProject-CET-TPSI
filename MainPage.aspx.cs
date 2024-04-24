@@ -119,8 +119,11 @@ namespace FinalProject
 
         private void BindDataCourses(List<string> conditions = null)
         {
+            string query = $"SELECT * FROM curso AS C INNER JOIN turma AS T ON C.codCurso=T.codCurso WHERE C.isActive = 1 AND T.isActive=1 AND dataInicio BETWEEN '{DateTime.Now.ToString("yyyy-MM-dd")}' AND '{DateTime.Now.AddDays(60).ToString("yyyy-MM-dd")}'";
+
+
             PagedDataSource pagedData = new PagedDataSource();
-            pagedData.DataSource = Classes.Course.LoadCourses(conditions);
+            pagedData.DataSource = Classes.Course.LoadCourses(null, null, query);
             pagedData.AllowPaging = true;
             pagedData.PageSize = 3;
             pagedData.CurrentPageIndex = PageNumberCourses;

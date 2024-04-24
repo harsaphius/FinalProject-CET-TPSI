@@ -29,6 +29,7 @@ namespace FinalProject
                             tb_username.Text = profile.Name;
                             tb_email.Text = profile.Email;
 
+
                             (int AnswUserCode, string Username) = Classes.User.DetermineUtilizador(profile.Email);
                             (int AnswUserExists, int AnswAccountActive) = Classes.User.CheckEmail(profile.Email);
 
@@ -75,8 +76,7 @@ namespace FinalProject
                             else if (AnswUserExists == -1 && AnswAccountActive == -1)
                             {
                                 lbl_message.CssClass = "alert alert-primary text-white text-center";
-
-                                lblUserFromGoogle.Text = "Este utilizador não está associado a nenhuma conta! Registe-se.";
+                                lbl_message.Text = "Este e-mail não está associado a nenhuma conta! Registe-se.";
                             }
                         }
                     }
@@ -133,7 +133,7 @@ namespace FinalProject
                     {
                         lbl_message.CssClass = "alert alert-primary text-white text-center";
 
-                        lbl_message.Text += failure + "\n";
+                        lbl_message.Text = failure + "\n";
                     }
                 }
                 else if (tb_pw.Text != tb_pwR.Text)
@@ -163,9 +163,51 @@ namespace FinalProject
                     {
                         lbl_message.CssClass = "alert alert-primary text-white text-center";
 
-                        EmailControl.SendEmailActivation(tb_email.Text, tb_username.Text);
+                        EmailControl.SendEmailWaitingValidation(tb_email.Text, tb_username.Text);
 
                         lbl_message.Text = "Utilizador registado com sucesso!";
+                    }
+                    else if (UserRegister == 2)
+                    {
+                        lbl_message.CssClass = "alert alert-primary text-white text-center";
+
+                        lbl_message.Text = $"Perfil adicionado ao utilizador já existente!";
+                    }
+                    else if (UserRegister == 3)
+                    {
+                        lbl_message.CssClass = "alert alert-primary text-white text-center";
+
+                        lbl_message.Text = $"Já existe um utilizador com estes dados registado! Confirme que os seus dados estão correctos!";
+                    }
+                    else if (UserRegister == -20)
+                    {
+                        lbl_message.CssClass = "alert alert-primary text-white text-center";
+
+                        lbl_message.Text = $"Utilizador já registado com este perfil!";
+                    }
+                    else if (UserRegister == -4)
+                    {
+                        lbl_message.CssClass = "alert alert-primary text-white text-center";
+
+                        lbl_message.Text = $"Dados errados!  Este e-mail corresponde a outro utilizador!";
+                    }
+                    else if (UserRegister == -3)
+                    {
+                        lbl_message.CssClass = "alert alert-primary text-white text-center";
+
+                        lbl_message.Text = $"Dados errados!  Este username corresponde a outro utilizador!";
+                    }
+                    else if (UserRegister == -5)
+                    {
+                        lbl_message.CssClass = "alert alert-primary text-white text-center";
+
+                        lbl_message.Text = $"Dados errados!  Este documento de identificação corresponde a outro utilizador!";
+                    }
+                    else if (UserRegister == -6)
+                    {
+                        lbl_message.CssClass = "alert alert-primary text-white text-center";
+
+                        lbl_message.Text = $"Dados errados!  Mais do que uma informação (username, e-mail ou documento de identificação) correspondem a outro utilizador!";
                     }
                     else
                     {

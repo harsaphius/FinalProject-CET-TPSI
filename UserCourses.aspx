@@ -11,11 +11,10 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container-fluid py-4">
-        <div>
-            <p>
-                <asp:Label runat="server" ID="lblEnrollment"></asp:Label>
-            </p>
-        </div>
+             <div class="container row justify-content-center">
+                    <asp:Label runat="server" ID="lblMessageEdit" Style="display: flex; justify-content: center; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
+                    <asp:Timer ID="timerMessageEdit" runat="server" Interval="3000" OnTick="timerMessageEdit_OnTick" Enabled="False"></asp:Timer>
+                </div>
         <div id="panelLinkButton">
             <asp:Panel ID="panelContainer" runat="server" CssClass="horizontal-link-buttons"></asp:Panel>
         </div>

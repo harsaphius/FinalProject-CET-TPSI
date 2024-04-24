@@ -67,7 +67,6 @@
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <asp:Button runat="server" ID="btn_details" class="btn btn-outline-primary btn-sm mb-0" CausesValidation="false" OnClick="btn_details_Click" Text="Detalhes" />
                                                 <asp:Button runat="server" ID="btn_enroll" class="btn btn-outline-primary btn-sm mb-0" CausesValidation="false" OnClick="btn_enroll_Click" Text="Inscrever-me" />
-
                                             </div>
                                         </div>
                                     </div>

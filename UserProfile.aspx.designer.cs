@@ -15,6 +15,24 @@ namespace FinalProject
     {
 
         /// <summary>
+        /// lblMessageEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessageEdit;
+
+        /// <summary>
+        /// timerMessageEdit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessageEdit;
+
+        /// <summary>
         /// fuProfileImage control.
         /// </summary>
         /// <remarks>
@@ -69,6 +87,15 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Label profileemail;
 
         /// <summary>
+        /// btnExport control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnExport;
+
+        /// <summary>
         /// lbtAvaliacoes control.
         /// </summary>
         /// <remarks>
@@ -76,6 +103,15 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lbtAvaliacoes;
+
+        /// <summary>
+        /// lbtModulos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtModulos;
 
         /// <summary>
         /// lbtDisponibilidade control.
@@ -913,5 +949,68 @@ namespace FinalProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.Timer timerMessage;
+
+        /// <summary>
+        /// ModulesRegisterForTeacher control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ModulesRegisterForTeacher;
+
+        /// <summary>
+        /// updatePanelModulesForTeachers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updatePanelModulesForTeachers;
+
+        /// <summary>
+        /// rptListModulesForTeachers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptListModulesForTeachers;
+
+        /// <summary>
+        /// btnPreviousListModulesForTeachers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnPreviousListModulesForTeachers;
+
+        /// <summary>
+        /// lblPageNumberListModulesForTeachers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPageNumberListModulesForTeachers;
+
+        /// <summary>
+        /// btnNextListModulesForTeachers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnNextListModulesForTeachers;
+
+        /// <summary>
+        /// btnEnroll control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEnroll;
     }
 }

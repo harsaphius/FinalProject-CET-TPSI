@@ -329,11 +329,12 @@
                                                                 </div>
 
 
-                                                                <div class="col-md-2">
-                                                                    <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n12">
-                                                                        <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
-                                                                    </div>
-                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n12">
+                                                                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
                                                             </div>
                                                         </div>
                                                     </div>

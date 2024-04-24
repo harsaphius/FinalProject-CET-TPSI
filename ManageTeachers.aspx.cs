@@ -33,8 +33,14 @@ namespace FinalProject
                     lbtncourses.PostBackUrl = "./UserCourses.aspx";
                 }
 
-                string script = @"
-                            document.getElementById('courses').href = './UserCourses.aspx';
+                string script;
+                string userCode = Session["CodUtilizador"].ToString();
+                List<int> UserProfile = Classes.User.DetermineUserProfile(Convert.ToInt32(userCode));
+
+                foreach (int profileCode in UserProfile)
+                {
+                    script = @"
+                            document.getElementById('courses').href = './UserCourses.aspx'
                             document.getElementById('signout').classList.remove('hidden');
                             document.getElementById('signout').classList.add('nav-item');
                             document.getElementById('signin').classList.add('hidden');
@@ -49,17 +55,16 @@ namespace FinalProject
                             document.getElementById('navButtonSignIn').classList.remove('d-flex');
                             document.getElementById('navButtonSignIn').classList.remove('align-items-center');
                             document.getElementById('navButtonSignIn').classList.add('hidden');
-                            document.getElementById('courses').classList.remove('hidden');
                             document.getElementById('profile').classList.remove('hidden');
                             document.getElementById('usercalendar').classList.remove('hidden');
+                            document.getElementById('courses').classList.remove('hidden');
                             ";
 
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                if (Session["CodUtilizador"] != null && Session["CodUtilizador"].ToString() == "4" ||
-                    Session["CodUtilizador"].ToString() == "1")
-                {
-                    script = @"
+                    if (profileCode == 4 || profileCode == 1)
+                    {
+                        script = @"
                             document.getElementById('management').classList.remove('hidden');
                             document.getElementById('managecourses').classList.remove('hidden');
                             document.getElementById('manageclasses').classList.remove('hidden');
@@ -67,12 +72,20 @@ namespace FinalProject
                             document.getElementById('managestudents').classList.remove('hidden');
                             document.getElementById('manageteachers').classList.remove('hidden');
                             document.getElementById('manageclassrooms').classList.remove('hidden');
-                            document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
                             
                             ";
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
+                    }
+                    if (profileCode == 1)
+                    {
+                        script = @"
+                            document.getElementById('manageusers').classList.remove('hidden');
+                            
+                            ";
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowUsers", script, true);
+                    }
 
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
             }
 
@@ -155,7 +168,7 @@ namespace FinalProject
                 trigger.ControlID = chckBoxModules.UniqueID;
                 trigger.EventName = "CheckedChanged";
 
-                updatePanelListTeachers.Triggers.Add(trigger);
+                updatePanelModulesForTeachers.Triggers.Add(trigger);
                 chckBoxModules.CheckedChanged += chckBoxModules_CheckedChanged;
             }
         }
@@ -264,12 +277,6 @@ namespace FinalProject
             {
                 Session["CodFormador"] = e.CommandArgument.ToString();
                 Response.Redirect("TeacherAvailability.aspx");
-            }
-
-            if (e.CommandName == "Evaluation")
-            {
-                Session["CodFormador"] = e.CommandArgument.ToString();
-                Response.Redirect("TeacherEvaluations.aspx");
             }
         }
 
