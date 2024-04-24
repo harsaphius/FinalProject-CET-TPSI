@@ -11,89 +11,71 @@ namespace FinalProject
 {
 
 
-    public partial class ManageSchedules
+    public partial class MainSchedules
     {
 
         /// <summary>
-        /// btnBack control.
+        /// ddlSelectBy control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBack;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSelectBy;
 
         /// <summary>
-        /// NrTurma control.
+        /// ddlClassGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label NrTurma;
+        protected global::System.Web.UI.WebControls.DropDownList ddlClassGroup;
 
         /// <summary>
-        /// ddlModulesForClassGroup control.
+        /// SQLDSClassGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlModulesForClassGroup;
+        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSClassGroup;
 
         /// <summary>
-        /// SQLDSModules control.
+        /// ddlTeachers control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSModules;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTeachers;
 
         /// <summary>
-        /// lblFormador control.
+        /// SQLDSTeachers control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblFormador;
+        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSTeachers;
 
         /// <summary>
-        /// hdfTeacherNome control.
+        /// ddlClassrooms control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdfTeacherNome;
+        protected global::System.Web.UI.WebControls.DropDownList ddlClassrooms;
 
         /// <summary>
-        /// hdfTeacher control.
+        /// SQLDSClassrooms control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdfTeacher;
-
-        /// <summary>
-        /// ddlClassRoom control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlClassRoom;
-
-        /// <summary>
-        /// SQLDSClassRoom control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSClassRoom;
+        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSClassrooms;
 
         /// <summary>
         /// hdfHorario control.
@@ -105,48 +87,39 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.HiddenField hdfHorario;
 
         /// <summary>
-        /// hdfDuration control.
+        /// tbDataInicioFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdfDuration;
+        protected global::System.Web.UI.WebControls.TextBox tbDataInicioFilters;
 
         /// <summary>
-        /// hdfInitialDate control.
+        /// tbDataFimFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdfInitialDate;
+        protected global::System.Web.UI.WebControls.TextBox tbDataFimFilters;
 
         /// <summary>
-        /// btnSave control.
+        /// btnApplyFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSave;
+        protected global::System.Web.UI.WebControls.Button btnApplyFilters;
 
         /// <summary>
-        /// btnGenerate control.
+        /// btnClearFilters control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGenerate;
-
-        /// <summary>
-        /// hdnJsonSchedule control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdnJsonSchedule;
+        protected global::System.Web.UI.WebControls.Button btnClearFilters;
     }
 }

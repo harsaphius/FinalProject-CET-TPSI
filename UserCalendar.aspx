@@ -5,156 +5,234 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="row">
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-            <span>Data de Início: </span>
-            <div class="input-group mb-4">
-                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                <asp:TextBox runat="server" ID="tbDataInicioFilters" class="form-control datepicker" TextMode="Date"></asp:TextBox>
-            </div>
-        </div>
-
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-            <span>Data de Fim: </span>
-            <div class="input-group mb-4">
-                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                <asp:TextBox runat="server" ID="tbDataFimFilters" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
-            </div>
-        </div>
-        <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-            <span>
-                <br />
-            </span>
-            <asp:Button runat="server" ID="btnExportCalendar" CssClass="btn btn-danger" OnClick="btnExportCalendar_OnClick" Text="Export Calendar" />
-        </div>
-    </div>
     <br />
     <div class="card calendar">
         <div class="card-body p-3">
             <div class="calendar" data-bs-toggle="calendar" id="calendar"></div>
         </div>
     </div>
-    <!--Javascript do FullCalendar -->
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
-            var currentDate = new Date();
-            var currentDayOfWeek = currentDate.getDay();
+   <script>
+       var CodUtilizador = '<%= Session["CodUtilizador"] %>';
+       var CodTurma = '<%= Session["CodTurma"] %>';
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    start: 'today',
-                    center: 'title',
-                    end: 'timeGridWeek agendaDay prev,next'
-                },
-                selectable: true,
-                editable: true,
-                events: [
-                    // Include your static events here if needed
-                    {
-                        title: 'Call with Dave',
-                        start: '2024-03-18',
-                        end: '2024-03-18',
-                        className: 'bg-gradient-danger'
-                    },
-                    {
-                        title: 'Lunch meeting',
-                        start: '2024-03-21',
-                        end: '2024-03-22',
-                        className: 'bg-gradient-warning'
-                    },
-                    {
-                        title: 'All day conference',
-                        start: '2024-03-29',
-                        end: '2024-03-29',
-                        className: 'bg-gradient-success'
-                    },
+       // Function to initialize the calendar
+       function initializeCalendar() {
+           var calendarData = []; // Array to store selected time slots
+           var Sundays_Holidays = []; // Array to store holidays and Sundays
+           var Disponibilidade_Formador = []; // Array to store availability of trainers
+           var Disponibilidade_Sala = []; // Array to store availability of classrooms
+           var currentYear = new Date().getFullYear(); // Get the current year
+           var currentDate = new Date();
 
-                    {
-                        title: 'Meeting with Mary',
-                        start: '2024-03-01',
-                        end: '2024-03-01',
-                        className: 'bg-gradient-info'
-                    },
+           var numberOfYears = 1;
 
-                    {
-                        title: 'Winter Hackaton',
-                        start: '2024-03-03',
-                        end: '2024-03-03',
-                        className: 'bg-gradient-danger'
-                    },
+           // Initialize an empty array to store holidays
+           var holidays = [];
 
-                    {
-                        title: 'Digital event',
-                        start: '2024-03-07',
-                        end: '2024-03-09',
-                        className: 'bg-gradient-warning'
-                    },
+           // Loop through each year
+           for (var i = 0; i < numberOfYears; i++) {
+               // Calculate the year based on the current year and the loop index
+               var year = currentYear + i;
 
-                    {
-                        title: 'Marketing event',
-                        start: '2024-04-10',
-                        end: '2024-04-10',
-                        className: 'bg-gradient-primary'
-                    },
+               // Add events for national holidays for each year
+               holidays.push(
+                   {
+                       title: 'Ano Novo',
+                       start: year + '-01-01T08:00:00',
+                       end: year + '-01-01T23:00:00',
+                   },
+                   {
+                       title: 'Dia da Liberdade',
+                       start: year + '-04-25T08:00:00',
+                       end: year + '-04-25T23:00:00',
+                   },
+                   {
+                       title: 'Dia do Trabalhador',
+                       start: year + '-05-01T08:00:00',
+                       end: year + '-05-01T23:00:00',
+                   },
+                   {
+                       title: 'Dia de Portugal',
+                       start: year + '-06-10T08:00:00',
+                       end: year + '-06-10T23:00:00',
+                   },
+                   {
+                       title: 'Assunção de Nossa Senhora',
+                       start: year + '-08-15T08:00:00',
+                       end: year + '-08-15T23:00:00',
+                   },
+                   {
+                       title: 'Implantação da República',
+                       start: year + '-10-05T08:00:00',
+                       end: year + '-10-05T23:00:00',
+                   },
+                   {
+                       title: 'Dia de Todos os Santos',
+                       start: year + '-11-01T08:00:00',
+                       end: year + '-11-01T23:00:00',
+                   },
+                   {
+                       title: 'Restauração da Independência',
+                       start: year + '-12-01T08:00:00',
+                       end: year + '-12-01T23:00:00',
+                   },
+                   {
+                       title: 'Natal',
+                       start: year + '-12-25T08:00:00',
+                       end: year + '-12-25T23:00:00',
+                   },
+                   {
+                       title: 'Véspera de Natal',
+                       start: year + '-12-24T08:00:00',
+                       end: year + '-12-24T23:00:00',
+                   }
+               );
+           }
 
-                    {
-                        title: 'Dinner with Family',
-                        start: '2024-04-19',
-                        end: '2024-04-19',
-                        className: 'bg-gradient-danger'
-                    },
 
-                    {
-                        title: 'Black Friday',
-                        start: '2024-04-23',
-                        end: '2024-04-23',
-                        className: 'bg-gradient-info'
-                    },
-
-                    {
-                        title: 'Cyber Week',
-                        start: '2024-04-02',
-                        end: '2024-04-02',
-                        className: 'bg-gradient-warning'
-                    },
-
-                ],
-                views: {
-                    month: {
-                        titleFormat: {
-                            month: "long",
-                            year: "numeric"
-                        }
-                    },
-                    agendaWeek: {
-                        titleFormat: {
-                            month: "long",
-                            year: "numeric",
-                            day: "numeric"
-                        }
-                    },
-                    agendaDay: {
-                        titleFormat: {
-                            month: "short",
-                            year: "numeric",
-                            day: "numeric"
-                        },
-                        type: 'timeGrid',
-                        duration: { days: 1 },
-                        buttonText: 'Day'
-                    },
-                    timeGridWeek: {
-                        type: 'timeGrid',
-                        duration: { days: 7 },
-                        buttonText: 'Week',
-                        firstDay: currentDayOfWeek
-                    }
-                }
-            });
-
-            calendar.render();
+           // AJAX call to fetch availability of trainers
+           $.ajax({
+               type: "POST",
+               url: "/Scheduler.asmx/GetTeacherAvailabilityFromJson",
+               data: JSON.stringify({ CodUtilizador: CodUtilizador }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                var eventData = JSON.parse(response.d);
+                addAvailabilityOfTrainersToSelectedSlots(eventData);
+                renderCalendar();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error("Error fetching teacher availability:", errorThrown);
+                addHolidaysAndSundaysToSelectedSlots();
+                renderCalendar();
+            }
         });
-    </script>
+
+        // AJAX call to fetch class group schedule
+        $.ajax({
+            type: "POST",
+            url: "/Scheduler.asmx/GetScheduleOfClassGroupFromJson",
+            data: JSON.stringify({ CodTurma: CodTurma }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                var eventData = JSON.parse(response.d);
+                addEventsToSelectedSlots(eventData);
+                addHolidaysAndSundaysToSelectedSlots();
+                renderCalendar();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error("Error fetching class group schedule:", errorThrown);
+                addHolidaysAndSundaysToSelectedSlots();
+                renderCalendar();
+            }
+        });
+
+           // Function to render the calendar
+           function renderCalendar() {
+               var calendarEl = document.getElementById('calendar');
+               var calendar = new FullCalendar.Calendar(calendarEl, {
+                   locale: 'pt',
+                   hiddenDays: [0],
+                   initialView: 'dayGridMonth',
+                   headerToolbar: {
+                       left: 'prev,next today',
+                       center: 'title',
+                       right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                   },
+                   buttonText: {
+                       today: 'Hoje',
+                       timeGridDay: 'Dia',
+                       dayGridMonth: 'Mês',
+                       timeGridWeek: 'Semana'
+                   },
+                   slotLabelFormat: {
+                       hour: '2-digit',
+                       minute: '2-digit',
+                       hour12: false
+                   },
+                   firstDay: 1,
+                   slotMinTime: '08:00:00',
+                   slotMaxTime: '23:00:00',
+                   allDaySlot: true,
+                   selectable: true,
+                   timeZone: 'UTC',
+                   contentHeight: 'auto',
+                   aspectRatio: 1.5,
+                   initialDate: currentDate,
+                   validRange: {
+                       start: currentYear + '-01-01',
+                       end: (currentYear + 2) + '-01-01'
+                   },
+
+                   events: calendarData.concat(Disponibilidade_Formador)
+               });
+
+               calendar.render();
+           }
+
+           // Function to add holidays and Sundays to the calendarData array
+           function addHolidaysAndSundaysToSelectedSlots() {
+               holidays.forEach(function (holiday) {
+                   Sundays_Holidays.push({
+                       title: holiday.title,
+                       start: holiday.start,
+                       end: holiday.end,
+                       color: '#ff0000',
+                       rendering: 'background'
+                   });
+               });
+           }
+
+           // Function to add availability of trainers to the Disponibilidade_Formador array
+           function addAvailabilityOfTrainersToSelectedSlots(eventData) {
+               eventData.forEach(function (event) {
+                   Disponibilidade_Formador.push({
+                       title: event.title,
+                       start: event.start,
+                       end: event.end,
+                       color: event.color,
+                       rendering: 'background'
+                   });
+               });
+           }
+
+           // Function to add availability of classrooms to the Disponibilidade_Sala array
+           function addAvailabilityOfClassroomsToSelectedSlots(eventData) {
+               eventData.forEach(function (event) {
+                   console.log(event)
+                   Disponibilidade_Sala.push({
+                       title: event.title,
+                       start: event.start,
+                       end: event.end,
+                       color: event.color,
+                       rendering: 'background'
+                   });
+               });
+           }
+
+           // Function to add events to the calendarData array
+           function addEventsToSelectedSlots(eventData) {
+               eventData.forEach(function (event) {
+                   calendarData.push({
+                       title: event.title,
+                       start: event.start,
+                       end: event.end,
+                       cod_modulo: event.cod_modulo,
+                       cod_formador: event.cod_formador,
+                       cod_sala: event.cod_sala,
+                       color: event.color,
+                       cod_turma: event.cod_turma
+                   });
+               });
+           }
+       }
+
+       // Initialize calendar on page load
+       $(document).ready(function () {
+           initializeCalendar();
+       });
+   </script>
+
 </asp:Content>

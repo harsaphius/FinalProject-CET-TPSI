@@ -4,6 +4,12 @@
 		<siteMapNode url="~/MainCourses.aspx" title="Cursos" description="Courses" />
 		<siteMapNode url="~/UserCourses.aspx" title="Meus Cursos" description="Courses" />
 		<siteMapNode url="~/UserProfile.aspx" title="Perfil" description="User Profile" />
+		<siteMapNode url="~/TeacherEvaluations.aspx" title="Avaliações" description="Classes Details">
+
+		</siteMapNode>
+		<siteMapNode url="~/TeacherAvailability.aspx" title="Disponibilidades" description="Classes Details">
+
+		</siteMapNode>
 		<siteMapNode url="~/UserSignIn.aspx" title="Login" description="User SignIn" />
 		<siteMapNode url="~/UserSignUp.aspx" title="Registar" description="User SignUp" />
 		<siteMapNode url="~/UserChangePass.aspx" title="Recuperar Password" description="User SignUp" />
@@ -38,6 +44,22 @@
 				<siteMapNode url="~/ManageClassrooms.aspx?List" title="Listar Salas" description="List Classrooms" />
 				<siteMapNode url="~/ManageClassrooms.aspx?Insert" title="Inserir Salas" description="Insert Classrooms" />
 				<siteMapNode url="~/ManageClassrooms.aspx?Edit" title="Editar Salas" description="Edit Classrooms" />
+			</siteMapNode>
+			<siteMapNode url="~/ManageSchedules.aspx" title="Gestão de Horário da Turma" description="Manage Schedules">
+				
+			</siteMapNode>
+			<siteMapNode url="~/StatisticalPage.aspx" title="Estatísticas" description="Statistics">
+
+			</siteMapNode>
+			<siteMapNode url="~/CourseDetails.aspx" title="Detalhes do Curso" description="Course Details">
+
+			</siteMapNode>
+			<siteMapNode url="~/ClassesDetails.aspx" title="Detalhes da Turma" description="Classes Details">
+
+			</siteMapNode>
+			
+			<siteMapNode url="~/MainSchedules.aspx" title="Horários" description="Classes Details">
+
 			</siteMapNode>
 		</siteMapNode>
 	</siteMapNode>

@@ -3,22 +3,48 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div>
-        <label class="col-form-label">Turma:</label>
-        <asp:DropDownList ID="ddlClassGroup" OnSelectedIndexChanged="ddlClassGroup_OnSelectedIndexChanged" runat="server" AutoPostBack="True" DataSourceID="SQLDSClassGroup" DataTextField="nomeTurma" DataValueField="codTurma"></asp:DropDownList>
-        <asp:SqlDataSource ID="SQLDSClassGroup" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT * FROM [turma]"></asp:SqlDataSource>
-        <label class="col-form-label">Módulos:</label>
-        <asp:DropDownList ID="ddlModulesForClassGroup" AutoPostBack="true" OnSelectedIndexChanged="ddlModulesForClassGroup_OnSelectedIndexChanged" runat="server"></asp:DropDownList>
-        <asp:SqlDataSource ID="SQLDSModules" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>"></asp:SqlDataSource>
-        <label class="col-form-label">Formadores:</label>
-        <asp:DropDownList ID="ddlTeachersForModulesOfClassGroup" AutoPostBack="true" runat="server"></asp:DropDownList>
-        <asp:SqlDataSource ID="SQLDSTeachers" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>"></asp:SqlDataSource>
-        <label class="col-form-label">Salas:</label>
-        <asp:DropDownList ID="ddlClassRoom" AutoPostBack="true" runat="server" DataSourceID="SQLDSClassRoom" DataTextField="nrSala" DataValueField="codSala"></asp:DropDownList>
-        <asp:SqlDataSource ID="SQLDSClassRoom" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT S.codSala, CONCAT(nrSala,' | ', localSala) AS nrSala, S.isActive FROM sala AS S INNER JOIN localSala AS LS ON S.codLocalSala=LS.codLocalSala"></asp:SqlDataSource>
+       <div class="row" style="margin-top: 15px">
+        <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
+            <asp:Button runat="server" CssClass="btn btn-primary" CausesValidation="False" Text="Voltar" ID="btnBack" OnClick="btnBack_Click"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label class="col-form-label">Turma:</label>
+            <asp:Label runat="server" ID="NrTurma" CssClass="form-control"></asp:Label>
+            </div>
+        <div class="col-md-3">
+            <label class="col-form-label">Módulos:</label>
+            <asp:DropDownList ID="ddlModulesForClassGroup" CssClass="form-control" AutoPostBack="true" runat="server" DataSourceID="SQLDSModules" DataTextField="nomeModulos" DataValueField="codModulos"></asp:DropDownList>
+            <asp:SqlDataSource ID="SQLDSModules" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="select * from turma as t inner join moduloFormadorTurma as MFT on t.codTurma=MFT.codTurma inner join modulo as M on MFT.codModulo=M.codModulos WHERE t.codTurma=@CodTurma">
+                <SelectParameters>
+                      <asp:SessionParameter Name="CodTurma" SessionField="CodTurma" />
+                </SelectParameters>
+            </asp:SqlDataSource>
+        </div>
+        <div class="col-md-2">
+            <label class="col-form-label">Formador:</label>
+            <asp:Label runat="server" ID="lblFormador" CssClass="form-control"></asp:Label>
+            <asp:HiddenField ID="hdfTeacherNome" runat="server"/>
+            <asp:HiddenField ID="hdfTeacher" runat="server"/>
+        </div>
+        <div class="col-md-2">
+            <label class="col-form-label">Salas:</label>
+            <asp:DropDownList ID="ddlClassRoom" CssClass="form-control" AutoPostBack="true" runat="server" DataSourceID="SQLDSClassRoom" DataTextField="nrSala" DataValueField="codSala"></asp:DropDownList>
+            <asp:SqlDataSource ID="SQLDSClassRoom" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT S.codSala, CONCAT(nrSala,' | ', localSala) AS nrSala, S.isActive FROM sala AS S INNER JOIN localSala AS LS ON S.codLocalSala=LS.codLocalSala"></asp:SqlDataSource>
+        </div>
+        <div class="col-md-2">
+             <label class="col-form-label">Horas do Módulo:</label>
+             <label id="lblHoursModule" class="form-control"></label>
+        </div>
+        
+        <div class="col-md-2">
+            <label class="col-form-label">Cor do Evento:</label>
+            <input class="form-control" type="color" id="colorPicker" value="000000">
+        </div>
         <asp:HiddenField ID="hdfHorario" runat="server" />
-        <label class="col-form-label">Cor do Evento</label>
-        <input type="color" id="colorPicker" value="000000">
+        <asp:HiddenField ID="hdfDuration" runat="server" />
+        <asp:HiddenField ID="hdfInitialDate" runat="server" />
     </div>
     <div class="col-md-4">
         <label id="lbl_mensagem" style="margin-top: 20px;"></label>
@@ -28,44 +54,41 @@
             <div class="calendar" data-bs-toggle="calendar" id="calendar"></div>
         </div>
     </div>
+    <br />
     <asp:Button runat="server" CssClass="btn btn-primary" Text="Guardar" Visible="True" CausesValidation="False" ID="btnSave" />
-
+    <asp:Button runat="server" CssClass="btn btn-primary" Text="Gerar" Visible="True" CausesValidation="False" ID="btnGenerate" />
+    <asp:HiddenField ID="hdnJsonSchedule" runat="server" />
     <script>
         var CodUtilizador = '<%= Session["CodUtilizador"] %>';
         var CodTurma = '<%= Session["CodTurma"] %>';
 
         document.addEventListener('DOMContentLoaded', function () {
             var calendarData = []; // Array to store selected time slots
-            var Sundays_Holidays = []; // Array to store holidays and sundays
-            var Disponibilidade_Formador = []; // Array to store availability of trainer
-            var Disponibilidade_Sala = []; // Array to store availability of classrooms
-            var MIN_SLOT_DURATION = 60 * 60 * 1000; // Minimum slot duration in milliseconds (1 hour)
+            var SundaysHolidays = []; // Array to store holidays and sundays
+            var teacherAvailability = []; // Array to store availability of trainer
+            var classroomAvailability = []; // Array to store availability of classrooms
+            var minimumSlotDuration = 60 * 60 * 1000; // Minimum slot duration in milliseconds (1 hour)
             var currentYear = new Date().getFullYear(); // Get the current year
             var currentDate = new Date();
-
-            // Extract the year, month, and day
             var currentYear = currentDate.getFullYear();
-            var currentMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 because getMonth() returns a zero-based index
-            var currentDay = currentDate.getDate().toString().padStart(2, '0');
-
-            // Construct the initialDate string in the format 'YYYY-MM-DD'
-            var initialDate = currentYear + '-' + currentMonth + '-' + currentDay;
 
             // Get the selected values from dropdown lists
-            var selectedTurma = $('#<%= ddlClassGroup.ClientID %> option:selected').val();
-            var selectedModulo = $('#<%= ddlModulesForClassGroup.ClientID %> option:selected').text();
-            var selectedModuloValue = $('#<%= ddlModulesForClassGroup.ClientID %> option:selected').val();
-            var selectedTeacher = $('#<%= ddlTeachersForModulesOfClassGroup.ClientID %> option:selected').text();
-            var selectedTeacherValue = $('#<%= ddlTeachersForModulesOfClassGroup.ClientID %> option:selected').val();
-            var selectedSala = $('#<%= ddlClassRoom.ClientID %> option:selected').text();
-            var selectedSalaValue = $('#<%= ddlClassRoom.ClientID %> option:selected').val();
-            var nrTurma = $('#<%= ddlClassGroup.ClientID %> option:selected').text();
-
+            var selectedClassgroup = $('#<%= NrTurma.ClientID %> ').text();
+            var selectedModule = $('#<%= ddlModulesForClassGroup.ClientID %> option:selected').text();
+            var selectedModuleValue = $('#<%= ddlModulesForClassGroup.ClientID %> option:selected').val();
+            var selectedTeacher = $('#<%= hdfTeacherNome.ClientID %> ').text();
+            var selectedTeacherValue = $('#<%= hdfTeacher.ClientID %>').val();
+            var selectedClassroom = $('#<%= ddlClassRoom.ClientID %> option:selected').text();
+            var selectedClassroomValue = $('#<%= ddlClassRoom.ClientID %> option:selected').val();
+            var nrTurma = $('#<%= NrTurma.ClientID %> ').text();
+            var duracao = $('#<%= hdfDuration.ClientID %>').val();
+            var dataInicio = $('#<%= hdfInitialDate.ClientID %>').val();
+            console.log(dataInicio)
 
             // Function to check if the selected slot duration meets the minimum requirement and starts and ends on the hour
-            function isSlotDurationValid(info) {
-                var slotDuration = info.end.getTime() - info.start.getTime();
-                return slotDuration >= MIN_SLOT_DURATION && info.start.getMinutes() === 0 && info.end.getMinutes() === 0;
+            function isSlotDurationValid(slot) {
+                var slotDuration = slot.end.getTime() - slot.start.getTime();
+                return slotDuration >= minimumSlotDuration && slot.start.getMinutes() === 0 && slot.end.getMinutes() === 0;
             }
 
             // Define the number of years to include (current year + next two years)
@@ -135,6 +158,34 @@
                 );
             }
 
+            function CalculateModuleHours(moduloId) {
+                let totalHours = 0;
+                calendarData.forEach(function (event) {
+                    if (event.cod_modulo == moduloId) {
+                        totalHours += Math.abs(new Date(event.end) - new Date(event.start)) / 36e5;
+                    }
+                });
+                return totalHours;
+                console.log(totalHours)
+            }
+
+            function UpdateHoursModule() {
+                var totalHours = CalculateModuleHours(selectedModuleValue);
+                $('#lblHoursModule').text(`${totalHours} horas de ${duracao} horas`);
+                if (totalHours == duracao) {
+                    $('#lblHoursModule').addClass('form-control border-danger');
+                }
+                else {
+                    $('#lblHoursModule').removeClass('form-control border-danger');
+                    $('#lblHoursModule').addClass('form-control');
+                }
+            }
+
+            $(document).ready(function () {
+                UpdateHoursModule();
+            });
+
+            //Function to format date
             function formatDateToISOString(dateString) {
                 var date = new Date(dateString);
                 var utcString = date.toUTCString();
@@ -145,12 +196,12 @@
             // Function to add holidays and Sundays to the calendarData array
             function addHolidaysAndSundaysToSelectedSlots() {
                 holidays.forEach(function (holiday) {
-                    Sundays_Holidays.push({
+                    SundaysHolidays.push({
                         title: holiday.title,
                         start: holiday.start,
                         end: holiday.end,
                         color: '#ff0000',
-                        dataType: 'non_unselectable'
+                        dataType: 'unselectable'
                     });
                 });
             }
@@ -158,13 +209,12 @@
             // Function to add events to the calendarData array
             function addAvailabilityToSelectedSlots(eventData) {
                 eventData.forEach(function (event) {
-                    Disponibilidade_Formador.push({
+                    teacherAvailability.push({
                         title: event.title,
                         start: event.start,
                         end: event.end,
                         color: event.color,
-                        cod_turma: event.cod_turma,
-                        dataType: 'non_unselectable'
+                        dataType: 'unselectable'
                     });
                 });
             }
@@ -172,13 +222,12 @@
             // Function to add events to the calendarData array
             function addAvailabilityClassroomsToSelectedSlots(eventData) {
                 eventData.forEach(function (event) {
-                    Disponibilidade_Sala.push({
+                    classroomAvailability.push({
                         title: event.title,
                         start: event.start,
                         end: event.end,
                         color: event.color,
-                        cod_turma: event.cod_turma,
-                        dataType: 'non_unselectable'
+                        dataType: 'unselectable'
                     });
                 });
             }
@@ -198,17 +247,26 @@
                         dataType: 'selectable'
                     });
                 });
+
+                UpdateHoursModule();
             }
+
+
 
             //Disponibilidade do formador
             $.ajax({
                 type: "POST",
                 url: "/Scheduler.asmx/GetTeacherAvailabilityFromJson",
-                data: JSON.stringify({ CodUtilizador: $('#<%= ddlTeachersForModulesOfClassGroup.ClientID %>').val() }),
+                data: JSON.stringify({ CodUtilizador: $('#<%= hdfTeacher.ClientID %>').val() }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
                     var eventData = JSON.parse(response.d);
+
+                    eventData.forEach(function (event) {
+                        event.source = 'teacherAvailability';
+
+                    });
 
                     addAvailabilityToSelectedSlots(eventData);
 
@@ -233,6 +291,11 @@
                 success: function (response) {
                     var eventData = JSON.parse(response.d); // Extract the data array from the response
 
+                    eventData.forEach(function (event) {
+                        event.source = 'classroomAvailability';
+
+                    });
+
                     addAvailabilityClassroomsToSelectedSlots(eventData);
 
                     // Render calendar after adding events to calendarData array
@@ -252,11 +315,16 @@
             $.ajax({
                 type: "POST",
                 url: "/Scheduler.asmx/GetScheduleOfClassGroupFromJson",
-                data: JSON.stringify({ CodTurma: $('#<%= ddlClassGroup.ClientID %>').val() }),
+                data: JSON.stringify({ CodTurma: CodTurma }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
                     var eventData = JSON.parse(response.d);
+
+                    // Add a property to each event indicating its source
+                    eventData.forEach(function (event) {
+                        event.source = 'classGroupSchedule';
+                    });
 
                     addEventsToSelectedSlots(eventData);
                     addHolidaysAndSundaysToSelectedSlots();
@@ -268,6 +336,62 @@
                     addHolidaysAndSundaysToSelectedSlots();
                     renderCalendar();
                 }
+            });
+
+            //Gerador Automático
+            document.getElementById('<%= btnGenerate.ClientID %>').addEventListener('click', function (event) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Scheduler.asmx/GetScheduleAutomaticJSON",
+                    data: JSON.stringify({ CodTurma: CodTurma }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.d) {
+                            var eventData = JSON.parse(response.d); // Extração do array baseado no ficheiro JSON
+
+                            addEventsToSelectedSlots(eventData);
+                            console.log(eventData)
+                            renderCalendar();
+
+                            $('#messageModal .modal-body').text("Horário guardado com sucesso!");
+                            $('#messageModal .modal-body').removeClass('alert-danger').addClass('alert-success');
+                            $('#messageModal').modal('show');
+
+                            // Fade out the modal after 3 seconds
+                            setTimeout(function () {
+                                $('#messageModal').modal('hide');
+                            }, 3000);
+                        } else {
+                            // Show error message in modal
+
+                            $('#messageModal .modal-body').text("Ocorreu um erro ao guardar o horário inserida.");
+                            $('#messageModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                            $('#messageModal').modal('show');
+
+                            // Fade out the modal after 3 seconds
+                            setTimeout(function () {
+                                $('#messageModal').modal('hide');
+                            }, 3000);
+
+                            return;
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        $('#lbl_mensagem').text("Erro ao extrair os dados da base de dados.");
+                        $('#lbl_mensagem').addClass('alert alert-danger');
+                        $('#lbl_mensagem').fadeIn();
+
+                        setTimeout(function () {
+                            $('#lbl_mensagem').fadeOut(function () {
+                                $(this).removeClass('alert alert-danger');
+                            });
+                        }, 3000);
+
+                        return;
+                    }
+                });
+                event.preventDefault();
             });
 
             function renderCalendar() {
@@ -298,12 +422,38 @@
                     allDaySlot: true,
                     selectable: true,
                     timeZone: 'UTC',
-                    select: function (info) {
-                        var isAllDay = info.allDay;
+                    select: function (slot) {
+                        var isAllDay = slot.allDay;
                         var currentDate = new Date();
 
+                        if (slot.start < currentDate) {
+                            console.log(slot.start)
+                            console.log(currentDate)
+                            $('#InvalidDate').modal('show');
+                            return;
+                        }
 
-                        if (info.start < currentDate) {
+                        var selectedEventData = new Date(slot.start);
+                        var selectedEventDay = selectedEventData.getDate();
+                        var selectedEventMonth = selectedEventData.getMonth() + 1; // Os meses em JavaScript são base 0, então adicionamos 1 para obter o mês correto
+                        var selectedEventYear = selectedEventData.getFullYear();
+
+                        var dataInicioParts = dataInicio.split('/');
+                        var dataInicioDay = parseInt(dataInicioParts[0], 10);
+                        var dataInicioMonth = parseInt(dataInicioParts[1], 10);
+                        var dataInicioYear = parseInt(dataInicioParts[2], 10);
+
+                        if (selectedEventYear < dataInicioYear ||
+                            (selectedEventYear === dataInicioYear && selectedEventMonth < dataInicioMonth) ||
+                            (selectedEventYear === dataInicioYear && selectedEventMonth === dataInicioMonth && selectedEventDay < dataInicioDay)) {
+                            $('#messageModal .modal-body').text("Só pode adicionar aulas a partir da data de início da turma!");
+                            $('#messageModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                            $('#messageModal').modal('show');
+
+                            // Fade out the modal after 3 seconds
+                            setTimeout(function () {
+                                $('#messageModal').modal('hide');
+                            }, 3000);
 
                             return;
                         }
@@ -315,25 +465,62 @@
 
                         if (isAllDay) {
                             // If it's an all-day event, set the start and end times accordingly
-                            var selectedDateStart = new Date(Date.UTC(info.start.getUTCFullYear(), info.start.getUTCMonth(), info.start.getUTCDate(), selectedStartTime.split(':')[0], selectedStartTime.split(':')[1], 0));
-                            var selectedDateEnd = new Date(Date.UTC(info.start.getUTCFullYear(), info.start.getUTCMonth(), info.start.getUTCDate(), selectedEndTime.split(':')[0], selectedEndTime.split(':')[1], 0));
+                            var selectedDateStart = new Date(Date.UTC(slot.start.getUTCFullYear(), slot.start.getUTCMonth(), slot.start.getUTCDate(), selectedStartTime.split(':')[0], selectedStartTime.split(':')[1], 0));
+                            var selectedDateEnd = new Date(Date.UTC(slot.start.getUTCFullYear(), slot.start.getUTCMonth(), slot.start.getUTCDate(), selectedEndTime.split(':')[0], selectedEndTime.split(':')[1], 0));
 
-                            info.start = selectedDateStart.toISOString();
-                            info.end = selectedDateEnd.toISOString();
+                            slot.start = selectedDateStart.toISOString();
+                            slot.end = selectedDateEnd.toISOString();
 
-                            info.start = new Date(selectedDateStart);
-                            info.end = new Date(selectedDateEnd);
+                            slot.start = new Date(selectedDateStart);
+                            slot.end = new Date(selectedDateEnd);
                         }
 
-                        if (!isSlotDurationValid(info)) {
+                        if (!isSlotDurationValid(slot)) {
+                            $('#InvalidTimeModal .modal-body').text("Os eventos devem ser iniciados à hora certa. Poderá adicionar eventos com múltiplos de 1h.");
+                            $('#InvalidTimeModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                            $('#InvalidTimeModal').modal('show');
+
+                            // Fade out the modal after 3 seconds
+                            setTimeout(function () {
+                                $('#InvalidTimeModal').modal('hide');
+                            }, 3000);
 
                             return;
                         }
 
                         // Check if the selected event conflicts with any existing events
-                        if (!isEventConflict(info, Disponibilidade_Formador) || isEventConflict(info, Sundays_Holidays) || isEventConflict(info, Disponibilidade_Sala)) {
+                        if (isEventConflict(slot, teacherAvailability) || isEventConflict(slot, SundaysHolidays) || isEventConflict(slot, classroomAvailability)) {
+                            $('#InvalidDate .modal-body').text("O evento está em conflito com outros eventos!");
+                            $('#InvalidDate .modal-body').removeClass('alert-success').addClass('alert-danger');
+                            $('#InvalidDate').modal('show');
 
+                            // Fade out the modal after 3 seconds
+                            setTimeout(function () {
+                                $('#InvalidDate').modal('hide');
+                            }, 3000);
 
+                            return;
+                        }
+
+                        // Calcular o total de horas do módulo seleccionado
+                        var totalHours = CalculateModuleHours(selectedModuleValue);
+                        console.log(totalHours)
+                        console.log(duracao)
+
+                        // Duração do evento seleccionado
+                        var EventDuration  = Math.abs(new Date(slot.end) - new Date(slot.start)) / 36e5;
+
+                        // Check se o total de horas inseridas nas aulas mais a duração do evento seleccionado se ultrapassa o máximo de horas do módulo
+                        if (totalHours + EventDuration > duracao) {
+                            // Mostrar mensagem de erro
+                            $('#InvalidDate .modal-body').text("Está a exceder o número de horas que faltam deste módulo!");
+                            $('#InvalidDate .modal-body').removeClass('alert-success').addClass('alert-danger');
+                            $('#InvalidDate').modal('show');
+
+                            // Fade out the modal after 3 seconds
+                            setTimeout(function () {
+                                $('#InvalidDate').modal('hide');
+                            }, 3000);
 
                             return;
                         }
@@ -342,19 +529,20 @@
                         var selectedColor = $('#colorPicker').val();
 
                         // Create the event title by concatenating the selected values
-                        var eventTitle = nrTurma + " | " + selectedModulo + " | " + selectedTeacher + " | " + selectedSala;
+                        var eventTitle = nrTurma + " | " + selectedModule + " | " + selectedTeacher + " | " + selectedClassroom;
+                        console.log(eventTitle)
 
                         var eventToAdd = {
                             title: eventTitle,
-                            start: formatDateToISOString(info.start),
-                            end: formatDateToISOString(info.end),
+                            start: formatDateToISOString(slot.start),
+                            end: formatDateToISOString(slot.end),
                             rendering: 'background',
-                            cod_modulo: selectedModuloValue,
+                            cod_modulo: selectedModuleValue,
                             cod_formador: selectedTeacherValue,
-                            cod_sala: selectedSalaValue,
+                            cod_sala: selectedClassroomValue,
                             color: selectedColor,
-                            cod_turma: selectedTurma,
-                            dataType: 'unselectable'
+                            cod_turma: selectedClassgroup,
+                            dataType: 'selectable'
                         };
 
                         // Push the event object to calendarData array
@@ -376,62 +564,58 @@
                             };
                         });
 
+                        console.log(formattedSlots)
+
                         // Call the server-side method using AJAX
                         $.ajax({
                             type: "POST",
                             url: "/Scheduler.asmx/SetScheduleForClassGroup",
-                            data: JSON.stringify({ calendarData: formattedSlots, CodTurma: selectedTurma, CodUtilizador: selectedTeacherValue, CodSala: selectedSalaValue }), // Pass formattedSlots with all properties
+                            data: JSON.stringify({ calendarData: formattedSlots, CodModulo: selectedModuleValue, CodTurma: CodTurma, CodUtilizador: selectedTeacherValue, CodSala: selectedClassroomValue }), // Pass formattedSlots with all properties
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function (response) {
                                 // Handle success response if needed
                                 if (response.d) {
-                                    // Show error message in lbl_mensagem
-                                    $('#lbl_mensagem').text("Aula inserida com sucesso!");
-                                    $('#lbl_mensagem').addClass('alert alert-success'); // Add CSS class to lbl_mensagem
-                                    $('#lbl_mensagem').fadeIn();
+                                    // Show success message in modal
+                                    $('#messageModal .modal-body').text("Aula inserida com sucesso!");
+                                    $('#messageModal .modal-body').removeClass('alert-danger').addClass('alert-success');
+                                    $('#messageModal').modal('show');
 
-                                    // Fade out the error message after 3 seconds
+                                    // Fade out the modal after 3 seconds
                                     setTimeout(function () {
-                                        $('#lbl_mensagem').fadeOut(function () {
-                                            $(this).removeClass('alert alert-success'); // Remove CSS class from lbl_mensagem after fadeOut
-                                        });
+                                        $('#messageModal').modal('hide');
                                     }, 3000);
-
-                                    return;
                                 } else {
-                                    // Show error message in lbl_mensagem
-                                    $('#lbl_mensagem').text("Ocorreu um erro ao guardar a aula inserida.");
-                                    $('#lbl_mensagem').addClass('alert alert-danger'); // Add CSS class to lbl_mensagem
-                                    $('#lbl_mensagem').fadeIn();
+                                    // Show error message in modal
 
-                                    // Fade out the error message after 3 seconds
+                                    $('#messageModal .modal-body').text("Ocorreu um erro ao guardar a aula inserida.");
+                                    $('#messageModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                                    $('#messageModal').modal('show');
+
+                                    // Fade out the modal after 3 seconds
                                     setTimeout(function () {
-                                        $('#lbl_mensagem').fadeOut(function () {
-                                            $(this).removeClass('alert alert-danger'); // Remove CSS class from lbl_mensagem after fadeOut
-                                        });
+                                        $('#messageModal').modal('hide');
                                     }, 3000);
 
                                     return;
                                 }
                             },
                             error: function (xhr, textStatus, errorThrown) {
-                                // Show error message in lbl_mensagem
-                                $('#lbl_mensagem').text("Ocorreu um erro ao enviar os dados para a base de dados.");
-                                $('#lbl_mensagem').addClass('alert alert-danger'); // Add CSS class to lbl_mensagem
-                                $('#lbl_mensagem').fadeIn();
+                               
+                                $('#errorMessageModal .modal-body').text("Ocorreu um erro ao enviar os dados para a base de dados.");
+                                $('#errorMessageModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                                $('#errorMessageModal').modal('show');
 
-                                // Fade out the error message after 3 seconds
+                                // Fade out the modal after 3 seconds
                                 setTimeout(function () {
-                                    $('#lbl_mensagem').fadeOut(function () {
-                                        $(this).removeClass('alert alert-danger'); // Remove CSS class from lbl_mensagem after fadeOut
-                                    });
+                                    $('#errorMessageModal').modal('hide');
                                 }, 3000);
 
                                 return;
                             }
                         });
 
+                        UpdateHoursModule();
                         calendar.unselect();
                     },
                     contentHeight: 'auto',
@@ -443,20 +627,20 @@
                     }
                 });
 
-                //// Function to check if there is a conflict between the selected event and existing events
-                //function isEventConflict(selectedEvent, eventsArray) {
-                //    for (var i = 0; i < eventsArray.length; i++) {
-                //        var event = eventsArray[i];
-                //        var selectedEventStartString = selectedEvent.start.toISOString().slice(0, -5); // Trim milliseconds
-                //        var selectedEventEndString = selectedEvent.end.toISOString().slice(0, -5); // Trim milliseconds
-                //        if ((selectedEventStartString >= event.start && selectedEventStartString < event.end) ||
-                //            (selectedEventEndString > event.start && selectedEventEndString < event.end) ||
-                //            (selectedEventStartString <= event.start && selectedEventEndString > event.start)) {
-                //            return true; // Conflict found
-                //        }
-                //    }
-                //    return false; // No conflict
-                //}
+                // Function to check if there is a conflict between the selected event and existing events
+                function isEventConflict(selectedEvent, eventsArray) {
+                    for (var i = 0; i < eventsArray.length; i++) {
+                        var event = eventsArray[i];
+                        var selectedEventStartString = selectedEvent.start.toISOString().slice(0, -5); // Trim milliseconds
+                        var selectedEventEndString = selectedEvent.end.toISOString().slice(0, -5); // Trim milliseconds
+                        if ((selectedEventStartString >= event.start && selectedEventStartString < event.end) ||
+                            (selectedEventEndString > event.start && selectedEventEndString < event.end) ||
+                            (selectedEventStartString <= event.start && selectedEventEndString > event.start)) {
+                            return true; // Conflict found
+                        }
+                    }
+                    return false; // No conflict
+                }
 
                 // Function to update slotMinTime and slotMaxTime based on hf_regime value
                 function updateSlotTimes(regime) {
@@ -477,16 +661,16 @@
                     updateSlotTimes($(this).val());
                 });
 
-                calendar.setOption('eventClick', function (info) {
+                calendar.setOption('eventClick', function (slot) {
                     // Check if the clicked event is unselectable
-                    if (info.event.extendedProps.dataType === 'selectable') {
+                    if (slot.event.extendedProps.dataType === 'selectable') {
                         // Get the start time components of the clicked event
-                        var start = info.event.start;
+                        var start = slot.event.start;
                         var startString = start.getUTCFullYear() + '-' + ('0' + (start.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + start.getUTCDate()).slice(-2) + 'T' +
                             ('0' + start.getUTCHours()).slice(-2) + ':' + ('0' + start.getUTCMinutes()).slice(-2) + ':' + ('0' + start.getUTCSeconds()).slice(-2);
 
                         // Get the end time components of the clicked event
-                        var end = info.event.end;
+                        var end = slot.event.end;
                         var endString = end.getUTCFullYear() + '-' + ('0' + (end.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + end.getUTCDate()).slice(-2) + 'T' +
                             ('0' + end.getUTCHours()).slice(-2) + ':' + ('0' + end.getUTCMinutes()).slice(-2) + ':' + ('0' + end.getUTCSeconds()).slice(-2);
 
@@ -495,8 +679,18 @@
                             return !(slot.start === startString && slot.end === endString);
                         });
 
+                        // Remover o evento do array teacherAvailability
+                        teacherAvailability = teacherAvailability.filter(function (event) {
+                            return !(event.start === startString && event.end === endString);
+                        });
+
+                        // Remover o evento do array classroomAvailabilitys
+                        classroomAvailability = classroomAvailability.filter(function (event) {
+                            return !(event.start === startString && event.end === endString);
+                        });
+
                         // Remove the event from the calendar
-                        info.event.remove();
+                        slot.event.remove();
 
 
                         // Ensure calendarData array is properly structured
@@ -516,75 +710,63 @@
                         $.ajax({
                             type: "POST",
                             url: "/Scheduler.asmx/SetScheduleForClassGroup",
-                            data: JSON.stringify({ calendarData: formattedSlots, CodTurma: selectedTurma, CodUtilizador: selectedTeacherValue, CodSala: selectedSalaValue }), // Pass formattedSlots with all properties
+                            data: JSON.stringify({ calendarData: formattedSlots, CodModulo: selectedModuleValue, CodTurma: CodTurma, CodUtilizador: selectedTeacherValue, CodSala: selectedClassroomValue }), // Pass formattedSlots with all properties
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function (response) {
                                 // Handle success response if needed
                                 if (response.d) {
-                                    // Show error message in lbl_mensagem
-                                    $('#lbl_mensagem').text("Aula removida e horário guardado com sucesso.");
-                                    $('#lbl_mensagem').addClass('alert alert-success'); // Add CSS class to lbl_mensagem
-                                    $('#lbl_mensagem').fadeIn();
+                                    // Show success message in modal
+                                   
+                                    $('#messageModal .modal-body').text("Aula removida e horário guardado com sucesso.");
+                                    $('#messageModal').modal('show');
 
-                                    // Fade out the error message after 3 seconds
+                                    // Fade out the modal after 3 seconds
                                     setTimeout(function () {
-                                        $('#lbl_mensagem').fadeOut(function () {
-                                            $(this).removeClass('alert alert-success'); // Remove CSS class from lbl_mensagem after fadeOut
-                                        });
+                                        $('#messageModal').modal('hide');
                                     }, 3000);
-
-                                    return;
                                 } else {
-                                    // Show error message in lbl_mensagem
-                                    $('#lbl_mensagem').text("Erro ao guardar o horário na base de dados.");
-                                    $('#lbl_mensagem').addClass('alert alert-danger'); // Add CSS class to lbl_mensagem
-                                    $('#lbl_mensagem').fadeIn();
+                                    // Show error message in modal
 
-                                    // Fade out the error message after 3 seconds
+                                    $('#messageModal .modal-body').text("Erro ao guardar o horário na base de dados.");
+                                    $('#messageModal').modal('show');
+
+                                    // Fade out the modal after 3 seconds
                                     setTimeout(function () {
-                                        $('#lbl_mensagem').fadeOut(function () {
-                                            $(this).removeClass('alert alert-danger'); // Remove CSS class from lbl_mensagem after fadeOut
-                                        });
+                                        $('#messageModal').modal('hide');
                                     }, 3000);
-
-                                    return;
                                 }
                             },
                             error: function (xhr, textStatus, errorThrown) {
-                                // Show error message in lbl_mensagem
-                                $('#lbl_mensagem').text("Erro ao enviar os dados para a base de dados.");
-                                $('#lbl_mensagem').addClass('alert alert-danger'); // Add CSS class to lbl_mensagem
-                                $('#lbl_mensagem').fadeIn();
+                               
+                                $('#errorMessageModal .modal-body').text("Ocorreu um erro ao enviar os dados para a base de dados.");
+                                $('#errorMessageModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                                $('#errorMessageModal').modal('show');
 
-                                // Fade out the error message after 3 seconds
+                                // Fade out the modal after 3 seconds
                                 setTimeout(function () {
-                                    $('#lbl_mensagem').fadeOut(function () {
-                                        $(this).removeClass('alert alert-danger'); // Remove CSS class from lbl_mensagem after fadeOut
-                                    });
+                                    $('#errorMessageModal').modal('hide');
                                 }, 3000);
 
                                 return;
                             }
                         });
+                        UpdateHoursModule();
 
-                    } else if (info.event.extendedProps.dataType === 'unselectable') {
+                    } else if (slot.event.extendedProps.dataType === 'unselectable') {
                         // Display custom alert modal
                         $('#UnselectableModal').modal('show');
                         return;
                     } else {
-                        // Show error message in lbl_mensagem
-                        $('#lbl_mensagem').text("Não pode remover este evento.");
-                        $('#lbl_mensagem').addClass('alert alert-danger'); // Add CSS class to lbl_mensagem
-                        $('#lbl_mensagem').fadeIn();
+                       
+                        $('#errorMessageModal .modal-body').text("Não pode remover este evento.");
+                        $('#errorMessageModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                        $('#errorMessageModal').modal('show');
 
-                        // Fade out the error message after 3 seconds
+                        // Fade out the modal after 3 seconds
                         setTimeout(function () {
-                            $('#lbl_mensagem').fadeOut(function () {
-                                $(this).removeClass('alert alert-danger'); // Remove CSS class from lbl_mensagem after fadeOut
-                            });
+                            $('#errorMessageModal').modal('hide');
                         }, 3000);
-
                         return;
                     }
                 });
@@ -600,7 +782,7 @@
                     });
                 });
 
-                Disponibilidade_Formador.forEach(function (slot) {
+                teacherAvailability.forEach(function (slot) {
                     const existingEvent = calendar.getEvents().find(event => {
                         return formatDateToISOString(event.start) == slot.start && formatDateToISOString(event.end) == slot.end;
                     });
@@ -612,12 +794,12 @@
                             end: slot.end,
                             rendering: 'background',
                             color: slot.color,
-                            dataType: 'non_unselectable'
+                            dataType: 'unselectable'
                         });
                     }
                 });
 
-                Disponibilidade_Sala.forEach(function (slot) {
+                classroomAvailability.forEach(function (slot) {
                     const existingEvent = calendar.getEvents().find(event => {
                         return formatDateToISOString(event.start) == slot.start && formatDateToISOString(event.end) == slot.end;
                     });
@@ -629,19 +811,19 @@
                             end: slot.end,
                             rendering: 'background',
                             color: slot.color,
-                            dataType: 'non_unselectable'
+                            dataType: 'unselectable'
                         });
                     }
                 });
 
-                Sundays_Holidays.forEach(function (slot) {
+                SundaysHolidays.forEach(function (slot) {
                     calendar.addEvent({
                         title: slot.title,
                         start: slot.start,
                         end: slot.end,
                         rendering: 'background',
                         color: slot.color,
-                        dataType: 'non_unselectable'
+                        dataType: 'unselectable'
                     });
                 });
 
@@ -661,66 +843,64 @@
                         };
                     });
 
+                    console.log(formattedSlots)
+                    console.log(selectedModuleValue)
+                    console.log(CodTurma)
+
+
                     // Call the server-side method using AJAX
                     $.ajax({
                         type: "POST",
-                        url: "/Scheduler.asmx/SetScheduleForClassGroup",
-                        data: JSON.stringify({ calendarData: formattedSlots, CodTurma: selectedTurma, CodUtilizador: selectedTeacherValue, CodSala: selectedSalaValue }), // Pass formattedSlots with all properties
+                        url: "/Scheduler.asmx/SetScheduleForClassGroupAutomatic",
+                        data: JSON.stringify({ CodTurma: CodTurma }), // Pass formattedSlots with all properties
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (response) {
                             // Handle success response if needed
                             if (response.d) {
-                                // Show error message in lbl_mensagem
-                                $('#lbl_mensagem').text("Horário guardado com sucesso!");
-                                $('#lbl_mensagem').addClass('alert alert-success'); // Add CSS class to lbl_mensagem
-                                $('#lbl_mensagem').fadeIn();
+                                // Show success message in modal
+                                $('#messageModal .modal-body').text("Horário guardado com sucesso!");
+                                $('#messageModal').modal('show');
 
-                                // Fade out the error message after 3 seconds
+                                // Fade out the modal after 3 seconds
                                 setTimeout(function () {
-                                    $('#lbl_mensagem').fadeOut(function () {
-                                        $(this).removeClass('alert alert-success'); // Remove CSS class from lbl_mensagem after fadeOut
-                                    });
+                                    $('#messageModal').modal('hide');
                                 }, 3000);
 
                                 return;
                             } else {
-                                // Show error message in lbl_mensagem
-                                $('#lbl_mensagem').text("Erro ao guardar o horário da turma.");
-                                $('#lbl_mensagem').addClass('alert alert-danger'); // Add CSS class to lbl_mensagem
-                                $('#lbl_mensagem').fadeIn();
+                                $('#messageModal .modal-body').text("Erro ao guardar o horário na base de dados.");
+                                $('#messageModal').modal('show');
 
-                                // Fade out the error message after 3 seconds
+                                // Fade out the modal after 3 seconds
                                 setTimeout(function () {
-                                    $('#lbl_mensagem').fadeOut(function () {
-                                        $(this).removeClass('alert alert-danger'); // Remove CSS class from lbl_mensagem after fadeOut
-                                    });
+                                    $('#messageModal').modal('hide');
                                 }, 3000);
-
                                 return;
                             }
                         },
                         error: function (xhr, textStatus, errorThrown) {
-                            // Show error message in lbl_mensagem
-                            $('#lbl_mensagem').text("Erro ao enviar os dados para a base de dados.");
-                            $('#lbl_mensagem').addClass('alert alert-danger'); // Add CSS class to lbl_mensagem
-                            $('#lbl_mensagem').fadeIn();
+                            $('#errorMessageModal .modal-body').text("Ocorreu um erro ao enviar os dados para a base de dados.");
+                            $('#errorMessageModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                            $('#errorMessageModal').modal('show');
 
-                            // Fade out the error message after 3 seconds
+                            // Fade out the modal after 3 seconds
                             setTimeout(function () {
-                                $('#lbl_mensagem').fadeOut(function () {
-                                    $(this).removeClass('alert alert-danger'); // Remove CSS class from lbl_mensagem after fadeOut
-                                });
+                                $('#errorMessageModal').modal('hide');
                             }, 3000);
 
                             return;
                         }
                     });
+                    UpdateHoursModule();
+
                     event.preventDefault(); // Prevent default button behavior
                 });
 
             }
         });
+
+
 
     </script>
 </asp:Content>

@@ -21,12 +21,12 @@
                                         <label>Email/Utilizador</label>
                                         <asp:RequiredFieldValidator ID="rfvusername" ErrorMessage="Nome de Utilizador Obrigatório" Text="*" runat="server" ControlToValidate="tb_username" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                         <div class="mb-3">
-                                            <asp:TextBox ID="tb_username" ValidationGroup="MainForm" oninput="validateUsername(this)" CssClass="form-control" placeholder="Utilizador ou E-mail" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="tb_username" ValidationGroup="MainForm" CssClass="form-control" placeholder="Utilizador ou E-mail" runat="server"></asp:TextBox>
                                         </div>
                                         <label>Password</label>
                                         <asp:RequiredFieldValidator ID="rfvpw" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tb_pw" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                         <div class="mb-3">
-                                            <asp:TextBox ID="tb_pw" ValidationGroup="MainForm" oninput="validatePassword(this)" CssClass="form-control" placeholder="Password" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="tb_pw" TextMode="Password" ValidationGroup="MainForm" CssClass="form-control" placeholder="Password" runat="server"></asp:TextBox>
                                         </div>
 
                                         <p class="mb-4 text-sm mx-auto">
@@ -132,24 +132,6 @@
             </div>
         </div>
     </main>
-
-    <!--Javascript para validar se username e password estão vazios e mostrar cores -->
-    <script>
-        function validateUsername(element) {
-            if (element.value.trim() === "") {
-                element.classList.add("is-invalid");
-            } else {
-                element.classList.remove("is-invalid");
-            }
-        }
-        function validatePassword(element) {
-            if (element.value.trim() === "") {
-                element.classList.add("is-invalid");
-            } else {
-                element.classList.remove("is-invalid");
-            }
-        }
-    </script>
 
     <!--Javascript para mostrar a div de Recover Password -->
     <script>

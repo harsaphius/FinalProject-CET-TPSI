@@ -150,13 +150,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btn_clear;
 
         /// <summary>
-        /// lblMessageRegistration control.
+        /// lblMessage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMessageRegistration;
+        protected global::System.Web.UI.WebControls.Label lblMessage;
+
+        /// <summary>
+        /// timerMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessage;
 
         /// <summary>
         /// listStudentsDiv control.

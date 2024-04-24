@@ -114,24 +114,6 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.SqlDataSource SQLDSTipo;
 
         /// <summary>
-        /// tbDataInicioFilters control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbDataInicioFilters;
-
-        /// <summary>
-        /// tbDataFimFilters control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbDataFimFilters;
-
-        /// <summary>
         /// ddlOrderFilters control.
         /// </summary>
         /// <remarks>

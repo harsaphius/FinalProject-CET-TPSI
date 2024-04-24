@@ -66,98 +66,50 @@ namespace FinalProject
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
-                            document.getElementById('manageschedules').classList.remove('hidden');
+                            
                             ";
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                     }
 
                     if (!IsPostBack)
                     {
-                        ddlClassGroup.DataBind();
-
                         if (Session["CodTurma"] != null)
                         {
                             string codTurma = Session["CodTurma"].ToString();
-                            int CodCurso = 0;
-                            foreach (ListItem item in ddlClassGroup.Items)
-                            {
-                                if (item.Value == codTurma)
-                                {
-                                    item.Selected = true;
-                                    ClassGroup classGroup = Classes.ClassGroup.LoadClassGroup(codTurma);
-                                    hdfHorario.Value = classGroup.HorarioTurma;
-                                    CodCurso = classGroup.CodCurso;
-                                    break; // Exit the loop once the item is found
-                                }
-                            }
+                            ClassGroup classGroup = Classes.ClassGroup.LoadClassGroup(codTurma);
+                            hdfHorario.Value = classGroup.HorarioTurma;
+                            hdfInitialDate.Value = classGroup.DataInicio.ToShortDateString();
+                            NrTurma.Text = classGroup.NomeTurma;
 
-                           
-                            //First Module of First Course
-                            Course course = new Course();
-                            course = Course.CompleteCourse(CodCurso);
-                            List<Module> modules = course.Modules;
-                            Module firstModule = modules[0];
-                            int firstModuleID = firstModule.CodModulo;
+                            ddlModulesForClassGroup.DataBind();
 
-                            BindDdlModules(firstModuleID.ToString());
-                            //Bind Teacher of First Module of First Course
-                            BindDdlTeachers(firstModuleID.ToString(),codTurma);
+                            int moduloID = Convert.ToInt32(ddlModulesForClassGroup.SelectedItem.Value);
+                            int moduleDuration = Module.GetUFCDDurationByModuleID(moduloID);
+                            hdfDuration.Value = moduleDuration.ToString();
+
+                            (int TeacherID, string TeacherNome) = Teacher.GetTeacherByModuleAndClass(moduloID, Convert.ToInt32(codTurma));
+
+                            hdfTeacher.Value = TeacherID.ToString();
+                            hdfTeacherNome.Value = TeacherNome;
+                            lblFormador.Text = TeacherNome;
                         }
-                        
                     }
                 }
-            }
 
+
+            }
         }
 
         protected void ddlModulesForClassGroup_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedModuleID = ddlModulesForClassGroup.SelectedValue;
-            ddlTeachersForModulesOfClassGroup.Items.Clear();
-
-            BindDdlTeachers(selectedModuleID, ddlClassGroup.SelectedValue);
+            int moduleDuration = Module.GetUFCDDurationByModuleID(Convert.ToInt32(selectedModuleID));
+            hdfDuration.Value = moduleDuration.ToString();
         }
 
-        private void BindDdlModules(string selectClassGroup)
+        protected void btnBack_Click(object sender, EventArgs e)
         {
-            ddlTeachersForModulesOfClassGroup.Items.Clear();
-
-            SQLDSModules.SelectCommand =
-                $"SELECT * FROM moduloFormadorTurma AS MFT INNER JOIN modulo AS M ON MFT.codModulo = M.codModulos WHERE MFT.codTurma={ddlClassGroup.SelectedValue}";
-            ddlModulesForClassGroup.DataSource = SQLDSModules;
-            ddlModulesForClassGroup.DataTextField = "nomeModulos";
-            ddlModulesForClassGroup.DataValueField = "codModulo";
-            ddlModulesForClassGroup.DataBind();
-        }
-
-        private void BindDdlTeachers(string selectedModule, string CodTurma)
-        {
-            SQLDSModules.SelectCommand =
-                $"SELECT * FROM moduloFormadorTurma AS MT INNER JOIN utilizador AS U ON MT.codFormador=U.codUtilizador INNER JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador INNER JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador WHERE MT.codModulo={selectedModule} AND MT.codTurma={CodTurma}";
-            ddlTeachersForModulesOfClassGroup.DataSource = SQLDSModules;
-            ddlTeachersForModulesOfClassGroup.DataTextField = "nome";
-            ddlTeachersForModulesOfClassGroup.DataValueField = "codFormador";
-            ddlTeachersForModulesOfClassGroup.DataBind();
-        }
-
-        protected void ddlClassGroup_OnSelectedIndexChanged(object sender, EventArgs e)
-        {
-            string selectedClassGroupID = ddlClassGroup.SelectedValue;
-            ClassGroup classGroup = Classes.ClassGroup.LoadClassGroup(selectedClassGroupID);
-            hdfHorario.Value = classGroup.HorarioTurma;
-           
-            ddlModulesForClassGroup.Items.Clear();
-            int selectedCourseID = classGroup.CodCurso;
-            BindDdlModules(selectedCourseID.ToString());
-
-           
-
-            Course course = new Course();
-            course = Course.CompleteCourse(Convert.ToInt32(selectedCourseID));
-            List<Module> modules = course.Modules;
-            Module firstModule = modules[0];
-            int firstModuleID = firstModule.CodModulo;
-            BindDdlTeachers(firstModuleID.ToString(), selectedClassGroupID);
+            Response.Redirect("ManageClasses.aspx");
         }
     }
 }

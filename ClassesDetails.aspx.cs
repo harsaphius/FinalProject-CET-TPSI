@@ -1,60 +1,24 @@
 ﻿using FinalProject.Classes;
 using System;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace FinalProject
 {
-    public partial class CourseDetails : System.Web.UI.Page
+    public partial class ClassesDetails : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["MainCourses"] == null && Session["MainPage"] == null)
+            string script;
+
+            if (Session["Logado"] == null)
             {
-                Response.Redirect("MainCourses.aspx");
-            }
-            else if (Session["MainCourses"] != null && Session["MainCourses"].ToString() == "Yes" &&
-                     Session["Logado"] == null)
-            {
-                Course CompleteCourse = new Course();
-                if (CompleteCourse != null)
-                {
-                    int CodCurso = Convert.ToInt32(Session["CodCurso"].ToString());
-                    CompleteCourse = Course.CompleteCourse(CodCurso);
-
-                    lblNome.Text = CompleteCourse.Nome;
-                    lblArea.Text = CompleteCourse.Area;
-                    lblTipo.Text = CompleteCourse.TipoCurso;
-                    lblRef.Text = CompleteCourse.CodRef;
-                    lblQNQ.Text = CompleteCourse.CodQNQ.ToString();
-
-                    rptModules.DataSource = CompleteCourse.Modules;
-                    rptModules.DataBind();
-                }
-            }
-            else if (Session["MainPage"] != null && Session["MainPage"].ToString() == "Yes" &&
-                     Session["Logado"] == null)
-            {
-                Course CompleteCourse = new Course();
-                if (CompleteCourse != null)
-                {
-                    int CodCurso = Convert.ToInt32(Session["CodCurso"].ToString());
-                    CompleteCourse = Course.CompleteCourse(CodCurso);
-
-                    lblNome.Text = CompleteCourse.Nome;
-                    lblArea.Text = CompleteCourse.Area;
-                    lblTipo.Text = CompleteCourse.TipoCurso;
-                    lblRef.Text = CompleteCourse.CodRef;
-                    lblQNQ.Text = CompleteCourse.CodQNQ.ToString();
-
-                    rptModules.DataSource = CompleteCourse.Modules;
-                    rptModules.DataBind();
-                }
+                Response.Redirect("MainPage.aspx");
             }
             else if (Session["Logado"].ToString() == "Yes")
             {
                 string user = Session["User"].ToString();
 
-                //Find lbl_user on MasterPage and
                 Label lbluser = Master.FindControl("lbl_user") as Label;
                 if (lbluser != null)
                 {
@@ -67,8 +31,8 @@ namespace FinalProject
                     lbtncourses.PostBackUrl = "./UserCourses.aspx";
                 }
 
-                string script = @"
-                            document.getElementById('courses').href = './UserCourses.aspx';
+                script = @"
+                            document.getElementById('courses').href = './UserCourses.aspx'
                             document.getElementById('signout').classList.remove('hidden');
                             document.getElementById('signout').classList.add('nav-item');
                             document.getElementById('signin').classList.add('hidden');
@@ -108,41 +72,64 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
+            }
 
-                Course CompleteCourse = new Course();
-                if (CompleteCourse != null)
+
+            if (!IsPostBack)
+            {
+                ClassGroup CompleteClassGroup = new ClassGroup();
+                if (CompleteClassGroup != null)
                 {
-                    int CodCurso = Convert.ToInt32(Session["CodCurso"].ToString());
-                    CompleteCourse = Course.CompleteCourse(CodCurso);
+                    string codTurma = Session["CodTurma"].ToString();
+                    CompleteClassGroup = Classes.ClassGroup.LoadClassGroup(codTurma);
 
-                    lblNome.Text = CompleteCourse.Nome;
-                    lblArea.Text = CompleteCourse.Area;
-                    lblTipo.Text = CompleteCourse.TipoCurso;
-                    lblRef.Text = CompleteCourse.CodRef;
-                    lblQNQ.Text = CompleteCourse.CodQNQ.ToString();
+                    rptTeachersDetail.DataSource = CompleteClassGroup.Teachers;
+                    rptTeachersDetail.DataBind();
 
-                    rptModules.DataSource = CompleteCourse.Modules;
-                    rptModules.DataBind();
+                    rptStudentsDetail.DataSource = CompleteClassGroup.Students;
+                    rptStudentsDetail.DataBind();
+
+                    lblNomeCurso.Text = CompleteClassGroup.NomeCurso;
+                    lblNomeTurma.Text = CompleteClassGroup.NomeTurma;
+                    lblRegime.Text = CompleteClassGroup.Regime;
+                    lblHorario.Text = CompleteClassGroup.HorarioTurma;
+                    lblDataInicioDetail.Text = CompleteClassGroup.DataInicio.ToShortDateString();
+                    lblDataFimDetail.Text = CompleteClassGroup.DataFim.ToShortDateString();
+                    lblNrTurma.Text = CompleteClassGroup.CodTurma.ToString();
+
                 }
             }
         }
 
-        protected void btn_back_Click(object sender, EventArgs e)
+        protected void btnBack_Click(object sender, EventArgs e)
         {
-            if (Session["MainPage"] != null)
+            Response.Redirect("ManageClasses.aspx");
+        }
+
+
+        protected void lbtDesistencia_Click(object sender, EventArgs e)
+        {
+            string codTurma = Session["CodTurma"].ToString();
+
+            LinkButton lbtDesistencia = (LinkButton)sender;
+            string codFormando = lbtDesistencia.CommandArgument;
+
+            int AnswSituacao = Student.ChangeSituationForFormandoInTurma(Convert.ToInt32(codFormando), Convert.ToInt32(codTurma), 2);
+
+            if (AnswSituacao == 1)
             {
-                if (Session["MainPage"].ToString() == "Yes")
-                {
-                    Response.Redirect("MainPage.aspx");
-                }
+                lblMessageEdit.Visible = true;
+                lblMessageEdit.CssClass = "alert alert-primary text-white text-center";
+                lblMessageEdit.Text = "Situação atualizada com sucesso!";
+                timerMessageEdit.Enabled = true;
             }
-            if (Session["MainCourses"] != null)
-            {
-                if (Session["MainCourses"].ToString() == "Yes")
-                {
-                    Response.Redirect("MainCourses.aspx");
-                }
-            }
+
+        }
+
+        protected void timerMessageEdit_OnTick(object sender, EventArgs e)
+        {
+            lblMessageEdit.Visible = false;
+            timerMessageEdit.Enabled = false;
         }
     }
 }

@@ -65,12 +65,56 @@ namespace FinalProject
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
-                            document.getElementById('manageschedules').classList.remove('hidden');
                             ";
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                 }
+
+                BindDataUsers();
             }
+        }
+
+        private void BindDataUsers()
+        {
+            string condition = " WHERE isActive = 1 AND ativo = 0";
+            PagedDataSource pagedData = new PagedDataSource();
+            pagedData.DataSource = Classes.User.LoadUsers(condition);
+            pagedData.AllowPaging = true;
+            pagedData.PageSize = 4;
+            pagedData.CurrentPageIndex = PageNumberUsers;
+            int PageNumber = PageNumberUsers + 1;
+            lblPageNumberUsers.Text = PageNumber.ToString();
+
+            rptUsersForValidation.DataSource = pagedData;
+            rptUsersForValidation.DataBind();
+
+            btnPreviousUser.Enabled = !pagedData.IsFirstPage;
+            btnNextUser.Enabled = !pagedData.IsLastPage;
+        }
+
+        //Função de Paginação
+        /// <summary>
+        /// Paginação dos Utilizadores
+        /// </summary>
+        private int PageNumberUsers
+        {
+            get
+            {
+                if (ViewState["PageNumberUsers"] != null)
+                    return Convert.ToInt32(ViewState["PageNumberUsers"]);
+                else
+                    return 0;
+            }
+            set => ViewState["PageNumberUsers"] = value;
+        }
+
+        protected void lbtEditUser_Click(object sender, EventArgs e)
+        {
+            LinkButton btn = (LinkButton)sender;
+            string codUtilizador = btn.CommandArgument;
+            Classes.User.AtivarUtilizador(Convert.ToInt32(codUtilizador));
+
+
         }
     }
 }

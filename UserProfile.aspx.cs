@@ -1,5 +1,4 @@
 ﻿using FinalProject.Classes;
-using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -70,7 +69,7 @@ namespace FinalProject
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
-                            document.getElementById('manageschedules').classList.remove('hidden');
+                            
                             ";
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
                     }
@@ -116,7 +115,6 @@ namespace FinalProject
                             ddlCodGrauAcademico.SelectedValue = profileuser.CodGrauAcademico.ToString();
                             tbLifeMotto.Text = profileuser.LifeMotto;
 
-
                             if (LoadSubmittedFiles() == 0)
                             {
                                 lblSubmittedFiles.Text = "Ainda não foram submetidos ficheiros!";
@@ -137,6 +135,7 @@ namespace FinalProject
                             }
                             else if (profile == 3)
                             {
+                                Session["CodFormador"] = Session["CodUtilizador"];
                                 lbtDisponibilidade.Visible = true;
                             }
                         }
@@ -188,7 +187,16 @@ namespace FinalProject
             user.CodSituacaoProf = Convert.ToInt32(ddlCodSituacaoProfissional.SelectedValue);
             user.LifeMotto = tbLifeMotto.Text;
 
-            int CompleteUser = Classes.User.CompleteRegisterUser(user, uploadedFiles);
+            int CompleteUser;
+
+            if (Classes.User.CheckSecondaryData(user.CodUser))
+            {
+                CompleteUser = Classes.User.UpdateUser(user, uploadedFiles);
+            }
+            else
+            {
+                CompleteUser = Classes.User.CompleteRegisterUser(user, uploadedFiles);
+            }
 
             if (CompleteUser == 0)
             {
@@ -342,7 +350,6 @@ namespace FinalProject
             registerCompletionpage1.Visible = true;
         }
 
-
         protected void editProfile_OnClick(object sender, EventArgs e)
         {
             profileSinapse.Visible = false;
@@ -397,8 +404,8 @@ namespace FinalProject
             List<string> pdfFiles = new List<string>();
 
             User profileuser = Classes.User.LoadUser(Session["User"].ToString());
-            List<ClassGroup> classGroups =
-                Classes.ClassGroup.LoadClassGroups(null, null, profileuser.CodUser.ToString());
+
+            string classGroups = ClassGroup.LoadClassGroups(FromUser: profileuser.CodUser.ToString());
 
             string
                 nomePDF = Classes.Security.EncryptString(num.ToString()) +
@@ -406,9 +413,9 @@ namespace FinalProject
 
             string novoFile = pathPDFs + nomePDF;
 
-            PdfReader pdfReader = new PdfReader(pdfTemplate); //Instancia pdfReader para ler o pdfTemplate
-            PdfStamper pdfStamper = new PdfStamper(pdfReader, new FileStream(pathFinal + ".pdf", FileMode.Create));
-            AcroFields pdfFields = pdfStamper.AcroFields; //Encontra os AcroFields no pdfStamper
+            iTextSharp.text.pdf.PdfReader pdfReader = new iTextSharp.text.pdf.PdfReader(pdfTemplate); //Instancia pdfReader para ler o pdfTemplate
+            iTextSharp.text.pdf.PdfStamper pdfStamper = new iTextSharp.text.pdf.PdfStamper(pdfReader, new FileStream(pathFinal + ".pdf", FileMode.Create));
+            iTextSharp.text.pdf.AcroFields pdfFields = pdfStamper.AcroFields; //Encontra os AcroFields no pdfStamper
             pdfFields.SetField("tbNome",
                 profileuser.Nome); //Escreve no novoFile no campo do pdf nome o texto da tb_nome
 
@@ -439,7 +446,7 @@ namespace FinalProject
 
             image.SetAbsolutePosition(460, 670);
             // Add the image to the document
-            PdfContentByte pdfContentByte = pdfStamper.GetOverContent(1); // Page number to add the image to
+            iTextSharp.text.pdf.PdfContentByte pdfContentByte = pdfStamper.GetOverContent(1); // Page number to add the image to
             pdfContentByte.AddImage(image);
 
             pdfStamper.Close(); //Fecha o pdfStamper
@@ -522,8 +529,10 @@ namespace FinalProject
             //}
         }
 
-
-
+        protected void lbtAvaliacoes_OnClick(object sender, EventArgs e)
+        {
+            Response.Redirect("TeacherEvaluations.aspx");
+        }
     }
 
 

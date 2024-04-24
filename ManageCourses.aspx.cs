@@ -66,7 +66,7 @@ namespace FinalProject
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
-                            document.getElementById('manageschedules').classList.remove('hidden');
+                            
                             ";
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
@@ -97,9 +97,6 @@ namespace FinalProject
                     if (ViewState["SelectedItemsNamesEdit"] == null)
                         ViewState["SelectedItemsNamesEdit"] = new List<string>();
 
-                    //Reinicializar o FlatPickr
-                    InitializeFlatpickrDatePickers();
-
                     BindDataCourses();
                     BindDataModules();
 
@@ -110,8 +107,6 @@ namespace FinalProject
 
 
                 }
-
-                InitializeFlatpickrDatePickers();
             }
         }
 
@@ -181,7 +176,7 @@ namespace FinalProject
                 trigger.ControlID = chkBoxEditModulesCourse.UniqueID;
                 trigger.EventName = "CheckedChanged";
 
-                updatePanelInsertCourses.Triggers.Add(trigger);
+                updatePanelListCourses.Triggers.Add(trigger);
                 chkBoxEditModulesCourse.CheckedChanged += chkBoxEditModulesCourse_CheckedChanged;
 
             }
@@ -245,8 +240,6 @@ namespace FinalProject
 
                 tbDuracaoEstagioEdit.Text = Convert.ToString(selectedCourse.DuracaoEstagio);
 
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showEditModulesScript",
-                    "showEditModules();", true);
             }
             if (e.CommandName == "Delete")
             {
@@ -401,7 +394,7 @@ namespace FinalProject
             PagedDataSource pagedData = new PagedDataSource();
             pagedData.DataSource = Classes.Course.LoadCourses(conditions, order);
             pagedData.AllowPaging = true;
-            pagedData.PageSize = 4;
+            pagedData.PageSize = 5;
             pagedData.CurrentPageIndex = PageNumberCourses;
             int PageNumber = PageNumberCourses + 1;
             lblPageNumberListCourses.Text = PageNumber.ToString();
@@ -845,31 +838,6 @@ namespace FinalProject
             UpdateSelectedLabels();
         }
 
-        /// <summary>
-        /// Função de inicialização do Flatpickr
-        /// </summary>
-        private void InitializeFlatpickrDatePickers()
-        {
-            string script = @"
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                flatpickr('#" + tbDataInicioFilters.ClientID + @"', {
-                                    dateFormat: 'd-m-Y',
-                                    theme: 'light',
-                                    maxDate: new Date()
-                                });
-
-                                flatpickr('#" + tbDataFimFilters.ClientID + @"', {
-                                    dateFormat: 'd-m-Y',
-                                    theme: 'light',
-                                    minDate: new Date()
-                                });
-                            });
-                        </script>
-                    ";
-
-            ScriptManager.RegisterStartupScript(this, GetType(), "FlatpickrInit", script, false);
-        }
 
         /// <summary>
         /// Função Click do Botão de Aplicar os Filtros
@@ -893,8 +861,6 @@ namespace FinalProject
             tbSearchFilters.Text = "";
             ddlAreaCursoFilters.SelectedIndex = 0;
             ddlTipoCursoFilters.SelectedIndex = 0;
-            tbDataInicioFilters.Text = "";
-            tbDataFimFilters.Text = "";
             ddlOrderFilters.SelectedIndex = 0;
 
             PageNumberCourses = 0;
@@ -907,17 +873,14 @@ namespace FinalProject
         {
             lblMessageInsert.Visible = false;
             timerMessageInsert.Enabled = false;
+
+            Response.Redirect("ManageCourses.aspx");
         }
 
         protected void timerMessageEdit_OnTick(object sender, EventArgs e)
         {
             lblMessageEdit.Visible = false;
             timerMessageEdit.Enabled = false;
-        }
-
-        private void ClearAllViewStates()
-        {
-            ViewState.Clear();
         }
 
         protected void btnBack_OnClick(object sender, EventArgs e)
@@ -928,6 +891,8 @@ namespace FinalProject
             btnInsertCourseMain.Visible = true;
             editModulesCourse.Visible = false;
             filtermenu.Visible = true;
+
+            lblDuracaoCurso.Text = "";
         }
 
         protected void timerMessageListCourses_OnTick(object sender, EventArgs e)

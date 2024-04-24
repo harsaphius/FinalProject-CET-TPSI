@@ -11,70 +11,52 @@ namespace FinalProject
 {
 
 
-    public partial class StatisticalPage
+    public partial class TeacherEvaluations
     {
 
         /// <summary>
-        /// lblClassgroupOver control.
+        /// listEvaluationsDiv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblClassgroupOver;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl listEvaluationsDiv;
 
         /// <summary>
-        /// lblClassgroupOngoing control.
+        /// lblMessageEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblClassgroupOngoing;
+        protected global::System.Web.UI.WebControls.Label lblMessageEdit;
 
         /// <summary>
-        /// lblStudentsOngoing control.
+        /// timerMessageEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblStudentsOngoing;
+        protected global::System.Web.UI.Timer timerMessageEdit;
 
         /// <summary>
-        /// Chart1 control.
+        /// updatePanelEvaluations control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart Chart1;
+        protected global::System.Web.UI.UpdatePanel updatePanelEvaluations;
 
         /// <summary>
-        /// SQLDSCursos control.
+        /// rptClassGroups control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSCursos;
-
-        /// <summary>
-        /// Chart2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart Chart2;
-
-        /// <summary>
-        /// SQLDSFormadores control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SQLDSFormadores;
+        protected global::System.Web.UI.WebControls.Repeater rptClassGroups;
     }
 }

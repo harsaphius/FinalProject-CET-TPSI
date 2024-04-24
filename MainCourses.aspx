@@ -128,7 +128,7 @@
                                 </ItemTemplate>
                                 <FooterTemplate>
                                     </div>
-                    </div>
+                                </div>
                                 </FooterTemplate>
                             </asp:Repeater>
                             <!-- Paginação dos Cursos -->
@@ -157,7 +157,7 @@
     </div>
 
 
-    <!--Javascript do Flatpickr -->
+ <%--   <!--Javascript do Flatpickr -->
     <script>
         flatpickr('#<%= tbDataInicioFilters.ClientID %>', {
             dateFormat: 'Y-m-d',
@@ -169,7 +169,7 @@
             theme: 'light',
             minDate: new Date()
         });
-    </script>
+    </script>--%>
 
     <!-- Javascript para ativar/desativar a div dos filtros -->
     <script>

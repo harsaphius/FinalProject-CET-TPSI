@@ -18,6 +18,7 @@ namespace FinalProject.Classes
         public string Foto { get; set; }
         public string CodSituacao { get; set; }
         public List<Module> Modules { get; set; }
+        public byte[] FotoBytes { get; set; }
 
         /// <summary>
         /// Função para inserir um formador
@@ -108,10 +109,11 @@ namespace FinalProject.Classes
         /// <returns></returns>
         public static (Teacher, User) LoadTeacher(int CodFormador)
         {
-            Teacher Teacher = new Teacher();
+            Teacher teacher = new Teacher();
+            List<Module> modules = new List<Module>();
             User User = new User();
 
-            string query = $"SELECT DISTINCT * FROM formador AS T LEFT JOIN inscricao AS I ON T.codInscricao=I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador WHERE T.CodFormador={CodFormador}";
+            string query = $"SELECT DISTINCT *FROM formador AS T LEFT JOIN inscricao AS I ON T.codInscricao = I.codInscricao LEFT JOIN utilizador AS U ON I.codUtilizador = U.codUtilizador LEFT JOIN utilizadorData AS UD ON U.codUtilizador = UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador = UDS.codUtilizador LEFT JOIN tipoDocIdent AS TPI ON TPI.codTipoDoc=UD.codTipoDoc LEFT JOIN situacaoProfissional AS SP ON SP.codSituacaoProfissional=UDS.codSituacaoProfissional LEFT JOIN grauAcademico AS GA ON GA.codGrauAcademico=UDS.codGrauAcademico LEFT JOIN pais AS P ON P.codPais=UDS.codPais  LEFT JOIN modulo AS M ON I.codModulo = M.codModulos WHERE T.CodFormador = { CodFormador}";
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -121,37 +123,94 @@ namespace FinalProject.Classes
 
             if (dr.Read())
             {
-                Teacher.CodFormador = Convert.ToInt32(dr["codFormador"]);
-                Teacher.Nome = dr["nome"].ToString();
+                teacher.CodFormador = Convert.ToInt32(dr["codFormador"]);
+                teacher.Nome = dr["nome"].ToString();
 
-                User.CodTipoDoc = Convert.ToInt32(dr["codTipoDoc"]);
-                User.DocIdent = dr["docIdent"].ToString();
-                User.DataValidade = Convert.ToDateTime(dr["dataValidadeDocIdent"]).Date;
-                User.Email = dr["email"].ToString();
-                User.Phone = dr["telemovel"].ToString();
-                User.CodPrefix = Convert.ToInt32(dr["prefixo"]);
-                User.Sexo = Convert.ToInt32(dr["sexo"]);
-                User.DataNascimento = Convert.ToDateTime(dr["dataNascimento"]).Date;
-                User.NIF = dr["nif"].ToString();
-                User.Morada = dr["morada"].ToString();
-                User.CodPais = Convert.ToInt32(dr["codPais"]);
-                User.CodPostal = dr["codPostal"].ToString();
-                User.CodEstadoCivil = Convert.ToInt32(dr["codEstadoCivil"]);
-                User.NrSegSocial = dr["nrSegSocial"].ToString();
-                User.IBAN = dr["IBAN"].ToString();
-                User.Naturalidade = dr["naturalidade"].ToString();
-                User.CodNacionalidade = Convert.ToInt32(dr["codNacionalidade"]);
-                if (User.Foto != null)
-                    User.Foto = "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
-                User.CodGrauAcademico = Convert.ToInt32(dr["codGrauAcademico"]);
-                User.CodSituacaoProf = Convert.ToInt32(dr["codSituacaoProfissional"]);
-                User.Localidade = dr["localidade"].ToString();
-                User.LifeMotto = dr["lifeMotto"].ToString();
+                User.CodUser = Convert.ToInt32(dr["codUtilizador"]);
+                User.Username = dr["utilizador"] == DBNull.Value ? " " : dr["docIdent"].ToString();
+                User.Email = dr["email"] == DBNull.Value ? " " : dr["docIdent"].ToString();
+                User.Nome = dr["nome"] == DBNull.Value ? " " : dr["nome"].ToString();
+                User.CodTipoDoc = (int)(dr["codTipoDoc"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codTipoDoc"]));
+                User.TipoDoc = dr["tipoDocumentoIdent"] == DBNull.Value ? " " : dr["docIdent"].ToString();
+                User.DocIdent = dr["docIdent"] == DBNull.Value ? " " : dr["docIdent"].ToString();
+                User.DataValidade = (DateTime)(dr["dataValidadeDocIdent"] == DBNull.Value
+                    ? DateTime.Today
+                    : Convert.ToDateTime(dr["dataValidadeDocIdent"]).Date);
+                User.CodPrefix = (int)(dr["prefixo"] == DBNull.Value ? 1 : Convert.ToInt32(dr["prefixo"]));
+                User.Phone = dr["telemovel"] == DBNull.Value ? " " : dr["telemovel"].ToString();
+                User.Sexo = (int)(dr["sexo"] == DBNull.Value ? 1 : Convert.ToInt32(dr["sexo"]));
+                User.DataNascimento = (DateTime)(dr["dataNascimento"] == DBNull.Value
+                    ? DateTime.Today
+                    : Convert.ToDateTime(dr["dataNascimento"]).Date);
+                User.NIF = dr["nif"] == DBNull.Value ? " " : dr["nif"].ToString();
+                User.Morada = dr["morada"] == DBNull.Value ? " " : dr["morada"].ToString();
+                User.Localidade = dr["localidade"] == DBNull.Value ? " " : dr["localidade"].ToString();
+                User.CodPais = (int)(dr["codPais"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codPais"]));
+                User.CodPostal = dr["codPostal"] == DBNull.Value ? " " : dr["codPostal"].ToString();
+                User.CodEstadoCivil =
+                    (int)(dr["codEstadoCivil"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codEstadoCivil"]));
+                User.NrSegSocial = dr["nrSegSocial"] == DBNull.Value ? " " : dr["nrSegSocial"].ToString();
+                User.IBAN = dr["IBAN"] == DBNull.Value ? " " : dr["IBAN"].ToString();
+                User.Naturalidade = dr["naturalidade"] == DBNull.Value ? " " : dr["naturalidade"].ToString();
+                User.CodNacionalidade = (int)(dr["codNacionalidade"] == DBNull.Value
+                    ? 1
+                    : Convert.ToInt32(dr["codNacionalidade"]));
+                User.Nacionalidade = dr["nacionalidade"].ToString();
+
+                string relativeImagePath = "~/assets/img/default.png";
+                string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                byte[] imageData = File.ReadAllBytes(absoluteImagePath);
+
+                User.Foto = dr["foto"] == DBNull.Value
+                    ? "data:image/jpeg;base64," + Convert.ToBase64String(imageData)
+                    : "data:image/jpeg;base64," + Convert.ToBase64String((byte[])dr["foto"]);
+                User.CodGrauAcademico = (int)(dr["codGrauAcademico"] == DBNull.Value
+                    ? 1
+                    : Convert.ToInt32(dr["codGrauAcademico"]));
+                User.GrauAcademico = dr["grauAcademico"].ToString();
+                User.CodSituacaoProf = (int)(dr["codSituacaoProfissional"] == DBNull.Value
+                    ? 1
+                    : Convert.ToInt32(dr["codSituacaoProfissional"]));
+                User.SituacaoProf = dr["situacaoProfissional"].ToString();
+                User.LifeMotto = dr["lifemotto"] == DBNull.Value ? " " : dr["lifemotto"].ToString();
             }
+            if (dr.HasRows)
+            {
+                do
+                {
+                    Module module = new Module();
+                    module.CodModulo = Convert.ToInt32(dr["codModulos"]);
+                    if (module.SVG != null)
+                    {
+                        module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
+                    }
+                    else
+                    {
+                        string relativeImagePath = "~/assets/img/small-logos/default.svg";
+                        string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                        byte[] imageData = File.ReadAllBytes(absoluteImagePath);
+
+                        module.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String(imageData);
+                    }
+
+                    module.UFCD = (dr["CodUFCD"].ToString());
+                    module.Nome = dr["NomeModulos"].ToString();
+                    module.IsChecked = true;
+
+                    modules.Add(module);
+                } while (dr.Read());
+            }
+            else
+            {
+                modules = new List<Module>();
+            }
+
+            teacher.Modules = modules;
+
 
             myConn.Close();
 
-            return (Teacher, User);
+            return (teacher, User);
         }
 
         /// <summary>
@@ -210,6 +269,41 @@ namespace FinalProject.Classes
             }
 
             return teachesModule;
+        }
+
+        public static (int, string) GetTeacherByModuleAndClass(int CodModulo, int CodTurma)
+        {
+
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString))
+            {
+                string query = "SELECT UD.codUtilizador,UD.nome FROM utilizadorData AS UD INNER JOIN moduloFormadorTurma AS MFT ON UD.codUtilizador = MFT.codFormador WHERE MFT.codModulo = @CodModulo AND MFT.codTurma = @CodTurma";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@CodModulo", CodModulo);
+                command.Parameters.AddWithValue("@CodTurma", CodTurma);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int teacherId = Convert.ToInt32(reader["codUtilizador"]);
+                            string teacherName = Convert.ToString(reader["nome"]);
+
+                            return (teacherId, teacherName);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Erro ao procurar pelo professor: " + ex.Message);
+                }
+            }
+            return (-1, null);
         }
 
     }

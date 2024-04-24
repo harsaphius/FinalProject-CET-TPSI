@@ -8,6 +8,7 @@ using System.Web;
 
 namespace FinalProject.Classes
 {
+    [Serializable]
     public class User
     {
         public int CodUser { get; set; }
@@ -111,10 +112,16 @@ namespace FinalProject.Classes
         /// </summary>
         /// <param name="UserC"></param>
         /// <returns></returns>
-        public static User LoadUser(string UserC)
+        public static User LoadUser(string UserC = null, string CodUser = null)
         {
             string query =
                 $"SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador INNER JOIN tipoDocIdent AS TPI ON TPI.codTipoDoc=UD.codTipoDoc INNER JOIN situacaoProfissional AS SP ON SP.codSituacaoProfissional=UDS.codSituacaoProfissional INNER JOIN grauAcademico AS GA ON GA.codGrauAcademico=UDS.codGrauAcademico INNER JOIN pais AS P ON P.codPais=UDS.codPais WHERE utilizador='{UserC}' OR email='{UserC}'";
+
+            if (CodUser != null)
+            {
+                query =
+                $"SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador INNER JOIN tipoDocIdent AS TPI ON TPI.codTipoDoc=UD.codTipoDoc INNER JOIN situacaoProfissional AS SP ON SP.codSituacaoProfissional=UDS.codSituacaoProfissional INNER JOIN grauAcademico AS GA ON GA.codGrauAcademico=UDS.codGrauAcademico INNER JOIN pais AS P ON P.codPais=UDS.codPais WHERE U.codUtilizador={CodUser}";
+            }
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager
                 .ConnectionStrings["projetofinalConnectionString"].ConnectionString);
@@ -127,11 +134,11 @@ namespace FinalProject.Classes
             if (dr.Read())
             {
                 informacao.CodUser = Convert.ToInt32(dr["codUtilizador"]);
-                informacao.Username = dr["utilizador"].ToString();
-                informacao.Email = dr["email"].ToString();
+                informacao.Username = dr["utilizador"] == DBNull.Value ? " " : dr["utilizador"].ToString();
+                informacao.Email = dr["email"] == DBNull.Value ? " " : dr["email"].ToString();
                 informacao.Nome = dr["nome"] == DBNull.Value ? " " : dr["nome"].ToString();
                 informacao.CodTipoDoc = (int)(dr["codTipoDoc"] == DBNull.Value ? 1 : Convert.ToInt32(dr["codTipoDoc"]));
-                informacao.TipoDoc = dr["tipoDocumentoIdent"].ToString();
+                informacao.TipoDoc = dr["tipoDocumentoIdent"] == DBNull.Value ? " " : dr["tipoDocumentoIdent"].ToString();
                 informacao.DocIdent = dr["docIdent"] == DBNull.Value ? " " : dr["docIdent"].ToString();
                 informacao.DataValidade = (DateTime)(dr["dataValidadeDocIdent"] == DBNull.Value
                     ? DateTime.Today
@@ -186,11 +193,12 @@ namespace FinalProject.Classes
             return informacao;
         }
 
+
         /// <summary>
         /// Função para carregar todos os utilizadores
         /// </summary>
         /// <returns></returns>
-        public static List<User> LoadUsers(string condition = null)
+        public static List<User> LoadUsers(string condition = null, string FromUser = null)
         {
             List<User> Users = new List<User>();
             List<string> conditions = new List<string>();
@@ -199,6 +207,8 @@ namespace FinalProject.Classes
                 "SELECT * FROM utilizador AS U LEFT JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador";
 
             if (condition != null) query += condition;
+
+            if (FromUser != null) query = FromUser;
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager
                 .ConnectionStrings["projetofinalConnectionString"].ConnectionString);
@@ -565,6 +575,26 @@ namespace FinalProject.Classes
             return AnswUserUpdated;
         }
 
+        public static string GetEmailFromDatabase(int userCode)
+        {
+            string email = null;
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString))
+            {
+                string query = "SELECT email FROM utilizador WHERE codUtilizador = @UserCode";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@UserCode", userCode);
+                    connection.Open();
+                    object result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        email = result.ToString();
+                    }
+                }
+            }
+            return email;
+        }
+
         public static int DeleteUser(int UserCode)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
@@ -623,6 +653,7 @@ namespace FinalProject.Classes
 
             return AnswUserPhotoUpdated;
         }
+
         public static int UpdateUser(User User, List<FileControl> Anexos)
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager
@@ -704,6 +735,53 @@ namespace FinalProject.Classes
             myCon.Close();
 
             return AnswUserRegisterComplete;
+        }
+
+        public static int AtivarUtilizador(int idUtilizador)
+        {
+            // Conexão com o banco de dados
+            string connectionString = ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString;
+
+            // Instrução SQL para atualizar o status do usuário para ativo
+            string sql = "UPDATE utilizador SET ativo = 1 WHERE codUtilizador = @ID";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    // Adiciona o parâmetro para o ID do usuário
+                    command.Parameters.AddWithValue("@ID", idUtilizador);
+
+                    try
+                    {
+                        connection.Open();
+                        int rowsAffected = command.ExecuteNonQuery();
+                        return 1;
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Ocorreu um erro ao ativar o utilizador: " + ex.Message);
+                        return -1;
+                    }
+                }
+            }
+        }
+
+        public static bool CheckSecondaryData(int CodUtilizador)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString;
+            string query = "IF EXISTS (SELECT 1 FROM [projetofinal].[dbo].[utilizadorDataSecondary] WHERE codUtilizador = @CodUtilizador AND (sexo IS NOT NULL OR dataNascimento IS NOT NULL OR nif IS NOT NULL OR morada IS NOT NULL OR codPais IS NOT NULL OR codPostal IS NOT NULL OR codEstadoCivil IS NOT NULL OR nrSegSocial IS NOT NULL OR IBAN IS NOT NULL OR naturalidade IS NOT NULL OR codNacionalidade IS NOT NULL OR foto IS NOT NULL OR codGrauAcademico IS NOT NULL OR codSituacaoProfissional IS NOT NULL OR localidade IS NOT NULL OR lifeMotto IS NOT NULL OR auditRow IS NOT NULL))" +
+                           "    SELECT CAST(1 AS BIT)" +
+                           "ELSE" +
+                           "    SELECT CAST(0 AS BIT)";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@CodUtilizador", CodUtilizador);
+                connection.Open();
+                return (bool)command.ExecuteScalar();
+            }
         }
     }
 }

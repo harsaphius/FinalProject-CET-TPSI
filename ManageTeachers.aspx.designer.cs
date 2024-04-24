@@ -159,13 +159,22 @@ namespace FinalProject
         protected global::System.Web.UI.WebControls.Button btnClearFilters;
 
         /// <summary>
-        /// lblMessageRegistration control.
+        /// lblMessage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMessageRegistration;
+        protected global::System.Web.UI.WebControls.Label lblMessage;
+
+        /// <summary>
+        /// timerMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer timerMessage;
 
         /// <summary>
         /// listTeachersDiv control.
@@ -285,13 +294,13 @@ namespace FinalProject
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl insertTeachersDiv;
 
         /// <summary>
-        /// updatePanelInsertStudent control.
+        /// updatePanelInsertTeacher control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updatePanelInsertStudent;
+        protected global::System.Web.UI.UpdatePanel updatePanelInsertTeacher;
 
         /// <summary>
         /// registration control.
@@ -312,13 +321,13 @@ namespace FinalProject
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl registerCompletionpage1;
 
         /// <summary>
-        /// updatePanelInsertStudentPage1 control.
+        /// updatePanelInsertTeacherPage1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updatePanelInsertStudentPage1;
+        protected global::System.Web.UI.UpdatePanel updatePanelInsertTeacherPage1;
 
         /// <summary>
         /// lblNome control.
@@ -618,13 +627,13 @@ namespace FinalProject
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl registerCompletionpage2;
 
         /// <summary>
-        /// updatePanelInsertStudentPage2 control.
+        /// updatePanelInsertTeacherPage2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updatePanelInsertStudentPage2;
+        protected global::System.Web.UI.UpdatePanel updatePanelInsertTeacherPage2;
 
         /// <summary>
         /// lblCodEstadoCivil control.

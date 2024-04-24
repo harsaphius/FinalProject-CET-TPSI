@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Turmas" Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="ManageClasses.aspx.cs" Inherits="FinalProject.ManageClasses" %>
+﻿<%@ Page Title="Turmas" EnableEventValidation="false" EnableViewState="true"  Language="C#" MasterPageFile="~/CinelMP.Master" AutoEventWireup="true" CodeBehind="ManageClasses.aspx.cs" Inherits="FinalProject.ManageClasses" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row" style="margin-top: 15px">
                     <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
-                        <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Nova Turma" Visible="True" CausesValidation="False" ID="btnInsertClassMain" OnClick="btnInsertClassMain_OnClick" />
+                        <asp:Button runat="server" CssClass="btn btn-primary" Text="Inserir Nova Turma" Visible="True"  CausesValidation="False" ID="btnInsertClassMain" OnClick="btnInsertClassMain_OnClick" />
                         <asp:Button runat="server" CssClass="btn btn-primary" CausesValidation="False" Visible="False" Text="Voltar" ID="btnBack" OnClick="btnBack_OnClick" />
                     </div>
                     <div class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
@@ -27,13 +27,6 @@
                                             <asp:TextBox runat="server" ID="tbSearchFilters" CssClass="form-control" placeholder="Type here..." AutoPostBack="False"></asp:TextBox>
                                         </div>
                                     </div>
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
-                                        <span>Tipo:</span>
-                                        <div class="dropdown">
-                                            <asp:DropDownList ID="ddlTipoCursoFilters" AutoPostBack="False" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso" AppendDataBoundItems="True"></asp:DropDownList>
-                                            <asp:SqlDataSource ID="SQLDSTipo" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
-                                        </div>
-                                    </div>
                                     <div class="col-xl-3 col-sm-3 mb-xl-0 mb-4">
                                         <span>Data de Início: </span>
                                         <div class="input-group mb-4">
@@ -49,7 +42,7 @@
                                             <asp:TextBox runat="server" ID="tbDataFimFilters" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-4 mb-xl-0 mb-0">
+                                    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-4 mb-xl-0 mb-0">
                                         <span>Ordenação:
                                         </span>
                                         <div class="input-group mb-0 text-end">
@@ -95,8 +88,8 @@
                                                                             <thead>
                                                                                 <colgroup>
                                                                                     <col style="width: 10%;" />
-                                                                                    <col style="width: 10%;" />
-                                                                                    <col style="width: 40%;" />
+                                                                                    <col style="width: 50%;" />
+                                                                                    <col style="width: 20%;" />
                                                                                     <col style="width: 10%;" />
                                                                                     <col style="width: 10%;" />
                                                                                 </colgroup>
@@ -106,10 +99,9 @@
                                                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nome da Turma</th>
                                                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Data de Início</th>
                                                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Data de Fim</th>
-                                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Formadores</th>
-                                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Formandos</th>
-                                                                                    <th></th>
-                                                                                    <th></th>
+                                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"></th>
+                                                                                 <%--   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Formadores</th>
+                                                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Formandos</th>--%>
                                                                                     <th></th>
                                                                                     <th></th>
                                                                                 </tr>
@@ -119,17 +111,17 @@
                                                             <ItemTemplate>
                                                                 <asp:HiddenField runat="server" ID="hfCodTurma" Value='<%# Eval("CodTurma") %>' />
                                                                 <tr>
-                                                                    <td>
+                                                                    <td style="width: auto; white-space: normal; padding: 2px;">
                                                                         <p class="mb-0 text-sm text-center">
                                                                             <asp:Label runat="server" Text='<%# Eval("CodTurma") %>'></asp:Label>
                                                                         </p>
                                                                     </td>
-                                                                    <td>
-                                                                        <p class="mb-0 text-sm text-center">
+                                                                    <td style="width: auto; white-space: normal; padding: 2px;">
+                                                                        <p class="mb-0 text-sm text-left">
                                                                             <asp:Label runat="server" Text='<%# Eval("NomeCurso") %>'></asp:Label>
                                                                         </p>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="width: auto; white-space: normal; padding: 2px;">
                                                                         <div class="d-flex px-2">
                                                                             <div class="my-auto">
                                                                                 <asp:TextBox ID="tbNome" CssClass="form-control" runat="server" Text='<%# Bind("NomeTurma") %>' Visible="false" Style="width: 100%;"></asp:TextBox>
@@ -139,17 +131,22 @@
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="width: auto; white-space: normal; padding: 2px;">
                                                                         <p class="mb-0 text-sm text-center">
                                                                             <asp:Label runat="server" Text='<%# String.Format("{0:d}", Eval("DataInicio")) %>'></asp:Label>
                                                                         </p>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="width: auto; white-space: normal; padding: 2px;">
                                                                         <p class="mb-0 text-sm text-center">
                                                                             <asp:Label runat="server" Text='<%#  String.Format("{0:d}", Eval("DataFim")) %>'></asp:Label>
                                                                         </p>
                                                                     </td>
-                                                                    <td>
+                                                                    <td> <asp:LinkButton CausesValidation="False" CommandArgument='<%# Eval("CodTurma") %>' class="btn-md btn-outline-primary text-sm"
+                                                                                        data-bs-toggle="tooltip" Text="Detalhes" data-bs-placement="bottom" CommandName="Details" runat="server">
+                                                                                       
+                                                                                    </asp:LinkButton></td>
+                                                                    <!--Nota: opção desconsiderada porque não consegui ultrapassar o limite do maxJsonLength mesmo aumentando no WebConfig -->
+                                                                    <%-- <td style="width: auto; white-space: normal; padding: 2px;">
                                                                         <div class="avatar-group mt-2">
                                                                             <asp:Repeater runat="server" ID="rptStudentsClassGroup" OnItemCommand="rptStudentsClassGroup_OnItemCommand">
                                                                                 <ItemTemplate>
@@ -161,29 +158,19 @@
                                                                             </asp:Repeater>
                                                                         </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td style="width: auto; white-space: normal; padding: 2px;">
                                                                         <div class="avatar-group mt-2">
                                                                             <asp:Repeater runat="server" ID="rptTeachersClassGroup" OnItemCommand="rptTeachersClassGroup_OnItemCommand">
                                                                                 <ItemTemplate>
                                                                                     <asp:LinkButton CausesValidation="False" CommandArgument='<%# Eval("CodTurma") %>' ID="rptTeacherDetail" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                                                                    CommandName="DetailT" title='<%# Eval("Nome") %>' runat="server">
+                                                                                        CommandName="DetailT" title='<%# Eval("Nome") %>' runat="server">
                                                                                         <img src='<%# Eval("Foto") %>' alt='<%# Eval("Nome") %>' style="width: 25px; height: 25px;">
                                                                                     </asp:LinkButton>
                                                                                 </ItemTemplate>
                                                                             </asp:Repeater>
                                                                         </div>
-                                                                    </td>
-                                                                    <td class="align-middle font-weight-bold text-center">
-                                                                        <asp:LinkButton runat="server" ID="lbtEditStudents" CausesValidation="false" CommandName="Edit" Visible="true" CommandArgument='<%# Eval("CodTurma") %>'
-                                                                            Text="Edit" class="text-secondary font-weight-bold text-xs">
-                                                                        </asp:LinkButton>
-                                                                    </td>
-                                                                    <td class="align-middle text-center">
-                                                                        <asp:LinkButton runat="server" ID="lbt_delete" CausesValidation="false" CommandName="Delete" Visible="true" CommandArgument='<%# Eval("CodTurma") %>'
-                                                                            Text="Delete" class="text-secondary font-weight-bold text-xs">
-                                                                        </asp:LinkButton>
-                                                                    </td>
-                                                                    <td class="align-middle text-center">
+                                                                    </td>--%>
+                                                                    <td style="width: auto; white-space: normal; padding: 2px;" class="align-middle text-center">
                                                                         <asp:LinkButton runat="server" ID="lbtSchedule" CausesValidation="false" CommandName="Schedule" Visible="true" CommandArgument='<%# Eval("CodTurma") %>'
                                                                             class="text-primary font-weight-bold text-sm"> <i class="fas fa-calendar" aria-hidden="true"></i>
                                                                         </asp:LinkButton>
@@ -398,7 +385,10 @@
                                                                         <div class="text-center">
                                                                             <asp:Button ID="btnInsertClass" AutoPostBack="True" runat="server" Text="Inserir" OnClick="btnInsertClass_OnClick" class="btn bg-gradient-info w-100 mt-4 mb-0" />
                                                                         </div>
-
+                                                                        <div class="row px-4" style="padding: 10px;">
+                                                                            <asp:Label runat="server" ID="lblMessageInsert" Style="display: flex; align-content: center; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
+                                                                            <asp:Timer ID="timerMessageInsert" runat="server" Interval="3000" OnTick="timerMessageInsert_OnTick" Enabled="false"></asp:Timer>
+                                                                        </div>
                                                                     </div>
                                                                     <div class="col-md-3">
                                                                         <div class="oblique position-absolute top-0 h-100 d-md-block me-n12">
@@ -412,143 +402,13 @@
                                                     <asp:PostBackTrigger ControlID="btnInsertClass" />
                                                     <asp:AsyncPostBackTrigger ControlID="btnNextStudents" />
                                                     <asp:AsyncPostBackTrigger ControlID="btnPreviousStudents" />
-                                                    <asp:AsyncPostBackTrigger ControlID="btnAddTeacherModuleClassGroup" />
                                                     <asp:AsyncPostBackTrigger ControlID="ddlCurso" />
                                                     <asp:AsyncPostBackTrigger ControlID="ddlModulesOfCourse" />
                                                     <asp:AsyncPostBackTrigger ControlID="ddlTeacherForModules" />
                                                 </Triggers>
                                             </asp:UpdatePanel>
                                         </div>
-                                        <div id="detailClassesDiv" runat="server" visible="false">
-                                            <asp:UpdatePanel ID="updatePanelDetalheTurma" runat="server">
-                                                <ContentTemplate>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="card mb-4">
-                                                                <div class="card-header pb-0 text-primary text-center" style="margin-bottom: 2px;">
-                                                                    <h6>
-                                                                        <asp:Label ID="lblNomeTurma" runat="server"></asp:Label></h6>
-                                                                </div>
-                                                                <div class="card-body px-0 pt-0 pb-2">
-                                                                    <div style="padding-left: 25px;">
-                                                                        <div>
-                                                                            <h6 style="display: inline-block;">Nr.º da Turma: </h6>
-                                                                            <asp:Label runat="server" ID="lblNrTurma" Style="display: inline-block;"></asp:Label>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h6 style="display: inline-block;">Nome de Curso: </h6>
-                                                                            <asp:Label runat="server" ID="lblNomeCurso" Style="display: inline-block;"></asp:Label>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h6 style="display: inline-block;">Regime:</h6>
-                                                                            <asp:Label runat="server" ID="lblRegime" Style="display: inline-block;"></asp:Label>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h6 style="display: inline-block;">Horário da Turma:</h6>
-                                                                            <asp:Label runat="server" ID="lblHorario" Style="display: inline-block;"></asp:Label>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h6 style="display: inline-block;">Data de Início: </h6>
-                                                                            <asp:Label runat="server" ID="lblDataInicioDetail" Style="display: inline-block;"></asp:Label>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h6 style="display: inline-block;">Data de Fim:</h6>
-                                                                            <asp:Label runat="server" ID="lblDataFimDetail" Style="display: inline-block;"></asp:Label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <asp:Repeater runat="server" ID="rptStudentsDetail">
-                                                                            <HeaderTemplate>
-                                                                                <div class="card-body px-0 pt-0 pb-2">
-                                                                                    <div class="table-responsive p-2 col-md-8">
-                                                                                        <table class="table align-items-center mb-0">
-                                                                                            <thead>
-                                                                                                <tr>
-                                                                                                    <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Formando</th>
-                                                                                                    <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Estado</th>
-                                                                                                </tr>
-                                                                                            </thead>
-                                                                                            <tbody>
-                                                                            </HeaderTemplate>
-                                                                            <ItemTemplate>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <div class="d-flex px-2">
-                                                                                            <asp:Image ID="imgUpload" CssClass="avatar avatar-sm rounded-circle me-3" runat="server" ImageUrl='<%# Eval("Foto") %>' />
-                                                                                            <div class="my-auto">
-                                                                                                <p class="mb-0 text-sm">
-                                                                                                    <asp:Label ID="lblNome" runat="server" Text='<%# Eval("Nome") %>' Visible="true"></asp:Label>
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <p class="text-sm mb-0">
-                                                                                            <asp:Label ID="lblUFCD" runat="server" Text='<%# Eval("CodSituacao") %>' Visible="true" Style="width: 100%;"></asp:Label>
-                                                                                        </p>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </ItemTemplate>
-                                                                            <FooterTemplate>
-                                                                                </tbody>
-                                                                </table>
-                                                                            </FooterTemplate>
-                                                                        </asp:Repeater>
-                                                                    </div>
-                                                                    <div>
-                                                                        <asp:Repeater runat="server" ID="rptTeachersDetail">
-                                                                            <HeaderTemplate>
-                                                                                <div class="card-body px-0 pt-0 pb-2">
-                                                                                    <div class="table-responsive p-2 col-md-8">
-                                                                                        <table class="table align-items-center mb-0">
-                                                                                            <thead>
-                                                                                                <tr>
-                                                                                                    <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Formador</th>
-                                                                                                    <th class="col-sm-2 text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Estado</th>
-                                                                                                </tr>
-                                                                                            </thead>
-                                                                                            <tbody>
-                                                                            </HeaderTemplate>
-                                                                            <ItemTemplate>
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <div class="d-flex px-2">
-                                                                                            <asp:Image ID="imgUpload" CssClass="avatar avatar-sm rounded-circle me-3" runat="server" ImageUrl='<%# Eval("Foto") %>' />
-                                                                                            <div class="my-auto">
-                                                                                                <p class="mb-0 text-sm">
-                                                                                                    <asp:Label ID="lblNome" runat="server" Text='<%# Eval("Nome") %>' Visible="true"></asp:Label>
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <p class="text-sm mb-0">
-                                                                                            <asp:Label ID="lblUFCD" runat="server" Text='<%# Eval("CodSituacao") %>' Visible="true" Style="width: 100%;"></asp:Label>
-                                                                                        </p>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </ItemTemplate>
-                                                                            <FooterTemplate>
-                                                                                </tbody>
-                    </table>
-                                                                            </FooterTemplate>
-                                                                        </asp:Repeater>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </ContentTemplate>
-                                                <Triggers>
-                                                    <asp:PostBackTrigger ControlID="btnInsertClass" />
-                                                    <asp:AsyncPostBackTrigger ControlID="btnNextStudents" />
-                                                    <asp:AsyncPostBackTrigger ControlID="btnPreviousStudents" />
-                                                    <asp:AsyncPostBackTrigger ControlID="btnAddTeacherModuleClassGroup" />
-                                                    <asp:AsyncPostBackTrigger ControlID="ddlCurso" />
-                                                    <asp:AsyncPostBackTrigger ControlID="ddlModulesOfCourse" />
-                                                    <asp:AsyncPostBackTrigger ControlID="ddlTeacherForModules" />
-                                                </Triggers>
-                                            </asp:UpdatePanel>
+                        
                                         </div>
                                     </div>
                                 </div>
@@ -559,7 +419,7 @@
         </ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="btnInsertClassMain" />
-            <asp:AsyncPostBackTrigger ControlID="btnBack" />
+            <asp:PostBackTrigger ControlID="btnBack" />
         </Triggers>
     </asp:UpdatePanel>
 </asp:Content>

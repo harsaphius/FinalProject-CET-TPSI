@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 
 namespace FinalProject.Classes
 {
+    [Serializable]
     public class Classroom
     {
         public int CodSala { get; set; }
@@ -156,7 +157,7 @@ namespace FinalProject.Classes
         {
             SqlConnection myCon = new SqlConnection(ConfigurationManager.ConnectionStrings["projetoFinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(); //Novo commando SQL
-            myCommand.Parameters.AddWithValue("@ModuleID", CodSala);
+            myCommand.Parameters.AddWithValue("@ClassroomID", CodSala);
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             SqlParameter ClassroomDeleted = new SqlParameter();

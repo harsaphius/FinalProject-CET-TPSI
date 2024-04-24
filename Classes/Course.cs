@@ -23,6 +23,7 @@ namespace FinalProject.Classes
         public int DuracaoEstagio { get; set; }
         public int CodQNQ { get; set; }
         public List<Module> Modules { get; set; }
+        public bool IsChecked { get; set; }
 
         /// <summary>
         /// Função para inserir um curso completo
@@ -42,11 +43,7 @@ namespace FinalProject.Classes
             myCommand.Parameters.AddWithValue("@CodQNQ", Course.CodQNQ);
             myCommand.Parameters.AddWithValue("@CreationDate", DateTime.Now);
             myCommand.Parameters.AddWithValue("@Duration", Course.Duracao);
-            if (Course.DuracaoEstagio != null)
-            {
-                myCommand.Parameters.AddWithValue("@Internship", Course.DuracaoEstagio);
-            }
-
+            myCommand.Parameters.AddWithValue("@Internship", Course.DuracaoEstagio);
             myCommand.Parameters.AddWithValue("@AuditRow", DateTime.Now);
 
             SqlParameter CourseRegister = new SqlParameter();
@@ -107,7 +104,7 @@ namespace FinalProject.Classes
         /// </summary>
         /// <param name="conditions"></param>
         /// <returns></returns>
-        public static List<Course> LoadCourses(List<string> conditions = null, string order = null)
+        public static List<Course> LoadCourses(List<string> conditions = null, string order = null, string FromUser = null)
         {
             List<Course> Courses = new List<Course>();
 
@@ -140,6 +137,8 @@ namespace FinalProject.Classes
             {
                 query += order.Contains("ASC") ? " ORDER BY nomeCurso ASC" : order.Contains("DESC") ? " ORDER BY nomeCurso DESC" : "";
             }
+
+            if (FromUser != null) query = FromUser;
 
             SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
             SqlCommand myCommand = new SqlCommand(query, myConn);
@@ -401,5 +400,33 @@ namespace FinalProject.Classes
 
             return courseTypeName;
         }
+
+        public static int GetTotalModulesCountForCourse(int CodCourse)
+        {
+            int totalModulesCount = 0;
+            string connectionString = ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString;
+            string query = "SELECT COUNT(*) FROM moduloCurso WHERE codCurso = @CodCourse";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@CodCourse", CodCourse);
+
+                    try
+                    {
+                        connection.Open();
+                        totalModulesCount = (int)command.ExecuteScalar();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error retrieving total modules count: " + ex.Message);
+                    }
+                }
+            }
+
+            return totalModulesCount;
+        }
+
     }
 }

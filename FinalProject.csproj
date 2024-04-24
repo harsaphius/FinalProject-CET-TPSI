@@ -66,6 +66,7 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.DataVisualization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -900,7 +901,9 @@
     <Content Include="bin\roslyn\System.Xml.XPath.XDocument.dll" />
     <Content Include="bin\roslyn\vbc.exe" />
     <Content Include="bin\roslyn\VBCSCompiler.exe" />
+    <Content Include="ClassesDetails.aspx" />
     <Content Include="CourseDetails.aspx" />
+    <Content Include="MainSchedules.aspx" />
     <Content Include="Manage.aspx" />
     <Content Include="ManageClasses.aspx" />
     <Content Include="ManageClassrooms.aspx" />
@@ -977,6 +980,7 @@
     <Content Include="Scheduler.asmx" />
     <Content Include="StatisticalPage.aspx" />
     <Content Include="TeacherAvailability.aspx" />
+    <Content Include="TeacherEvaluations.aspx" />
     <Content Include="UserCourses.aspx" />
     <Content Include="ErrorPage404.aspx" />
     <Content Include="ErrorPageGeneral.aspx" />
@@ -1077,6 +1081,13 @@
     <Compile Include="CinelMP.Master.designer.cs">
       <DependentUpon>CinelMP.Master</DependentUpon>
     </Compile>
+    <Compile Include="ClassesDetails.aspx.cs">
+      <DependentUpon>ClassesDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClassesDetails.aspx.designer.cs">
+      <DependentUpon>ClassesDetails.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Classes\ClassGroup.cs" />
     <Compile Include="Classes\Classroom.cs" />
     <Compile Include="Classes\Course.cs" />
@@ -1097,6 +1108,13 @@
     </Compile>
     <Compile Include="CourseDetails.aspx.designer.cs">
       <DependentUpon>CourseDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MainSchedules.aspx.cs">
+      <DependentUpon>MainSchedules.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MainSchedules.aspx.designer.cs">
+      <DependentUpon>MainSchedules.aspx</DependentUpon>
     </Compile>
     <Compile Include="Manage.aspx.cs">
       <DependentUpon>Manage.aspx</DependentUpon>
@@ -1193,6 +1211,13 @@
     </Compile>
     <Compile Include="TeacherAvailability.aspx.designer.cs">
       <DependentUpon>TeacherAvailability.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TeacherEvaluations.aspx.cs">
+      <DependentUpon>TeacherEvaluations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TeacherEvaluations.aspx.designer.cs">
+      <DependentUpon>TeacherEvaluations.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserCourses.aspx.cs">
       <DependentUpon>UserCourses.aspx</DependentUpon>

@@ -13,32 +13,5 @@ namespace FinalProject
 
     public partial class UserCalendar
     {
-
-        /// <summary>
-        /// tbDataInicioFilters control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbDataInicioFilters;
-
-        /// <summary>
-        /// tbDataFimFilters control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbDataFimFilters;
-
-        /// <summary>
-        /// btnExportCalendar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnExportCalendar;
     }
 }

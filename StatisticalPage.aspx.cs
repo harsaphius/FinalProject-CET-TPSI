@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Web.UI.WebControls;
 
 namespace FinalProject
@@ -65,11 +68,54 @@ namespace FinalProject
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
-                            document.getElementById('manageschedules').classList.remove('hidden');
+                            
                             ";
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
+
+                    if (!IsPostBack)
+                    {
+                        GetAndDisplayStatisticalData(out int totalCursos, out int totalCursosDecorrer, out int totalFormando);
+                        lblClassgroupOver.Text = totalCursos.ToString();
+                        lblClassgroupOngoing.Text = totalCursosDecorrer.ToString();
+                        lblStudentsOngoing.Text = totalFormando.ToString();
+                    }
                 }
+            }
+        }
+        public static void GetAndDisplayStatisticalData(out int totalCursos, out int totalCursosDecorrer, out int totalFormando)
+        {
+            totalCursos = 0;
+            totalCursosDecorrer = 0;
+            totalFormando = 0;
+
+            string connectionString = ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("StatisticalData", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Parâmetros de saída
+                SqlParameter totalCursosParam = new SqlParameter("@TotalCursos", SqlDbType.Int);
+                totalCursosParam.Direction = ParameterDirection.Output;
+                command.Parameters.Add(totalCursosParam);
+
+                SqlParameter totalCursosDecorrerParam = new SqlParameter("@TotalCursosDecorrer", SqlDbType.Int);
+                totalCursosDecorrerParam.Direction = ParameterDirection.Output;
+                command.Parameters.Add(totalCursosDecorrerParam);
+
+                SqlParameter totalFormandoParam = new SqlParameter("@TotalFormando", SqlDbType.Int);
+                totalFormandoParam.Direction = ParameterDirection.Output;
+                command.Parameters.Add(totalFormandoParam);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+
+                // Atribuir valores dos parâmetros de saída às variáveis de saída
+                totalCursos = (int)totalCursosParam.Value;
+                totalCursosDecorrer = (int)totalCursosDecorrerParam.Value;
+                totalFormando = (int)totalFormandoParam.Value;
             }
         }
     }

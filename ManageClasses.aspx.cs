@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -9,8 +10,8 @@ namespace FinalProject
 {
     public partial class ManageClasses : System.Web.UI.Page
     {
-        public ClassGroup classGroup = new ClassGroup();
-
+        //public ClassGroup classGroup = new ClassGroup();
+        int minStudent = 2;
         protected void Page_Load(object sender, EventArgs e)
         {
             string script;
@@ -71,7 +72,7 @@ namespace FinalProject
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
-                            document.getElementById('manageschedules').classList.remove('hidden');
+                            
                             ";
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
@@ -81,6 +82,8 @@ namespace FinalProject
 
             if (!IsPostBack)
             {
+                ddlOrderFilters.Items.Insert(0, new ListItem("None", "0"));
+
                 if (ViewState["SelectedItemsInsert"] == null)
                     ViewState["SelectedItemsInsert"] = new List<int>();
 
@@ -92,33 +95,13 @@ namespace FinalProject
 
 
                 BindDataClassGroups();
-                BindDataStudents("1");
-                //Bind Modules of First Course
-                BindDdlModules("1");
-
-                //First Module of First Course
-                Course course = new Course();
-                course = Course.CompleteCourse(1);
-                List<Module> modules = course.Modules;
-                Module firstModule = modules[0];
-                int firstModuleID = firstModule.CodModulo;
-
-                //Bind Teacher of First Module of First Course
-                BindDdlTeacherForModules(firstModuleID.ToString());
-
-                if (listBoxTeachersForModules.Items.Count == 0)
-                {
-                    btnRemoveTeacherModuleClassGroup.Enabled = false;
-                    btnRemoveTeacherModuleClassGroup.CssClass = "btn bg-gradient-info w-100 mt-4 mb-0";
-                }
-
 
             }
 
 
         }
 
-
+        //Nota: opção desconsiderada porque não consegui ultrapassar o limite do maxJsonLength mesmo aumentando no WebConfig
         //Função de ItemDataBound
         /// <summary>
         /// Função de ItemDataBound do Repeater de Listagem das Turmas
@@ -127,31 +110,31 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void rptClasses_OnItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                Repeater rptTeachersClassGroup = e.Item.FindControl("rptTeachersClassGroup") as Repeater;
-                Repeater rptStudentsClassGroup = e.Item.FindControl("rptStudentsClassGroup") as Repeater;
-                if (rptTeachersClassGroup != null && rptStudentsClassGroup != null)
-                {
-                    HiddenField hfCodTurma = e.Item.FindControl("hfCodTurma") as HiddenField;
-                    if (hfCodTurma != null)
-                    {
-                        string codTurma = hfCodTurma.Value;
-                        string queryFormador =
-                            $"SELECT DISTINCT TOP 5 T.codFormador, UD.nome, UDS.foto, I.codTurma FROM formador AS T LEFT JOIN moduloFormadorTurma AS I ON T.codFormador=I.codFormador LEFT JOIN utilizador AS U ON I.codFormador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador WHERE I.codTurma={codTurma}";
-                        string queryFormando =
-                            $"SELECT DISTINCT TOP 5 T.codFormando, UD.nome, UDS.foto, I.codTurma FROM formando AS T LEFT JOIN turmaFormando AS I ON T.codFormando=I.codFormando LEFT JOIN utilizador AS U ON I.codFormando=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador WHERE  I.codTurma={codTurma}";
-                        List<Teacher> teachers = Classes.Teacher.LoadTeachers(null, null, queryFormador);
-                        List<Student> students = Classes.Student.LoadStudents(null, null, queryFormando);
+            //if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            //{
+            //    Repeater rptTeachersClassGroup = e.Item.FindControl("rptTeachersClassGroup") as Repeater;
+            //    Repeater rptStudentsClassGroup = e.Item.FindControl("rptStudentsClassGroup") as Repeater;
+            //    if (rptTeachersClassGroup != null && rptStudentsClassGroup != null)
+            //    {
+            //        HiddenField hfCodTurma = e.Item.FindControl("hfCodTurma") as HiddenField;
+            //        if (hfCodTurma != null)
+            //        {
+            //            string codTurma = hfCodTurma.Value;
+            //            string queryFormador =
+            //                $"SELECT DISTINCT TOP 5 T.codFormador, UD.nome, UDS.foto, I.codTurma FROM formador AS T LEFT JOIN moduloFormadorTurma AS I ON T.codFormador=I.codFormador LEFT JOIN utilizador AS U ON I.codFormador=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador WHERE I.codTurma={codTurma}";
+            //            string queryFormando =
+            //                $"SELECT DISTINCT TOP 5 T.codFormando, UD.nome, UDS.foto, I.codTurma FROM formando AS T LEFT JOIN turmaFormando AS I ON T.codFormando=I.codFormando LEFT JOIN utilizador AS U ON I.codFormando=U.codUtilizador LEFT JOIN utilizadorData as UD ON U.codUtilizador=UD.codUtilizador LEFT JOIN utilizadorDataSecondary as UDS ON UD.codUtilizador=UDS.codUtilizador WHERE  I.codTurma={codTurma}";
+            //List<Teacher> teachers = Teacher.LoadTeachers(null, null, queryFormador);
+            //List<Student> students = Student.LoadStudents(null, null, queryFormando);
 
-                        rptTeachersClassGroup.DataSource = teachers;
-                        rptTeachersClassGroup.DataBind();
+            //            rptTeachersClassGroup.DataSource = teachers;
+            //            rptTeachersClassGroup.DataBind();
 
-                        rptStudentsClassGroup.DataSource = students;
-                        rptStudentsClassGroup.DataBind();
-                    }
-                }
-            }
+            //            rptStudentsClassGroup.DataSource = students;
+            //            rptStudentsClassGroup.DataBind();
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>
@@ -175,77 +158,21 @@ namespace FinalProject
             }
         }
 
-        protected void rptStudentsClassGroup_OnItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            if (e.CommandName == "DetailS")
-            {
-                ClassGroup CompleteClassGroup = new ClassGroup();
-                if (CompleteClassGroup != null)
-                {
-                    string codTurma = e.CommandArgument.ToString();
-                    CompleteClassGroup = Classes.ClassGroup.LoadClassGroup(codTurma);
+        //Nota: opção desconsiderada porque não consegui ultrapassar o limite do maxJsonLength mesmo aumentando no WebConfig
+        //Funções OnItemCommand
+        //protected void rptStudentsClassGroup_OnItemCommand(object source, RepeaterCommandEventArgs e)
+        //{
+        //    Session["CodTurma"] = e.CommandArgument.ToString();
 
-                    rptTeachersDetail.DataSource = CompleteClassGroup.Teachers;
-                    rptTeachersDetail.DataBind();
+        //    Response.Redirect("ClassesDetails.aspx");
+        //}
 
-                    rptStudentsDetail.DataSource = CompleteClassGroup.Students;
-                    rptStudentsDetail.DataBind();
+        //protected void rptTeachersClassGroup_OnItemCommand(object source, RepeaterCommandEventArgs e)
+        //{
+        //    Session["CodTurma"] = e.CommandArgument.ToString();
 
-                    lblNomeCurso.Text = CompleteClassGroup.NomeCurso;
-                    lblNomeTurma.Text = CompleteClassGroup.NomeTurma;
-                    lblRegime.Text = CompleteClassGroup.Regime;
-                    lblHorario.Text = CompleteClassGroup.HorarioTurma;
-                    lblDataInicioDetail.Text = CompleteClassGroup.DataInicio.ToShortDateString();
-                    lblDataFimDetail.Text = CompleteClassGroup.DataFim.ToShortDateString();
-                    lblNrTurma.Text = CompleteClassGroup.CodTurma.ToString();
-
-                }
-
-                detailClassesDiv.Visible = true;
-                listClassesDiv.Visible = false;
-                btnBack.Visible = true;
-                btnInsertClassMain.Visible = false;
-                filtermenu.Visible = false;
-                filters.Visible = false;
-
-            }
-        }
-
-        protected void rptTeachersClassGroup_OnItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            if (e.CommandName == "DetailT")
-            {
-                ClassGroup CompleteClassGroup = new ClassGroup();
-                if (CompleteClassGroup != null)
-                {
-                    string codTurma = e.CommandArgument.ToString();
-                    CompleteClassGroup = Classes.ClassGroup.LoadClassGroup(codTurma);
-
-                    rptTeachersDetail.DataSource = CompleteClassGroup.Teachers;
-                    rptTeachersDetail.DataBind();
-
-                    rptStudentsDetail.DataSource = CompleteClassGroup.Students;
-                    rptStudentsDetail.DataBind();
-
-                    lblNomeCurso.Text = CompleteClassGroup.NomeCurso;
-                    lblNomeTurma.Text = CompleteClassGroup.NomeTurma;
-                    lblRegime.Text = CompleteClassGroup.Regime;
-                    lblHorario.Text = CompleteClassGroup.HorarioTurma;
-                    lblDataInicioDetail.Text = CompleteClassGroup.DataInicio.ToShortDateString();
-                    lblDataFimDetail.Text = CompleteClassGroup.DataFim.ToShortDateString();
-                    lblNrTurma.Text = CompleteClassGroup.CodTurma.ToString();
-
-                }
-
-                detailClassesDiv.Visible = true;
-                listClassesDiv.Visible = false;
-                btnBack.Visible = true;
-                btnInsertClassMain.Visible = false;
-                filtermenu.Visible = false;
-                filters.Visible = false;
-
-            }
-        }
+        //    Response.Redirect("ClassesDetails.aspx");
+        //}
 
         protected void rptClasses_OnItemCommand(object source, RepeaterCommandEventArgs e)
         {
@@ -253,6 +180,11 @@ namespace FinalProject
             {
                 Session["CodTurma"] = e.CommandArgument.ToString();
                 Response.Redirect("ManageSchedules.aspx");
+            }
+            if (e.CommandName == "Details")
+            {
+                Session["CodTurma"] = e.CommandArgument.ToString();
+                Response.Redirect("ClassesDetails.aspx");
             }
         }
 
@@ -264,7 +196,7 @@ namespace FinalProject
             PagedDataSource pagedData = new PagedDataSource();
             pagedData.DataSource = Classes.Student.LoadStudents(null, selectCourseID);
             pagedData.AllowPaging = true;
-            pagedData.PageSize = 2;
+            pagedData.PageSize = 5;
             pagedData.CurrentPageIndex = PageNumberStudents;
             int PageNumber = PageNumberStudents + 1;
             lblPageNumbersStudents.Text = PageNumber.ToString();
@@ -283,12 +215,15 @@ namespace FinalProject
             conditions.Add(string.IsNullOrEmpty(tbSearchFilters.Text) ? "" : tbSearchFilters.Text);
             conditions.Add(string.IsNullOrEmpty(tbDataInicioFilters.Text) ? "" : tbDataInicioFilters.Text);
             conditions.Add(string.IsNullOrEmpty(tbDataFimFilters.Text) ? "" : tbDataFimFilters.Text);
-            //conditions.Add(ddlAreaCursoFilters.SelectedValue == "0" ? "" : ddlAreaCursoFilters.SelectedValue);
-            conditions.Add(ddlTipoCursoFilters.SelectedValue == "0" ? "" : ddlTipoCursoFilters.SelectedValue);
             string order = ddlOrderFilters.SelectedValue == "0" ? null : ddlOrderFilters.SelectedValue;
 
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            string classGroupsJson = ClassGroup.LoadClassGroups(conditions, order);
+
+            List<ClassGroup> classGroups = serializer.Deserialize<List<ClassGroup>>(classGroupsJson);
+
             PagedDataSource pagedData = new PagedDataSource();
-            pagedData.DataSource = Classes.ClassGroup.LoadClassGroups(conditions, order);
+            pagedData.DataSource = classGroups;
             pagedData.AllowPaging = true;
             pagedData.PageSize = 6;
             pagedData.CurrentPageIndex = PageNumberClassGroups;
@@ -306,7 +241,7 @@ namespace FinalProject
         /// Função de BindData dos Módulos consoante o Curso
         /// </summary>
         /// <param name="selectCourseID"></param>
-        private void BindDdlModules(string selectCourseID)
+        private void BindModules(string selectCourseID)
         {
             ddlTeacherForModules.Items.Clear();
 
@@ -322,7 +257,7 @@ namespace FinalProject
         /// Função para BindData da DDL Teachers consoante os módulos dados
         /// </summary>
         /// <param name="selectedModuleID"></param>
-        private void BindDdlTeacherForModules(string selectedModuleID)
+        private void BindTeacherForModules(string selectedModuleID)
         {
             SQLDSTeachersForModules.SelectCommand =
                 $"SELECT * FROM moduloFormador AS MT INNER JOIN utilizador AS U ON MT.codFormador=U.codUtilizador INNER JOIN utilizadorData AS UD ON U.codUtilizador=UD.codUtilizador INNER JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador=UDS.codUtilizador WHERE MT.codModulo={selectedModuleID}";
@@ -362,7 +297,7 @@ namespace FinalProject
         {
             string selectedCourseID = ddlCurso.SelectedValue;
             ddlModulesOfCourse.Items.Clear();
-            BindDdlModules(selectedCourseID);
+            BindModules(selectedCourseID);
             BindDataStudents(selectedCourseID);
 
             Course course = new Course();
@@ -370,7 +305,7 @@ namespace FinalProject
             List<Module> modules = course.Modules;
             Module firstModule = modules[0];
             int firstModuleID = firstModule.CodModulo;
-            BindDdlTeacherForModules(firstModuleID.ToString());
+            BindTeacherForModules(firstModuleID.ToString());
 
             CalculateExpectedEndDate();
             BuildStringNrTurma();
@@ -387,7 +322,7 @@ namespace FinalProject
             string selectedModuleID = ddlModulesOfCourse.SelectedValue;
             ddlTeacherForModules.Items.Clear();
 
-            BindDdlTeacherForModules(selectedModuleID);
+            BindTeacherForModules(selectedModuleID);
         }
 
         protected void chkBoxStudentForClassGroup_OnCheckedChanged(object sender, EventArgs e)
@@ -437,6 +372,7 @@ namespace FinalProject
                 ViewState["CheckboxStatesInsert"] = checkboxStates;
             }
         }
+
         private void UpdateSelectedCheckBoxesInsert()
         {
             Dictionary<int, bool> checkboxStates = (Dictionary<int, bool>)ViewState["CheckboxStatesInsert"];
@@ -463,7 +399,6 @@ namespace FinalProject
             if (ddlTeacherForModules.SelectedItem != null && ddlModulesOfCourse.SelectedItem != null)
             {
                 string moduleName = ddlModulesOfCourse.SelectedItem.Text;
-                string moduleID = ddlModulesOfCourse.SelectedValue;
                 string teacherName = ddlTeacherForModules.SelectedItem.Text;
 
                 string combinedName = moduleName + " | " + teacherName;
@@ -479,7 +414,7 @@ namespace FinalProject
                     // Select the next module
                     ddlModulesOfCourse.SelectedIndex = nextModuleIndex;
                     // Bind the teachers for the next module
-                    BindDdlTeacherForModules(ddlModulesOfCourse.SelectedValue);
+                    BindTeacherForModules(ddlModulesOfCourse.SelectedValue);
                 }
                 else
                 {
@@ -492,7 +427,6 @@ namespace FinalProject
             {
                 lbl_message.Text = "Não pode adicionar módulos sem o respetivo formador!";
             }
-
 
         }
 
@@ -594,9 +528,10 @@ namespace FinalProject
             btnBack.Visible = false;
             btnInsertClassMain.Visible = true;
             filtermenu.Visible = true;
-            detailClassesDiv.Visible = false;
 
             CleanTextBoxes();
+
+            Response.Redirect("ManageClasses.aspx");
         }
 
         private void CleanTextBoxes()
@@ -607,19 +542,6 @@ namespace FinalProject
 
             listBoxStudents.Items.Clear();
             listBoxTeachersForModules.Items.Clear();
-
-            BindDdlModules("1");
-            BindDataStudents("1");
-
-            //First Module of First Course
-            Course course = new Course();
-            course = Course.CompleteCourse(1);
-            List<Module> modules = course.Modules;
-            Module firstModule = modules[0];
-            int firstModuleID = firstModule.CodModulo;
-
-            //Bind Teacher of First Module of First Course
-            BindDdlTeacherForModules(firstModuleID.ToString());
         }
 
         /// <summary>
@@ -646,73 +568,82 @@ namespace FinalProject
 
         protected void btnInsertClass_OnClick(object sender, EventArgs e)
         {
-            if (listBoxStudents.Items.Count > 0 && listBoxTeachersForModules.Items.Count > 0)
+            int totalModulesCount = Course.GetTotalModulesCountForCourse(Convert.ToInt32(ddlCurso.SelectedValue)); // Replace courseId with the ID of the course
+            int addedModulesCount = ddlModulesOfCourse.Items.Count;
+
+            if (listBoxStudents.Items.Count >= minStudent && addedModulesCount == totalModulesCount)
             {
-                if (Convert.ToDateTime(tbDataInicio.Text) > DateTime.Now)
+                //if (Convert.ToDateTime(tbDataInicio.Text) > DateTime.Now || Convert.ToDateTime(tbDataInicio.Text).DayOfWeek == DayOfWeek.Sunday || Convert.ToDateTime(tbDataInicio.Text).DayOfWeek == DayOfWeek.Saturday)
+                //{
+                ClassGroup classGroup = new ClassGroup();
+                classGroup.CodCurso = Convert.ToInt32(ddlCurso.SelectedValue);
+                classGroup.NomeTurma = BuildStringNrTurma();
+                classGroup.CodRegime = Convert.ToInt32(ddlRegime.SelectedValue);
+                classGroup.CodHorarioTurma = Convert.ToInt32(ddlHorarioTurma.SelectedValue);
+                classGroup.DataInicio = Convert.ToDateTime(tbDataInicio.Text);
+                classGroup.DataFim = Convert.ToDateTime(lblDataFim.Text);
+
+                classGroup.Students = new List<Student>();
+                classGroup.Teachers = new List<Teacher>();
+                classGroup.Modules = new List<Module>();
+
+                foreach (ListItem studItem in listBoxStudents.Items)
                 {
-                    ClassGroup classGroup = new ClassGroup();
-                    classGroup.CodCurso = Convert.ToInt32(ddlCurso.SelectedValue);
-                    classGroup.NomeTurma = BuildStringNrTurma();
-                    classGroup.CodRegime = Convert.ToInt32(ddlRegime.SelectedValue);
-                    classGroup.CodHorarioTurma = Convert.ToInt32(ddlHorarioTurma.SelectedValue);
-                    classGroup.DataInicio = Convert.ToDateTime(tbDataInicio.Text);
-                    classGroup.DataFim = Convert.ToDateTime(lblDataFim.Text);
+                    Student student = new Student();
+                    student.CodFormando = Convert.ToInt32(studItem.Value);
+                    student.Nome = studItem.Text;
+                    student.CodInscricao =
+                        Classes.ClassGroup.GetCodInscricaoByCodUtilizador(student.CodFormando, classGroup.CodCurso, null);
 
-                    classGroup.Students = new List<Student>();
-                    classGroup.Teachers = new List<Teacher>();
-                    classGroup.Modules = new List<Module>();
-
-                    foreach (ListItem studItem in listBoxStudents.Items)
-                    {
-                        Student student = new Student();
-                        student.CodFormando = Convert.ToInt32(studItem.Value);
-                        student.Nome = studItem.Text;
-                        student.CodInscricao =
-                            Classes.ClassGroup.GetCodInscricaoByCodUtilizador(student.CodFormando, classGroup.CodCurso, null);
-
-                        classGroup.Students.Add(student);
-                    }
-
-                    foreach (ListItem item in listBoxTeachersForModules.Items)
-                    {
-                        string[] parts = item.Value.Split('|');
-                        int moduleId = Convert.ToInt32(parts[0]);
-                        int teacherId = Convert.ToInt32(parts[1]);
-
-                        Teacher teacher = classGroup.Teachers.FirstOrDefault(t => t.CodFormador == teacherId);
-                        if (teacher == null)
-                        {
-                            teacher = new Teacher();
-                            teacher.CodFormador = teacherId;
-                            classGroup.Teachers.Add(teacher);
-                        }
-
-                        Module module = new Module();
-                        module.CodModulo = moduleId;
-                        classGroup.Modules.Add(module);
-                    }
-
-                    int AnswClassGroup = Classes.ClassGroup.InsertClassGroup(classGroup);
-
-                    if (AnswClassGroup == 1)
-                    {
-                        lbl_message.Visible = true;
-                        lbl_message.CssClass = "alert alert-primary text-white text-center";
-                        lbl_message.Text = "Turma atualizado com sucesso";
-                        lbl_message.Enabled = true;
-                    }
-                    else
-                    {
-
-                    }
+                    classGroup.Students.Add(student);
                 }
+
+                foreach (ListItem item in listBoxTeachersForModules.Items)
+                {
+                    string[] parts = item.Value.Split('|');
+                    int moduleId = Convert.ToInt32(parts[0]);
+                    int teacherId = Convert.ToInt32(parts[1]);
+
+                    Teacher teacher = classGroup.Teachers.FirstOrDefault(t => t.CodFormador == teacherId);
+                    if (teacher == null)
+                    {
+                        teacher = new Teacher();
+                        teacher.CodFormador = teacherId;
+                        classGroup.Teachers.Add(teacher);
+                    }
+
+                    Module module = new Module();
+                    module.CodModulo = moduleId;
+                    classGroup.Modules.Add(module);
+                }
+
+                int AnswClassGroup = Classes.ClassGroup.InsertClassGroup(classGroup);
+
+                if (AnswClassGroup == 1)
+                {
+                    lblMessageInsert.Visible = true;
+                    lblMessageInsert.CssClass = "alert alert-primary text-white text-center";
+                    lblMessageInsert.Text = "Turma inserida com sucesso";
+                    timerMessageInsert.Enabled = true;
+                }
+                else
+                {
+
+                }
+            }
+            else
+            {
+                lblMessageInsert.Visible = true;
+                lblMessageInsert.CssClass = "alert alert-primary text-white text-center";
+                lblMessageInsert.Text = "Data de início deve ser superior ao dia de hoje!";
+                timerMessageInsert.Enabled = true;
+                //}
             }
         }
 
         protected void ddlRegime_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             BuildStringNrTurma();
-
         }
 
 
@@ -760,12 +691,22 @@ namespace FinalProject
         private string BuildStringNrTurma()
         {
             string cursoValue = Course.GetCourseTypeNameFromDDL(ddlCurso.SelectedValue);
+            string selectedItemText = ddlCurso.SelectedItem.Text;
+            string[] words = selectedItemText.Split(' ');
+            string initials = "";
+            foreach (string word in words)
+            {
+                if (!string.IsNullOrEmpty(word))
+                {
+                    initials += word[0];
+                }
+            }
             string regimeValue = ddlRegime.SelectedItem.Text.Replace("-", "").Substring(0, 2).ToUpper();
             string horarioValue = ddlHorarioTurma.SelectedValue == "1" ? "L" :
                 ddlHorarioTurma.SelectedValue == "2" ? "PL" : "";
             string turmaNumber = ClassGroup.GetClassGroupNumber(ddlCurso.SelectedValue, ddlRegime.SelectedValue, ddlHorarioTurma.SelectedValue);
 
-            string AnswTurmaNumber = $"{cursoValue}.{regimeValue}.{horarioValue}.{turmaNumber}";
+            string AnswTurmaNumber = $"{cursoValue}.{regimeValue}.{horarioValue}.{initials.ToUpper()}.{turmaNumber}";
 
             lblTurma.Text = AnswTurmaNumber;
 
@@ -792,7 +733,6 @@ namespace FinalProject
         protected void btnClearFilters_OnClick(object sender, EventArgs e)
         {
             tbSearchFilters.Text = "";
-            ddlTipoCursoFilters.SelectedIndex = 0;
             tbDataInicioFilters.Text = "";
             tbDataFimFilters.Text = "";
             ddlOrderFilters.SelectedIndex = 0;
@@ -803,7 +743,13 @@ namespace FinalProject
 
         }
 
+        protected void timerMessageInsert_OnTick(object sender, EventArgs e)
+        {
+            lblMessageInsert.Visible = false;
+            timerMessageInsert.Enabled = false;
 
+            Response.Redirect("ManageClasses.aspx");
+        }
 
     }
 

@@ -1,8 +1,10 @@
 ﻿using FinalProject.Classes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Script.Serialization;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -70,7 +72,7 @@ namespace FinalProject
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
-                            document.getElementById('manageschedules').classList.remove('hidden');
+                            
                             ";
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
@@ -78,8 +80,14 @@ namespace FinalProject
 
                 if (!IsPostBack)
                 {
+                    InitializeViewState();
+
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    string coursesViewState = serializer.Serialize(Classes.Course.LoadCourses(null, "codCurso"));
+                    ViewState["coursesViewState"] = coursesViewState;
+
                     BindDataStudents();
-                    BindDataCourses();
+
                     BindDataUsers();
                 }
 
@@ -87,14 +95,6 @@ namespace FinalProject
         }
 
         //Funções de ItemDataBound dos Repeaters
-        protected void rptUserForStudents_OnItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                CheckBox chkBoxUser = (CheckBox)e.Item.FindControl("chkBoxUser");
-                chkBoxUser.CheckedChanged += chkBoxUser_OnCheckedChanged;
-            }
-        }
 
         //Funções de ItemCommand dos Repeaters
         protected void rptListStudents_OnItemCommand(object source, RepeaterCommandEventArgs e)
@@ -163,6 +163,14 @@ namespace FinalProject
 
                 hdnSourceDiv.Value = "listStudentsDiv";
 
+                (Student student, User user) = Classes.Student.LoadStudent(Convert.ToInt32(e.CommandArgument));
+
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                string studentViewState = serializer.Serialize(student);
+                ViewState["SelectedStudent"] = studentViewState;
+
+                BindDataCourses();
+
                 Session["CodUtilizadorClicked"] = e.CommandArgument.ToString();
             }
 
@@ -173,11 +181,11 @@ namespace FinalProject
                 if (AnswStudentDeleted == 1)
                 {
                     BindDataStudents();
-                    lblMessageRegistration.Text = "Formando apagado com sucesso!";
+                    lblMessage.Text = "Formando apagado com sucesso!";
                 }
                 else
                 {
-                    lblMessageRegistration.Text = "Formando não pode ser eliminado por fazer parte de uma turma a decorrer!";
+                    lblMessage.Text = "Formando não pode ser eliminado por fazer parte de uma turma a decorrer!";
                 }
             }
 
@@ -185,7 +193,7 @@ namespace FinalProject
 
         protected void rptUserForStudents_OnItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            if (e.CommandName == "EditCoursesStudents")
+            if (e.CommandName == "EditCoursesUsers")
             {
                 listUsersDiv.Visible = false;
                 CourseRegisterForStudent.Visible = true;
@@ -198,7 +206,18 @@ namespace FinalProject
 
                 hdnSourceDiv.Value = "listUsersDiv";
 
+                User user = Classes.User.LoadUser(null, e.CommandArgument.ToString());
+
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                string studentViewState = serializer.Serialize(user);
+                ViewState["SelectedStudent"] = studentViewState;
+
+                BindDataCourses();
+
+                Session["FromUser"] = "true";
+
                 Session["CodUtilizadorClicked"] = e.CommandArgument.ToString();
+
             }
         }
 
@@ -206,8 +225,14 @@ namespace FinalProject
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                CheckBox chkBoxMod = (CheckBox)e.Item.FindControl("chckBox");
-                chkBoxMod.CheckedChanged += chkBoxMod_OnCheckedChanged;
+                CheckBox chckBoxCourses = (CheckBox)e.Item.FindControl("chckBoxCourses");
+
+                AsyncPostBackTrigger trigger = new AsyncPostBackTrigger();
+                trigger.ControlID = chckBoxCourses.UniqueID;
+                trigger.EventName = "CheckedChanged";
+
+                updatePanelListStudent.Triggers.Add(trigger);
+                chckBoxCourses.CheckedChanged += chckBoxCourses_CheckedChanged;
             }
         }
 
@@ -290,7 +315,7 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), key: "ShowPageElements", script, true);
 
-                    lblMessageRegistration.Text = "Formando registado com sucesso!";
+                    lblMessage.Text = "Formando registado com sucesso!";
 
                     CleanTextBoxes(this);
                 }
@@ -304,7 +329,7 @@ namespace FinalProject
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                    lblMessageRegistration.Text = "Formando já registado!";
+                    lblMessage.Text = "Formando já registado!";
                     CleanTextBoxes(this);
 
                 }
@@ -325,7 +350,7 @@ namespace FinalProject
 
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowPageElements", script, true);
 
-                lblMessageRegistration.Text = "Introduza um e-mail válido!";
+                lblMessage.Text = "Introduza um e-mail válido!";
             }
 
         }
@@ -337,36 +362,64 @@ namespace FinalProject
         /// <param name="e"></param>
         protected void btnEnroll_OnClick(object sender, EventArgs e)
         {
-            List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
+            string studentViewState = ViewState["SelectedStudent"] as String;
+            List<int> coursesSelected = new List<int>();
 
-            foreach (int selectedItem in selectedItems)
+            if (Session["CodUtilizadorClicked"] != null)
             {
-                if (selectedItems != null && selectedItems.Count > 0)
+                if (!string.IsNullOrEmpty(studentViewState))
                 {
-                    if (Session["CodUtilizadorClicked"] != null)
+                    JavaScriptSerializer deSerializer = new JavaScriptSerializer();
+                    if (Session["FromUser"] != null && Session["FromUser"].ToString() == "true")
                     {
-                        Enrollment enrollment = new Enrollment();
+                        User selectedUser = deSerializer.Deserialize<User>(studentViewState);
+                        Session["FromUser"] = "false";
+                    }
+                    else
+                    {
+                        Student selectedStudent = deSerializer.Deserialize<Student>(studentViewState);
+                    }
+                    List<int> selectedItems = ViewState["SelectedItemsEdit"] as List<int>;
 
-                        enrollment.CodUtilizador = Convert.ToInt32(Session["CodUtilizadorClicked"]);
-                        enrollment.CodSituacao = 1;
-                        enrollment.CodCurso = selectedItem;
+                    if (selectedItems != null)
+                    {
+                        Classes.Enrollment.DeleteEnrollmentStudent(Convert.ToInt32(Session["CodUtilizadorClicked"]));
 
-                        (int AnswAnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollmentStudent(enrollment);
-
-                        if (AnswEnrollmentCode == -1 && AnswAnswEnrollmentRegister == -1)
+                        foreach (int selected in selectedItems)
                         {
-                            lblMessageRegistration.Text = "Utilizador já registado nesse curso.";
-                        }
-                        else
-                        {
-                            Classes.Student.InsertStudent(Convert.ToInt32(Session["CodUtilizadorClicked"]), AnswEnrollmentCode);
-                            lblMessageRegistration.Text = "Utilizador registado com sucesso no curso!";
+                            Enrollment enrollment = new Enrollment();
+                            enrollment.CodCurso = selected;
+                            enrollment.CodUtilizador = Convert.ToInt32(Session["CodUtilizadorClicked"]);
+                            enrollment.CodSituacao = 1;
+
+                            (int AnswEnrollmentRegister, int AnswEnrollmentCode) = Classes.Enrollment.InsertEnrollmentStudent(enrollment);
+
+                            if (AnswEnrollmentCode == -1 && AnswEnrollmentRegister == -1)
+                            {
+                                lblMessage.Visible = true;
+                                lblMessage.CssClass = "alert alert-primary text-white text-center";
+                                lblMessage.Text = "Falha ao atualizar inscrições!";
+                                timerMessage.Enabled = true;
+                            }
+                            else
+                            {
+                                //Classes.Student.InsertStudent(Convert.ToInt32(Session["CodUtilizadorClicked"]), AnswEnrollmentCode);
+                                lblMessage.Visible = true;
+                                lblMessage.CssClass = "alert alert-primary text-white text-center";
+                                lblMessage.Text = "Inscrições atualizadas com sucesso!";
+                                timerMessage.Enabled = true;
+
+                            }
                         }
                     }
-
-
                 }
-
+            }
+            else
+            {
+                lblMessage.Visible = true;
+                lblMessage.CssClass = "alert alert-primary text-white text-center";
+                lblMessage.Text = "Tem de adicionar pelo menos um curso!";
+                timerMessage.Enabled = true;
             }
         }
 
@@ -391,28 +444,118 @@ namespace FinalProject
 
         private void BindDataCourses()
         {
-            PagedDataSource pagedData = new PagedDataSource();
-            pagedData.DataSource = Classes.Course.LoadCourses();
-            pagedData.AllowPaging = true;
-            pagedData.PageSize = 5;
-            pagedData.CurrentPageIndex = PageNumberCourses;
-            int PageNumber = PageNumberCourses + 1;
-            lblPageNumberListCoursesForStudents.Text = PageNumber.ToString();
+            string courses = ViewState["coursesViewState"] as string;
 
-            rptListCoursesForStudents.DataSource = pagedData;
-            rptListCoursesForStudents.DataBind();
+            if (!string.IsNullOrEmpty(courses))
+            {
+                // Deserialize course information
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                List<Course> allCourses = serializer.Deserialize<List<Course>>(courses);
 
-            btnPreviousListCoursesForStudents.Enabled = !pagedData.IsFirstPage;
-            btnNextListCoursesForStudents.Enabled = !pagedData.IsLastPage;
+                string studentViewState = ViewState["SelectedStudent"] as string;
+                string courseKey = "IsFirstEnteringEdit_" + studentViewState; // Append course code to the ViewState key
+
+                bool isFirstEnteringEdit = ViewState[courseKey] == null || (bool)ViewState[courseKey];
+
+                if (isFirstEnteringEdit) // Check if it's the first time the page is being loaded
+                {
+                    if (!string.IsNullOrEmpty(studentViewState))
+                    {
+                        JavaScriptSerializer deSerializer = new JavaScriptSerializer();
+                        Student selectedStudent = deSerializer.Deserialize<Student>(studentViewState);
+                        List<Course> selectedCourses = selectedStudent.Courses;
+
+                        // Update IsChecked property of each course based on whether it's selected or not
+                        Dictionary<int, bool> checkboxStatesEdit = new Dictionary<int, bool>();
+                        if (selectedCourses != null && selectedCourses.Any())
+                        {
+                            foreach (Course course in allCourses)
+                            {
+                                course.IsChecked = selectedCourses.Any(c => c.CodCurso == course.CodCurso);
+                                checkboxStatesEdit.Add(course.CodCurso, course.IsChecked);
+                            }
+                            ViewState["CheckboxStatesEdit"] = checkboxStatesEdit;
+
+                            // Update SelectedItemsEdit and SelectedItemsNamesEdit
+                            List<int> selectedItems = new List<int>();
+                            List<string> itemsNames = new List<string>();
+
+                            foreach (Course course in selectedCourses)
+                            {
+                                selectedItems.Add(course.CodCurso);
+                                itemsNames.Add(course.Nome);
+                            }
+
+                            ViewState["SelectedItemsEdit"] = selectedItems;
+                            ViewState["SelectedItemsNamesEdit"] = itemsNames;
+
+                            ViewState[courseKey] = false;
+                        }
+
+                    }
+                }
+                else // Not the first time entering, retrieve course information from ViewState
+                {
+                    if (!string.IsNullOrEmpty(studentViewState))
+                    {
+                        Dictionary<int, bool> checkboxStatesEdit = ViewState["CheckboxStatesEdit"] as Dictionary<int, bool>;
+                        List<int> selectedItems = ViewState["SelectedItemsEdit"] as List<int>;
+                        List<string> itemsNames = ViewState["SelectedItemsNamesEdit"] as List<string>;
+
+                        foreach (Course course in allCourses)
+                        {
+                            if (checkboxStatesEdit.ContainsKey(course.CodCurso))
+                            {
+                                course.IsChecked = checkboxStatesEdit[course.CodCurso];
+
+                                // If the course is checked and not already in the selected items list, add it
+                                if (course.IsChecked && !selectedItems.Contains(course.CodCurso))
+                                {
+                                    selectedItems.Add(course.CodCurso);
+                                    itemsNames.Add(course.Nome);
+                                }
+                                // If the course is unchecked and already in the selected items list, remove it
+                                else if (!course.IsChecked && selectedItems.Contains(course.CodCurso))
+                                {
+                                    int indexToRemove = selectedItems.IndexOf(course.CodCurso);
+                                    selectedItems.RemoveAt(indexToRemove);
+                                    itemsNames.RemoveAt(indexToRemove);
+                                }
+                            }
+                        }
+                        ViewState["SelectedItemsEdit"] = selectedItems;
+                        ViewState["SelectedItemsNamesEdit"] = itemsNames;
+
+                        UpdateSelectedLabels();
+                    }
+                }
+
+                PagedDataSource pagedData = new PagedDataSource();
+
+                pagedData.DataSource = allCourses;
+                pagedData.AllowPaging = true;
+                pagedData.PageSize = 5;
+                pagedData.CurrentPageIndex = PageNumberCourses;
+                int PageNumber = PageNumberCourses + 1;
+                lblPageNumberListCoursesForStudents.Text = PageNumber.ToString();
+
+                rptListCoursesForStudents.DataSource = pagedData;
+                rptListCoursesForStudents.DataBind();
+
+                UpdateSelectedLabels();
+
+                btnPreviousListCoursesForStudents.Enabled = !pagedData.IsFirstPage;
+                btnNextListCoursesForStudents.Enabled = !pagedData.IsLastPage;
+            }
         }
 
         private void BindDataUsers()
         {
             string condition =
-                " LEFT JOIN utilizadorPerfil AS UP ON U.codUtilizador=UP.codUtilizador LEFT JOIN inscricao AS I ON U.codUtilizador=I.codUtilizador WHERE UP.codPerfil != 2 AND U.ativo = 1 AND U.codUtilizador NOT IN (SELECT codFormando FROM formando)";
+                "WITH UserProfiles AS (SELECT U.codUtilizador, UP.codPerfil, ROW_NUMBER() OVER (PARTITION BY U.codUtilizador ORDER BY UP.codPerfil) AS RowNumber FROM utilizador AS U LEFT JOIN utilizadorPerfil AS UP ON U.codUtilizador = UP.codUtilizador WHERE UP.codPerfil != 2 AND U.ativo = 1) SELECT DISTINCT U.*, UD.*, UDS.*, UP.* FROM UserProfiles AS UP LEFT JOIN utilizador AS U ON UP.codUtilizador = U.codUtilizador LEFT JOIN utilizadorData AS UD ON U.codUtilizador = UD.codUtilizador LEFT JOIN utilizadorDataSecondary AS UDS ON UD.codUtilizador = UDS.codUtilizador WHERE UP.RowNumber = 1 AND U.codUtilizador NOT IN (SELECT codFormando FROM formando);";
 
             PagedDataSource pagedData = new PagedDataSource();
-            pagedData.DataSource = Classes.User.LoadUsers(condition);
+            pagedData.DataSource = Classes.User.LoadUsers(null, condition);
             pagedData.AllowPaging = true;
             pagedData.PageSize = 5;
             pagedData.CurrentPageIndex = PageNumberUsers;
@@ -427,68 +570,69 @@ namespace FinalProject
         }
 
         //Funções para as CheckBoxes
-        protected void chkBoxMod_OnCheckedChanged(object sender, EventArgs e)
+        protected void chckBoxCourses_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox checkBox = (CheckBox)sender;
             RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
-            HiddenField hdnCourseID = (HiddenField)item.FindControl("hdnCourseID");
-            HiddenField hdnCourseName = (HiddenField)item.FindControl("hdnCourseName");
-            Label lblSelected = (Label)item.FindControl("lbl_order");
+            HiddenField hdnEditCourseModuleID = (HiddenField)item.FindControl("hdnCourseID");
+            HiddenField hdnEditCourseModuleName = (HiddenField)item.FindControl("hdnCourseName");
+            Label lblOrderEditCoursesCourse = (Label)item.FindControl("lblOrder");
 
-            if (hdnCourseID != null && hdnCourseName != null && lblSelected != null)
+            if (hdnEditCourseModuleID != null && hdnEditCourseModuleName != null && lblOrderEditCoursesCourse != null)
             {
+                int courseID = Convert.ToInt32(hdnEditCourseModuleID.Value);
+                Dictionary<int, bool> checkboxStates = (Dictionary<int, bool>)ViewState["CheckboxStatesEdit"];
+
                 if (checkBox.Checked)
                 {
-                    lblSelected.Text = "Seleccionado";
-                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"] ?? new List<int>();
-                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"] ?? new List<string>();
-                    selectedItems.Add(Convert.ToInt32(hdnCourseID.Value));
-                    itemsNames.Add(hdnCourseName.Value);
-                    ViewState["SelectedItems"] = selectedItems;
-                    ViewState["SelectedItemsNames"] = itemsNames;
+                    lblOrderEditCoursesCourse.Text = "Seleccionado";
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItemsEdit"];
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNamesEdit"];
+                    selectedItems.Add(Convert.ToInt32(hdnEditCourseModuleID.Value));
+                    itemsNames.Add(hdnEditCourseModuleName.Value);
+                    checkboxStates[courseID] = true;
+
+                    ViewState["SelectedItemsEdit"] = selectedItems;
+                    ViewState["SelectedItemsNamesEdit"] = itemsNames;
                 }
                 else
                 {
-                    lblSelected.Text = "Selecione este módulo";
-                    List<int> selectedItems = (List<int>)ViewState["SelectedItems"];
-                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNames"];
+                    lblOrderEditCoursesCourse.Text = "Selecione este módulo";
+                    List<int> selectedItems = (List<int>)ViewState["SelectedItemsEdit"];
+                    List<string> itemsNames = (List<string>)ViewState["SelectedItemsNamesEdit"];
                     if (selectedItems != null)
                     {
-                        selectedItems.Remove(Convert.ToInt32(hdnCourseID.Value));
-                        itemsNames.Remove(hdnCourseName.Value);
-                        ViewState["SelectedItems"] = selectedItems;
-                        ViewState["SelectedItemsNames"] = itemsNames;
+                        selectedItems.Remove(Convert.ToInt32(hdnEditCourseModuleID.Value));
+                        itemsNames.Remove(hdnEditCourseModuleName.Value);
+                        checkboxStates[courseID] = false;
+
+                        ViewState["SelectedItemsEdit"] = selectedItems;
+                        ViewState["SelectedItemsNamesEdit"] = itemsNames;
                     }
                 }
+
+                ViewState["CheckboxStatesEdit"] = checkboxStates;
+
+                UpdateSelectedLabels();
+
             }
         }
 
-        protected void chkBoxUser_OnCheckedChanged(object sender, EventArgs e)
+        private void UpdateSelectedLabels()
         {
-            CheckBox checkBox = (CheckBox)sender;
-            RepeaterItem item = (RepeaterItem)checkBox.NamingContainer;
-            HiddenField hdnUserID = (HiddenField)item.FindControl("hdnUserID");
-
-            if (hdnUserID != null)
+            // Loop through the Repeater items to find selected items in rptEditCoursesCourse
+            foreach (RepeaterItem item in rptListCoursesForStudents.Items)
             {
-                if (checkBox.Checked)
+                CheckBox chkBoxEditCoursesCourse = (CheckBox)item.FindControl("chckBoxCourses");
+                HiddenField hdnEditCourseModuleID = (HiddenField)item.FindControl("hdnCourseID");
+                Label lblOrderEditCoursesCourse = (Label)item.FindControl("lblOrder");
+
+                if (chkBoxEditCoursesCourse != null && hdnEditCourseModuleID != null && lblOrderEditCoursesCourse != null)
                 {
-                    List<int> selectedItems = (List<int>)ViewState["SelectedUsers"] ?? new List<int>();
-                    selectedItems.Add(Convert.ToInt32(hdnUserID.Value));
-                    ViewState["SelectedUsers"] = selectedItems;
-                }
-                else
-                {
-                    List<int> selectedItems = (List<int>)ViewState["SelectedUsers"];
-                    if (selectedItems != null)
-                    {
-                        selectedItems.Remove(Convert.ToInt32(hdnUserID.Value));
-                        ViewState["SelectedUsers"] = selectedItems;
-                    }
+                    lblOrderEditCoursesCourse.Text = chkBoxEditCoursesCourse.Checked ? "Seleccionado" : "Selecione este módulo";
                 }
             }
         }
-
 
         //Funções de Paginação
         private int PageNumberCourses
@@ -545,12 +689,16 @@ namespace FinalProject
         {
             PageNumberCourses -= 1;
             BindDataCourses();
+
+            UpdateSelectedLabels();
         }
 
         protected void btnNextListCoursesForStudents_Click(object sender, EventArgs e)
         {
             PageNumberCourses += 1;
             BindDataCourses();
+
+            UpdateSelectedLabels();
         }
 
         protected void btnPreviousUsersForStudents_OnClick(object sender, EventArgs e)
@@ -588,6 +736,14 @@ namespace FinalProject
         {
             lblMessageInsert.Visible = false;
             timerMessageInsert.Enabled = false;
+        }
+
+
+        protected void timerMessage_OnTick(object sender, EventArgs e)
+        {
+            lblMessage.Visible = false;
+            timerMessage.Enabled = false;
+            Response.Redirect("ManageStudents.aspx");
         }
 
         private void CleanTextBoxes(Control parent)
@@ -714,5 +870,26 @@ namespace FinalProject
             insertStudentsDiv.Visible = false;
             CourseRegisterForStudent.Visible = true;
         }
+
+
+        private void ClearSelectedItemsViewState()
+        {
+            ViewState["SelectedItemsEdit"] = null;
+            ViewState["SelectedItemsNamesEdit"] = null;
+            ViewState["CheckboxStatesEdit"] = null;
+        }
+
+        private void InitializeViewState()
+        {
+            if (ViewState["SelectedItemsEdit"] == null)
+                ViewState["SelectedItemsEdit"] = new List<int>();
+
+            if (ViewState["CheckboxStatesEdit"] == null)
+                ViewState["CheckboxStatesEdit"] = new Dictionary<int, bool>();
+
+            if (ViewState["SelectedItemsNamesEdit"] == null)
+                ViewState["SelectedItemsNamesEdit"] = new List<string>();
+        }
+
     }
 }

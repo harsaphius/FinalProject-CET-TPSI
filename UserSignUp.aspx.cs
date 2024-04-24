@@ -47,11 +47,30 @@ namespace FinalProject
                             {
                                 Session["ActivatedUser"] = "Conta ativada com sucesso!";
 
-                                lbl_message.CssClass = "alert alert-primary text-white text-center";
+                                List<int> UserProfile =
+                                    Classes.User.DetermineUserProfile(Convert.ToInt32(AnswUserCode));
 
-                                Classes.EmailControl.SendEmailActivation(profile.Email, Username);
+                                foreach (int profiles in UserProfile)
+                                {
+                                    if (profiles == 2 || profiles != 3 || profiles != 4)
+                                    {
+                                        Session["ActivatedUser"] = "Conta ativada com sucesso!";
+                                        EmailControl.SendEmailActivation(tb_email.Text, Username);
 
-                                lblUserFromGoogle.Text = $"A sua conta ainda não se encontra ativa! Procedemos ao reenvio do e-mail de ativação!";
+                                        lbl_message.CssClass = "alert alert-primary text-white text-center";
+                                        lbl_message.Text =
+                                            $"A sua conta ainda não se encontra ativa! Procedemos ao reenvio do e-mail de ativação!!";
+                                    }
+
+                                    if (profiles == 3 || profiles == 4)
+                                    {
+                                        string email = Classes.User.GetEmailFromDatabase(AnswUserCode);
+                                        EmailControl.SendEmailWaitingValidation(email, Username);
+
+                                        lbl_message.CssClass = "alert alert-primary text-white text-center";
+                                        lbl_message.Text = $"A sua conta ainda aguarda validação!";
+                                    }
+                                }
                             }
                             else if (AnswUserExists == -1 && AnswAccountActive == -1)
                             {

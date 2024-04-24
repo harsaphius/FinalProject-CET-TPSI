@@ -38,7 +38,7 @@
                             <div class="nav-wrapper position-relative end-0">
                                 <ul class="nav nav-pills nav-fill p-1 bg-transparent">
                                     <li class="nav-item">
-                                        <asp:LinkButton class="btn btn-link pe-3 ps-0 mb-0 ms-auto" ID="lbtAvaliacoes" Visible="False" CausesValidation="False" runat="server">
+                                        <asp:LinkButton class="btn btn-link pe-3 ps-0 mb-0 ms-auto" ID="lbtAvaliacoes" Visible="False" CausesValidation="False" OnClick="lbtAvaliacoes_OnClick" runat="server">
                                     <i class="fas fa-grade"></i>
                                     <span class="ms-1">Avaliações</span>
                                         </asp:LinkButton>
@@ -135,7 +135,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-xl-4">
+                   <%-- <div class="col-12 col-xl-4">
                         <div class="card h-100">
                             <div class="card-header pb-0 p-3">
                                 <h6 class="mb-0">Conversations</h6>
@@ -176,7 +176,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div>--%>
                     <!-- Fim de Profile Div -->
 
 
@@ -467,7 +467,7 @@
                                     <label>Password Atual</label>
                                     <asp:RequiredFieldValidator ID="rfvpwa" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tbPwOld" ForeColor="#cc3a60"></asp:RequiredFieldValidator>
                                     <div class="mb-3">
-                                        <asp:TextBox ID="tbPwOld" CssClass="form-control" TextMode="Password" placeholder="Password Atual" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="tbPwOld"  CssClass="form-control" TextMode="Password" placeholder="Password Atual" runat="server"></asp:TextBox>
                                     </div>
                                     <label>Nova Password</label>
                                     <asp:RequiredFieldValidator ID="rfvpw" runat="server" ErrorMessage="Palavra-passe Obrigatória" Text="*" ControlToValidate="tbPwNew" ForeColor="#cc3a60"></asp:RequiredFieldValidator>

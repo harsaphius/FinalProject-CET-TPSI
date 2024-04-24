@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace FinalProject.Classes
 {
+    [Serializable]
     public class FileControl
     {
         public int FileID { get; set; }

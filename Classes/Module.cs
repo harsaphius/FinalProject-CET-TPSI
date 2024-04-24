@@ -22,6 +22,7 @@ namespace FinalProject.Classes
         public byte[] SVGBytes { get; set; }
         public bool IsChecked { get; set; }
 
+        public int Order { get; set; }
 
         /// <summary>
         /// Função para inserir um módulo novo
@@ -178,6 +179,46 @@ namespace FinalProject.Classes
                 }
 
                 informacao.IsChecked = CheckIfModuleIsInCourse(CodCurso, informacao.CodModulo);
+
+                Modules.Add(informacao);
+            }
+            myConn.Close();
+
+            return Modules;
+        }
+        public static List<Module> LoadModulesByClass(string codTurma, string codFormador)
+        {
+            List<Module> Modules = new List<Module>();
+
+            string query = @"SELECT M.* FROM modulo AS M INNER JOIN moduloFormadorTurma AS MT ON M.codModulos = MT.codModulo WHERE MT.codTurma = @CodTurma AND codFormador = @CodFormador";
+
+            SqlConnection myConn = new SqlConnection(ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString);
+            SqlCommand myCommand = new SqlCommand(query, myConn);
+            myCommand.Parameters.AddWithValue("@CodTurma", codTurma);
+            myCommand.Parameters.AddWithValue("@CodFormador", codFormador);
+            myConn.Open();
+
+            SqlDataReader dr = myCommand.ExecuteReader();
+
+            while (dr.Read())
+            {
+                Module informacao = new Module();
+                informacao.CodModulo = dr.GetInt32(0);
+                informacao.Nome = dr.GetString(1);
+                informacao.Duracao = dr.GetInt32(2);
+                informacao.UFCD = dr.GetString(3);
+                informacao.Descricao = dr.GetString(4);
+                informacao.Creditos = dr.GetDecimal(5);
+                if (!dr.IsDBNull(dr.GetOrdinal("svg")))
+                    informacao.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String((byte[])dr["svg"]);
+                else
+                {
+                    string relativeImagePath = "~/assets/img/small-logos/default.svg";
+                    string absoluteImagePath = HttpContext.Current.Server.MapPath(relativeImagePath);
+                    byte[] imageData = File.ReadAllBytes(absoluteImagePath);
+
+                    informacao.SVG = "data:image/svg+xml;base64," + Convert.ToBase64String(imageData);
+                }
 
                 Modules.Add(informacao);
             }

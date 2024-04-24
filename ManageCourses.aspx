@@ -23,7 +23,7 @@
                         <asp:UpdatePanel ID="updatePanelFilters" runat="server">
                             <ContentTemplate>
                                 <div class="row">
-                                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                                    <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
                                         <span>Designação:</span>
                                         <div class="input-group mb-4">
                                             <asp:LinkButton runat="server" ID="lbtnSearchFilters" class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></asp:LinkButton>
@@ -42,21 +42,6 @@
                                         <div class="dropdown">
                                             <asp:DropDownList ID="ddlTipoCursoFilters" AutoPostBack="False" class="dropdown-toggle btn bg-gradient-secundary" runat="server" DataSourceID="SQLDSTipo" DataTextField="nomeCurso" DataValueField="codTipoCurso" AppendDataBoundItems="True"></asp:DropDownList>
                                             <asp:SqlDataSource ID="SQLDSTipo" runat="server" ConnectionString="<%$ ConnectionStrings:projetofinalConnectionString %>" SelectCommand="SELECT codTipoCurso,CONCAT(nomeTipoCurto , ' - ' ,nomeTipoLongo) AS nomeCurso FROM tipoCurso"></asp:SqlDataSource>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-3 col-sm-3 mb-xl-0 mb-4">
-                                        <span>Data de Início: </span>
-                                        <div class="input-group mb-4">
-                                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                            <asp:TextBox runat="server" ID="tbDataInicioFilters" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-3 col-sm-3 mb-xl-0 mb-4">
-                                        <span>Data de Fim: </span>
-                                        <div class="input-group mb-4">
-                                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                                            <asp:TextBox runat="server" ID="tbDataFimFilters" class="form-control datepicker" placeholder="Please select date" TextMode="Date"></asp:TextBox>
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-4 col-md-4 col-sm-4 mb-xl-0 mb-0">
@@ -95,7 +80,7 @@
                                         <ContentTemplate>
                                             <div class="container row justify-content-center">
                                                 <asp:Label runat="server" ID="lblMessageListCourses" Style="display: flex; justify-content: center; width: 70%; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
-                                                <asp:Timer ID="timerMessageListCourses" runat="server" Interval="3000" OnTick="timerMessageListCourses_OnTick"></asp:Timer>
+                                                <asp:Timer ID="timerMessageListCourses" runat="server" Interval="3000" OnTick="timerMessageListCourses_OnTick" Enabled="false"></asp:Timer>
                                             </div>
                                             <!-- Listagem de Cursos -->
                                             <div class="card-header pb-0">
@@ -338,15 +323,16 @@
                                                                     </div>
                                                                     <div class="container row justify-content-center">
                                                                         <asp:Label runat="server" ID="lblMessageEdit" Style="display: flex; justify-content: center; width: 70%; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
-                                                                        <asp:Timer ID="timerMessageEdit" runat="server" Interval="3000" OnTick="timerMessageEdit_OnTick"></asp:Timer>
+                                                                        <asp:Timer ID="timerMessageEdit" runat="server" Interval="3000" OnTick="timerMessageEdit_OnTick" Enabled="false"></asp:Timer>
                                                                     </div>
 
                                                                 </div>
-                                                            </div>
 
-                                                            <div class="col-md-3">
-                                                                <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n12">
-                                                                    <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
+
+                                                                <div class="col-md-2">
+                                                                    <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n12">
+                                                                        <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -517,11 +503,11 @@
                                                     </div>
                                                     <div class="row px-4" style="padding: 10px;">
                                                         <asp:Label runat="server" ID="lblMessageInsert" Style="display: flex; align-content: center; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
-                                                        <asp:Timer ID="timerMessageInsert" runat="server" Interval="3000" OnTick="timerMessageInsert_OnTick"></asp:Timer>
+                                                        <asp:Timer ID="timerMessageInsert" runat="server" Interval="3000" OnTick="timerMessageInsert_OnTick" Enabled="false"></asp:Timer>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n12">
                                                         <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image: url('../assets/img/curved-images/curved6.jpg')"></div>
                                                     </div>

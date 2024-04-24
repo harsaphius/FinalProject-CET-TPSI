@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 
 namespace FinalProject.Classes
 {
+    [Serializable]
     public class Enrollment
     {
         public int CodInscricao { get; set; }
@@ -104,6 +105,63 @@ namespace FinalProject.Classes
             myCon.Close(); //Fechar a conexão
 
             return (AnswEnrollmentRegister, AnswEnrollmentCode);
+        }
+
+        public static void DeleteEnrollmentStudent(int CodUtilizador)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("DeleteEnrollment", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@CodUtilizador", CodUtilizador);
+                    command.Parameters.AddWithValue("@IsTeacher", 0);
+                    command.Parameters.AddWithValue("@CodModulo", DBNull.Value);
+
+                    try
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        throw new Exception("Error deleting enrollments: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        public static void DeleteEnrollmentTeacher(int CodUtilizador)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["projetofinalConnectionString"].ConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("DeleteEnrollment", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Add parameter
+                    command.Parameters.AddWithValue("@CodUtilizador", CodUtilizador);
+                    command.Parameters.AddWithValue("@IsTeacher", 1);
+                    command.Parameters.AddWithValue("@CodCurso", DBNull.Value);
+
+
+                    try
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        // Handle SQL exception
+                        throw new Exception("Error deleting enrollments: " + ex.Message);
+                    }
+                }
+            }
         }
 
     }

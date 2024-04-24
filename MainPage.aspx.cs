@@ -70,7 +70,7 @@ namespace FinalProject
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
-                            document.getElementById('manageschedules').classList.remove('hidden');
+                            
                             ";
 
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);

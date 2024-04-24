@@ -68,7 +68,7 @@ namespace FinalProject
                             document.getElementById('manageclassrooms').classList.remove('hidden');
                             document.getElementById('manageusers').classList.remove('hidden');
                             document.getElementById('statistics').classList.remove('hidden');
-                            document.getElementById('manageschedules').classList.remove('hidden');
+                            
                             ";
 
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "ShowAdminElements", script, true);
@@ -581,8 +581,10 @@ namespace FinalProject
 
         protected void timerMessageInsert_OnTick(object sender, EventArgs e)
         {
-            lblMessageEdit.Visible = false;
-            timerMessageEdit.Enabled = false;
+            lblMessageInsert.Visible = false;
+            timerMessageInsert.Enabled = false;
+
+            Response.Redirect("ManageModules.aspx");
         }
 
         protected void timerMessageEdit_OnTick(object sender, EventArgs e)

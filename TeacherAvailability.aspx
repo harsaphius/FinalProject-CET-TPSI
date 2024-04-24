@@ -24,8 +24,10 @@
         <asp:Button runat="server" CssClass="btn btn-primary" Text="Limpar Disponibilidades" Visible="True" CausesValidation="False" ID="btnCleanAll" />
     </div>
     <script>
-        var CodUtilizador = '<%= Session["CodUtilizador"] %>';
+        var CodUtilizador = '<%= Session["CodFormador"] %>';
+
         document.addEventListener('DOMContentLoaded', function () {
+            console.log("DOMContentLoaded event fired."); // Log DOMContentLoaded event
 
             var calendarData = [];
             var holidaysAndSundays = [];
@@ -107,8 +109,7 @@
                         title: 'Domingo',
                         start: currentDate.toISOString().slice(0, 10) + 'T00:00:00',
                         end: currentDate.toISOString().slice(0, 10) + 'T23:59:00',
-                        color: '#cc3a60',
-                        dataType: 'unselectable'
+                        color: '#cc3a60'
                     });
                     currentDate.setDate(currentDate.getDate() + 7);
                 }
@@ -140,37 +141,31 @@
                 });
             }
 
+
             // Function to add events to the selectedSlots array
             function addEventsToCalendarData(eventData) {
                 eventData.forEach(function (event) {
-                    calendarData.push({
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        cod_turma: event.cod_turma,
-                        color: event.color,
-                        dataType: 'selectable'
-                    });
-                    //} else {
-                    //    calendarData.push({
-                    //        title: event.title,
-                    //        start: event.start,
-                    //        end: event.end,
-                    //        cod_turma: event.cod_turma,
-                    //        color: event.color,
-                    //        dataType: 'unselectable'
-                    //    });
-                    //}
+                    if (event.cod_turma === 0) {
+                        calendarData.push({
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            color: event.color,
+                            dataType: 'unselectable'
+                        });
+                    } else {
+                        calendarData.push({
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            cod_turma: event.cod_turma,
+                            color: event.color,
+                            dataType: 'selectable'
+                        });
+                    }
                 });
             }
 
-            function slotAlreadyExists(slot) {
-                // Check if any existing slot overlaps with the provided slot
-                return calendarData.some(function (existingSlot) {
-                    return (slot.start >= existingSlot.start && slot.start < existingSlot.end) ||
-                        (slot.end > existingSlot.start && slot.end <= existingSlot.end);
-                });
-            }
 
             $.ajax({
                 type: "POST",
@@ -245,31 +240,30 @@
                             return;
                         }
 
-                        // Check if the selected event conflicts with any existing events
-                        if (isEventConflict(slot, calendarData) || isEventConflict(slot, calendarData)) {
-                            alert("Selected time conflicts with existing events.");
+                        if (isEventConflict(slot, holidaysAndSundays) || isEventConflict(slot, calendarData)) {
+                            $('#InvalidDate .modal-body').text("O evento está em conflito com outros eventos!");
+                            $('#InvalidDate .modal-body').removeClass('alert-success').addClass('alert-danger');
+                            $('#InvalidDate').modal('show');
+
+                            // Fade out the modal after 3 seconds
+                            setTimeout(function () {
+                                $('#InvalidDate').modal('hide');
+                            }, 3000);
+
                             return;
                         }
 
                         var eventToAdd = {
-                            title: 'Disponível',
+                            title: 'Indisponível',
                             start: slot.start,
                             end: slot.end,
                             rendering: 'background',
-                            color: '#82d616',
+                            color: '#ea0606',
                             dataType: 'selectable'
                         };
 
-                        if (!slotAlreadyExists(slot)) { // Push the event object to selectedSlots array
-                            calendarData.push(eventToAdd);
-                        }
-                        else {
-                            // The slot already exists, handle this scenario (e.g., show a message)
-                            return;
-                            console.log('Slot already exists:', slot);
-                        }
+                        calendarData.push(eventToAdd);
 
-                        // Add the event to the calendar
                         calendar.addEvent(eventToAdd);
 
                         calendar.unselect();
@@ -321,7 +315,7 @@
                         var endString = end.getUTCFullYear() + '-' + ('0' + (end.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + end.getUTCDate()).slice(-2) + 'T' +
                             ('0' + end.getUTCHours()).slice(-2) + ':' + ('0' + end.getUTCMinutes()).slice(-2) + ':' + ('0' + end.getUTCSeconds()).slice(-2);
 
-                        // Remove the event from the selectedSlots array
+                        // Remove the event from the calendarData array
                         calendarData = calendarData.filter(function (slot) {
                             return !(slot.start === startString && slot.end === endString);
                         });
@@ -329,8 +323,16 @@
                         // Remove the event from the calendar
                         slot.event.remove();
                     } else if (slot.event.extendedProps.dataType === 'unselectable') {
-                        // Display custom alert modal
-                        $('#UnselectableModal').modal('show');
+                        $('#UnseletableModal .modal-body').text("O evento está em conflito com outros eventos!");
+                        $('#UnseletableModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                        $('#UnseletableModal').modal('show');
+
+                        // Fade out the modal after 3 seconds
+                        setTimeout(function () {
+                            $('#UnseletableModal').modal('hide');
+                        }, 3000);
+
+                        return;
                         return;
                     }
                 });
@@ -352,7 +354,7 @@
                         start: slot.start,
                         end: slot.end,
                         rendering: 'background',
-                        color: '#82d616',
+                        color: '#ea0606',
                         dataType: 'selectable'
                     });
                 });
@@ -363,6 +365,63 @@
                     var dateString = date.toISOString().slice(0, 10); // Get the date string in YYYY-MM-DD format
                     return holidays.some(function (holiday) {
                         return holiday.start.slice(0, 10) === dateString; // Check if the date matches any holiday
+                    });
+                }
+
+                function CleanAvailability() {
+                    // Remove events from the calendar
+
+                        calendar.getEvents().forEach(function (event) {
+                            if (event.title.includes('Tarde Indisponível') || event.title.includes('Manhã Indisponível') || event.title.includes('Sábado Indisponível') || event.title.includes('Indisponível'))
+                            {  event.remove(); }
+                        });
+                        // Remove events from the selectedSlots array
+                        calendarData = calendarData.filter(function (slot) {
+                            return !(slot.title.includes('Tarde Indisponível') || slot.title.includes('Manhã Indisponível') || slot.title.includes('Sábado Indisponível') || slot.title.includes('Indisponível'));
+                        });
+                    }
+
+                function CleanAvailabilityMornings() {
+                    // Remove events from the calendar
+                    calendar.getEvents().forEach(function (event) {
+                        if (event.title.includes('Manhã Indisponível')) {
+                            event.remove();
+                        }
+                    });
+
+                    // Remove events from the selectedSlots array
+                    calendarData = calendarData.filter(function (slot) {
+                        event.preventDefault();
+                        return !(slot.title.includes('Manhã Indisponível'));
+                    });
+                }
+
+                function CleanAvailabilityAfternoons() {
+                    // Remove events from the calendar
+                    calendar.getEvents().forEach(function (event) {
+                        if (event.title.includes('Tarde Indisponível')) {
+                            event.remove();
+                        }
+                    });
+
+                    // Remove events from the selectedSlots array
+                    calendarData = calendarData.filter(function (slot) {
+                        event.preventDefault();
+                        return !(slot.title.includes('Tarde Indisponível'));
+                    });
+                }
+
+                function CleanAvailabilitySaturdays() {
+                    // Remove events from the calendar
+                    calendar.getEvents().forEach(function (event) {
+                        if (event.title.includes('Sábado Indisponível')) {
+                            event.remove();
+                        }
+                    });
+
+                    // Remove events from the selectedSlots array
+                    calendarData = calendarData.filter(function (slot) {
+                        return !(slot.title.includes('Sábado Indisponível'));
                     });
                 }
 
@@ -380,17 +439,19 @@
                             console.log("Marking:", currentDate);
                             // Add the time slot from 8:00 to 16:00 as "Disponível"
                             calendar.addEvent({
-                                title: 'Manhã Disponível',
+                                title: 'Manhã Indisponível',
                                 start: currentDate.toISOString().slice(0, 10) + 'T08:00:00',
                                 end: currentDate.toISOString().slice(0, 10) + 'T16:00:00',
                                 rendering: 'background',
-                                color: '#63B3ED'
+                                color: '#63B3ED',
+                                dataType: 'selectable'
                             });
                             calendarData.push({
-                                title: 'Manhã Disponível',
+                                title: 'Manhã Indisponível',
                                 start: currentDate.toISOString().slice(0, 10) + 'T08:00:00', // Start time
                                 end: currentDate.toISOString().slice(0, 10) + 'T16:00:00',
-                                color: '#63B3ED'// End time
+                                color: '#63B3ED',
+                                dataType:'selectable'
                             });
                         }
                         // Move to the next day
@@ -412,17 +473,19 @@
                             console.log("Marking:", currentDate);
                             // Add the time slot from 16:00 to 23:00 as "Disponível"
                             calendar.addEvent({
-                                title: 'Tarde Disponível',
+                                title: 'Tarde Indisponível',
                                 start: currentDate.toISOString().slice(0, 10) + 'T16:00:00',
                                 end: currentDate.toISOString().slice(0, 10) + 'T23:00:00',
                                 rendering: 'background',
-                                color: '#fbcf33'
+                                color: '#fbcf33',
+                                dataType: 'selectable'
                             });
                             calendarData.push({
-                                title: 'Tarde Disponível',
+                                title: 'Tarde Indisponível',
                                 start: currentDate.toISOString().slice(0, 10) + 'T16:00:00', // Start time
                                 end: currentDate.toISOString().slice(0, 10) + 'T23:00:00', // End time
-                                color: '#fbcf33'
+                                color: '#fbcf33',
+                                dataType: 'selectable'
                             });
                         }
                         // Move to the next day
@@ -431,6 +494,8 @@
                 }
 
                 var allSaturdaysSelected = false;
+
+                var allSaturdaysPartsSelected = false;
 
                 function AllSaturdays() {
                     var currentDate = new Date();
@@ -441,17 +506,19 @@
                     while (currentDate.getFullYear() === currentYear && currentDate.getDay() === 6 && !isHoliday(currentDate, holidays)) {
                         console.log("Marking:", currentDate);
                         calendar.addEvent({
-                            title: 'Sábado Disponível',
+                            title: 'Sábado Indisponível',
                             start: currentDate.toISOString().slice(0, 10) + 'T08:00:00',
                             end: currentDate.toISOString().slice(0, 10) + 'T23:00:00',
                             rendering: 'background',
-                            color: '#82d616'
+                            color: '#82d616',
+                            dataType: 'selectable'
                         });
                         calendarData.push({
-                            title: 'Sábado Disponível',
+                            title: 'Sábado Indisponível',
                             start: currentDate.toISOString().slice(0, 10) + 'T08:00:00', // Start time
                             end: currentDate.toISOString().slice(0, 10) + 'T16:00:00', // End time
-                            color: '#82d616'
+                            color: '#82d616',
+                            dataType: 'selectable'
                         });
                         currentDate.setDate(currentDate.getDate() + 7); // Move to the next Saturday
                     }
@@ -461,23 +528,23 @@
                     var currentDate = new Date();
                     var currentYear = currentDate.getFullYear(); // Get the current year
                     currentDate.setDate(currentDate.getDate() + (6 - currentDate.getDay())); // Move to the next Saturday
-                    allSaturdaysSelected = true;
+                    allSaturdaysPartsSelected = true;
 
                     while (currentDate.getFullYear() === currentYear && currentDate.getDay() === 6 && !isHoliday(currentDate, holidays)) {
                         console.log("Marking:", currentDate);
                         calendar.addEvent({
-                            title: 'Manhã de Sábado Disponível',
+                            title: 'Manhã de Sábado Indisponível',
                             start: currentDate.toISOString().slice(0, 10) + 'T08:00:00',
                             end: currentDate.toISOString().slice(0, 10) + 'T16:00:00',
-                            color: '#82d616'
-
-
+                            color: '#82d616',
+                            dataType: 'selectable'
                         });
                         calendarData.push({
-                            title: 'Manhã de Sábado Disponível',
+                            title: 'Manhã de Sábado Indisponível',
                             start: currentDate.toISOString().slice(0, 10) + 'T08:00:00', // Start time
                             end: currentDate.toISOString().slice(0, 10) + 'T16:00:00', // End time
-                            color: '#82d616'
+                            color: '#82d616',
+                            dataType: 'selectable'
                         });
                         currentDate.setDate(currentDate.getDate() + 7); // Move to the next Saturday
                     }
@@ -487,92 +554,27 @@
                     var currentDate = new Date();
                     var currentYear = currentDate.getFullYear(); // Get the current year
                     currentDate.setDate(currentDate.getDate() + (6 - currentDate.getDay())); // Move to the next Saturday
-
-                    allSaturdaysSelected = true;
+                    allSaturdaysPartsSelected = true;
 
                     while (currentDate.getFullYear() === currentYear && currentDate.getDay() === 6 && !isHoliday(currentDate, holidays)) {
                         console.log("Marking:", currentDate);
                         calendar.addEvent({
-                            title: 'Tarde de Sábado Disponível',
+                            title: 'Tarde de Sábado Indisponível',
                             start: currentDate.toISOString().slice(0, 10) + 'T16:00:00',
                             end: currentDate.toISOString().slice(0, 10) + 'T23:00:00',
-                            color: '#82d616'
+                            color: '#82d616',
+                            dataType: 'selectable'
                         });
                         calendarData.push({
-                            title: 'Tarde de Sábado Disponível',
+                            title: 'Tarde de Sábado Indisponível',
                             start: currentDate.toISOString().slice(0, 10) + 'T16:00:00', // Start time
                             end: currentDate.toISOString().slice(0, 10) + 'T23:00:00',
-                            color: '#82d616'// End time
+                            color: '#82d616',
+                            dataType: 'selectable' // End time
                         });
                         currentDate.setDate(currentDate.getDate() + 7); // Move to the next Saturday
                     }
                 }
-
-                function CleanAvailability() {
-                    // Remove events from the calendar
-                    calendar.getEvents().forEach(function (event) {
-                        if (event.title.includes('Disponível') && event.extendedProps.dataType !== 'unselectable') {
-                            event.remove();
-                            event.preventDefault();
-                        }
-                    });
-
-                    // Remove events from the selectedSlots array
-                    calendarData = calendarData.filter(function (slot) {
-                        event.preventDefault();
-                        return !(slot.title.includes('Disponível') && slot.dataType !== 'unselectable');
-                    });
-                }
-
-                function CleanAvailabilityMornings() {
-                    // Remove events from the calendar
-                    calendar.getEvents().forEach(function (event) {
-                        if (event.title.includes('Manhã Disponível') && event.extendedProps.dataType !== 'unselectable') {
-                            event.remove();
-                            event.preventDefault();
-                        }
-                    });
-
-                    // Remove events from the selectedSlots array
-                    calendarData = calendarData.filter(function (slot) {
-                        event.preventDefault();
-                        return !(slot.title.includes('Manhã Disponível') && slot.dataType !== 'unselectable');
-                    });
-                }
-
-                function CleanAvailabilityAfternoons() {
-                    // Remove events from the calendar
-                    calendar.getEvents().forEach(function (event) {
-                        if (event.title.includes('Tarde Disponível') && event.extendedProps.dataType !== 'unselectable') {
-                            event.remove();
-                            event.preventDefault();
-                        }
-                    });
-
-                    // Remove events from the selectedSlots array
-                    calendarData = calendarData.filter(function (slot) {
-                        event.preventDefault();
-                        return !(slot.title.includes('Tarde Disponível') && slot.dataType !== 'unselectable');
-                    });
-                }
-
-                function CleanAvailabilitySaturdays() {
-                    // Remove events from the calendar
-                    calendar.getEvents().forEach(function (event) {
-                        if (event.title.includes('Sábado Disponível') && event.extendedProps.dataType !== 'unselectable') {
-                            event.remove();
-                            event.preventDefault();
-                        }
-                    });
-
-                    // Remove events from the selectedSlots array
-                    calendarData = calendarData.filter(function (slot) {
-                        event.preventDefault();
-                        return !(slot.title.includes('Sábado Disponível') && slot.dataType !== 'unselectable');
-                    });
-                }
-
-
 
                 // Button click event handler to select all Saturdays
                 document.getElementById('<%= btnMornings.ClientID %>').addEventListener('click', function (event) {
@@ -588,6 +590,18 @@
 
                 // Button click event handler to select all Saturdays
                 document.getElementById('<%= btnSaturdays.ClientID %>').addEventListener('click', function (event) {
+                    if (allSaturdaysPartsSelected) {
+                        $('#messageModal .modal-body').text("Não pode seleccionar os sábados o dia todo se já tiver seleccionado uma parte do dia! Remova primeiro as seleções!");
+                        $('#messageModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                        $('#messageModal').modal('show');
+
+                        // Fade out the modal after 3 seconds
+                        setTimeout(function () {
+                            $('#messageModal').modal('hide');
+                        }, 3000);
+                        event.preventDefault();
+                        return;
+                    }
                     AllSaturdays();
                     event.preventDefault(); // Prevent default button behavior (e.g., form submission or postback)
                 });
@@ -595,7 +609,14 @@
                 // Button click event handler to select all Saturdays
                 document.getElementById('<%= btnSaturdaysMorning.ClientID %>').addEventListener('click', function (event) {
                     if (allSaturdaysSelected) {
-                        alert("You cannot select Saturday mornings if all Saturdays are already selected.");
+                        $('#messageModal .modal-body').text("Não pode seleccionar apenas os sábados de manhã se já tiver seleccionado os sábados o dia todo!");
+                        $('#messageModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                        $('#messageModal').modal('show');
+
+                        // Fade out the modal after 3 seconds
+                        setTimeout(function () {
+                            $('#messageModal').modal('hide');
+                        }, 3000);
                         event.preventDefault();
                         return;
                     }
@@ -606,7 +627,14 @@
                 // Button click event handler to select all Saturdays
                 document.getElementById('<%= btnSaturdaysAfternoon.ClientID %>').addEventListener('click', function (event) {
                     if (allSaturdaysSelected) {
-                        alert("You cannot select Saturday mornings if all Saturdays are already selected.");
+                        $('#messageModal .modal-body').text("Não pode seleccionar apenas os sábados à tarde se já tiver seleccionado os sabádos o dia todo!");
+                        $('#messageModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                        $('#messageModal').modal('show');
+
+                        // Fade out the modal after 3 seconds
+                        setTimeout(function () {
+                            $('#messageModal').modal('hide');
+                        }, 3000);
                         event.preventDefault();
                         return;
                     }
@@ -617,6 +645,7 @@
                 // Button click event handler to select all Saturdays
                 document.getElementById('<%= btnCleanAll.ClientID %>').addEventListener('click', function (event) {
                     CleanAvailability();
+                    event.preventDefault();
                 });
 
                 // Button click event handler to select all Saturdays
@@ -659,12 +688,24 @@
                             // Handle success response if needed
                             if (response.d) {
                                 // Show success message
-                                alert("Disponibilidade de Formador atualizada com sucesso! Será redirecionado para outra página.");
-                                // Redirect to another page
-                                window.location.href = "UserProfile.aspx"; // Change "new_page.aspx" to the desired page
+                                $('#messageModal .modal-body').text("Disponibilidade do formador atualizada com sucesso!");
+                                $('#messageModal .modal-body').removeClass('alert-danger').addClass('alert-success');
+                                $('#messageModal').modal('show');
+
+                                // Fade out the modal after 3 seconds
+                                setTimeout(function () {
+                                    $('#messageModal').modal('hide');
+                                }, 3000);
+                               
                             } else {
-                                // Show error message
-                                alert("Ocorreu um erro ao atualizar a disponibilidade do formador.");
+                                $('#messageModal .modal-body').text("Ocorreu um erro ao atualizar a disponibilidade do formador.");
+                                $('#messageModal .modal-body').removeClass('alert-success').addClass('alert-danger');
+                                $('#messageModal').modal('show');
+
+                                // Fade out the modal after 3 seconds
+                                setTimeout(function () {
+                                    $('#messageModal').modal('hide');
+                                }, 3000);
                             }
                         },
                         error: function (xhr, textStatus, errorThrown) {
@@ -677,7 +718,6 @@
 
             }
         });
-
     </script>
 
 </asp:Content>

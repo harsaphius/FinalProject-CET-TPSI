@@ -12,7 +12,7 @@
                 <div class="row" style="margin-top: 15px">
                     <div class="col-md-6 col-md-6 text-start" style="padding-left: 35px;">
                         <asp:Button runat="server" CssClass="btn btn-primary" Visible="true" Text="Inserir Novo Formando" ID="btnInsertStudentMain" OnClick="btnInsertStudentMain_OnClick" />
-                        <asp:Button runat="server" CssClass="btn btn-primary" Visible="true" Text="Inserir da Lista de Utilizadores" ID="btnInsertStudentFromList" OnClick="btnInsertStudentFromList_OnClick"/>
+                        <asp:Button runat="server" CssClass="btn btn-primary" Visible="true" Text="Inserir da Lista de Utilizadores" ID="btnInsertStudentFromList" OnClick="btnInsertStudentFromList_OnClick" />
                         <asp:Button runat="server" CssClass="btn btn-primary" Visible="false" Text="Voltar" ID="btnBack" OnClick="btnBack_OnClick" />
                     </div>
                     <div class="col-md-6 col-sm-6 text-end" style="padding-right: 35px; font-family: 'Sans Serif Collection'">
@@ -77,11 +77,9 @@
                         </asp:UpdatePanel>
                     </div>
                 </div>
-                <div id="registrationMessage" class="hidden">
-                    <div class="alert alert-primary text-white font-weight-bold" role="alert">
-                        <small class="text-uppercase font-weight-bold">
-                            <asp:Label runat="server" ID="lblMessageRegistration"></asp:Label></small>
-                    </div>
+                <div class="container row justify-content-center">
+                    <asp:Label runat="server" ID="lblMessage" Style="display: flex; justify-content: center; padding: 5px;" CssClass="hidden" role="alert"></asp:Label>
+                    <asp:Timer ID="timerMessage" runat="server" Interval="3000" OnTick="timerMessage_OnTick" Enabled="False"></asp:Timer>
                 </div>
                 <div class="container-fluid py-4">
                     <div class="row">
@@ -121,6 +119,7 @@
                                                         <td>
                                                             <p class="mb-0 text-sm text-center">
                                                                 <asp:Label runat="server" Text='<%# Eval("CodFormando") %>'></asp:Label>
+                                                                <asp:HiddenField ID="hdnStudentID" runat="server" Value='<%# Eval("CodFormando") %>' />
                                                             </p>
                                                         </td>
                                                         <td>
@@ -194,7 +193,7 @@
                                                 <div class="card-body">
                                                     <div class="card mb-4">
                                                         <!-- Listagem de Utilizador Disponíveis -->
-                                                        <asp:Repeater ID="rptUserForStudents" runat="server" OnItemDataBound="rptUserForStudents_OnItemDataBound" OnItemCommand="rptUserForStudents_OnItemCommand">
+                                                        <asp:Repeater ID="rptUserForStudents" runat="server" OnItemCommand="rptUserForStudents_OnItemCommand">
                                                             <HeaderTemplate>
                                                                 <div class="card-body px-0 pt-0 pb-2">
                                                                     <div class="table-responsive p-0">
@@ -222,6 +221,8 @@
                                                                     <td>
                                                                         <p class="mb-0 text-sm text-center">
                                                                             <asp:Label runat="server" Text='<%# Eval("CodUser") %>'></asp:Label>
+                                                                            <asp:HiddenField ID="hdnUserID" runat="server" Value='<%# Eval("CodUser") %>' />
+
                                                                         </p>
                                                                     </td>
                                                                     <td>
@@ -235,15 +236,8 @@
                                                                             </div>
                                                                         </div>
                                                                     </td>
-
                                                                     <td class="align-middle font-weight-bold text-center">
-                                                                        <asp:HiddenField ID="hdnUserID" runat="server" Value='<%# Eval("CodUser") %>' />
-                                                                        <div class="form-check">
-                                                                            <asp:CheckBox runat="server" ID="chkBoxUser" OnCheckedChanged="chkBoxUser_OnCheckedChanged" />
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="align-middle font-weight-bold text-center">
-                                                                        <asp:LinkButton runat="server" ID="lbtSelectCoursesForUser" CausesValidation="false" CommandName="EditCoursesStudents" Visible="true" CommandArgument='<%# Eval("CodUser") %>'
+                                                                        <asp:LinkButton runat="server" ID="lbtSelectCoursesForUser" CausesValidation="false" CommandName="EditCoursesUsers" Visible="true" CommandArgument='<%# Eval("CodUser") %>'
                                                                             Text="Escolher Cursos" class="text-secondary font-weight-bold text-xs">
                                                                         </asp:LinkButton>
                                                                     </td>
@@ -626,8 +620,8 @@
                                                                                             <asp:HiddenField ID="hdnCourseID" runat="server" Value='<%# Eval("CodCurso") %>' />
                                                                                             <asp:HiddenField ID="hdnCourseName" runat="server" Value='<%# Eval("Nome") %>' />
                                                                                             <div class="form-check">
-                                                                                                <asp:CheckBox runat="server" ID="chckBox" OnCheckedChanged="chkBoxMod_OnCheckedChanged" />
-                                                                                                <asp:Label runat="server" ID="lbl_order">Selecione este curso</asp:Label>
+                                                                                                <asp:CheckBox runat="server"  Checked='<%# Convert.ToBoolean(Eval("IsChecked")) %>'  ID="chckBoxCourses" OnCheckedChanged="chckBoxCourses_CheckedChanged" />
+                                                                                                <asp:Label runat="server" ID="lblOrder">Selecione este curso</asp:Label>
                                                                                             </div>
                                                                                         </td>
                                                                                     </tr>
@@ -678,7 +672,6 @@
                     </div>
                 </div>
                 <asp:HiddenField runat="server" ID="hdnSourceDiv" />
-
             </div>
         </ContentTemplate>
         <Triggers>
@@ -686,7 +679,7 @@
             <asp:AsyncPostBackTrigger ControlID="btnBack" />
         </Triggers>
     </asp:UpdatePanel>
-    <!-- Javascript para o Flatpicker -->
+    <%--<!-- Javascript para o Flatpicker -->
     <script>
         function initializeDatePickers() {
             flatpickr('#<%= tbDataNascimento.ClientID %>',
@@ -694,23 +687,23 @@
                     dateFormat: 'd-m-Y',
                     theme: 'light',
                     maxDate: new Date(),
-                    onChange: function(selectedDates, dateStr, instance) {
+                    onChange: function (selectedDates, dateStr, instance) {
                         console.log("onClose chamada"); // Adicione este console.log para verificar se a função está sendo chamada
                         instance.redraw();
                     }
 
                 });
 
-        flatpickr('#<%= tbDataValidade.ClientID %>', {
-            dateFormat: 'd-m-Y',
-            theme: 'light',
-            minDate: new Date(),
-            onChange: function (selectedDates, dateStr, instance) {
-                // Always redraw the date picker
-                instance.redraw();
-            }
+            flatpickr('#<%= tbDataValidade.ClientID %>', {
+                dateFormat: 'd-m-Y',
+                theme: 'light',
+                minDate: new Date(),
+                onChange: function (selectedDates, dateStr, instance) {
+                    // Always redraw the date picker
+                    instance.redraw();
+                }
 
-        });
+            });
         }
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -720,10 +713,10 @@
         document.addEventListener('change', function (event) {
             var target = event.target;
             if (target.matches('#<%= tbDataNascimento.ClientID %>') || target.matches('#<%= tbDataValidade.ClientID %>')) {
-                        initializeDatePickers();
-                    }
-                });
+                initializeDatePickers();
+            }
+        });
 
-    </script>
-    
+    </script>--%>
+
 </asp:Content>

@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Security;
-using System.Web.UI;
 
 namespace FinalProject
 {
@@ -28,11 +27,6 @@ namespace FinalProject
                 lbl_message.Text = Session["ActivatedUser"].ToString();
             }
 
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "validadeUsername",
-                "validadeUsername(element);", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "validadePassword",
-                "validadePassword(element);", true);
-
         }
 
         protected void btn_facebook_Click(object sender, EventArgs e)
@@ -50,13 +44,14 @@ namespace FinalProject
         protected void btn_signin_Click(object sender, EventArgs e)
         {
 
-            if (Classes.Security.IsValidUsername(tb_username.Text) == true || Classes.Security.IsValidEmail(tb_username.Text) == true)
+            if (Security.IsValidUsername(tb_username.Text) == true || Security.IsValidEmail(tb_username.Text) == true)
             {
                 List<int> isLoginAllowed = Classes.User.IsLoginAllowed(tb_username.Text, tb_pw.Text);
 
                 if (isLoginAllowed[0] == 1 && isLoginAllowed[1] == 1)
                 {
                     (int AnswUserCode, string Username) = Classes.User.DetermineUtilizador(tb_username.Text);
+                    List<int> UserProfile = Classes.User.DetermineUserProfile(Convert.ToInt32(AnswUserCode));
 
                     if (AnswUserCode == 1 || AnswUserCode == 4) Session["Admin"] = "Yes";
                     else Session["Admin"] = "No";
@@ -65,19 +60,32 @@ namespace FinalProject
                     Session["CodUtilizador"] = isLoginAllowed[2];
                     Session["Logado"] = "Yes";
 
-                    Response.Redirect("./UserCourses.aspx");
+                    Response.Redirect("./UserProfile.aspx");
                 }
                 else if (isLoginAllowed[0] == 1 && isLoginAllowed[1] == 0)
                 {
-                    Session["ActivatedUser"] = "Conta ativada com sucesso!";
+                    (int UserCode, string Username) = Classes.User.DetermineUtilizador(tb_username.Text);
+                    List<int> UserProfile = Classes.User.DetermineUserProfile(Convert.ToInt32(UserCode));
 
-                    lbl_message.CssClass = "alert alert-primary text-white text-center";
+                    foreach (int profile in UserProfile)
+                    {
+                        if (profile == 2 && profile != 3 && profile != 4)
+                        {
+                            Session["ActivatedUser"] = "Conta ativada com sucesso!";
+                            EmailControl.SendEmailActivation(tbEmailRecover.Text, Username);
 
-                    (int UserCode, string Username) = Classes.User.DetermineUtilizador(tbEmailRecover.Text);
+                            lbl_message.CssClass = "alert alert-primary text-white text-center";
+                            lbl_message.Text = $"A sua conta ainda não se encontra ativa! Procedemos ao reenvio do e-mail de ativação!!";
+                        }
+                        if (profile == 3 || profile == 4)
+                        {
+                            string email = Classes.User.GetEmailFromDatabase(UserCode);
+                            EmailControl.SendEmailWaitingValidation(email, Username);
 
-                    Classes.EmailControl.SendEmailActivation(tbEmailRecover.Text, Username);
-
-                    lbl_message.Text = $"A sua conta ainda não se encontra ativa! Procedemos ao reenvio do e-mail de ativação!!";
+                            lbl_message.CssClass = "alert alert-primary text-white text-center";
+                            lbl_message.Text = $"A sua conta ainda aguarda validação!";
+                        }
+                    }
                 }
                 else if (isLoginAllowed[0] == -1 && isLoginAllowed[1] == -1)
                 {
@@ -116,15 +124,30 @@ namespace FinalProject
                 (int AnswUserExist, int AnswAccountActive) = Security.RecoverPassword(tbEmailRecover.Text, NovaPasse);
                 if (AnswUserExist == 1 && AnswAccountActive == 1) //Caso a conta esteja ativa, envia NovaPasse
                 {
-                    Classes.EmailControl.SendEmailRecover(tbEmailRecover.Text, NovaPasse);
+                    EmailControl.SendEmailRecover(tbEmailRecover.Text, NovaPasse);
+                    lbl_message.Text = "E-mail enviado com sucesso! Verifique a sua caixa de correio!";
                 }
                 else if (AnswUserExist == 1 && AnswAccountActive == 0) //Caso a conta não esteja ativa
                 {
                     Session["ActivatedUser"] = "OK";
 
                     (int userCode, string username) = Classes.User.DetermineUtilizador(tbEmailRecover.Text);
+                    List<int> UserProfile = Classes.User.DetermineUserProfile(Convert.ToInt32(userCode));
 
-                    EmailControl.SendEmailActivation(tbEmailRecover.Text, username);
+                    foreach (int profile in UserProfile)
+                    {
+                        if (profile == 2)
+                        {
+                            EmailControl.SendEmailActivation(tbEmailRecover.Text, username);
+                            lbl_message.Text = $"A sua conta ainda não se encontra ativa! Procedemos ao reenvio do e-mail de ativação!!";
+                        }
+                        if (profile == 3 || profile == 4)
+                        {
+                            string email = Classes.User.GetEmailFromDatabase(userCode);
+                            EmailControl.SendEmailWaitingValidation(email, username);
+                            lbl_message.Text = $"A sua conta ainda aguarda validação!";
+                        }
+                    }
                 }
                 else //Caso o e-mail não esteja associado a nenhuma conta
                 {
